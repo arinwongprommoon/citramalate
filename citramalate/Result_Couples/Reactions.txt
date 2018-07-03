@@ -1,0 +1,7 @@
+First five:
+'CITRA_SYN', 'GLT', 'LPD', 'ATP_MAINTENANCE', 'GDH'
+
+Would want to include after this:
+'ATP_syn', 'ACEA', 'ZWF'
+
+(but freeze)

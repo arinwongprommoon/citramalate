@@ -1,0 +1,15 @@
+Plots of citramalate productivity against Vmax of enzymes (ACEA to ZWF)
+
+Citramalate productivity defined as:
+
+    mu * (YP/S)
+    
+        mu = growth rate
+        YP/S = (g of product)/(g of substrate)
+        
+    This is implemented in ecolicitra_copy.ecolicit.comproducti()
+    
+
+x axis in multiples of default vmax, unless otherwise stated
+
+Default Vmax is according to the model described in Millard et al (2017)

@@ -1,0 +1,41 @@
+x axes in multiples of default Vmax
+
+Excludes:
+- CITRA_SYN
+- GLT
+- LPD
+- GROWTH
+- ATP_MAINTENANCE
+
+because their
+
+    (max - min)/(max + min)
+    
+values are so high that I can easily see their trends from their plots with
+axes adjusted according to CITRA_SYN (see the other directory)
+
+These enzymes have a difference over average ratio lower than 0.01 and likely
+negligible (see ../minmax.ods)
+
+GND
+FBA
+PIT
+XCH_GLC
+EDD
+TPI
+ACK
+SQR
+ACN_1
+ACN_2
+PGL
+EDA
+FBP
+PTA
+PPS
+FUMA
+PGK
+ACS
+SK
+XCH_ACE1
+XCH_P
+XCH_ACE2
