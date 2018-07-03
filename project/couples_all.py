@@ -7,7 +7,7 @@ import couples
 import heatmap
 
 # Run simulations, writes data both into TXT and NPZ
-run = couples.Coupl(xstart=0.1, xend=10.0, ystart=0.1, yend=10.0, points=10)
+run = couples.Coupl(xstart=0.5, xend=2.0, ystart=0.5, yend=2.0, points=10)
 run.setVmax('CITRA_SYN', 4.0)
 run.time0 = 0
 run.timef = 2*3600 # final simulation time in seconds
@@ -28,6 +28,7 @@ for npz in glob.glob("*.npz"):
     YRxns = data[1]
     productivity_raw = data[2]
     productivity = 10000*productivity_raw
+    productivity = np.transpose(productivity)
 
     XLabs = ['%.2f' % i for i in XRxns]
     YLabs = ['%.2f' % j for j in YRxns]
