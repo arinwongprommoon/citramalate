@@ -19,7 +19,7 @@ run.listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'ATP_MAINTENANCE', 'GDH'] # de
 #run.listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'ATP_MAINTENANCE', 'GDH', 'ATP_syn', 'ACEA', 'ZWF']
 
 run.writeFileHeader()
-run.computeCouples(writemethod='writeToText')
+run.computeCouples()
 
 # for npz in glob.glob("*.npz"):
 #     # Read from file into numpy arrays

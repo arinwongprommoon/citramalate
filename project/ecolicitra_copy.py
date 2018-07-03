@@ -6,8 +6,6 @@ import roadrunner
 import libsbml
 import matplotlib.pyplot as plt
 
-import memory_profiler
-
 mmCITRA = 146.098 # g/mol # Molecular mass of Citramalate https://pubchem.ncbi.nlm.nih.gov/compound/5460281
 mmGLC = 180.156 # g/mol  # Molecular mass of Glucose https://pubchem.ncbi.nlm.nih.gov/compound/79025
 
@@ -129,17 +127,18 @@ class ecolicit:
         self.reacVmaxes = sorted(Vmaxes) # ids of reactions sorted alphabetically that have Vmax
         self.iniVmaxes = [Vmaxes[r] for r in self.reacVmaxes] # initial values of Vmax (as in the kinetic model)
 
-    @profile
     def comproducti(self):
         # Compute steady state productivity
         selection = ["CITRA", "iGROWTH'"]
         # The ' in there indicates a RATE of change
         # http://sys-bio.github.io/roadrunner/python_docs/selecting_values.html#selecting-values
-        rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
+        pointer = libsbml.writeSBMLToString(self.document)
+        rr = roadrunner.RoadRunner(pointer)
         rr.timeCourseSelections = selection
         result = rr.simulate(self.time0, self.timef, self.npoints)
         Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
         mu = result[-1,selection.index("iGROWTH'")]*3600
+        pointer.free()
         return mu*Y_PS
 
     def plot(self, species):

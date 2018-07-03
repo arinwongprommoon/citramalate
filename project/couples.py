@@ -65,7 +65,7 @@ class Coupl(ecolicit):
         """Writes data as numpy array NPZ files"""
         np.savez(filename, *data)
 
-    def computeCouples(self, writemethod = 'writeToBoth'):
+    def computeCouples(self):
         """
             Computes citramalate productivity for pairs of enzymes after
             varying Vmax values.
@@ -76,7 +76,6 @@ class Coupl(ecolicit):
                 writeToNpz: NPZ only
                 writeToBoth: both (default)
         """
-        # TIME TO EXECUTE INCREASES LINEARLY WITH EACH LOOP - fix this
         for XRxn in self.listofreactions:
             # Computation
             XVmaxI = self.getVmax(XRxn)
@@ -98,18 +97,19 @@ class Coupl(ecolicit):
                 self.setVmax(YRxn, YVmaxI)
 
                 elapsed_time = time.time() - start_time
+                print(elapsed_time)
 
-                # Writing data
-                data = [X, Y, P]
-                names = [XRxn, YRxn]
-                if writemethod == 'writeToText':
-                    self.writeToText(names, data)
-                elif writemethod == 'writeToNpz':
-                    filename = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
-                    self.writeToNpz(data, filename)
-                elif writemethod == 'writeToBoth':
-                    self.writeToText(names, data)
-                    filename = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
-                    self.writeToNpz(data, filename)
+                # # Writing data
+                # data = [X, Y, P]
+                # names = [XRxn, YRxn]
+                # if writemethod == 'writeToText':
+                #     self.writeToText(names, data)
+                # elif writemethod == 'writeToNpz':
+                #     filename = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
+                #     self.writeToNpz(data, filename)
+                # elif writemethod == 'writeToBoth':
+                #     self.writeToText(names, data)
+                #     filename = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
+                #     self.writeToNpz(data, filename)
 
             self.setVmax(XRxn, XVmaxI)
