@@ -6,6 +6,8 @@ import roadrunner
 import libsbml
 import matplotlib.pyplot as plt
 
+import memory_profiler
+
 mmCITRA = 146.098 # g/mol # Molecular mass of Citramalate https://pubchem.ncbi.nlm.nih.gov/compound/5460281
 mmGLC = 180.156 # g/mol  # Molecular mass of Glucose https://pubchem.ncbi.nlm.nih.gov/compound/79025
 
@@ -127,6 +129,7 @@ class ecolicit:
         self.reacVmaxes = sorted(Vmaxes) # ids of reactions sorted alphabetically that have Vmax
         self.iniVmaxes = [Vmaxes[r] for r in self.reacVmaxes] # initial values of Vmax (as in the kinetic model)
 
+    @profile
     def comproducti(self):
         # Compute steady state productivity
         selection = ["CITRA", "iGROWTH'"]

@@ -20,7 +20,7 @@ class Coupl(ecolicit):
             xstart = lower limit of Vmax values for 1st enzyme
             xend = upper limit of Vmax values for 1st enzyme
             ystart = lower limit of Vmax values for 2nd enzyme
-            yend = upper limit of Vmax values ofr 2nd enzyme
+            yend = upper limit of Vmax values for 2nd enzyme
             points = number of data points to compute (same for each axis)
     """
     def __init__(self, xstart=0.5, xend=2.0, ystart=0.5, yend=2.0, points=10):
@@ -82,8 +82,11 @@ class Coupl(ecolicit):
             XVmaxI = self.getVmax(XRxn)
             X = np.linspace(self.xstart*XVmaxI, self.xend*XVmaxI, self.points, endpoint=True)
             for YRxn in [r for r in self.listofreactions if self.listofreactions.index(r)>self.listofreactions.index(XRxn)]:
-                t0 = time.clock() # track time elapsed
+
                 print(XRxn + ' vs ' + YRxn) # track reaction
+
+                start_time = time.time()
+
                 YVmaxI = self.getVmax(YRxn)
                 Y = np.linspace(self.ystart*YVmaxI, self.yend*YVmaxI, self.points, endpoint=True)
                 P = np.zeros((self.points, self.points)) # initialise
@@ -93,6 +96,8 @@ class Coupl(ecolicit):
                         self.setVmax(YRxn, Y[jj])
                         P[ii, jj] = self.comproducti()
                 self.setVmax(YRxn, YVmaxI)
+
+                elapsed_time = time.time() - start_time
 
                 # Writing data
                 data = [X, Y, P]
@@ -106,7 +111,5 @@ class Coupl(ecolicit):
                     self.writeToText(names, data)
                     filename = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
                     self.writeToNpz(data, filename)
-
-                print(time.clock()) # track time elapsed
 
             self.setVmax(XRxn, XVmaxI)
