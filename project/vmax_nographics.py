@@ -4,7 +4,7 @@
 # file.
 
 from __future__ import division, print_function
-from ecolicitra_copy import ecolicit, mmCITRA, mmGLCgit
+from ecolicitra_copy import ecolicit, mmCITRA, mmGLC
 import numpy as np
 import roadrunner
 import libsbml
