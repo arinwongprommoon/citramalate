@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# compares ecolicitra_copy.compsteadystate() and ecolicitra_copy.altcompsteadystate()
 
 from __future__ import division, print_function
 from ecolicitra_copy import ecolicit, mmCITRA, mmGLC

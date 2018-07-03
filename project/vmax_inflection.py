@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# Just vmax.py but specifically plots the reactions that have inflection points
 
 from __future__ import division, print_function
 from ecolicitra_copy import ecolicit, mmCITRA, mmGLC

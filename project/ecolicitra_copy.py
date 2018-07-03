@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 #Class for SBML kinetic model of E. coli plus reaction for the production of citramalate
-#Added plotting function 2018-06-25
+#Modified
 from __future__ import division, print_function
 import roadrunner
 import libsbml
@@ -19,7 +19,7 @@ class ecolicit:
         Vmax: Vmax of the citramalate synthesis reaction (mM/s)
         Km: Km of the citramalate synthesis reaction (mM)
         include_CITRA: Include citramalate species in the model (notice that it grows monotonically and hence it should not be included for steady state analysis)
-        ininitial_CITRA: Initial concentration of citramalate (mM)
+        initial_CITRA: Initial concentration of citramalate (mM)
         """
         reader = libsbml.SBMLReader()
         self.document = reader.readSBMLFromFile(sbmlfile)
@@ -153,9 +153,11 @@ class ecolicit:
         plt.show()
 
     def compsteadystate(self):
-        # Gives derivate to see if steady state
-        # Method: finds gradient (more accurate if more steps specified by self.npoints)
-        # Strictly this is correct but accuracy may be low
+        """
+            Gives derivate to see if steady state
+            Method: finds gradient (more accurate if more steps specified by self.npoints)
+            Strictly this is correct but accuracy may be low
+        """
         selection = ["CITRA", "iGROWTH'"]
         rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
         rr.timeCourseSelections = selection
@@ -170,12 +172,12 @@ class ecolicit:
         return (prod_f - prod_i)/t
 
     def altcompsteadystate(self):
-        # Gives derivate to see if steady state
-        # Method: differs from comproducti() in that it uses CITRA' instead of CITRA
-        # Strictly speaking this is not correct and it's an approximation, but it's pretty close
+        """
+            Gives derivate to see if steady state
+            Method: differs from comproducti() in that it uses CITRA' instead of CITRA
+            Strictly speaking this is not correct and it's an approximation, but it's pretty close
+        """
         selection = ["CITRA'", "iGROWTH'"]
-        # The ' in there indicates a RATE of change
-        # http://sys-bio.github.io/roadrunner/python_docs/selecting_values.html#selecting-values
         rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
         rr.timeCourseSelections = selection
         result = rr.simulate(self.time0, self.timef, self.npoints)

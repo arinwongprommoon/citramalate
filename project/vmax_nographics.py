@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 
+# Runs computations for reactions within a specified list, writes data to TXT
+# file.
+
 from __future__ import division, print_function
-from ecolicitra_copy import ecolicit, mmCITRA, mmGLC
+from ecolicitra_copy import ecolicit, mmCITRA, mmGLCgit
 import numpy as np
 import roadrunner
 import libsbml

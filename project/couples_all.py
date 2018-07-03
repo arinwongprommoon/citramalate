@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Runs computations for couples of reactions from a specified list, writes data
+# to numpy array files, then plots heatmaps.
+
 import glob, os
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,7 +10,7 @@ import couples
 import heatmap
 
 # Run simulations, writes data both into TXT and NPZ
-run = couples.Coupl(xstart=0.5, xend=2.0, ystart=0.5, yend=2.0, points=10)
+run = couples.Coupl(xstart=0.5, xend=2.0, ystart=0.5, yend=2.0, points=10) # define vmax ranges here
 run.setVmax('CITRA_SYN', 4.0)
 run.time0 = 0
 run.timef = 2*3600 # final simulation time in seconds
@@ -28,6 +31,8 @@ for npz in glob.glob("*.npz"):
     YRxns = data[1]
     productivity_raw = data[2]
     productivity = 10000*productivity_raw
+    # Transpose here because I don't want to mess with couples.py, which
+    # generates the data
     productivity = np.transpose(productivity)
 
     XLabs = ['%.2f' % i for i in XRxns]
@@ -39,7 +44,7 @@ for npz in glob.glob("*.npz"):
     texts = heatmap.annotate_heatmap(im, valfmt="{x:.1f}")
 
     fig.tight_layout()
-    #plt.show()
+
     filename = npz[0:-4] + '.png'
     plt.savefig(filename, bbox_inches='tight')
     print(filename + ' saved')

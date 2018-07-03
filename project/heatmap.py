@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# Creates heatmaps
+# Derived from: https://matplotlib.org/gallery/images_contours_and_fields/image_annotated_heatmap.html
 
 import numpy as np
 import matplotlib
