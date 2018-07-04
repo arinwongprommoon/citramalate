@@ -114,7 +114,6 @@ class Coupl(ecolicit):
             for (xi, yi) in itertools.product(X, Y):
                 self.setVmax(XRxn, xi)
                 self.setVmax(YRxn, yi)
-                #Ptemp.append(self.comproducti()) # is there a way to not use append?
                 Ptemp[ij] = self.comproducti()
                 ij += 1
 
