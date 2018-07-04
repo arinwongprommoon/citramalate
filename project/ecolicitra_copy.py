@@ -138,7 +138,6 @@ class ecolicit:
         result = rr.simulate(self.time0, self.timef, self.npoints)
         Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
         mu = result[-1,selection.index("iGROWTH'")]*3600
-        #pointer.free()
         return mu*Y_PS
 
     def plot(self, species):
