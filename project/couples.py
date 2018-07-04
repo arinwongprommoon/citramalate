@@ -67,16 +67,23 @@ class Coupl(ecolicit):
         np.savez(filename, *data)
 
     def pairs(self, mylist):
-        return list(itertools.combinations(mylist, 2))
+        return list(itertools.combinations(mylist, 2)) # generator
 
-    def altcomputeCouples(self):
+    def computeCouples(self, writemethod='writeToBoth'):
+        """
+            Computes citramalate productivity for pairs of enzymes after
+            varying Vmax values.
+
+            Argument:
+            writemethod =
+                writeToText: TXT only
+                writeToNpz: NPZ only
+                writeToBoth: both (default)
+        """
         # Generate list of pairs
-        pairslist = self.pairs(self.listofreactions) # make this a generator?
-
-        P = np.zeros((self.points, self.points)) # initialise - moved this out of loop because we really need to do this once
+        pairslist = self.pairs(self.listofreactions)
 
         # Initialise to first element of pairslist (useful when calling getVmax only when needed)
-        # create a class-in-class for these? too many variables confuse the hell out of me
         XRxn = pairslist[0][0]
         XVmaxI = self.getVmax(XRxn)
         X = np.linspace(self.xstart*XVmaxI, self.xend*XVmaxI, self.points, endpoint=True)
@@ -87,13 +94,10 @@ class Coupl(ecolicit):
 
         for pair in pairslist:
             # Call getVmax() and generate arrays only when needed
-            # Write a damn function out of this?
             if pair[0] != XRxn:
                 XRxn = pair[0]
                 XVmaxI = self.getVmax(XRxn)
                 X = np.linspace(self.xstart*XVmaxI, self.xend*XVmaxI, self.points, endpoint=True)
-            else:
-                pass
             if pair[1] != YRxn:
                 YRxn = pair[1]
                 YVmaxI = self.getVmax(YRxn)
@@ -105,61 +109,32 @@ class Coupl(ecolicit):
 
             # The real bit
             ij = 0
-            Ptemp = []
+            #Ptemp = []
+            Ptemp = np.empty(self.points**2) # initialise
             for (xi, yi) in itertools.product(X, Y):
                 self.setVmax(XRxn, xi)
                 self.setVmax(YRxn, yi)
-                Ptemp.append(self.comproducti()) # is there a way to not use append?
+                #Ptemp.append(self.comproducti()) # is there a way to not use append?
+                Ptemp[ij] = self.comproducti()
                 ij += 1
 
             elapsed_time = time.time() - start_time
             print(elapsed_time) # time tracking
 
-    def computeCouples(self):
-        """
-            Computes citramalate productivity for pairs of enzymes after
-            varying Vmax values.
-
-            Argument:
-            writemethod =
-                writeToText: TXT only
-                writeToNpz: NPZ only
-                writeToBoth: both (default)
-        """
-        for XRxn in self.listofreactions:
-            # Computation
-            XVmaxI = self.getVmax(XRxn)
-            X = np.linspace(self.xstart*XVmaxI, self.xend*XVmaxI, self.points, endpoint=True)
-            for YRxn in [r for r in self.listofreactions if self.listofreactions.index(r)>self.listofreactions.index(XRxn)]:
-
-                print(XRxn + ' vs ' + YRxn) # track reaction
-
-                start_time = time.time()
-
-                YVmaxI = self.getVmax(YRxn)
-                Y = np.linspace(self.ystart*YVmaxI, self.yend*YVmaxI, self.points, endpoint=True)
-                P = np.zeros((self.points, self.points)) # initialise
-                for ii in range(self.points):
-                    self.setVmax(XRxn, X[ii])
-                    for jj in range(self.points):
-                        self.setVmax(YRxn, Y[jj])
-                        P[ii, jj] = self.comproducti()
-                self.setVmax(YRxn, YVmaxI)
-
-                elapsed_time = time.time() - start_time
-                print(elapsed_time)
-
-                # # Writing data
-                # data = [X, Y, P]
-                # names = [XRxn, YRxn]
-                # if writemethod == 'writeToText':
-                #     self.writeToText(names, data)
-                # elif writemethod == 'writeToNpz':
-                #     filename = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
-                #     self.writeToNpz(data, filename)
-                # elif writemethod == 'writeToBoth':
-                #     self.writeToText(names, data)
-                #     filename = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
-                #     self.writeToNpz(data, filename)
-
             self.setVmax(XRxn, XVmaxI)
+            self.setVmax(YRxn, YVmaxI)
+
+            P = Ptemp.reshape((self.points, self.points))
+
+            # Writing data
+            data = [X, Y, P]
+            names = [XRxn, YRxn]
+            if writemethod == 'writeToText':
+                self.writeToText(names, data)
+            elif writemethod == 'writeToNpz':
+                filename = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
+                self.writeToNpz(data, filename)
+            elif writemethod == 'writeToBoth':
+                self.writeToText(names, data)
+                filename = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
+                self.writeToNpz(data, filename)
