@@ -71,7 +71,7 @@ class Coupl(ecolicit):
 
     def altcomputeCouples(self):
         # Generate list of pairs
-        pairslist = pairs(self.listofreactions) # make this a generator?
+        pairslist = self.pairs(self.listofreactions) # make this a generator?
 
         P = np.zeros((self.points, self.points)) # initialise - moved this out of loop because we really need to do this once
 
@@ -94,7 +94,7 @@ class Coupl(ecolicit):
                 X = np.linspace(self.xstart*XVmaxI, self.xend*XVmaxI, self.points, endpoint=True)
             else:
                 pass
-            if pair[1] != Yname:
+            if pair[1] != YRxn:
                 YRxn = pair[1]
                 YVmaxI = self.getVmax(YRxn)
                 Y = np.linspace(self.ystart*YVmaxI, self.yend*YVmaxI, self.points, endpoint=True)
@@ -104,10 +104,13 @@ class Coupl(ecolicit):
             start_time = time.time() # time tracking
 
             # The real bit
+            ij = 0
+            Ptemp = []
             for (xi, yi) in itertools.product(X, Y):
                 self.setVmax(XRxn, xi)
                 self.setVmax(YRxn, yi)
-                P[ii, jj] = self.comproducti()
+                Ptemp.append(self.comproducti()) # is there a way to not use append?
+                ij += 1
 
             elapsed_time = time.time() - start_time
             print(elapsed_time) # time tracking
