@@ -3,6 +3,7 @@
 from __future__ import division, print_function
 from ecolicitra_copy import ecolicit, mmCITRA, mmGLC
 import numpy as np
+import itertools
 import roadrunner
 import libsbml
 
@@ -64,6 +65,52 @@ class Coupl(ecolicit):
     def writeToNpz(self, data, filename = "COUPLESDATA.npz"):
         """Writes data as numpy array NPZ files"""
         np.savez(filename, *data)
+
+    def pairs(self, mylist):
+        return list(itertools.combinations(mylist, 2))
+
+    def altcomputeCouples(self):
+        # Generate list of pairs
+        pairslist = pairs(self.listofreactions) # make this a generator?
+
+        P = np.zeros((self.points, self.points)) # initialise - moved this out of loop because we really need to do this once
+
+        # Initialise to first element of pairslist (useful when calling getVmax only when needed)
+        # create a class-in-class for these? too many variables confuse the hell out of me
+        XRxn = pairslist[0][0]
+        XVmaxI = self.getVmax(XRxn)
+        X = np.linspace(self.xstart*XVmaxI, self.xend*XVmaxI, self.points, endpoint=True)
+
+        YRxn = pairslist[0][1]
+        YVmaxI = self.getVmax(YRxn)
+        Y = np.linspace(self.ystart*YVmaxI, self.yend*YVmaxI, self.points, endpoint=True)
+
+        for pair in pairslist:
+            # Call getVmax() and generate arrays only when needed
+            # Write a damn function out of this?
+            if pair[0] != XRxn:
+                XRxn = pair[0]
+                XVmaxI = self.getVmax(XRxn)
+                X = np.linspace(self.xstart*XVmaxI, self.xend*XVmaxI, self.points, endpoint=True)
+            else:
+                pass
+            if pair[1] != Yname:
+                YRxn = pair[1]
+                YVmaxI = self.getVmax(YRxn)
+                Y = np.linspace(self.ystart*YVmaxI, self.yend*YVmaxI, self.points, endpoint=True)
+
+            print(XRxn + ' vs ' + YRxn) # track reaction
+
+            start_time = time.time() # time tracking
+
+            # The real bit
+            for (xi, yi) in itertools.product(X, Y):
+                self.setVmax(XRxn, xi)
+                self.setVmax(YRxn, yi)
+                P[ii, jj] = self.comproducti()
+
+            elapsed_time = time.time() - start_time
+            print(elapsed_time) # time tracking
 
     def computeCouples(self):
         """
