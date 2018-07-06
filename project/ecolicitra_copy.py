@@ -6,14 +6,21 @@ import roadrunner
 import libsbml
 import matplotlib.pyplot as plt
 
+import gc
+
 mmCITRA = 146.098 # g/mol # Molecular mass of Citramalate https://pubchem.ncbi.nlm.nih.gov/compound/5460281
 mmGLC = 180.156 # g/mol  # Molecular mass of Glucose https://pubchem.ncbi.nlm.nih.gov/compound/79025
 
+class wrapper(object):
+    pass
+
+def use_string(wrap):
+    wrap.s = None
 
 class ecolicit:
     """SBML model of E. coli plust reaction for citramalate synthesis"""
 
-    def __init__(self, sbmlfile = "E_coli_Millard2016.xml", Vmax = 4.0, Km = 0.495, include_CITRA = True, initial_CITRA = 0.0):
+    def __init__(self, sbmlfile = "E_coli_Millard2016_CITRA.xml"):
         """
         sbmlfile: SBML file with the model
         Vmax: Vmax of the citramalate synthesis reaction (mM/s)
@@ -29,75 +36,75 @@ class ecolicit:
 
         # Create species that models growth. The growth rate will be equal to
         # the derivative of the species concentration
-        igrowth = self.model.createSpecies()
-        igrowth.setId('iGROWTH')
-        igrowth.setName('iGROWTH')
-        igrowth.setCompartment('cell')
-        igrowth.setConstant(False)
-        igrowth.setInitialConcentration(0.0)
-        igrowth.setBoundaryCondition(False)
-        igrowth.setHasOnlySubstanceUnits(False)
-
-        growthr = self.model.getReaction('GROWTH')
-        spig = growthr.createProduct()
-        spig.setSpecies("iGROWTH")
-
-        # Create citramalate species
-        if include_CITRA:
-            citra = self.model.createSpecies()
-            citra.setId('CITRA')
-            citra.setName('CITRA')
-            citra.setCompartment('cell')
-            citra.setConstant(False)
-            citra.setInitialConcentration(initial_CITRA)
-            citra.setBoundaryCondition(False)
-            citra.setHasOnlySubstanceUnits(False)
-
-        # Create reaction for citramalate synthesis
-        citrasyn = self.model.createReaction()
-        citrasyn.setId("CITRA_SYN")
-        citrasyn.setName("CITRA_SYN");
-
-        spr1 = citrasyn.createReactant()
-        spr1.setSpecies("ACCOA")
-        spr2 = citrasyn.createReactant()
-        spr2.setSpecies("PYR")
-        spr3 = citrasyn.createReactant()
-        spr3.setSpecies("H2O")
-        spp1 = citrasyn.createProduct()
-        spp1.setSpecies("COA")
-        spp2 = citrasyn.createProduct()
-        spp2.setSpecies("Hin")
-        if include_CITRA:
-            spp3 = citrasyn.createProduct()
-            spp3.setSpecies("CITRA")
-
-        kl = citrasyn.createKineticLaw()
-        para = kl.createParameter()
-        para.setId("Vmax")
-        para.setValue(Vmax)
-        para = kl.createParameter()
-        para.setId("Km")
-        para.setValue(Km)
-        math_ast = libsbml.parseL3Formula('(Vmax * ACCOA) / (ACCOA + Km)')
-        kl.setMath(math_ast)
+        # igrowth = self.model.createSpecies()
+        # igrowth.setId('iGROWTH')
+        # igrowth.setName('iGROWTH')
+        # igrowth.setCompartment('cell')
+        # igrowth.setConstant(False)
+        # igrowth.setInitialConcentration(0.0)
+        # igrowth.setBoundaryCondition(False)
+        # igrowth.setHasOnlySubstanceUnits(False)
+        #
+        # growthr = self.model.getReaction('GROWTH')
+        # spig = growthr.createProduct()
+        # spig.setSpecies("iGROWTH")
+        #
+        # # Create citramalate species
+        # if include_CITRA:
+        #     citra = self.model.createSpecies()
+        #     citra.setId('CITRA')
+        #     citra.setName('CITRA')
+        #     citra.setCompartment('cell')
+        #     citra.setConstant(False)
+        #     citra.setInitialConcentration(initial_CITRA)
+        #     citra.setBoundaryCondition(False)
+        #     citra.setHasOnlySubstanceUnits(False)
+        #
+        # # Create reaction for citramalate synthesis
+        # citrasyn = self.model.createReaction()
+        # citrasyn.setId("CITRA_SYN")
+        # citrasyn.setName("CITRA_SYN");
+        #
+        # spr1 = citrasyn.createReactant()
+        # spr1.setSpecies("ACCOA")
+        # spr2 = citrasyn.createReactant()
+        # spr2.setSpecies("PYR")
+        # spr3 = citrasyn.createReactant()
+        # spr3.setSpecies("H2O")
+        # spp1 = citrasyn.createProduct()
+        # spp1.setSpecies("COA")
+        # spp2 = citrasyn.createProduct()
+        # spp2.setSpecies("Hin")
+        # if include_CITRA:
+        #     spp3 = citrasyn.createProduct()
+        #     spp3.setSpecies("CITRA")
+        #
+        # kl = citrasyn.createKineticLaw()
+        # para = kl.createParameter()
+        # para.setId("Vmax")
+        # para.setValue(Vmax)
+        # para = kl.createParameter()
+        # para.setId("Km")
+        # para.setValue(Km)
+        # math_ast = libsbml.parseL3Formula('(Vmax * ACCOA) / (ACCOA + Km)')
+        # kl.setMath(math_ast)
 
         # Vmaxes of the reactions
         self.getVmaxes()
 
-    def writeToFile(self, filename = "E_coli_Millard2016_CITRA.xml"):
-        libsbml.writeSBMLToFile(self.document, filename)
+    # def writeToFile(self, filename = "E_coli_Millard2016_CITRA.xml"):
+    #     libsbml.writeSBMLToFile(self.document, filename)
 
-    def setFEED(self, value):
-        # value: mmol/s of glucose fed into the extracellular compartment.
-        # Notice that the volume of the extracellular compartment is 100l, thus
-        # the increase in concentration of glucose produced by the feed in the
-        # extracellular glucose is value/100 mM/s
-        self.model.getParameter('FEED').setValue(value)
-
-    def getFEED(self):
-        # see setFEED for info about units
-        return self.model.getParameter('FEED').getValue()
+    # def setFEED(self, value):
+    #     # value: mmol/s of glucose fed into the extracellular compartment.
+    #     # Notice that the volume of the extracellular compartment is 100l, thus
+    #     # the increase in concentration of glucose produced by the feed in the
+    #     # extracellular glucose is value/100 mM/s
+    #     self.model.getParameter('FEED').setValue(value)
+    #
+    # def getFEED(self):
+    #     # see setFEED for info about units
+    #     return self.model.getParameter('FEED').getValue()
 
     def setVmax(self, reacId, value):
         # Units: mM/s
@@ -132,56 +139,64 @@ class ecolicit:
         selection = ["CITRA", "iGROWTH'"]
         # The ' in there indicates a RATE of change
         # http://sys-bio.github.io/roadrunner/python_docs/selecting_values.html#selecting-values
-        pointer = "E_coli_Millard2016_CITRA.xml"
-        rr = roadrunner.RoadRunner(pointer)
+        #rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
+
+        p = wrapper()
+        p.s = libsbml.writeSBMLToString(self.document)
+        rr = roadrunner.RoadRunner(p.s)
+        use_string(p)
+
+        del p
+        gc.collect()
+
         rr.timeCourseSelections = selection
         result = rr.simulate(self.time0, self.timef, self.npoints)
-        Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
+        Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(0.23*self.timef*mmGLC)
         mu = result[-1,selection.index("iGROWTH'")]*3600
         return mu*Y_PS
 
-    def plot(self, species):
-        # Plots concentration of specified species over time course specified
-        # Input can also be any other SBML value that can be selected in
-        # RoadRunner.
-        # Purpose: to see if steady state or not
-        rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
-        rr.timeCourseSelections = [species]
-        result = rr.simulate(self.time0, self.timef, self.npoints)
-        # Use matplotlib because the built-in plot function in RoadRunner makes
-        # funny plots
-        plt.plot(result[:,result.colnames.index(species)])
-        plt.show()
-
-    def compsteadystate(self):
-        """
-            Gives derivate to see if steady state
-            Method: finds gradient (more accurate if more steps specified by self.npoints)
-            Strictly this is correct but accuracy may be low
-        """
-        selection = ["CITRA", "iGROWTH'"]
-        rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
-        rr.timeCourseSelections = selection
-        result = rr.simulate(self.time0, self.timef, self.npoints)
-        Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
-        mu = result[-1,selection.index("iGROWTH'")]*3600
-        prod_f = mu*Y_PS
-        Y_PS = (result[-2,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
-        mu = result[-2,selection.index("iGROWTH'")]*3600
-        prod_i = mu*Y_PS
-        t = self.timef/self.npoints
-        return (prod_f - prod_i)/t
-
-    def altcompsteadystate(self):
-        """
-            Gives derivate to see if steady state
-            Method: differs from comproducti() in that it uses CITRA' instead of CITRA
-            Strictly speaking this is not correct and it's an approximation, but it's pretty close
-        """
-        selection = ["CITRA'", "iGROWTH'"]
-        rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
-        rr.timeCourseSelections = selection
-        result = rr.simulate(self.time0, self.timef, self.npoints)
-        Y_PS = (result[-1,selection.index("CITRA'")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
-        mu = result[-1,selection.index("iGROWTH'")]*3600
-        return mu*Y_PS
+    # def plot(self, species):
+    #     # Plots concentration of specified species over time course specified
+    #     # Input can also be any other SBML value that can be selected in
+    #     # RoadRunner.
+    #     # Purpose: to see if steady state or not
+    #     rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
+    #     rr.timeCourseSelections = [species]
+    #     result = rr.simulate(self.time0, self.timef, self.npoints)
+    #     # Use matplotlib because the built-in plot function in RoadRunner makes
+    #     # funny plots
+    #     plt.plot(result[:,result.colnames.index(species)])
+    #     plt.show()
+    #
+    # def compsteadystate(self):
+    #     """
+    #         Gives derivate to see if steady state
+    #         Method: finds gradient (more accurate if more steps specified by self.npoints)
+    #         Strictly this is correct but accuracy may be low
+    #     """
+    #     selection = ["CITRA", "iGROWTH'"]
+    #     rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
+    #     rr.timeCourseSelections = selection
+    #     result = rr.simulate(self.time0, self.timef, self.npoints)
+    #     Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
+    #     mu = result[-1,selection.index("iGROWTH'")]*3600
+    #     prod_f = mu*Y_PS
+    #     Y_PS = (result[-2,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
+    #     mu = result[-2,selection.index("iGROWTH'")]*3600
+    #     prod_i = mu*Y_PS
+    #     t = self.timef/self.npoints
+    #     return (prod_f - prod_i)/t
+    #
+    # def altcompsteadystate(self):
+    #     """
+    #         Gives derivate to see if steady state
+    #         Method: differs from comproducti() in that it uses CITRA' instead of CITRA
+    #         Strictly speaking this is not correct and it's an approximation, but it's pretty close
+    #     """
+    #     selection = ["CITRA'", "iGROWTH'"]
+    #     rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
+    #     rr.timeCourseSelections = selection
+    #     result = rr.simulate(self.time0, self.timef, self.npoints)
+    #     Y_PS = (result[-1,selection.index("CITRA'")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
+    #     mu = result[-1,selection.index("iGROWTH'")]*3600
+    #     return mu*Y_PS
