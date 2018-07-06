@@ -5,3 +5,6 @@ Would want to include after this:
 'ATP_syn', 'ACEA', 'ZWF'
 
 (but freeze)
+
+2018-07-06
+'CITRA_SYN', 'GLT', 'LPD', 'GDH', 'ATP_syn', in folders D, E, F
