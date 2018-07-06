@@ -132,7 +132,7 @@ class ecolicit:
         selection = ["CITRA", "iGROWTH'"]
         # The ' in there indicates a RATE of change
         # http://sys-bio.github.io/roadrunner/python_docs/selecting_values.html#selecting-values
-        pointer = libsbml.writeSBMLToString(self.document)
+        pointer = "E_coli_Millard2016_CITRA.xml"
         rr = roadrunner.RoadRunner(pointer)
         rr.timeCourseSelections = selection
         result = rr.simulate(self.time0, self.timef, self.npoints)
