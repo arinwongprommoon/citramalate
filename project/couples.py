@@ -8,6 +8,7 @@ import roadrunner
 import libsbml
 
 import time
+import gc
 
 class Coupl(ecolicit):
     """
@@ -116,6 +117,7 @@ class Coupl(ecolicit):
                 self.setVmax(YRxn, yi)
                 Ptemp[ij] = self.comproducti()
                 ij += 1
+                gc.collect()
 
             elapsed_time = time.time() - start_time
             print(elapsed_time) # time tracking
@@ -129,11 +131,14 @@ class Coupl(ecolicit):
             data = [X, Y, P]
             names = [XRxn, YRxn]
             if writemethod == 'writeToText':
-                self.writeToText(names, data)
+                filename = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".txt"
+                self.writeToText(names, data, filename)
             elif writemethod == 'writeToNpz':
                 filename = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
                 self.writeToNpz(data, filename)
             elif writemethod == 'writeToBoth':
-                self.writeToText(names, data)
-                filename = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
-                self.writeToNpz(data, filename)
+                filenamet = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".txt"
+                self.writeToText(names, data, filenamet)
+                filenamen = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
+                self.writeToNpz(data, filenamen)
+            gc.collect()

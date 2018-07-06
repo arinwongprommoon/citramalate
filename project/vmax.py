@@ -29,9 +29,9 @@ xFormatter = FormatStrFormatter('%.1f')
 
 # Sets X values from start*default Vmax to 5.0*default Vmax
 # Plot uses 'points' number of points e.g. 20
-start = 0.5
-end = 2.0
-points = 25
+start = 0.1
+end = 1.0
+points = 20
 
 # Clears data in file, writes header
 with open("VMAXDATA.txt", 'w') as fobj:

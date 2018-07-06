@@ -111,8 +111,8 @@ def annotate_heatmap(im, data=None, valfmt="{x:.2f}",
     if isinstance(valfmt, str):
         valfmt = matplotlib.ticker.StrMethodFormatter(valfmt)
 
-    # Loop over the data and create a `Text` for each "pixel".
-    # Change the text's color depending on the data.
+    #Loop over the data and create a `Text` for each "pixel".
+    #Change the text's color depending on the data.
     texts = []
     for i in range(data.shape[0]):
         for j in range(data.shape[1]):
