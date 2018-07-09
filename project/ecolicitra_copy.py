@@ -11,12 +11,6 @@ import gc
 mmCITRA = 146.098 # g/mol # Molecular mass of Citramalate https://pubchem.ncbi.nlm.nih.gov/compound/5460281
 mmGLC = 180.156 # g/mol  # Molecular mass of Glucose https://pubchem.ncbi.nlm.nih.gov/compound/79025
 
-class wrapper(object):
-    pass
-
-def use_string(wrap):
-    wrap.s = None
-
 class ecolicit:
     """SBML model of E. coli plust reaction for citramalate synthesis"""
 
@@ -140,19 +134,11 @@ class ecolicit:
 
         #rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
 
-        # p = wrapper()
-        # p.s = libsbml.writeSBMLToString(self.document)
-        # rr = roadrunner.RoadRunner(p.s)
-        # rr.timeCourseSelections = selection
-        # result = rr.simulate(self.time0, self.timef, self.npoints)
-        # use_string(p)
-
         self.writeToFile(filename='test.xml')
         rr = roadrunner.RoadRunner('test.xml')
         rr.timeCourseSelections = selection
         result = rr.simulate(self.time0, self.timef, self.npoints)
 
-        # del p
         gc.collect()
 
         Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(0.23*self.timef*mmGLC)

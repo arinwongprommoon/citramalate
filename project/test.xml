@@ -12480,7 +12480,7 @@
             <parameter id="KmAKG" name="KmAKG" value="0.020002"/>
             <parameter id="KmCOA" name="KmCOA" value="0.0760076"/>
             <parameter id="KmNAD" name="KmNAD" value="0.0980098"/>
-            <parameter id="Vmax" name="Vmax" value="0.01368826"/>
+            <parameter id="Vmax" name="Vmax" value="0.0684413"/>
             <parameter id="alpha" name="alpha" value="16.4304"/>
           </listOfParameters>
         </kineticLaw>
@@ -12821,7 +12821,7 @@
             <parameter id="KmGLX" name="KmGLX" value="0.13013"/>
             <parameter id="KmICIT" name="KmICIT" value="0.063063"/>
             <parameter id="KmSUC" name="KmSUC" value="0.58941"/>
-            <parameter id="Vmax" name="Vmax" value="1.52595"/>
+            <parameter id="Vmax" name="Vmax" value="0.1234"/>
           </listOfParameters>
         </kineticLaw>
       </reaction>
@@ -14319,7 +14319,7 @@
             </apply>
           </math>
           <listOfParameters>
-            <parameter id="Vmax" value="0.8"/>
+            <parameter id="Vmax" value="4"/>
             <parameter id="Km" value="0.495"/>
           </listOfParameters>
         </kineticLaw>
