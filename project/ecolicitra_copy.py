@@ -92,8 +92,8 @@ class ecolicit:
         # Vmaxes of the reactions
         self.getVmaxes()
 
-    # def writeToFile(self, filename = "E_coli_Millard2016_CITRA.xml"):
-    #     libsbml.writeSBMLToFile(self.document, filename)
+    def writeToFile(self, filename = "E_coli_Millard2016_CITRA.xml"):
+        libsbml.writeSBMLToFile(self.document, filename)
 
     # def setFEED(self, value):
     #     # value: mmol/s of glucose fed into the extracellular compartment.
@@ -140,14 +140,19 @@ class ecolicit:
 
         #rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
 
-        p = wrapper()
-        p.s = libsbml.writeSBMLToString(self.document)
-        rr = roadrunner.RoadRunner(p.s)
+        # p = wrapper()
+        # p.s = libsbml.writeSBMLToString(self.document)
+        # rr = roadrunner.RoadRunner(p.s)
+        # rr.timeCourseSelections = selection
+        # result = rr.simulate(self.time0, self.timef, self.npoints)
+        # use_string(p)
+
+        self.writeToFile(filename='test.xml')
+        rr = roadrunner.RoadRunner('test.xml')
         rr.timeCourseSelections = selection
         result = rr.simulate(self.time0, self.timef, self.npoints)
-        use_string(p)
 
-        del p
+        # del p
         gc.collect()
 
         Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(0.23*self.timef*mmGLC)
