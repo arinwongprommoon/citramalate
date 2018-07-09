@@ -137,20 +137,19 @@ class ecolicit:
     def comproducti(self):
         # Compute steady state productivity
         selection = ["CITRA", "iGROWTH'"]
-        # The ' in there indicates a RATE of change
-        # http://sys-bio.github.io/roadrunner/python_docs/selecting_values.html#selecting-values
+
         #rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
 
         p = wrapper()
         p.s = libsbml.writeSBMLToString(self.document)
         rr = roadrunner.RoadRunner(p.s)
+        rr.timeCourseSelections = selection
+        result = rr.simulate(self.time0, self.timef, self.npoints)
         use_string(p)
 
         del p
         gc.collect()
 
-        rr.timeCourseSelections = selection
-        result = rr.simulate(self.time0, self.timef, self.npoints)
         Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(0.23*self.timef*mmGLC)
         mu = result[-1,selection.index("iGROWTH'")]*3600
         return mu*Y_PS
