@@ -4,13 +4,13 @@
 
 import numpy as np
 
-def fobj(x):
-  value = 0
-  for i in range(len(x)):
-      value += x[i]**2
-  return value / len(x)
-
-bounds = [(-100, 100)]*32
+# def fobj(x):
+#   value = 0
+#   for i in range(len(x)):
+#       value += x[i]**2
+#   return value / len(x)
+#
+# bounds = [(-100, 100)]*32
 
 def de(fobj, bounds, mut=0.8, crossp=0.7, popsize=20, its=3000):
     dimensions = len(bounds)
@@ -43,5 +43,5 @@ def de(fobj, bounds, mut=0.8, crossp=0.7, popsize=20, its=3000):
                     best = trial_denorm
     yield best, fitness[best_idx]
 
-result = list(de(fobj, bounds))
-print(result[-1])
+# result = list(de(fobj, bounds))
+# print(result[-1])
