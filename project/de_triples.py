@@ -12,7 +12,13 @@ import roadrunner
 import libsbml
 
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
-n = 2
+n = 3
+
+# REDEFINE Vmax RANGE HERE
+boundsrel = [(0.5, 2.0)] * n
+
+# REDEFINE LIST OF REACTIONS HERE
+listofreactions = ['CITRA_SYN', 'GLT', 'LPD']
 
 # Create kinetic model
 include_CITRA = True
@@ -64,10 +70,7 @@ def de(fobj, bounds, mut=0.8, crossp=0.7, popsize=10, its=10):
                     best = trial_denorm
     yield best, fitness[best_idx]
 
-boundsrel = [(0.5, 2.0)] * n
 boundsrel = np.asarray(boundsrel)
-
-listofreactions = ['CITRA_SYN', 'GLT', 'LPD']
 combolist = choose(listofreactions, n)
 
 # overwrites existing file
