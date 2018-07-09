@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # Aim for it to work for couples only for now, but sections of code purposefully
 # written for easy change to triples, etc (e.g. changing 2 to 3)
+
+# To implement:
+# - return key to iterate
+# - output to file
+
 from __future__ import division, print_function
 import ecolicitra
 import itertools
@@ -60,7 +65,7 @@ def de(fobj, bounds, mut=0.8, crossp=0.7, popsize=5, its=5):
 boundsrel = [(0.5, 2.0)] * 2
 boundsrel = np.asarray(boundsrel)
 
-listofreactions = ['CITRA_SYN', 'GLT']
+listofreactions = ['CITRA_SYN', 'GLT', 'LPD']
 pairslist = pairs(listofreactions)
 for pair in pairslist:
     print(pair)
@@ -74,5 +79,10 @@ for pair in pairslist:
         # minimises the value of a function
         return -productivity(pair, x)
 
+    # computation
     result = list(de(fobj, bounds))
     print(result[-1])
+
+    # reassigns Vmaxes
+    for i in range(len(pair)):
+        ecit.setVmax(pair[i], VmaxI[i])
