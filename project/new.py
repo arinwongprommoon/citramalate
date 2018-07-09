@@ -19,16 +19,16 @@ def setVmax(reacId, value):
             if el.getId() == 'Vmax':
                 el.setValue(value)
 
-for i in range(0,100):
+for i in range(0,1000):
     gc.collect()
     print(i)
     setVmax('GLT', 0.1)
-    sbmlstring = libsbml.writeSBMLToString(document)
+    #sbmlstring = libsbml.writeSBMLToString(document)
     rr = roadrunner.RoadRunner(sbmlstring)
     selection = ["CITRA", "iGROWTH'"]
-    rr.timeCourseSelections = selection
-    result = rr.simulate(0, 7200, 100)
-    Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(0.23*7200*mmGLC)
-    mu = result[-1,selection.index("iGROWTH'")]*3600
-    productivity = mu*Y_PS
-    print(productivity)
+    #rr.timeCourseSelections = selection
+    #result = rr.simulate(0, 7200, 100)
+    #Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(0.23*7200*mmGLC)
+    #mu = result[-1,selection.index("iGROWTH'")]*3600
+    #productivity = mu*Y_PS
+    #print(productivity)
