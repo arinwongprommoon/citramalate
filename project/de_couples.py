@@ -1,14 +1,12 @@
 #!/usr/bin/env python
 # Aim for it to work for couples only for now, but sections of code purposefully
 # written for easy change to triples, etc (e.g. changing 2 to 3)
-
-# To implement:
-# - return key to iterate
-# - output to file
+# ROADRUNNER HAS MEMORY LEAK
 
 from __future__ import division, print_function
-import ecolicitra
+import ecolicitra # note ecolicitra instead of ecolicitra_copy
 import itertools
+import gc
 import numpy as np
 import roadrunner
 import libsbml
@@ -31,7 +29,8 @@ def productivity(r, x):
     ecit.setVmax(r[1], x[1])
     return ecit.comproducti()
 
-def de(fobj, bounds, mut=0.8, crossp=0.7, popsize=5, its=5):
+# DE algorithm adapted from Pablo R Mier
+def de(fobj, bounds, mut=0.8, crossp=0.7, popsize=10, its=10):
     dimensions = len(bounds)
     # Initialisation
     pop = np.random.rand(popsize, dimensions)
@@ -67,7 +66,14 @@ boundsrel = np.asarray(boundsrel)
 
 listofreactions = ['CITRA_SYN', 'GLT', 'LPD']
 pairslist = pairs(listofreactions)
+
+# overwrites existing file
+with open('de.txt', 'w') as f:
+    pass
+
+# main
 for pair in pairslist:
+    gc.collect() # NOT USEFUL IN DEALING WITH MEMORY LEAK
     print(pair)
     VmaxI = [ecit.getVmax(i) for i in pair]
     print(VmaxI)
@@ -81,8 +87,18 @@ for pair in pairslist:
 
     # computation
     result = list(de(fobj, bounds))
+
+    # printing results
     print(result[-1])
+    with open('de.txt', 'a') as f:
+        f.write(str(pair) + '\n')
+        f.write(str(result[-1][0]) + '\n')
+        f.write('Fitness: ' + str(result[-1][1]) + '\n')
 
     # reassigns Vmaxes
     for i in range(len(pair)):
         ecit.setVmax(pair[i], VmaxI[i])
+
+    # hit return to continue -> NOT USEFUL IN DEALING WITH MEMORY LEAK
+    print('Next combination?')
+    raw_input()
