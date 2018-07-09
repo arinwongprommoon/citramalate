@@ -4,11 +4,11 @@
 
 import numpy as np
 
-# def fobj(x):
-#   value = 0
-#   for i in range(len(x)):
-#       value += x[i]**2
-#   return value / len(x)
+def fobj(x):
+  value = 0
+  for i in range(len(x)):
+      value += x[i]**2
+  return value / len(x)
 
 bounds = [(-100, 100)]*32
 
@@ -35,23 +35,14 @@ def de(fobj, bounds, mut=0.8, crossp=0.7, popsize=20, its=1000):
             trial_denorm = min_b + trial*diff
             # Selection
             f = fobj(trial_denorm)
-            # if f < fitness[j]:
-            #     fitness[j] = f
-            #     pop[j] = trial
-            #     if f < fitness[best_idx]:
-            #         best_idx = j
-            #         best = trial_denorm
+            if f < fitness[j]:
+                fitness[j] = f
+                pop[j] = trial
+                if f < fitness[best_idx]:
+                    best_idx = j
+                    best = trial_denorm
+    yield best, fitness[best_idx]
 
-            k = f < fitness[j]
-            fitness[j][k] = f[k]
-            pop[j][k] = trial[k]
-
-            ltemp = f < fitness[best_idx]
-            l = np.logical_and(k, ltemp)
-            best_idx = j
-            best = trial_denorm
-
-        yield best, fitness[best_idx]
-
-result = list(de(lambda x: x**2 / len(x), bounds = [(-100, 100)]*32))
+#result = list(de(lambda x: x**2 / len(x), bounds = [(-100, 100)]*32))
+result = list(de(fobj, bounds))
 print(result[-1])
