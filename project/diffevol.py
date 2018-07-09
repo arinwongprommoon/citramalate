@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # Based on Pablo R Mier
 # https://pablormier.github.io/2017/09/05/a-tutorial-on-differential-evolution-with-python/
 
