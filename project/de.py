@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-# Aim for it to work for couples only for now, but sections of code purposefully
-# written for easy change to triples, etc (e.g. changing 2 to 3)
+# Compute optimal absolute Vmax values for n-tuples of enzymes for maximising
+# citramalate productivity, using differential evolution
+
 # ROADRUNNER HAS MEMORY LEAK
 
 from __future__ import division, print_function
 import ecolicitra # note ecolicitra instead of ecolicitra_copy
 import itertools
-import gc
 import numpy as np
 import roadrunner
 import libsbml
@@ -79,22 +79,21 @@ with open('de.txt', 'w') as f:
 
 # main
 for combo in combolist:
-    gc.collect() # NOT USEFUL IN DEALING WITH MEMORY LEAK
+    start_time = time.time() # time tracking
+
     print(combo)
     VmaxI = [ecit.getVmax(i) for i in combo]
     print(VmaxI)
     bounds = (VmaxI*(boundsrel.T)).T
     print(bounds)
-    # probably not the best way to do this, but I'll get it to work first
+
     def fobj(x):
-        # minus sign there because we're maximising productivity, but DE
-        # minimises the value of a function
         return -productivity(combo, x)
 
     # computation
     result = list(de(fobj, bounds))
 
-    # printing results
+    # printing/writing results
     print(result[-1])
     with open('de.txt', 'a') as f:
         f.write(str(combo) + '\n')
@@ -105,6 +104,5 @@ for combo in combolist:
     for i in range(len(combo)):
         ecit.setVmax(combo[i], VmaxI[i])
 
-    # hit return to continue -> NOT USEFUL IN DEALING WITH MEMORY LEAK
-    print('Next combination?')
-    raw_input()
+    elapsed_time = time.time() - start_time
+    print(elapsed_time) # time tracking
