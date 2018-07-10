@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 
-# Runs computations for couples of reactions from a specified list, writes data
-# to numpy array files, then plots heatmaps.
+# Plots heatmaps from saved numpy arrays.
 
 import glob, os
 import numpy as np
 import matplotlib.pyplot as plt
-import couples_noloop
 import heatmap
 
 for npz in glob.glob("*.npz"):

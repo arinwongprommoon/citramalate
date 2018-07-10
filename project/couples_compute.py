@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 
 # Runs computations for couples of reactions from a specified list, writes data
-# to numpy array files, then plots heatmaps.
+# to numpy array files.
 
-import glob, os
+# Using couples_noloop, this program stops after each pair and continues on to
+# the next pair when executed again. To run through all pairs, execute
+# ./couples_run (couples_run.sh)
+
 import numpy as np
-import matplotlib.pyplot as plt
 from couples_noloop import Coupl
-import heatmap
 
 #Run simulations, writes data both into TXT and NPZ
 run = Coupl(xstart=0.1, xend=1.0, ystart=0.1, yend=1.0, points=10) # define vmax ranges here

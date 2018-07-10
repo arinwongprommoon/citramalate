@@ -3,10 +3,12 @@
 # Runs computations for couples of reactions from a specified list, writes data
 # to numpy array files, then plots heatmaps.
 
+# Risk of memory leak!
+
 import glob, os
 import numpy as np
 import matplotlib.pyplot as plt
-import couples_noloop
+import couples
 import heatmap
 
 #Run simulations, writes data both into TXT and NPZ
