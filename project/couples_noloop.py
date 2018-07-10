@@ -101,6 +101,7 @@ class Coupl(ecolicit):
 
         # stops if all elements gone through
         if idx >= len(pairslist):
+            print('DONE')
             return 0
 
         pair = pairslist[idx]
