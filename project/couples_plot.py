@@ -6,7 +6,7 @@
 import glob, os
 import numpy as np
 import matplotlib.pyplot as plt
-import couples
+import couples_noloop
 import heatmap
 
 for npz in glob.glob("*.npz"):
