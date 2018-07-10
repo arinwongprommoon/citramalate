@@ -31,7 +31,7 @@ xFormatter = FormatStrFormatter('%.1f')
 # Plot uses 'points' number of points e.g. 20
 start = 0.1
 end = 1.0
-points = 20
+points = 300
 
 # Clears data in file, writes header
 with open("VMAXDATA.txt", 'w') as fobj:
@@ -40,7 +40,7 @@ with open("VMAXDATA.txt", 'w') as fobj:
     fobj.write('Vmax ' + str(start) + 'to' + str(end) + '\n\n')
 
 ecit.getVmaxes()
-listofreactions = ecit.reacVmaxes
+listofreactions = ['ATP_syn']
 
 for reaction in listofreactions:
     print(reaction)
