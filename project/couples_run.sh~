@@ -1,5 +1,0 @@
-#!/bin/bash
-
-while true; do
-      python couples_compute.py
-done
