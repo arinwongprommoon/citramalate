@@ -94,11 +94,14 @@ class Coupl(ecolicit):
         Y = np.linspace(self.ystart*YVmaxI, self.yend*YVmaxI, self.points, endpoint=True)
 
         ## BIG FOR LOOP ORIGINALLY HERE
-        #for pair in pairslist:
         # read the index of the pair from file
         with open('couplesi.txt', 'r') as fobj:
             mystr = fobj.readline()
             idx = int(mystr.strip('\n'))
+
+        # stops if all elements gone through
+        if idx >= len(pairslist):
+            return 0
 
         pair = pairslist[idx]
 
