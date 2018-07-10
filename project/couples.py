@@ -93,52 +93,65 @@ class Coupl(ecolicit):
         YVmaxI = self.getVmax(YRxn)
         Y = np.linspace(self.ystart*YVmaxI, self.yend*YVmaxI, self.points, endpoint=True)
 
-        for pair in pairslist:
-            # Call getVmax() and generate arrays only when needed
-            if pair[0] != XRxn:
-                XRxn = pair[0]
-                XVmaxI = self.getVmax(XRxn)
-                X = np.linspace(self.xstart*XVmaxI, self.xend*XVmaxI, self.points, endpoint=True)
-            if pair[1] != YRxn:
-                YRxn = pair[1]
-                YVmaxI = self.getVmax(YRxn)
-                Y = np.linspace(self.ystart*YVmaxI, self.yend*YVmaxI, self.points, endpoint=True)
+        ## BIG FOR LOOP ORIGINALLY HERE
+        #for pair in pairslist:
+        # read the index of the pair from file
+        with open('couplesi.txt', 'r') as fobj:
+            mystr = fobj.readline()
+            idx = int(mystr.strip('\n'))
 
-            print(XRxn + ' vs ' + YRxn) # track reaction
+        pair = pairslist[idx]
 
-            start_time = time.time() # time tracking
+        # Call getVmax() and generate arrays only when needed
+        if pair[0] != XRxn:
+            XRxn = pair[0]
+            XVmaxI = self.getVmax(XRxn)
+            X = np.linspace(self.xstart*XVmaxI, self.xend*XVmaxI, self.points, endpoint=True)
+        if pair[1] != YRxn:
+            YRxn = pair[1]
+            YVmaxI = self.getVmax(YRxn)
+            Y = np.linspace(self.ystart*YVmaxI, self.yend*YVmaxI, self.points, endpoint=True)
 
-            # The real bit
-            ij = 0
-            #Ptemp = []
-            Ptemp = np.empty(self.points**2) # initialise
-            for (xi, yi) in itertools.product(X, Y):
-                self.setVmax(XRxn, xi)
-                self.setVmax(YRxn, yi)
-                Ptemp[ij] = self.comproducti()
-                ij += 1
-                gc.collect()
+        print(XRxn + ' vs ' + YRxn) # track reaction
 
-            elapsed_time = time.time() - start_time
-            print(elapsed_time) # time tracking
+        start_time = time.time() # time tracking
 
-            self.setVmax(XRxn, XVmaxI)
-            self.setVmax(YRxn, YVmaxI)
-
-            P = Ptemp.reshape((self.points, self.points))
-
-            # Writing data
-            data = [X, Y, P]
-            names = [XRxn, YRxn]
-            if writemethod == 'writeToText':
-                filename = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".txt"
-                self.writeToText(names, data, filename)
-            elif writemethod == 'writeToNpz':
-                filename = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
-                self.writeToNpz(data, filename)
-            elif writemethod == 'writeToBoth':
-                filenamet = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".txt"
-                self.writeToText(names, data, filenamet)
-                filenamen = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
-                self.writeToNpz(data, filenamen)
+        # The real bit
+        ij = 0
+        #Ptemp = []
+        Ptemp = np.empty(self.points**2) # initialise
+        for (xi, yi) in itertools.product(X, Y):
+            self.setVmax(XRxn, xi)
+            self.setVmax(YRxn, yi)
+            Ptemp[ij] = self.comproducti()
+            ij += 1
             gc.collect()
+
+        elapsed_time = time.time() - start_time
+        print(elapsed_time) # time tracking
+
+        self.setVmax(XRxn, XVmaxI)
+        self.setVmax(YRxn, YVmaxI)
+
+        P = Ptemp.reshape((self.points, self.points))
+
+        # write the index of the pair to file
+        idx += 1
+        with open('couplesi.txt', 'w') as fobj:
+            fobj.write(str(idx))
+
+        # Writing data
+        data = [X, Y, P]
+        names = [XRxn, YRxn]
+        if writemethod == 'writeToText':
+            filename = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".txt"
+            self.writeToText(names, data, filename)
+        elif writemethod == 'writeToNpz':
+            filename = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
+            self.writeToNpz(data, filename)
+        elif writemethod == 'writeToBoth':
+            filenamet = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".txt"
+            self.writeToText(names, data, filenamet)
+            filenamen = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
+            self.writeToNpz(data, filenamen)
+        gc.collect()

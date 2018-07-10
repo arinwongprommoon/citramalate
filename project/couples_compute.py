@@ -19,5 +19,8 @@ run.listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'GDH','ATP_syn'] # define list
 #run.listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'ATP_MAINTENANCE', 'GDH', 'ATP_syn', 'ACEA', 'ZWF']
 
 run.writeFileHeader()
-run.computeCouples()
 
+# with open('couplesi.txt', 'w') as fobj:
+#     fobj.write('0')
+
+run.computeCouples()
