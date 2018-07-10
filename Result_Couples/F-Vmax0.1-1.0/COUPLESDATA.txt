@@ -1,7 +1,0 @@
-time0 0
-timef 7200
-npoints 100
-XVmax 0.1 to 1.0
-YVmax 0.1 to 1.0
-datapoints 10
-

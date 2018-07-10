@@ -10,6 +10,5 @@ Would want to include after this:
 'CITRA_SYN', 'GLT', 'LPD', 'GDH', 'ATP_syn', in folders D, E, F
 
 2018-07-10
-'CITRA_SYN', 'GLT', 'LPD', 'ATP_MAINTENANCE', 'GDH', 'ATP_syn' in G
-
-'CITRA_SYN', 'GLT', 'LPD', 'ATP_MAINTENANCE', 'GDH', 'ATP_syn', 'ACEA', 'ZWF' H, I, J
+'CITRA_SYN', 'GLT', 'LPD', 'ATP_MAINTENANCE', 'GDH', 'ATP_syn', 'ACEA', 'ZWF'
+irrelevant ones deleted
