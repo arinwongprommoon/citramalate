@@ -7,5 +7,9 @@
 echo "0" > 'couplesi.txt'
 
 while true; do
-      python couples_compute.py
+    python couples_compute.py
+    a=$?
+    if [ $a == 1 ]; then
+	break
+    fi
 done
