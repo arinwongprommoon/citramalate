@@ -7,5 +7,9 @@
 echo "0" > 'dei.txt'
 
 while true; do
-      python de_noloop.py
+    python de_noloop.py
+    a=$?
+    if [ $a == 1 ]; then
+      break
+    fi
 done
