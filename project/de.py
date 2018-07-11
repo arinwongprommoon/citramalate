@@ -10,15 +10,16 @@ import itertools
 import numpy as np
 import roadrunner
 import libsbml
+import time
 
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
 n = 3
 
 # REDEFINE Vmax RANGE HERE
-boundsrel = [(0.5, 2.0)] * n
+boundsrel = [(0.1, 1.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
-listofreactions = ['CITRA_SYN', 'GLT', 'LPD']
+listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'GDH']
 
 # Create kinetic model
 include_CITRA = True
@@ -39,7 +40,7 @@ def productivity(r, x):
     return ecit.comproducti()
 
 # DE algorithm adapted from Pablo R Mier
-def de(fobj, bounds, mut=0.8, crossp=0.7, popsize=10, its=10):
+def de(fobj, bounds, mut=0.8, crossp=0.7, popsize=10, its=25):
     dimensions = len(bounds)
     # Initialisation
     pop = np.random.rand(popsize, dimensions)

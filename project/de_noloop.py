@@ -10,6 +10,7 @@ import itertools
 import numpy as np
 import roadrunner
 import libsbml
+import time
 
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
 n = 3
@@ -18,7 +19,7 @@ n = 3
 boundsrel = [(0.5, 2.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
-listofreactions = ['CITRA_SYN', 'GLT', 'LPD']
+listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'GDH']
 
 # Create kinetic model
 include_CITRA = True
@@ -85,40 +86,41 @@ with open('dei.txt', 'r') as fobj:
 # stops if all elements gone through
 if idx >= len(combolist):
     print('DONE')
-    return 0
+    #return 0
 
-combo = combolist[idx]
+else:
+    combo = combolist[idx]
 
-# main
-start_time = time.time() # time tracking
+    # main
+    start_time = time.time() # time tracking
 
-print(combo)
-VmaxI = [ecit.getVmax(i) for i in combo]
-print(VmaxI)
-bounds = (VmaxI*(boundsrel.T)).T
-print(bounds)
+    print(combo)
+    VmaxI = [ecit.getVmax(i) for i in combo]
+    print(VmaxI)
+    bounds = (VmaxI*(boundsrel.T)).T
+    print(bounds)
 
-def fobj(x):
-    return -productivity(combo, x)
+    def fobj(x):
+        return -productivity(combo, x)
 
-# computation
-result = list(de(fobj, bounds))
+    # computation
+    result = list(de(fobj, bounds))
 
-# write the index of the pair to file
-idx += 1
-with open('dei.txt', 'w') as fobj:
-    fobj.write(str(idx))
+    # write the index of the pair to file
+    idx += 1
+    with open('dei.txt', 'w') as fobj:
+        fobj.write(str(idx))
 
-# printing/writing results
-print(result[-1])
-with open('de.txt', 'a') as f:
-    f.write(str(combo) + '\n')
-    f.write(str(result[-1][0]) + '\n')
-    f.write('Fitness: ' + str(result[-1][1]) + '\n')
+    # printing/writing results
+    print(result[-1])
+    with open('de.txt', 'a') as f:
+        f.write(str(combo) + '\n')
+        f.write(str(result[-1][0]) + '\n')
+        f.write('Fitness: ' + str(result[-1][1]) + '\n')
 
-# reassigns Vmaxes
-for i in range(len(combo)):
-    ecit.setVmax(combo[i], VmaxI[i])
+    # reassigns Vmaxes
+    for i in range(len(combo)):
+        ecit.setVmax(combo[i], VmaxI[i])
 
-elapsed_time = time.time() - start_time
-print(elapsed_time) # time tracking
+    elapsed_time = time.time() - start_time
+    print(elapsed_time) # time tracking
