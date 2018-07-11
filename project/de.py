@@ -12,14 +12,16 @@ import roadrunner
 import libsbml
 import time
 
+import matplotlib.pyplot as plt
+
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
-n = 3
+n = 5
 
 # REDEFINE Vmax RANGE HERE
 boundsrel = [(0.1, 1.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
-listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'GDH']
+listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'GDH', 'ATP_syn']
 
 # Create kinetic model
 include_CITRA = True
@@ -40,7 +42,7 @@ def productivity(r, x):
     return ecit.comproducti()
 
 # DE algorithm adapted from Pablo R Mier
-def de(fobj, bounds, mut=0.8, crossp=0.7, popsize=10, its=25):
+def de(fobj, bounds, mut=0.8, crossp=0.7, popsize=10, its=100):
     dimensions = len(bounds)
     # Initialisation
     pop = np.random.rand(popsize, dimensions)
@@ -94,6 +96,10 @@ for combo in combolist:
     # computation
     result = list(de(fobj, bounds))
 
+    # plot evolution
+    x, f = zip(*result)
+    plt.plot(f)
+    
     # printing/writing results
     print(result[-1])
     with open('de.txt', 'a') as f:
