@@ -24,7 +24,7 @@ class Coupl(ecolicit):
             points = number of data points to compute (same for each axis)
     """
     def __init__(self, xstart=0.5, xend=2.0, ystart=0.5, yend=2.0, points=10):
-        ecolicit.__init__(self, sbmlfile = "E_coli_Millard2016.xml", Vmax = 4.0, Km = 0.495, include_CITRA = True, initial_CITRA = 0.0)
+        ecolicit.__init__(self, sbmlfile = "E_coli_Millard2016_CITRA.xml")
 
         self.time0 = 0
         self.timef = 2*3600
@@ -67,6 +67,9 @@ class Coupl(ecolicit):
 
     def pairs(self, mylist):
         return list(itertools.combinations(mylist, 2)) # generator
+
+    def comproducti_alt(arg):
+        pass
 
     def computeCouples(self, writemethod='writeToBoth'):
         """
