@@ -19,7 +19,7 @@ n = 2
 boundsrel = [(0.1, 10.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
-listofreactions = ['GLT', 'ATP_MAINTENANCE']
+listofreactions = ['GLT', 'ACEA']
 
 # Create kinetic model
 include_CITRA = True
