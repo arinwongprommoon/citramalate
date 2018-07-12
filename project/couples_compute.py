@@ -7,7 +7,6 @@
 # the next pair when executed again. To run through all pairs, execute
 # ./couples_run (couples_run.sh)
 
-import numpy as np
 from couples_noloop import Coupl
 import sys
 

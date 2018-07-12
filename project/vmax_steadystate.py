@@ -19,8 +19,6 @@ wildprod = ecit.comproducti()
 print("Final simulation time: ", ecit.timef)
 print("Number of points: ", ecit.npoints)
 
-# xFormatter = FormatStrFormatter('%.1f')
-
 # Sets X values from start*default Vmax to 5.0*default Vmax
 # Plot uses 'points' number of points e.g. 20
 start = 0.1

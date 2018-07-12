@@ -6,9 +6,7 @@ import numpy as np
 import itertools
 import roadrunner
 import libsbml
-
 import time
-import gc
 
 class Coupl(ecolicit):
     """
@@ -105,19 +103,16 @@ class Coupl(ecolicit):
                 Y = np.linspace(self.ystart*YVmaxI, self.yend*YVmaxI, self.points, endpoint=True)
 
             print(XRxn + ' vs ' + YRxn) # track reaction
-
             start_time = time.time() # time tracking
 
-            # The real bit
+            # computations
             ij = 0
-            #Ptemp = []
             Ptemp = np.empty(self.points**2) # initialise
             for (xi, yi) in itertools.product(X, Y):
                 self.setVmax(XRxn, xi)
                 self.setVmax(YRxn, yi)
                 Ptemp[ij] = self.comproducti()
                 ij += 1
-                gc.collect()
 
             elapsed_time = time.time() - start_time
             print(elapsed_time) # time tracking
@@ -141,4 +136,3 @@ class Coupl(ecolicit):
                 self.writeToText(names, data, filenamet)
                 filenamen = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
                 self.writeToNpz(data, filenamen)
-            gc.collect()

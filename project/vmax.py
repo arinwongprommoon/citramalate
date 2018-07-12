@@ -76,5 +76,3 @@ for reaction in listofreactions:
     with open("VMAXDATA.txt", 'a') as fobj:
         fobj.write('\n'.join(data))
         fobj.write('\n')
-
-# To do: make this faster (takes about 4 minutes)
