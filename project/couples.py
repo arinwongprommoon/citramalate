@@ -111,7 +111,9 @@ class Coupl(ecolicit):
             for (xi, yi) in itertools.product(X, Y):
                 self.setVmax(XRxn, xi)
                 self.setVmax(YRxn, yi)
-                Ptemp[ij] = self.comproducti()
+                #Ptemp[ij] = self.comproducti()
+                Ptemp[ij] = eatupmemory()
+                print('boop!')
                 ij += 1
 
             elapsed_time = time.time() - start_time
