@@ -1,0 +1,49 @@
+Testing the DE algorithm on couples
+2018-07-12
+Chose GLT and ATP_MAINTENANCE because the 0.1-1.0 and the 0.1-10.0 heatmaps
+suggest different maxima in their areas.
+
+Parameters used: Mut = 0.8, CR = 0.3, N = 20, generations = 20
+(following Storn's 'rules of thumb' for the DE algorithm)
+
+These are results of four runs using these parameters:
+      wild type productivity = 0.00112225918623
+      (displayed as 11.2 in heatmaps)
+
+1.
+[5.52188954e+02 3.02267809e-01]
+Fitness: -0.051718725334093704
+
+2.
+[255.18826593   0.35968837]
+Fitness: -0.05394868382389423
+
+3.
+[4.03415023e+02 3.82242003e-01]
+Fitness: -0.017993766434961637
+
+4.
+[5.54944322e+02 3.02494502e-01]
+Fitness: -0.05116415677700649
+
+5.
+[5.37607693e+02 2.85223583e-01]
+Fitness: -0.04989046000808085
+
+Here I increase the number of generations to 40.
+The algorithms locks itself to a different minimum, and there is less variation 
+in the Vmax values found, but the variation is still quite substantial.
+
+1.
+[3.41204982e+02 2.76319798e-01]
+Fitness: -0.0674142114076012
+
+2.
+[2.84664180e+02 2.70553859e-01]
+Fitness: -0.06991276303001635
+
+3.
+[2.93569427e+02 2.81904952e-01]
+Fitness: -0.06788739734211077
+
+Compare this with higher-resolution heatmaps of GLT and ATP_MAINTENANCE.
