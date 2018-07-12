@@ -68,9 +68,6 @@ class Coupl(ecolicit):
     def pairs(self, mylist):
         return list(itertools.combinations(mylist, 2)) # generator
 
-    def comproducti_alt(arg):
-        pass
-
     def computeCouples(self, writemethod='writeToBoth'):
         """
             Computes citramalate productivity for pairs of enzymes after
