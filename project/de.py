@@ -13,13 +13,13 @@ import libsbml
 import time
 
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
-n = 3
+n = 2
 
 # REDEFINE Vmax RANGE HERE
-boundsrel = [(0.1, 1.0)] * n
+boundsrel = [(0.1, 10.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
-listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'GDH']
+listofreactions = ['GLT', 'ATP_MAINTENANCE']
 
 # Create kinetic model
 include_CITRA = True
@@ -40,7 +40,7 @@ def productivity(r, x):
     return ecit.comproducti()
 
 # DE algorithm adapted from Pablo R Mier
-def de(fobj, bounds, mut=0.8, crossp=0.7, popsize=10, its=25):
+def de(fobj, bounds, mut=0.8, crossp=0.3, popsize=20, its=20):
     dimensions = len(bounds)
     # Initialisation
     pop = np.random.rand(popsize, dimensions)
