@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-# compares ecolicitra_copy.compsteadystate() and ecolicitra_copy.altcompsteadystate()
+# compares ecolicitra.compsteadystate() and ecolicitra.altcompsteadystate()
 
 from __future__ import division, print_function
-from ecolicitra_copy import ecolicit, mmCITRA, mmGLC
+from ecolicitra import ecolicit, mmCITRA, mmGLC
 import matplotlib.pyplot as plt
 import numpy as np
 import roadrunner

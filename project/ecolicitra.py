@@ -3,10 +3,10 @@
 from __future__ import division, print_function
 import roadrunner
 import libsbml
+import matplotlib.pyplot as plt
 
 mmCITRA = 146.098 # g/mol # Molecular mass of Citramalate https://pubchem.ncbi.nlm.nih.gov/compound/5460281
 mmGLC = 180.156 # g/mol  # Molecular mass of Glucose https://pubchem.ncbi.nlm.nih.gov/compound/79025
-
 
 class ecolicit:
     """SBML model of E. coli plust reaction for citramalate synthesis"""
@@ -17,7 +17,7 @@ class ecolicit:
         Vmax: Vmax of the citramalate synthesis reaction (mM/s)
         Km: Km of the citramalate synthesis reaction (mM)
         include_CITRA: Include citramalate species in the model (notice that it grows monotonically and hence it should not be included for steady state analysis)
-        ininitial_CITRA: Initial concentration of citramalate (mM)
+        initial_CITRA: Initial concentration of citramalate (mM)
         """
         reader = libsbml.SBMLReader()
         self.document = reader.readSBMLFromFile(sbmlfile)
@@ -128,11 +128,55 @@ class ecolicit:
     def comproducti(self):
         # Compute steady state productivity
         selection = ["CITRA", "iGROWTH'"]
+        pointer = libsbml.writeSBMLToString(self.document)
+        rr = roadrunner.RoadRunner(pointer)
+        rr.timeCourseSelections = selection
+        result = rr.simulate(self.time0, self.timef, self.npoints)
+        Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
+        mu = result[-1,selection.index("iGROWTH'")]*3600
+        return mu*Y_PS
+
+    def plot(self, species):
+        """
+            Plots concentration of specified species over time course specified
+            Input can also be any other SBML value that can be selected in
+            RoadRunner.
+        """
+        rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
+        rr.timeCourseSelections = [species]
+        result = rr.simulate(self.time0, self.timef, self.npoints)
+        plt.plot(result[:,result.colnames.index(species)])
+        plt.show()
+
+    def compsteadystate(self):
+        """
+            Gives derivate to see if steady state
+            Method: finds gradient (more accurate if more steps specified by self.npoints)
+            Strictly this is correct but accuracy may be low
+        """
+        selection = ["CITRA", "iGROWTH'"]
         rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
         rr.timeCourseSelections = selection
         result = rr.simulate(self.time0, self.timef, self.npoints)
         Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
         mu = result[-1,selection.index("iGROWTH'")]*3600
-        del result
-        del rr
+        prod_f = mu*Y_PS
+        Y_PS = (result[-2,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
+        mu = result[-2,selection.index("iGROWTH'")]*3600
+        prod_i = mu*Y_PS
+        t = self.timef/self.npoints
+        return (prod_f - prod_i)/t
+
+    def altcompsteadystate(self):
+        """
+            Gives derivate to see if steady state
+            Method: differs from comproducti() in that it uses CITRA' instead of CITRA
+            Strictly speaking this is not correct and it's an approximation, but it's pretty close
+        """
+        selection = ["CITRA'", "iGROWTH'"]
+        rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
+        rr.timeCourseSelections = selection
+        result = rr.simulate(self.time0, self.timef, self.npoints)
+        Y_PS = (result[-1,selection.index("CITRA'")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
+        mu = result[-1,selection.index("iGROWTH'")]*3600
         return mu*Y_PS

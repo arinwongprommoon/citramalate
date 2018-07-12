@@ -5,7 +5,7 @@
 # ROADRUNNER HAS MEMORY LEAK
 
 from __future__ import division, print_function
-import ecolicitra # note ecolicitra instead of ecolicitra_copy
+import ecolicitra
 import itertools
 import numpy as np
 import roadrunner

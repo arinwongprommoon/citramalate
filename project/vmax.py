@@ -5,7 +5,7 @@
 # them as image files
 
 from __future__ import division, print_function
-from ecolicitra_copy import ecolicit, mmCITRA, mmGLC
+from ecolicitra import ecolicit, mmCITRA, mmGLC
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FormatStrFormatter
 import numpy as np

@@ -4,7 +4,7 @@
 # couplesi.txt so that program that calls it continues where it left off
 
 from __future__ import division, print_function
-from ecolicitra_copy import ecolicit, mmCITRA, mmGLC
+from ecolicitra import ecolicit, mmCITRA, mmGLC
 import numpy as np
 import itertools
 import roadrunner
