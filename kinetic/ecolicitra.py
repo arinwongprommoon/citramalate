@@ -128,8 +128,7 @@ class ecolicit:
     def comproducti(self):
         # Compute steady state productivity
         selection = ["CITRA", "iGROWTH'"]
-        pointer = libsbml.writeSBMLToString(self.document)
-        rr = roadrunner.RoadRunner(pointer)
+        rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
         rr.timeCourseSelections = selection
         result = rr.simulate(self.time0, self.timef, self.npoints)
         Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)

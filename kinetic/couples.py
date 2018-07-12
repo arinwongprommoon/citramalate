@@ -24,7 +24,7 @@ class Coupl(ecolicit):
             points = number of data points to compute (same for each axis)
     """
     def __init__(self, xstart=0.5, xend=2.0, ystart=0.5, yend=2.0, points=10):
-        ecolicit.__init__(self, sbmlfile = "E_coli_Millard2016_CITRA.xml")
+        ecolicit.__init__(self, sbmlfile = "E_coli_Millard2016.xml", Vmax = 4.0, Km = 0.495, include_CITRA = True, initial_CITRA = 0.0)
 
         self.time0 = 0
         self.timef = 2*3600
@@ -114,9 +114,7 @@ class Coupl(ecolicit):
             for (xi, yi) in itertools.product(X, Y):
                 self.setVmax(XRxn, xi)
                 self.setVmax(YRxn, yi)
-                #Ptemp[ij] = self.comproducti()
-                Ptemp[ij] = eatupmemory()
-                print('boop!')
+                Ptemp[ij] = self.comproducti()
                 ij += 1
 
             elapsed_time = time.time() - start_time
