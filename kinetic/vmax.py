@@ -25,12 +25,12 @@ wildprod = ecit.comproducti()
 print("Final simulation time: ", ecit.timef)
 print("Number of points: ", ecit.npoints)
 
-xFormatter = FormatStrFormatter('%.1f')
+xFormatter = FormatStrFormatter('%.2f')
 
 # Sets X values from start*default Vmax to 5.0*default Vmax
 # Plot uses 'points' number of points e.g. 20
-start = 0.1
-end = 1.0
+start = 0.2
+end = 0.3
 points = 300
 
 # Clears data in file, writes header
@@ -40,7 +40,7 @@ with open("VMAXDATA.txt", 'w') as fobj:
     fobj.write('Vmax ' + str(start) + 'to' + str(end) + '\n\n')
 
 ecit.getVmaxes()
-listofreactions = ['ATP_syn']
+listofreactions = ['ATP_MAINTENANCE']
 
 for reaction in listofreactions:
     print(reaction)
@@ -61,7 +61,7 @@ for reaction in listofreactions:
     ax = plt.subplot(111)
     plt.plot(XX,P)
     #plt.ylim(0.0007, 0.0017)
-    plt.ylim(0.0002, 0.0051) # accomodates CITRA_SYN, which shows highest variation
+    #plt.ylim(0.0002, 0.0051) # accomodates CITRA_SYN, which shows highest variation
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
     ax.xaxis.set_major_formatter(xFormatter)
 
