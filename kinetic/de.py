@@ -19,7 +19,7 @@ n = 2
 boundsrel = [(0.1, 10.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
-listofreactions = ['GLT', 'ACEA']
+listofreactions = ['ATP_MAINTENANCE', 'ATP_syn']
 
 # Create kinetic model
 include_CITRA = True
@@ -40,7 +40,7 @@ def productivity(r, x):
     return ecit.comproducti()
 
 # DE algorithm adapted from Pablo R Mier
-def de(fobj, bounds, mut=0.8, crossp=0.3, popsize=20, its=50):
+def de(fobj, bounds, mut=0.8, crossp=0.3, popsize=20, its=40):
     dimensions = len(bounds)
     # Initialisation
     pop = np.random.rand(popsize, dimensions)

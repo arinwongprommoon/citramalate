@@ -12,12 +12,12 @@ import couples
 import heatmap
 
 #Run simulations, writes data both into TXT and NPZ
-run = couples.Coupl(xstart=0.1, xend=1.0, ystart=0.2, yend=0.3, points=30) # define vmax ranges here
+run = couples.Coupl(xstart=0.2, xend=0.3, ystart=0.1, yend=1.0, points=30) # define vmax ranges here
 run.setVmax('CITRA_SYN', 4.0)
 run.time0 = 0
 run.timef = 2*3600 # final simulation time in seconds
 run.npoints = 100 # Number of points to be computed in the simulation
-run.listofreactions = ['GLT', 'ATP_MAINTENANCE']
+run.listofreactions = ['ATP_MAINTENANCE', 'ATP_syn']
 #run.listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'ATP_MAINTENANCE', 'GDH', 'ATP_syn', 'ACEA', 'ZWF']
 
 run.writeFileHeader()
