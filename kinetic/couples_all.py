@@ -12,7 +12,7 @@ import couples
 import heatmap
 
 #Run simulations, writes data both into TXT and NPZ
-run = couples.Coupl(xstart=5.0, xend=10.0, ystart=0.2, yend=0.3, points=30) # define vmax ranges here
+run = couples.Coupl(xstart=0.1, xend=1.0, ystart=0.2, yend=0.3, points=30) # define vmax ranges here
 run.setVmax('CITRA_SYN', 4.0)
 run.time0 = 0
 run.timef = 2*3600 # final simulation time in seconds
