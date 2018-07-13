@@ -1,0 +1,81 @@
+Generating heatmaps for pairs of enzymes adjacent to each other in a pathway
+2018-07-13
+
+Focused on the 0.1-1.0 range because it is the most informative.
+
+Pairs:
+Glycolytic pathway
+    - PGI and PFK -> no special effect observed
+    - GPM and ENO -> some synergistic effect, but not very pronounced. Location
+                     still pretty much where it is expected
+    - FBA and GDH
+
+Tricarboxylic acid cycle/Glyoxylate pathway
+    - ACEA and ACEB
+
+    
+== MORE DETAILS ==
+
+- GPM and ENO
+
+wt = 11.22
+GPM(0.1V) = 12.59
+ENO(0.1V) = 14.40
+Predicted = 15.77 (=11.22 + (12.59-11.22) + (14.40-11.22) )
+Actual = 16.26
+
+Conclusion: some synergistic effect
+
+- FBA and GDH
+
+FBA(21.70) = 11.22
+GDH(4.33) = 14.85
+Predicted = 14.85
+Actual = 14.85
+
+Conclusion: no synergistic effect, or inconclusive as FBA exerts so little 
+            effect
+            
+- ACEA and ACEB
+
+ACEA(0.1V) = 22.70
+ACEB(0.1V) = 14.91
+Predicted = 25.49
+Actual = 23.13
+
+Conclusion: antagonistic effect?!
+
+** Control with old plots:
+
+- ACEA and ZWF
+
+ACEA(0.1V) = 22.70
+ZWF(0.1V) = 13.79
+Predicted = 25.27
+Actual = 25.74
+
+Conclusion: probably no synergistic effect
+
+- GLT and GDH
+
+GLT(57.06) = 11.22
+GDH(4.33) = 14.85
+Predicted = 14.85
+Actual = 14.85
+
+Conclusion: no synergistic effect
+
+- LPD and GDH
+
+LPD(0.01) = 93.87
+GDH(5.20) = 14.68
+Predicted = 97.33
+Actual = 107.30
+
+Conclusion: synergistic effect!
+
+
+What I learn from this: playing with two enzymes that are adjacent in a pathway
+doesn't really result in much of a difference compared to two enzymes in
+completely different locations in the network
+Will probably conduct more rigorous analysis later
