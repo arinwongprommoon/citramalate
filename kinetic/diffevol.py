@@ -3,14 +3,17 @@
 # https://pablormier.github.io/2017/09/05/a-tutorial-on-differential-evolution-with-python/
 
 import numpy as np
+import matplotlib.pyplot as plt
 
-# def fobj(x):
-#   value = 0
-#   for i in range(len(x)):
-#       value += x[i]**2
-#   return value / len(x)
-#
-# bounds = [(-100, 100)]*32
+def fobj(x):
+  value = 0
+  for i in range(len(x)):
+      value += x[i]**2
+  return value / len(x)
+
+bounds = [(-100, 100)]*32
+
+generations = []
 
 def de(fobj, bounds, mut=0.8, crossp=0.7, popsize=20, its=3000):
     dimensions = len(bounds)
@@ -41,7 +44,15 @@ def de(fobj, bounds, mut=0.8, crossp=0.7, popsize=20, its=3000):
                 if f < fitness[best_idx]:
                     best_idx = j
                     best = trial_denorm
-    yield best, fitness[best_idx]
+                    generations.append(i)
+                    print(str(i) + ' ' + str(j))
+                    yield best, fitness[best_idx]
 
-# result = list(de(fobj, bounds))
-# print(result[-1])
+result = list(de(fobj, bounds))
+print(result[-1])
+
+x, f = zip(*result)
+ff = list(f)
+print(ff)
+plt.plot(generations, ff)
+plt.show()
