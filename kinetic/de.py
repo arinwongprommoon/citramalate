@@ -8,6 +8,7 @@ from __future__ import division, print_function
 import ecolicitra
 import itertools
 import numpy as np
+import matplotlib.pyplot as plt
 import roadrunner
 import libsbml
 import time
@@ -40,8 +41,10 @@ def productivity(r, x):
         ecit.setVmax(r[i], x[i])
     return ecit.comproducti()
 
+generations = []
+
 # DE algorithm adapted from Pablo R Mier
-def de(fobj, bounds, mut=0.8, crossp=0.9, popsize=20, its=5):
+def de(fobj, bounds, mut=0.8, crossp=0.9, popsize=20, its=20):
     dimensions = len(bounds)
     # Initialisation
     pop = np.random.rand(popsize, dimensions)
@@ -70,7 +73,11 @@ def de(fobj, bounds, mut=0.8, crossp=0.9, popsize=20, its=5):
                 if f < fitness[best_idx]:
                     best_idx = j
                     best = trial_denorm
-    yield best, fitness[best_idx]
+                    generations.append(i)
+                    # I don't actually need this print line but
+                    # I like seeing that stuff happens while I run code
+                    print(str(i) + ' ' + str(j))
+                    yield best, fitness[best_idx]
 
 boundsrel = np.asarray(boundsrel)
 combolist = choose(listofreactions, n)
@@ -102,6 +109,12 @@ for combo in combolist:
         f.write(str(result[-1][0]) + '\n')
         f.write('Fitness: ' + str(result[-1][1]) + '\n')
 
+    # plot convergence
+    x, f = zip(*result)
+    ff = list(f)
+    plt.plot(generations, ff)
+    plt.show()
+        
     # reassigns Vmaxes
     for i in range(len(combo)):
         ecit.setVmax(combo[i], VmaxI[i])
