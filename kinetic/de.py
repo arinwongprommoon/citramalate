@@ -44,7 +44,7 @@ def productivity(r, x):
 generations = []
 
 # DE algorithm adapted from Pablo R Mier
-def de(fobj, bounds, mut=0.8, crossp=0.9, popsize=50, its=20):
+def de(fobj, bounds, mut=0.6, crossp=0.9, popsize=40, its=30):
     dimensions = len(bounds)
     # Initialisation
     pop = np.random.rand(popsize, dimensions)
@@ -107,7 +107,7 @@ for combo in combolist:
 
     # reassigns Vmaxes
     for i in range(len(combo)):
-    ecit.setVmax(combo[i], VmaxI[i])
+        ecit.setVmax(combo[i], VmaxI[i])
     
     # printing/writing results
     print(result[-1])
