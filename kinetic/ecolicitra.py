@@ -132,9 +132,10 @@ class ecolicit:
         rr.timeCourseSelections = selection
         result = rr.simulate(self.time0, self.timef, self.npoints)
         st = max(abs(rr.model.getFloatingSpeciesConcentrationRates())[:-2])
+        print("st = ", st)
         if st < 1e-8:
             Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
             mu = result[-1,selection.index("iGROWTH'")]*3600
             return mu*Y_PS
         else:
-            return -1
+            return -1e-4
