@@ -131,10 +131,7 @@ class ecolicit:
         rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
         rr.timeCourseSelections = selection
         result = rr.simulate(self.time0, self.timef, self.npoints)
-        sta = abs(rr.model.getFloatingSpeciesConcentrationRates())
-        st = max(sta[:-2])
-        print(sta)
-        print("st = ", st)
+        st = max(abs(rr.model.getFloatingSpeciesConcentrationRates())[:-2])
         if st < 1e-8:
             Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
             mu = result[-1,selection.index("iGROWTH'")]*3600
