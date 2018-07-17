@@ -1,0 +1,4 @@
+Apparently for GLT vs ACEA, on the range of 0.1-10.0 Vmax,
+using F = 0.8, CR = 0.3, N = 20, doing only 5 generations is pretty good.
+It's not good enough to just *use*, but it's good enough for me to set it
+at 10 generations so that I don't waste too much time on this.
