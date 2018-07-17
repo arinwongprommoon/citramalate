@@ -8,20 +8,19 @@ from __future__ import division, print_function
 import ecolicitra
 import itertools
 import numpy as np
-import matplotlib.pyplot as plt
 import roadrunner
 import libsbml
 import time
 
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
-n = 5
+n = 2
 
 # REDEFINE Vmax RANGE HERE
 boundsrel = [(0.1, 10.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
 #listofreactions = ['PGI', 'PFK', 'FBA', 'GDH', 'PGK', 'GPM', 'ENO', 'PYK', 'PDH']
-listofreactions = ['PGI', 'GDH', 'ENO', 'PYK', 'PDH']
+listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'ATP_MAINTENANCE', 'GDH', 'ATP_syn', 'ACEA', 'ZWF']
 
 # Create kinetic model
 include_CITRA = True
@@ -44,7 +43,7 @@ def productivity(r, x):
 generations = []
 
 # DE algorithm adapted from Pablo R Mier
-def de(fobj, bounds, mut=0.6, crossp=0.9, popsize=40, its=30):
+def de(fobj, bounds, mut=0.6, crossp=0.9, popsize=20, its=30):
     dimensions = len(bounds)
     # Initialisation
     pop = np.random.rand(popsize, dimensions)
@@ -116,8 +115,3 @@ for combo in combolist:
         f.write(str(result[-1][0]) + '\n')
         f.write('Fitness: ' + str(result[-1][1]) + '\n')
 
-    # plot convergence
-    x, f = zip(*result)
-    ff = list(f)
-    plt.plot(generations, ff)
-    plt.show()
