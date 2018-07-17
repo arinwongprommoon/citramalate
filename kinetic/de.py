@@ -102,6 +102,13 @@ for combo in combolist:
     # computation
     result = list(de(fobj, bounds))
 
+    elapsed_time = time.time() - start_time
+    print(elapsed_time) # time tracking
+
+    # reassigns Vmaxes
+    for i in range(len(combo)):
+    ecit.setVmax(combo[i], VmaxI[i])
+    
     # printing/writing results
     print(result[-1])
     with open('de.txt', 'a') as f:
@@ -114,10 +121,3 @@ for combo in combolist:
     ff = list(f)
     plt.plot(generations, ff)
     plt.show()
-        
-    # reassigns Vmaxes
-    for i in range(len(combo)):
-        ecit.setVmax(combo[i], VmaxI[i])
-
-    elapsed_time = time.time() - start_time
-    print(elapsed_time) # time tracking
