@@ -41,7 +41,7 @@ def productivity(r, x):
     return ecit.comproducti()
 
 # DE algorithm adapted from Pablo R Mier
-def de(fobj, bounds, mut=0.6, crossp=0.9, popsize=20, its=20):
+def de(fobj, bounds, mut=0.6301, crossp=0.7122, popsize=17, its=30):
     dimensions = len(bounds)
     # Initialisation
     pop = np.random.rand(popsize, dimensions)
