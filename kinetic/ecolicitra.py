@@ -4,6 +4,7 @@ from __future__ import division, print_function
 import roadrunner
 import libsbml
 import matplotlib.pyplot as plt
+import numpy as np
 
 mmCITRA = 146.098 # g/mol # Molecular mass of Citramalate https://pubchem.ncbi.nlm.nih.gov/compound/5460281
 mmGLC = 180.156 # g/mol  # Molecular mass of Glucose https://pubchem.ncbi.nlm.nih.gov/compound/79025
@@ -131,8 +132,12 @@ class ecolicit:
         rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
         rr.timeCourseSelections = selection
         result = rr.simulate(self.time0, self.timef, self.npoints)
-        st = max(abs(rr.model.getFloatingSpeciesConcentrationRates())[:-2])
+        ff = abs(rr.model.getFloatingSpeciesConcentrationRates())[:-2]
+        st = max(ff)
+        ii = np.where(ff==st)
+        sp = rr.model.getFloatingSpeciesIds()[ii[0][0]]
         if steadystate == True:
+            print("st = ", st, "(", sp, ")")
             return st
         else:
             print("st = ", st)
