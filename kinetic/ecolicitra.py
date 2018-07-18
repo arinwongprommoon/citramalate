@@ -125,17 +125,20 @@ class ecolicit:
         self.reacVmaxes = sorted(Vmaxes) # ids of reactions sorted alphabetically that have Vmax
         self.iniVmaxes = [Vmaxes[r] for r in self.reacVmaxes] # initial values of Vmax (as in the kinetic model)
 
-    def comproducti(self):
+    def comproducti(self, steadystate=False):
         # Compute steady state productivity
         selection = ["CITRA", "iGROWTH'"]
         rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
         rr.timeCourseSelections = selection
         result = rr.simulate(self.time0, self.timef, self.npoints)
         st = max(abs(rr.model.getFloatingSpeciesConcentrationRates())[:-2])
-        print("st = ", st)
-        if st < 1e-8:
-            Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
-            mu = result[-1,selection.index("iGROWTH'")]*3600
-            return mu*Y_PS
+        if steadystate == True:
+            return st
         else:
-            return -1e-4
+            print("st = ", st)
+            if st < 1e-8:
+                Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
+                mu = result[-1,selection.index("iGROWTH'")]*3600
+                return mu*Y_PS
+            else:
+                return -1e-4
