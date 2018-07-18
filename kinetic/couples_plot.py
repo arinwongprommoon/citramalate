@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import heatmap
 
-for npz in glob.glob("COUPLES*.npz"):
+for npz in glob.glob("*.npz"):
     # Read from file into numpy arrays
     container = np.load(npz)
     data = [container[key] for key in container]
@@ -16,7 +16,7 @@ for npz in glob.glob("COUPLES*.npz"):
     XRxns = data[0]
     YRxns = data[1]
     productivity_raw = data[2]
-    productivity = 10000*productivity_raw
+    productivity = -np.log10(productivity_raw)
     # Transpose here because I don't want to mess with couples.py, which
     # generates the data
     productivity = np.transpose(productivity)
@@ -26,7 +26,7 @@ for npz in glob.glob("COUPLES*.npz"):
 
     fig, ax = plt.subplots()
     im, cbar = heatmap.heatmap(productivity, XLabs, YLabs, ax=ax,
-                       cmap="YlGn", cbarlabel="citramalate productivity [10,000 * raw]")
+                       cmap="YlGn", cbarlabel="steady state concentration rate [-log10 raw]")
     texts = heatmap.annotate_heatmap(im, valfmt="{x:.1f}", threshold=0, textcolors=["red", "black"])
 
     fig.tight_layout()
