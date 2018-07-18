@@ -24,7 +24,7 @@ for cnpz in glob.glob("COUPLES*.npz"):
     # COUPLES with -1e-4
     ctemp = cdata[2]
     stemp = sdata[2]
-    ctemp[stemp > 1e-8] = -1e-4
+    ctemp[stemp > 1e-6] = -1e-4
     cdata[2] = ctemp
 
     newcdata = [cdata[0], cdata[1], cdata[2]]
