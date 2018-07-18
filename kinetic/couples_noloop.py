@@ -130,7 +130,10 @@ class Coupl(ecolicit):
         for (xi, yi) in itertools.product(X, Y):
             self.setVmax(XRxn, xi)
             self.setVmax(YRxn, yi)
-            Ptemp[ij] = self.comproducti(steadystate=True)
+            if writemethod == 'steadystate':
+                Ptemp[ij] = self.comproducti(steadystate=True)
+            else:                
+                Ptemp[ij] = self.comproducti()
             ij += 1
             gc.collect()
 
@@ -160,6 +163,11 @@ class Coupl(ecolicit):
             filenamet = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".txt"
             self.writeToText(names, data, filenamet)
             filenamen = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
+            self.writeToNpz(data, filenamen)
+        elif writemethod == 'steadystate':
+            filenamet = "STEADYDATA-" + str(XRxn) + "-" + str(YRxn) + ".txt"
+            self.writeToText(names, data, filenamet)
+            filenamen = "STEADYDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
             self.writeToNpz(data, filenamen)
         gc.collect()
 

@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import heatmap
 
-for npz in glob.glob("*.npz"):
+for npz in glob.glob("COUPLES*.npz"):
     # Read from file into numpy arrays
     container = np.load(npz)
     data = [container[key] for key in container]

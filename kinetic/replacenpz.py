@@ -8,15 +8,24 @@ import numpy as np
 import matplotlib.pyplot as plt
 import heatmap
 
-for npz in glob.glob("*.npz"):
+for cnpz in glob.glob("COUPLES*.npz"):
     # Read from file into numpy arrays
-    container = np.load(npz)
-    data = [container[key] for key in container]
 
-    # remove the temp bit when I've proven that it works well
-    temp = data[2]
-    temp[temp > 1e-8] = -1e-4
-    data[2] = temp
+    # Reads the COUPLES*.npz file
+    c_container = np.load(cnpz)
 
-    newdata = [data[0], data[1], data[2]]
-    np.savez(npz, *newdata)
+    # Reads the corresponding STEADY*.npz file
+    snpz = cnpz.replace("COUPLES", "STEADY")
+    s_container = np.load(snpz)
+    cdata = [c_container[key] for key in c_container]
+    sdata = [s_container[key] for key in s_container]
+
+    # if element in STEADY exceeds epsilon, replace corresponding element in
+    # COUPLES with -1e-4
+    ctemp = cdata[2]
+    stemp = sdata[2]
+    ctemp[stemp > 1e-8] = -1e-4
+    cdata[2] = ctemp
+
+    newcdata = [cdata[0], cdata[1], cdata[2]]
+    np.savez(cnpz, *newcdata)

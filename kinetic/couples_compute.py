@@ -20,5 +20,5 @@ run.listofreactions = ['CITRA_SYN', 'GLT', 'LPD'] # define list of reactions
 #run.listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'ATP_MAINTENANCE', 'GDH', 'ATP_syn', 'ACEA', 'ZWF']
 
 run.writeFileHeader()
-out = run.computeCouples()
+out = run.computeCouples(writemethod='steadystate')
 sys.exit(out)
