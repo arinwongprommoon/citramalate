@@ -137,7 +137,8 @@ class ecolicit:
         ii = np.where(ff==st)
         sp = rr.model.getFloatingSpeciesIds()[ii[0][0]]
         if steadystate == True:
-            print("st = ", st, "(", sp, ")")
+            if st > 1e-8:
+                print("st = ", st, "(", sp, ")")
             return st
         else:
             print("st = ", st)
