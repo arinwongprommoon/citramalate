@@ -14,14 +14,13 @@ import libsbml
 import time
 
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
-n = 9
+n = 10
 
 # REDEFINE Vmax RANGE HERE
 boundsrel = [(0.1, 10.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
-listofreactions = ['PGI', 'PFK', 'FBA', 'GDH', 'PGK', 'GPM', 'ENO', 'PYK', 'PDH']
-#listofreactions = ['PGI', 'PFK', 'FBA', 'GDH', 'GPM', 'ENO', 'PYK', 'PDH']
+listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'GDH', 'ATP_syn', 'ACEA', 'PYK', 'ZWF', 'NDHII', 'MQO']
 
 # Create kinetic model
 include_CITRA = True
