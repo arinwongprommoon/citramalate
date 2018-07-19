@@ -142,3 +142,15 @@ class ecolicit:
                 return mu*Y_PS
             else:
                 return -1e-4
+                
+    def plot(self, species):
+        """
+            Plots concentration of specified species over time course specified
+            Input can also be any other SBML value that can be selected in
+            RoadRunner.
+        """
+        rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
+        rr.timeCourseSelections = [species]
+        result = rr.simulate(self.time0, self.timef, self.npoints)
+        plt.plot(result[:,result.colnames.index(species)])
+        plt.show()
