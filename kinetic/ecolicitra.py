@@ -125,57 +125,20 @@ class ecolicit:
         self.reacVmaxes = sorted(Vmaxes) # ids of reactions sorted alphabetically that have Vmax
         self.iniVmaxes = [Vmaxes[r] for r in self.reacVmaxes] # initial values of Vmax (as in the kinetic model)
 
-    def comproducti(self):
+    def comproducti(self, steadystate=False):
         # Compute steady state productivity
         selection = ["CITRA", "iGROWTH'"]
         rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
         rr.timeCourseSelections = selection
         result = rr.simulate(self.time0, self.timef, self.npoints)
-        Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
-        mu = result[-1,selection.index("iGROWTH'")]*3600
-        return mu*Y_PS
-
-    def plot(self, species):
-        """
-            Plots concentration of specified species over time course specified
-            Input can also be any other SBML value that can be selected in
-            RoadRunner.
-        """
-        rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
-        rr.timeCourseSelections = [species]
-        result = rr.simulate(self.time0, self.timef, self.npoints)
-        plt.plot(result[:,result.colnames.index(species)])
-        plt.show()
-
-    def compsteadystate(self):
-        """
-            Gives derivate to see if steady state
-            Method: finds gradient (more accurate if more steps specified by self.npoints)
-            Strictly this is correct but accuracy may be low
-        """
-        selection = ["CITRA", "iGROWTH'"]
-        rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
-        rr.timeCourseSelections = selection
-        result = rr.simulate(self.time0, self.timef, self.npoints)
-        Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
-        mu = result[-1,selection.index("iGROWTH'")]*3600
-        prod_f = mu*Y_PS
-        Y_PS = (result[-2,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
-        mu = result[-2,selection.index("iGROWTH'")]*3600
-        prod_i = mu*Y_PS
-        t = self.timef/self.npoints
-        return (prod_f - prod_i)/t
-
-    def altcompsteadystate(self):
-        """
-            Gives derivate to see if steady state
-            Method: differs from comproducti() in that it uses CITRA' instead of CITRA
-            Strictly speaking this is not correct and it's an approximation, but it's pretty close
-        """
-        selection = ["CITRA'", "iGROWTH'"]
-        rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
-        rr.timeCourseSelections = selection
-        result = rr.simulate(self.time0, self.timef, self.npoints)
-        Y_PS = (result[-1,selection.index("CITRA'")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
-        mu = result[-1,selection.index("iGROWTH'")]*3600
-        return mu*Y_PS
+        st = max(abs(rr.model.getFloatingSpeciesConcentrationRates())[:-2])
+        if steadystate == True:
+            return st
+        else:
+            print("st = ", st)
+            if st < 1e-8:
+                Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
+                mu = result[-1,selection.index("iGROWTH'")]*3600
+                return mu*Y_PS
+            else:
+                return -1e-4

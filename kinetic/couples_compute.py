@@ -16,9 +16,9 @@ run.setVmax('CITRA_SYN', 4.0)
 run.time0 = 0
 run.timef = 2*3600 # final simulation time in seconds
 run.npoints = 100 # Number of points to be computed in the simulation
-run.listofreactions = ['CITRA_SYN', 'GLT', 'LPD'] # define list of reactions
-#run.listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'ATP_MAINTENANCE', 'GDH', 'ATP_syn', 'ACEA', 'ZWF']
+#run.listofreactions = ['CITRA_SYN', 'GLT', 'LPD'] # define list of reactions
+run.listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'ATP_MAINTENANCE', 'GDH', 'ATP_syn', 'ACEA', 'ZWF']
 
 run.writeFileHeader()
-out = run.computeCouples()
+out = run.computeCouples(writemethod='steadystate')
 sys.exit(out)
