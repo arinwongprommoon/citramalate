@@ -44,7 +44,7 @@ def productivity(r, x):
 generations = []
 
 # DE algorithm adapted from Pablo R Mier
-def de(fobj, bounds, mut=0.6301, crossp=0.7122, popsize=17, its=70):
+def de(fobj, bounds, mut=0.6607, crossp=0.9426, popsize=28, its=50):
     dimensions = len(bounds)
     # Initialisation
     pop = np.random.rand(popsize, dimensions)
