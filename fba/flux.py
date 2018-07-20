@@ -46,7 +46,7 @@ listofreactions = model.getListOfReactions()
 # (note to self: remove the word 'fuck' from everything later)
 reactiontofuckwith = 'GLT'
 start = 0.1
-end = 10
+end = 10.0
 points = 20
 V = wtVmaxes[reactiontofuckwith]
 X = np.linspace(start*V, end*V, points, endpoint=True)
@@ -63,15 +63,11 @@ for xx in X:
     result = rr.simulate(0, 7200, 100)
 
     # Reaction rates
-    print("Reaction rates " + str(i+1))
+    # print("loop " + str(i+1))
     for noreac, reac in enumerate(rr.model.getReactionIds()):
-        print(reac, ":", rr.model.getReactionRates()[noreac])
         fluxdata[noreac][i] = rr.model.getReactionRates()[noreac]
-    print("\n")
 
     i += 1
-
-print(fluxdata)
 
 for noreac, reac in enumerate(rr.model.getReactionIds()):
     print(reac, ": min ", min(fluxdata[noreac]), " max ", max(fluxdata[noreac]))
