@@ -125,24 +125,50 @@ class ecolicit:
         self.reacVmaxes = sorted(Vmaxes) # ids of reactions sorted alphabetically that have Vmax
         self.iniVmaxes = [Vmaxes[r] for r in self.reacVmaxes] # initial values of Vmax (as in the kinetic model)
 
-    def comproducti(self, steadystate=False):
-        # Compute steady state productivity
+    def comproducti(self, tol=99999):
+        """
+            Computes steady state productivity.
+            Argument:
+                tol = 'epsilon' value to check the maximum absolute value of
+                      floating species concentration among all species in the
+                      model against to determine if the system has reached
+                      steady state or not
+
+                      If the system has not reached steady state, this function
+                      will return -1e-4 instead of the productivity value.
+        """
         selection = ["CITRA", "iGROWTH'"]
         rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
         rr.timeCourseSelections = selection
         result = rr.simulate(self.time0, self.timef, self.npoints)
+        # -2: removes GROWTH and CITRA from the list because they aren't steady
+        # state anyway
         st = max(abs(rr.model.getFloatingSpeciesConcentrationRates())[:-2])
         if steadystate == True:
             return st
         else:
-            print("st = ", st)
-            if st < 1e-8:
+            if st < tol:
                 Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
                 mu = result[-1,selection.index("iGROWTH'")]*3600
                 return mu*Y_PS
             else:
                 return -1e-4
-                
+
+    def compsteady(self):
+        """
+            Computes maximum absoute value of floating species concentration
+            among all species in the model - useful in checking if system has
+            reached steady state or not
+        """
+        selection = ["CITRA", "iGROWTH'"]
+        rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
+        rr.timeCourseSelections = selection
+        result = rr.simulate(self.time0, self.timef, self.npoints)
+        # -2: removes GROWTH and CITRA from the list because they aren't steady
+        # state anyway
+        st = max(abs(rr.model.getFloatingSpeciesConcentrationRates())[:-2])
+        return st
+
     def plot(self, species):
         """
             Plots concentration of specified species over time course specified

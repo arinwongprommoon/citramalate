@@ -16,6 +16,9 @@ class Coupl(ecolicit):
         citramalate productivity accordingly. Outputs data into a text (TXT)
         file or as numpy arrays (NPZ).
 
+        Alternatively, the maximum derivative of concentration among all species
+        instead of productivity can be calculated.
+
         Arguments:
             xstart = lower limit of Vmax values for 1st enzyme
             xend = upper limit of Vmax values for 1st enzyme
@@ -78,6 +81,9 @@ class Coupl(ecolicit):
                 writeToText: TXT only
                 writeToNpz: NPZ only
                 writeToBoth: both (default)
+                steadystate: writes maximum derivative of concentration among
+                             all species instead of productivity, outputting to
+                             both TXT and NPZ files
         """
         # Generate list of pairs
         pairslist = self.pairs(self.listofreactions)
@@ -111,8 +117,12 @@ class Coupl(ecolicit):
             for (xi, yi) in itertools.product(X, Y):
                 self.setVmax(XRxn, xi)
                 self.setVmax(YRxn, yi)
-                Ptemp[ij] = self.comproducti()
+                if writemethod == 'steadystate':
+                    Ptemp[ij] = self.compsteady()
+                else:
+                    Ptemp[ij] = self.comproducti(tol=1e-8)
                 ij += 1
+                gc.collect()
 
             elapsed_time = time.time() - start_time
             print(elapsed_time) # time tracking
@@ -136,11 +146,20 @@ class Coupl(ecolicit):
                 self.writeToText(names, data, filenamet)
                 filenamen = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
                 self.writeToNpz(data, filenamen)
+            elif writemethod == 'steadystate':
+                filenamet = "STEADYDATA-" + str(XRxn) + "-" + str(YRxn) + ".txt"
+                self.writeToText(names, data, filenamet)
+                filenamen = "STEADYDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
+                self.writeToNpz(data, filenamen)
 
     def computeCouplesNoLoop(self, writemethod='writeToBoth'):
         """
             Computes citramalate productivity for pairs of enzymes after
             varying Vmax values.
+
+            Does not loop around all the possible pairs in a list - for that,
+            run the script that uses this function repeatedly. This is a
+            workaround for the memory leak in roadrunner.
 
             Argument:
             writemethod =
@@ -198,9 +217,9 @@ class Coupl(ecolicit):
             self.setVmax(XRxn, xi)
             self.setVmax(YRxn, yi)
             if writemethod == 'steadystate':
-                Ptemp[ij] = self.comproducti(steadystate=True)
+                Ptemp[ij] = self.compsteady()
             else:
-                Ptemp[ij] = self.comproducti()
+                Ptemp[ij] = self.comproducti(tol=1e-8)
             ij += 1
             gc.collect()
 
