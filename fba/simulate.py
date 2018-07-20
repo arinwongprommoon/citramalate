@@ -56,6 +56,8 @@ print("Reaction rates")
 for noreac, reac in enumerate(rr.model.getReactionIds()):
     print(reac, ":", rr.model.getReactionRates()[noreac])
 
+print('\n')
+
 # Concentrations
 print("Concentrations")
 for nospec, spec in enumerate(rr.model.getFloatingSpeciesIds()):
