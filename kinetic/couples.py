@@ -40,6 +40,8 @@ class Coupl(ecolicit):
         self.ystart = ystart
         self.yend = yend
         self.points = points
+        
+        self.tolerance = 1e-8
 
     def writeFileHeader(self, filename = "COUPLESDATA.txt"):
         """
@@ -120,7 +122,7 @@ class Coupl(ecolicit):
                 if writemethod == 'steadystate':
                     Ptemp[ij] = self.compsteady()
                 else:
-                    Ptemp[ij] = self.comproducti(tol=1e-8)
+                    Ptemp[ij] = self.comproducti(tol=tolerance)
                 ij += 1
 
             elapsed_time = time.time() - start_time
@@ -218,7 +220,7 @@ class Coupl(ecolicit):
             if writemethod == 'steadystate':
                 Ptemp[ij] = self.compsteady()
             else:
-                Ptemp[ij] = self.comproducti(tol=1e-8)
+                Ptemp[ij] = self.comproducti(tol=tolerance)
             ij += 1
 
         elapsed_time = time.time() - start_time
