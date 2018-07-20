@@ -1,49 +1,75 @@
-ACEA
-ACEB
-ACK
-ACN_1
-ACN_2
-ACS
-ATP_MAINTENANCE
-ATP_syn
-CITRA_SYN
-CYTBO
-EDA
-EDD
-ENO
-FBA
-FBP
-FUMA
-GDH
-GLT
-GND
-GPM
-GROWTH
-LPD
-MAD
-MDH
-MQO
-NADH_req
-NDHII
-PCK
-PDH
-PFK
-PGI
-PGK
-PGL
-PIT
-PPC
-PPS
-PTA
-PYK
-RPE
-RPI
-SDH
-SK
-SQR
-TPI
-XCH_ACE1
-XCH_ACE2
-XCH_GLC
-XCH_P
-ZWF
+From: wild-type Millard model (E_coli_Millard2016.xml), without citramalate
+
+Lists reactions alphabetically by their IDs, followed by their wild-type Vmax
+values if they have one.
+
+68 in total, 48 of which have Vmax values
+
+('ACEA', 1.52595)
+('ACEB', 0.352769)
+('ACEK_1', None)
+('ACEK_2', None)
+('ACK', 7.23)
+('ACN_1', 9.72413)
+('ACN_2', 9.86571)
+('ACS', 7.3)
+('ADK', None)
+('ATP_MAINTENANCE', 1.30166)
+('ATP_syn', 108.733)
+('CYA', None)
+('CYTBO', 8.54045)
+('DOS', None)
+('EDA', 0.0775241)
+('EDD', 0.111359)
+('ENO', 11.7189)
+('F6P_E4P_TKT', None)
+('F6P_GAP_TAL', None)
+('FBA', 21.6978)
+('FBP', 0.215583)
+('FUMA', 53.3414)
+('GDH', 8.66573)
+('GL6P_HYDROLYSIS', None)
+('GLC_feed', None)
+('GLT', 57.0584)
+('GND', 4.08105)
+('GPM', 10.9934)
+('GROWTH', 9.74137)
+('ICD', None)
+('LPD', 0.0684413)
+('MAD', 6.64269)
+('MDH', 6.11492)
+('MQO', 4.62283)
+('NADH_req', 23.0735)
+('NDHII', 30.8306)
+('PCK', 8.08777)
+('PDH', 961.706)
+('PFK', 0.185253)
+('PGI', 2.32456)
+('PGK', 16.1089)
+('PGL', 11.5967)
+('PIT', 7.146)
+('PNT_req', None)
+('PPC', 21.439)
+('PPS', 0.0163772)
+('PTA', 2.7)
+('PTS_0', None)
+('PTS_1', None)
+('PTS_2', None)
+('PTS_3', None)
+('PTS_4', None)
+('PYK', 0.74716)
+('RPE', 6.00103)
+('RPI', 8.0)
+('S7P_E4P_TAL', None)
+('S7P_R5P_TKT', None)
+('SDH', 1.56184)
+('SK', 76.8163)
+('SQR', 3.41617)
+('TPI', 24.1843)
+('X5P_GAP_TKT', None)
+('XCH_ACE1', 100.0)
+('XCH_ACE2', 100.0)
+('XCH_GLC', 100.0)
+('XCH_P', 100.0)
+('ZWF', 0.2658)
+('_ACE_OUT', None)
