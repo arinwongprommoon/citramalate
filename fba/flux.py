@@ -42,21 +42,20 @@ wtVmaxes = dict(zip(reacVmaxes, iniVmaxes))
 # Stores list of ALL reactions
 listofreactions = model.getListOfReactions()
 
-# Fuck around with stuff
-# (note to self: remove the word 'fuck' from everything later)
-reactiontofuckwith = 'GLT'
+# Modify Vmax of specified reaction
+vary = 'GDH'
 start = 0.1
 end = 10.0
-points = 20
-V = wtVmaxes[reactiontofuckwith]
+points = 200
+V = wtVmaxes[vary]
 X = np.linspace(start*V, end*V, points, endpoint=True)
 
 fluxdata = np.empty(shape=(68,points))
 
 i = 0
-# Loops that actually fucks around with stuff
+# real thing
 for xx in X:
-    setVmax(reactiontofuckwith, xx)
+    setVmax(vary, xx)
 
     # Simulate
     rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(document))
