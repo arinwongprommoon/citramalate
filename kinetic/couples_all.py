@@ -3,6 +3,7 @@
 # Runs computations for couples of reactions from a specified list, writes data
 # to numpy array files, then plots heatmaps.
 
+# Uses the 'couples' module, which does not stop after every loop.
 # Risk of memory leak!
 
 import glob, os
@@ -17,8 +18,9 @@ run.setVmax('CITRA_SYN', 4.0)
 run.time0 = 0
 run.timef = 2*3600 # final simulation time in seconds
 run.npoints = 100 # Number of points to be computed in the simulation
-run.listofreactions = ['ACEA', 'ACEB']
-#run.listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'ATP_MAINTENANCE', 'GDH', 'ATP_syn', 'ACEA', 'ZWF']
+
+# CHANGE LIST OF REACTIONS HERE
+run.listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'ATP_MAINTENANCE', 'GDH', 'ATP_syn', 'ACEA', 'ZWF']
 
 run.writeFileHeader()
 run.computeCouples()

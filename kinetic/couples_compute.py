@@ -3,11 +3,12 @@
 # Runs computations for couples of reactions from a specified list, writes data
 # to numpy array files.
 
-# Using couples_noloop, this program stops after each pair and continues on to
+# This program stops after each pair and continues on to
 # the next pair when executed again. To run through all pairs, execute
-# ./couples_run (couples_run.sh)
+# ./couples_run (couples_run.sh). In a nutshell, this script is not very useful
+# on its own
 
-from couples_noloop import Coupl
+from couples import Coupl
 import sys
 
 #Run simulations, writes data both into TXT and NPZ
@@ -20,5 +21,5 @@ run.npoints = 100 # Number of points to be computed in the simulation
 run.listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'ATP_MAINTENANCE', 'GDH', 'ATP_syn', 'ACEA', 'ZWF']
 
 run.writeFileHeader()
-out = run.computeCouples(writemethod='steadystate')
+out = run.computeCouplesNoLoop(writemethod='steadystate')
 sys.exit(out)

@@ -136,3 +136,106 @@ class Coupl(ecolicit):
                 self.writeToText(names, data, filenamet)
                 filenamen = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
                 self.writeToNpz(data, filenamen)
+
+    def computeCouplesNoLoop(self, writemethod='writeToBoth'):
+        """
+            Computes citramalate productivity for pairs of enzymes after
+            varying Vmax values.
+
+            Argument:
+            writemethod =
+                writeToText: TXT only
+                writeToNpz: NPZ only
+                writeToBoth: both (default)
+                steadystate: writes maximum derivative of concentration among
+                             all species instead of productivity, outputting to
+                             both TXT and NPZ files
+        """
+        # Generate list of pairs
+        pairslist = self.pairs(self.listofreactions)
+
+        # Initialise to first element of pairslist (useful when calling getVmax only when needed)
+        XRxn = pairslist[0][0]
+        XVmaxI = self.getVmax(XRxn)
+        X = np.linspace(self.xstart*XVmaxI, self.xend*XVmaxI, self.points, endpoint=True)
+
+        YRxn = pairslist[0][1]
+        YVmaxI = self.getVmax(YRxn)
+        Y = np.linspace(self.ystart*YVmaxI, self.yend*YVmaxI, self.points, endpoint=True)
+
+        ## BIG FOR LOOP ORIGINALLY HERE
+        # read the index of the pair from file
+        with open('couplesi.txt', 'r') as fobj:
+            mystr = fobj.readline()
+            idx = int(mystr.strip('\n'))
+
+        # stops if all elements gone through
+        if idx >= len(pairslist):
+            print('DONE')
+            return 1
+
+        pair = pairslist[idx]
+
+        # Call getVmax() and generate arrays only when needed
+        if pair[0] != XRxn:
+            XRxn = pair[0]
+            XVmaxI = self.getVmax(XRxn)
+            X = np.linspace(self.xstart*XVmaxI, self.xend*XVmaxI, self.points, endpoint=True)
+        if pair[1] != YRxn:
+            YRxn = pair[1]
+            YVmaxI = self.getVmax(YRxn)
+            Y = np.linspace(self.ystart*YVmaxI, self.yend*YVmaxI, self.points, endpoint=True)
+
+        print(XRxn + ' vs ' + YRxn) # track reaction
+
+        start_time = time.time() # time tracking
+
+        # The real bit
+        ij = 0
+        #Ptemp = []
+        Ptemp = np.empty(self.points**2) # initialise
+        for (xi, yi) in itertools.product(X, Y):
+            self.setVmax(XRxn, xi)
+            self.setVmax(YRxn, yi)
+            if writemethod == 'steadystate':
+                Ptemp[ij] = self.comproducti(steadystate=True)
+            else:
+                Ptemp[ij] = self.comproducti()
+            ij += 1
+            gc.collect()
+
+        elapsed_time = time.time() - start_time
+        print(elapsed_time) # time tracking
+
+        self.setVmax(XRxn, XVmaxI)
+        self.setVmax(YRxn, YVmaxI)
+
+        P = Ptemp.reshape((self.points, self.points))
+
+        # write the index of the pair to file
+        idx += 1
+        with open('couplesi.txt', 'w') as fobj:
+            fobj.write(str(idx))
+
+        # Writing data
+        data = [X, Y, P]
+        names = [XRxn, YRxn]
+        if writemethod == 'writeToText':
+            filename = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".txt"
+            self.writeToText(names, data, filename)
+        elif writemethod == 'writeToNpz':
+            filename = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
+            self.writeToNpz(data, filename)
+        elif writemethod == 'writeToBoth':
+            filenamet = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".txt"
+            self.writeToText(names, data, filenamet)
+            filenamen = "COUPLESDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
+            self.writeToNpz(data, filenamen)
+        elif writemethod == 'steadystate':
+            filenamet = "STEADYDATA-" + str(XRxn) + "-" + str(YRxn) + ".txt"
+            self.writeToText(names, data, filenamet)
+            filenamen = "STEADYDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
+            self.writeToNpz(data, filenamen)
+        gc.collect()
+
+        return 2
