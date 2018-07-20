@@ -144,15 +144,12 @@ class ecolicit:
         # -2: removes GROWTH and CITRA from the list because they aren't steady
         # state anyway
         st = max(abs(rr.model.getFloatingSpeciesConcentrationRates())[:-2])
-        if steadystate == True:
-            return st
+        if st < tol:
+            Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
+            mu = result[-1,selection.index("iGROWTH'")]*3600
+            return mu*Y_PS
         else:
-            if st < tol:
-                Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
-                mu = result[-1,selection.index("iGROWTH'")]*3600
-                return mu*Y_PS
-            else:
-                return -1e-4
+            return -1e-4
 
     def compsteady(self):
         """

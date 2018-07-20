@@ -122,7 +122,6 @@ class Coupl(ecolicit):
                 else:
                     Ptemp[ij] = self.comproducti(tol=1e-8)
                 ij += 1
-                gc.collect()
 
             elapsed_time = time.time() - start_time
             print(elapsed_time) # time tracking
@@ -221,7 +220,6 @@ class Coupl(ecolicit):
             else:
                 Ptemp[ij] = self.comproducti(tol=1e-8)
             ij += 1
-            gc.collect()
 
         elapsed_time = time.time() - start_time
         print(elapsed_time) # time tracking
@@ -255,6 +253,5 @@ class Coupl(ecolicit):
             self.writeToText(names, data, filenamet)
             filenamen = "STEADYDATA-" + str(XRxn) + "-" + str(YRxn) + ".npz"
             self.writeToNpz(data, filenamen)
-        gc.collect()
 
         return 2
