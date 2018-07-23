@@ -3,6 +3,7 @@ from __future__ import division, print_function
 import libsbml
 import roadrunner
 import numpy as np
+import time
 
 # Reads wild-type model
 reader = libsbml.SBMLReader()
@@ -39,34 +40,41 @@ reacVmaxes = sorted(Vmaxes) # ids of reactions sorted alphabetically that have V
 iniVmaxes = [Vmaxes[r] for r in reacVmaxes] # initial values of Vmax (as in the kinetic model)
 wtVmaxes = dict(zip(reacVmaxes, iniVmaxes))
 
-# Stores list of ALL reactions
-listofreactions = model.getListOfReactions()
 
 # Modify Vmax of specified reaction
-vary = 'GDH'
+
+# start, end, data points
 start = 0.1
 end = 10.0
 points = 200
-V = wtVmaxes[vary]
-X = np.linspace(start*V, end*V, points, endpoint=True)
-
 fluxdata = np.empty(shape=(68,points))
 
-i = 0
-# real thing
-for xx in X:
-    setVmax(vary, xx)
+j = 0
+for reaction in ['GLT']:
+    start_time = time.time()
+    print(j+1, reaction, "varied ---")
+    V = wtVmaxes[reaction]
+    X = np.linspace(start*V, end*V, points, endpoint=True)
+    i = 0
+    for xx in X:
+        setVmax(reaction, xx)
 
-    # Simulate
-    rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(document))
-    result = rr.simulate(0, 7200, 100)
+        # Simulate
+        rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(document))
+        result = rr.simulate(0, 7200, 100)
 
-    # Reaction rates
-    # print("loop " + str(i+1))
+        # Reaction rates
+        for noreac, reac in enumerate(rr.model.getReactionIds()):
+            fluxdata[noreac][i] = rr.model.getReactionRates()[noreac]
+        
+        i += 1
+
+    j += 1
+
+    setVmax(reaction, V)
+
     for noreac, reac in enumerate(rr.model.getReactionIds()):
-        fluxdata[noreac][i] = rr.model.getReactionRates()[noreac]
-
-    i += 1
-
-for noreac, reac in enumerate(rr.model.getReactionIds()):
-    print(reac, ": min ", min(fluxdata[noreac]), " max ", max(fluxdata[noreac]))
+        print(reac, ": min ", min(fluxdata[noreac]), " max ", max(fluxdata[noreac]))
+    elapsed_time = time.time() - start_time
+    print("time taken ", elapsed_time)
+    print("\n")
