@@ -111,9 +111,6 @@ boundsrel = np.asarray(boundsrel)
 combolist = choose(listofreactions, n)
         
 def main():
-    # overwrites existing file
-    with open('fluxde.txt', 'w') as f:
-        pass
 
     # read the index of the pair from file
     with open('fluxdei.txt', 'r') as fobj:
