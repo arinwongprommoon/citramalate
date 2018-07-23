@@ -42,10 +42,6 @@ reacVmaxes = sorted(Vmaxes) # ids of reactions sorted alphabetically that have V
 iniVmaxes = [Vmaxes[r] for r in reacVmaxes] # initial values of Vmax (as in the kinetic model)
 wtVmaxes = dict(zip(reacVmaxes, iniVmaxes))
 
-#test
-reacVmaxes = ['ACEA', 'ACEB', 'ACK']
-
-
 # Modify Vmax of specified reaction
 
 # start, end, data points
