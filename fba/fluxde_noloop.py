@@ -6,6 +6,7 @@ import numpy as np
 import roadrunner
 import libsbml
 import time
+import sys
 
 # Reads wild-type model
 reader = libsbml.SBMLReader()
@@ -108,38 +109,60 @@ def de(fobj, bounds, mut=0.6607, crossp=0.9426, popsize=28, its=10):
 
 boundsrel = np.asarray(boundsrel)
 combolist = choose(listofreactions, n)
+        
+def main():
+    # overwrites existing file
+    with open('fluxde.txt', 'w') as f:
+        pass
 
-# overwrites existing file
-with open('fluxde.txt', 'w') as f:
-    pass
+    # read the index of the pair from file
+    with open('fluxdei.txt', 'r') as fobj:
+        mystr = fobj.readline()
+        idx = int(mystr.strip('\n'))
 
-# main
-for combo in combolist:
-    start_time = time.time() # time tracking
+    # stops if all elements gone through
+    if idx >= len(combolist):
+        print('DONE')
+        sys.exit(1)
 
-    print(combo)
-    VmaxI = [getVmax(i) for i in combo]
-    print(VmaxI)
-    bounds = (VmaxI*(boundsrel.T)).T
-    print(bounds)
+    else:
+        combo = combolist[idx]
 
-    def fobj(x):
-        #return flux(combo, x) # MINIMUM
-        return -flux(combo, x) # MAXIMUM
+        # main
+        start_time = time.time() # time tracking
 
-    # computation
-    result = list(de(fobj, bounds))
+        print(combo)
+        VmaxI = [getVmax(i) for i in combo]
+        print(VmaxI)
+        bounds = (VmaxI*(boundsrel.T)).T
+        print(bounds)
 
-    elapsed_time = time.time() - start_time
-    print(elapsed_time) # time tracking
+        def fobj(x):
+            #return flux(combo, x) # MINIMUM
+            return -flux(combo, x) # MAXIMUM
 
-    # reassigns Vmaxes
-    for i in range(len(combo)):
-        setVmax(combo[i], VmaxI[i])
+        # computation
+        result = list(de(fobj, bounds))
 
-    # printing/writing results
-    print(result[-1])
-    with open('fluxde.txt', 'a') as f:
-        f.write(str(combo) + '\n')
-        f.write(str(result[-1][0]) + '\n')
-        f.write('Fitness: ' + str(result[-1][1]) + '\n')
+        # write the index of the pair to file
+        idx += 1
+        with open('fluxdei.txt', 'w') as fobj:
+            fobj.write(str(idx))
+
+        # printing/writing results
+        print(result[-1])
+        with open('fluxde.txt', 'a') as f:
+            f.write(str(combo) + '\n')
+            f.write(str(result[-1][0]) + '\n')
+            f.write('Fitness: ' + str(result[-1][1]) + '\n')
+
+        # reassigns Vmaxes
+        for i in range(len(combo)):
+            setVmax(combo[i], VmaxI[i])
+
+        elapsed_time = time.time() - start_time
+        print(elapsed_time) # time tracking
+        sys.exit(2)
+
+if __name__ == '__main__':
+    main()
