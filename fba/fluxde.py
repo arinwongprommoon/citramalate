@@ -7,6 +7,8 @@ import roadrunner
 import libsbml
 import time
 
+allreactions = ['PGI', 'PFK', 'FBA', 'TPI', 'GDH', 'PGK', 'GPM', 'ENO', 'PYK', 'ZWF', 'PGL', 'GND', 'RPE', 'RPI', 'X5P_GAP_TKT', 'F6P_E4P_TKT', 'S7P_R5P_TKT', 'F6P_GAP_TAL', 'S7P_E4P_TAL', 'FBP', 'PPC', 'PCK', 'PPS', 'MAD', 'PDH', 'GLT', 'ACN_1', 'ACN_2', 'ICD', 'LPD', 'SK', 'SDH', 'FUMA', 'MQO', 'MDH', 'ACEA', 'ACEB', 'ACEK_1', 'ACEK_2', 'EDD', 'EDA', 'NADH_req', 'PNT_req', 'ADK', 'ATP_syn', 'CYA', 'DOS', 'ACK', 'ACS', 'PTA', 'PTS_0', 'PTS_1', 'PTS_2', 'PTS_3', 'PTS_4', 'GLC_feed', 'CYTBO', 'SQR', 'NDHII', 'GROWTH', 'ATP_MAINTENANCE', 'XCH_GLC', 'PIT', 'XCH_P', 'XCH_ACE1', '_ACE_OUT', 'XCH_ACE2', 'GL6P_HYDROLYSIS']
+
 # Reads wild-type model
 reader = libsbml.SBMLReader()
 document = reader.readSBMLFromFile("../kinetic/E_coli_Millard2016.xml")
@@ -50,12 +52,13 @@ boundsrel = [(0.1, 10.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
 #listofreactions = reacVmaxes
-listofreactions = ['GLT', 'GDH', 'LPD']
+listofreactions = ['GLT', 'LPD']
 
 def choose(mylist, n):
     return list(itertools.combinations(mylist, n))
 
-def flux(r, x):
+def flux(k, r, x):
+    # k is the reaction whose flux we care about - a number for now because it's easier
     # r is a list of n reactions
     # x is a numpy axis with n elements
     for i in range(n):
@@ -65,13 +68,13 @@ def flux(r, x):
     rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(document))
     result = rr.simulate(0, 7200, 100)
 
-    noreac = 0
+    noreac = k
     return rr.model.getReactionRates()[noreac]
 
 generations = []
 
 # DE algorithm adapted from Pablo R Mier
-def de(fobj, bounds, mut=0.6607, crossp=0.9426, popsize=28, its=10):
+def de(fobj, bounds, mut=0.6607, crossp=0.9426, popsize=28, its=5):
     dimensions = len(bounds)
     # Initialisation
     pop = np.random.rand(popsize, dimensions)
@@ -113,33 +116,36 @@ combolist = choose(listofreactions, n)
 with open('fluxde.txt', 'w') as f:
     pass
 
-# main
-for combo in combolist:
-    start_time = time.time() # time tracking
+for j in xrange(68):
+    print(j)
+    print(allreactions[j])
+    # main
+    for combo in combolist:
+        start_time = time.time() # time tracking
 
-    print(combo)
-    VmaxI = [getVmax(i) for i in combo]
-    print(VmaxI)
-    bounds = (VmaxI*(boundsrel.T)).T
-    print(bounds)
+        print(combo)
+        VmaxI = [getVmax(i) for i in combo]
+        print(VmaxI)
+        bounds = (VmaxI*(boundsrel.T)).T
+        print(bounds)
 
-    def fobj(x):
-        #return flux(combo, x) # MINIMUM
-        return -flux(combo, x) # MAXIMUM
+        def fobj(x):
+            #return flux(j, combo, x) # MINIMUM
+            return -flux(j, combo, x) # MAXIMUM
 
-    # computation
-    result = list(de(fobj, bounds))
+        # computation
+        result = list(de(fobj, bounds))
 
-    elapsed_time = time.time() - start_time
-    print(elapsed_time) # time tracking
+        elapsed_time = time.time() - start_time
+        print(elapsed_time) # time tracking
 
-    # reassigns Vmaxes
-    for i in range(len(combo)):
-        setVmax(combo[i], VmaxI[i])
+        # reassigns Vmaxes
+        for i in range(len(combo)):
+            setVmax(combo[i], VmaxI[i])
 
-    # printing/writing results
-    print(result[-1])
-    with open('fluxde.txt', 'a') as f:
-        f.write(str(combo) + '\n')
-        f.write(str(result[-1][0]) + '\n')
-        f.write('Fitness: ' + str(result[-1][1]) + '\n')
+        # printing/writing results
+        print(result[-1])
+        with open('fluxde.txt', 'a') as f:
+            f.write(str(combo) + '\n')
+            f.write(str(result[-1][0]) + '\n')
+            f.write('Fitness: ' + str(result[-1][1]) + '\n')
