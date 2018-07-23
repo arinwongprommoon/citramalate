@@ -4,6 +4,7 @@ import libsbml
 import roadrunner
 import numpy as np
 import time
+import csv
 
 # Reads wild-type model
 reader = libsbml.SBMLReader()
@@ -49,8 +50,9 @@ end = 10.0
 points = 200
 fluxdata = np.empty(shape=(68,points))
 
+# real thing
 j = 0
-for reaction in ['GLT']:
+for reaction in reacVmaxes:
     start_time = time.time()
     print(j+1, reaction, "varied ---")
     V = wtVmaxes[reaction]
@@ -73,8 +75,16 @@ for reaction in ['GLT']:
 
     setVmax(reaction, V)
 
-    for noreac, reac in enumerate(rr.model.getReactionIds()):
-        print(reac, ": min ", min(fluxdata[noreac]), " max ", max(fluxdata[noreac]))
+    # outputs to both stdout and a csv file
+    # I did separate csv files for each reaction modified so that I can catch
+    # any irregularities
+    filename = reaction + '.csv'
+    with open(filename, 'wb') as csvfile:
+        fluxwriter = csv.writer(csvfile)
+        for noreac, reac in enumerate(rr.model.getReactionIds()):
+            print(reac, ": min ", min(fluxdata[noreac]), " max ", max(fluxdata[noreac]))
+            fluxwriter.writerow([reac, min(fluxdata[noreac]), max(fluxdata[noreac])])
+        
     elapsed_time = time.time() - start_time
     print("time taken ", elapsed_time)
     print("\n")
