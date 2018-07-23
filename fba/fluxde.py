@@ -46,14 +46,14 @@ iniVmaxes = [Vmaxes[r] for r in reacVmaxes] # initial values of Vmax (as in the 
 wtVmaxes = dict(zip(reacVmaxes, iniVmaxes))
 
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
-n = 2
+n = 4
 
 # REDEFINE Vmax RANGE HERE
 boundsrel = [(0.1, 10.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
 #listofreactions = reacVmaxes
-listofreactions = ['GLT', 'LPD']
+listofreactions = ['GLT', 'LPD', 'GROWTH', 'GDH']
 
 def choose(mylist, n):
     return list(itertools.combinations(mylist, n))
@@ -128,7 +128,7 @@ else:
         start_time = time.time() # time tracking
 
         print(combo)
-        VmaxI = [getVmax(i) for i in combo]
+        VmaxI = [wtVmaxes[i] for i in combo]
         print(VmaxI)
         bounds = (VmaxI*(boundsrel.T)).T
         print(bounds)
@@ -146,19 +146,19 @@ else:
         # reassigns Vmaxes
         for i in range(len(combo)):
             setVmax(combo[i], VmaxI[i])
-            
+
+        # printing/writing results
+        print(result[-1])
+        with open('fluxde.txt', 'a') as f:
+            f.write(str(allreactions[jdx]) + '\n')
+            f.write(str(combo) + '\n')
+            f.write(str(result[-1][0]) + '\n')
+            f.write('Fitness: ' + str(result[-1][1]) + '\n')
             
         # write the index of reaction to file
         jdx += 1
         with open('j.txt', 'w') as fobj:
             fobj.write(str(jdx))
-
-        # printing/writing results
-        print(result[-1])
-        with open('fluxde.txt', 'a') as f:
-            f.write(str(combo) + '\n')
-            f.write(str(result[-1][0]) + '\n')
-            f.write('Fitness: ' + str(result[-1][1]) + '\n')
             
             
         sys.exit(2)
