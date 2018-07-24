@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # Transform cobra model to Flexible Net (FN)
 from __future__ import division, print_function
+import csv
 import cobra.test
 from cobra import Reaction, Metabolite
 from cobra.flux_analysis import (
@@ -13,7 +14,7 @@ def addCimA(model):
     reaccima.name = '(R)-Citramalate production'
     reaccima.lower_bound = 0.0
     reaccima.upper_bound = 1000.0
-    
+
     """CIMA reaction"""
     pyr_c = model.metabolites.get_by_id("pyr_c") # Pyruvate
     accoa_c = model.metabolites.get_by_id("accoa_c") # Acetyl-CoA
@@ -25,30 +26,29 @@ def addCimA(model):
         charge=-2,
         compartment='c')
     coa_c = model.metabolites.get_by_id("coa_c") # CoA
-    
+
     reaccima.add_metabolites({pyr_c: -1.0,
                               accoa_c: -1.0,
                               h2o_c: -1.0,
                               rcitramalate_c: 1.0,
                               coa_c: 1.0})
-    reaccima.gene_reaction_rule = 'CimA37'     
-#    print(reaccima.reaction)                          
-#    print(reaccima.genes)                          
+    reaccima.gene_reaction_rule = 'CimA37'
+#    print(reaccima.reaction)
+#    print(reaccima.genes)
     model.add_reaction(reaccima)
     reaccima.objective_coefficient = 0.0
 
-    """Sink for Citramalate"""    
+    """Sink for Citramalate"""
     reaccisink = Reaction('CitraSink')
     reaccisink.name = 'Sink needed to allow (R)-Citramalate to leave the system'
     reaccisink.lower_bound = 0.0
     reaccisink.upper_bound = 1000.0
-    
+
     reaccisink.add_metabolites({rcitramalate_c: -1.0})
-#    print(reaccisink.reaction)                          
-#    print(reaccisink.genes)                          
+#    print(reaccisink.reaction)
+#    print(reaccisink.genes)
     model.add_reaction(reaccisink)
     reaccisink.objective_coefficient = 0.0
-
 
 #########  MAIN
 
@@ -64,20 +64,21 @@ elif test == 'all':
     modelfile = "MODEL1108160000"
 #        objective = 'Ec_biomass_iJO1366_core_53p95M'
     objective = 'CitraSink'
-    
+
 model = cobra.io.read_sbml_model(modelfile+'.xml')
 addCimA(model)
-print('Reactions:', len(model.reactions), 
-      '; Metabolites', len(model.metabolites), 
+print('Reactions:', len(model.reactions),
+      '; Metabolites', len(model.metabolites),
       '; Genes:', len(model.genes))
 
-print('Cobra results')
-model.objective = objective
-if knockouts:
-    # WARNING: only the first gene in knockouts is deleted
-    sol, sta = single_gene_deletion(model,[model.genes.get_by_id(knockouts[0])])    
-    print('Status:', sta, 'Solution:', sol)
-else:
-    solution = model.optimize()
-    print('Status:', solution.status, '; Solution:', solution.objective_value)
+### Reads CSV file listing reactions and intended lower and upper bounds
+with open('OldBoundaries.csv', 'rt') as fobj:
+    reader = csv.reader(fobj)
+    boundslist = list(reader)
+    boundslist = boundslist[1:] # removes header
+    for row in boundslist:
+        reac = model.reactions.get_by_id(row[0])
+        reac.lower_bound = float(row[1])
+        reac.upper_bound = float(row[2])
 
+print('Bounds changed')
