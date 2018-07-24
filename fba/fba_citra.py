@@ -2,6 +2,7 @@
 # Transform cobra model to Flexible Net (FN)
 from __future__ import division, print_function
 import csv
+import pandas
 import cobra.test
 from cobra import Reaction, Metabolite
 from cobra.flux_analysis import (
@@ -102,3 +103,8 @@ if knockouts:
 else:
     solution = model.optimize()
     print('Status:', solution.status, '; Solution:', solution.objective_value)
+
+f = solution.fluxes
+output = f[f != 0]
+print(output)
+output.to_csv('FluxesAfterBound.csv')
