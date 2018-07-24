@@ -71,6 +71,16 @@ print('Reactions:', len(model.reactions),
       '; Metabolites', len(model.metabolites),
       '; Genes:', len(model.genes))
 
+print('Cobra results before change')
+model.objective = objective
+if knockouts:
+    # WARNING: only the first gene in knockouts is deleted
+    sol, sta = single_gene_deletion(model,[model.genes.get_by_id(knockouts[0])])
+    print('Status:', sta, 'Solution:', sol)
+else:
+    solution = model.optimize()
+    print('Status:', solution.status, '; Solution:', solution.objective_value)
+
 ### Reads CSV file listing reactions and intended lower and upper bounds
 with open('OldBoundaries.csv', 'rt') as fobj:
     reader = csv.reader(fobj)
@@ -82,3 +92,13 @@ with open('OldBoundaries.csv', 'rt') as fobj:
         reac.upper_bound = float(row[2])
 
 print('Bounds changed')
+
+print('Cobra results after change')
+model.objective = objective
+if knockouts:
+    # WARNING: only the first gene in knockouts is deleted
+    sol, sta = single_gene_deletion(model,[model.genes.get_by_id(knockouts[0])])
+    print('Status:', sta, 'Solution:', sol)
+else:
+    solution = model.optimize()
+    print('Status:', solution.status, '; Solution:', solution.objective_value)
