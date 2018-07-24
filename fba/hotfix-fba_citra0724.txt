@@ -1,0 +1,162 @@
+Reactions: 2585 ; Metabolites 1806 ; Genes: 1368
+Cobra results before change
+Status: optimal ; Solution: 12.412173913043482
+EX_glc_LPAREN_e_RPAREN_ bounds changed
+Cobra results after change
+Status: infeasible ; Solution: -0.5463636363636364 ####################
+EX_ac_LPAREN_e_RPAREN_ bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173908060174
+GLCtexi bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173913043478
+PItex bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173913043478
+ACt2rpp bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173913043478
+ACACtex bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173913043478
+GLCptspp bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.327217667645217
+PIt2rpp bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173913043475
+PGI bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.327204807400896
+PFK bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.41217391304349
+FBP bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.41217391304349
+FBA bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.41217391304349
+TPI bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.269903972798307
+GAPD bounds changed
+Cobra results after change
+Status: optimal ; Solution: 11.607333843778413
+PGK bounds changed
+Cobra results after change
+Status: optimal ; Solution: 11.613042075400003
+PGM bounds changed
+Cobra results after change
+Status: optimal ; Solution: 11.699487108158463
+ENO bounds changed
+Cobra results after change
+Status: optimal ; Solution: 11.699580013855051
+PYK bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173913043471
+PPS bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.42198986369378
+PDH bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173936569921
+G6PDH2r bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173837999994
+PGL bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173837999994
+GND bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412711273422602
+RPE bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.388044797623213
+RPI bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.389314862923241
+EDD bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173910857476
+EDA bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173910857433
+PPC bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.403328664838066
+PPCK bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.419607090389569
+ME1 bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412174175435663
+CS bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173913043478
+ACONTa bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173913043478
+ACONTb bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173913043478
+ICDHyr bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173913043478
+AKGDH bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412174404365217
+SUCOAS bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.41217391304348
+SUCDi bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.41217391304348
+FUM bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.41217391304348
+MDH2 bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.6690401475287
+ICL bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173913043484
+MALS bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173962358608
+PTAr bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.41217391304348
+ACKr bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.41217391304348
+ACS bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.41217391304348
+NADH16pp bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173913043475
+NADH5 bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173858713729
+CYTBO3_4pp bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.26868933737526
+ATPS4rpp bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173913043443
+NADTRHD bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.416678506768758
+ADK1 bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173913043269
+ATPM bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.604406675760002
+ADNCYC bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173913043485
+PDE4 bounds changed
+Cobra results after change
+Status: optimal ; Solution: 12.412173913043485
