@@ -3,9 +3,7 @@
 from __future__ import division, print_function
 import cobra.test
 from cobra import Reaction, Metabolite
-from cobra.flux_analysis import (
-    single_gene_deletion, single_reaction_deletion, double_gene_deletion,
-    double_reaction_deletion)
+
 
 def addCimA(model):
     """Add CimA reaction and sink for citramalate to cobra model model"""
@@ -53,8 +51,8 @@ def addCimA(model):
 #########  MAIN
 
 test = 'all'
-#knockouts = ['b1380', 'b0903'] # list of genes to knock out
-#knockouts = ['b0903'] # list of genes to knock out
+#    knockouts = ['b1380', 'b0903'] # list of genes to knock out
+#    knockouts = ['b0903'] # list of genes to knock out
 knockouts = []
 
 if test == 'core':
