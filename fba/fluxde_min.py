@@ -117,7 +117,7 @@ def de(fobj, bounds, mut=0.6607, crossp=0.9426, popsize=28, its=5):
 boundsrel = np.asarray(boundsrel)
 combolist = choose(listofreactions, n)
   
-with open('j.txt', 'r') as fobj:
+with open('jmin.txt', 'r') as fobj:
     mystr = fobj.readline()
     jdx = int(mystr.strip('\n'))
     
@@ -156,7 +156,7 @@ else:
 
         # printing/writing results
         print(result[-1])
-        with open('fluxde.txt', 'a') as f:
+        with open('fluxdemin.txt', 'a') as f:
             f.write(str(allreactions[jdx]) + '\n')
             f.write(str(combo) + '\n')
             f.write(str(result[-1][0]) + '\n')
@@ -164,7 +164,7 @@ else:
             
         # write the index of reaction to file
         jdx += 1
-        with open('j.txt', 'w') as fobj:
+        with open('jmin.txt', 'w') as fobj:
             fobj.write(str(jdx))
             
             
