@@ -9,38 +9,39 @@ Old boundaries
     (-0.5463636363636376), removed it to produce the above
 
 1d boundaries
-2018-07-25 morning
-0.007488546637764799 (infeasible)
-    A whole slew of fluxes in the negative 1e-19 ~ 1e-17, plus one in 1e-9 and
-    1e-5, so these can perhaps be safely discounted, but there's H2Otpp equal to
-    -0.78. It IS possible to have these values be negative, and the overall
-    solution (productivity) is positive, so it's fine...? Look into this later
-    
-    *** afternoon update : negative values of fluxes actually do not necessarily
-    automatically make the solver status infleasible, because that also happens
-    with the old boundaries.
-    
-    I have no goddamn idea what's going on
+2018-07-25 afternoon
+0.5459307075521895 (optimal)
+Subsequent runs:
+    0.5459307075521945
+    0.5459307075521899
+    0.5459307075521906
+    0.5459307075521931
 
 4d boundaries
-2018-07-25
-0.07230387931751117 (infeasible)
-    This is... ten times as much productivity as 1d boundaries... how??
-    
-    Smaller collection of negative -1e-19 values and bits of -18, -16, -8, all
-    of which can possibly be ignored. H2Otpp is -2.93
-    
+2018-07-25 afternoon  
 COMPLETELY INFEASIBLE after reversing relevant reactions (something I should do)
 Not one reaction is responsible - effect of many
-What the fuck....
 
 5d boundaries
 2018-07-25 afternoon
-0.059248520315013375 (infeasible)
-    here relevant reactions are reversed
-
+0.059248520315013375 (infeasible) - not one reaction is responsible.
+Subsequent runs:
+    0.0991614659555569
+    0.15653464825000019
+    0.0872926071854217
+    
 6d boundaries
 2018-07-25 afternoon
-0.3217833491619046 (infeasible)
-    relevant reactions are reversed here too
-    What the actual fuck... why is it so different from 5d?!
+0.3217833491619046 (infeasible) - not one reaction is responsible.
+Subsequent runs:
+    0.04263138073411965
+    0.2939872403038714
+    0.2528877564999995
+    0.2570475563303036
+        
+....
+Okay, today is just what-the-fuck upon what-the-fucks....
+    
+*** negative values of fluxes actually do not necessarily
+    automatically make the solver status infleasible, because that also happens
+    with the old boundaries.
