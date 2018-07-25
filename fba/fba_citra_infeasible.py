@@ -81,7 +81,7 @@ else:
     solution = model.optimize()
     print('Status:', solution.status, '; Solution:', solution.objective_value)
 
-with open('boundaries/4dBoundaries.csv', 'rt') as fobj:
+with open('boundaries/6dBoundaries.csv', 'rt') as fobj:
     reader = csv.reader(fobj)
     boundslist = list(reader)
     boundslist = boundslist[1:] # removes header
