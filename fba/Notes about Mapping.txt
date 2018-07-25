@@ -1,0 +1,9 @@
+2018-07-25 16:11
+
+Decided that:
+    Kinetic model MDH = Stoichiometric model MDH
+    Kinetic model MQO = Stoichiometric model MDH2
+    
+This conflicts with the 'old boundaries' in Mapping_Kinetic_Mendes_Stoc_Palsson_Optimized.ods,
+and any new files created will follow my mapping above, with commit logs
+reflecting this

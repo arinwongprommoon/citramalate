@@ -16,11 +16,16 @@ Subsequent runs:
     0.5459307075521899
     0.5459307075521906
     0.5459307075521931
+Re-mapping malate dehydrogenases does not affect this result.
 
 4d boundaries
 2018-07-25 afternoon  
 COMPLETELY INFEASIBLE after reversing relevant reactions (something I should do)
 Not one reaction is responsible - effect of many
+0.0 most of the time
+0.07307877471062846
+0.10836051779467817
+0.08371807902086155
 
 5d boundaries
 2018-07-25 afternoon
@@ -45,3 +50,6 @@ Okay, today is just what-the-fuck upon what-the-fucks....
 *** negative values of fluxes actually do not necessarily
     automatically make the solver status infleasible, because that also happens
     with the old boundaries.
+    
+    
+*** re-mapping malate dehydrogenases does not change any results or behaviour
