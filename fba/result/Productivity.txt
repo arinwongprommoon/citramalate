@@ -5,9 +5,16 @@ Default boundaries in stoichiometric model
 Old boundaries
 2018-07-24
 0.6820388946283908
+    EX_glc_LPAREN_e_RPAREN_ bounds make solution infeasible
+    (-0.5463636363636376), removed it to produce the above
 
 1d boundaries
 2018-07-25
+0.007488546637764799 (infeasible)
+    A whole slew of fluxes in the negative 1e-19 ~ 1e-17, plus one in 1e-9 and
+    1e-5, so these can perhaps be safely discounted, but there's H2Otpp equal to
+    -0.78. It IS possible to have these values be negative, and the overall
+    solution (productivity) is positive, so it's fine...? Look into this later
 
 4d boundaries
 2018-07-25
