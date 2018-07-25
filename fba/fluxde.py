@@ -141,8 +141,8 @@ else:
         reacid = allreactions[jdx]
 
         def fobj(x):
-            return flux(reacid, combo, x) # MINIMUM
-            #return -flux(reacid, combo, x) # MAXIMUM
+            #return flux(reacid, combo, x) # MINIMUM
+            return -flux(reacid, combo, x) # MAXIMUM
 
         # computation
         result = list(de(fobj, bounds))
