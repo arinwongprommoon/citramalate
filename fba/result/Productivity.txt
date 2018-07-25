@@ -1,0 +1,13 @@
+Default boundaries in stoichiometric model
+2018-07-24
+12.412173913043482
+
+Old boundaries
+2018-07-24
+0.6820388946283908
+
+1d boundaries
+2018-07-25
+
+4d boundaries
+2018-07-25

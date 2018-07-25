@@ -2,7 +2,6 @@
 # Transform cobra model to Flexible Net (FN)
 from __future__ import division, print_function
 import csv
-import pandas
 import cobra.test
 from cobra import Reaction, Metabolite
 from cobra.flux_analysis import (
@@ -82,29 +81,30 @@ else:
     solution = model.optimize()
     print('Status:', solution.status, '; Solution:', solution.objective_value)
 
-### Reads CSV file listing reactions and intended lower and upper bounds
-with open('boundaries/4dBoundaries.csv', 'rt') as fobj:
+with open('boundaries/OldBoundaries.csv', 'rt') as fobj:
     reader = csv.reader(fobj)
     boundslist = list(reader)
     boundslist = boundslist[1:] # removes header
-    for row in boundslist:
-        reac = model.reactions.get_by_id(row[0])
-        reac.lower_bound = float(row[1])
-        reac.upper_bound = float(row[2])
+    # for row in boundslist:
+    #     reac = model.reactions.get_by_id(row[0])
+    #     reac.lower_bound = float(row[1])
+    #     reac.upper_bound = float(row[2])
 
-print('Bounds changed')
-
-print('Cobra results after change')
-model.objective = objective
-if knockouts:
-    # WARNING: only the first gene in knockouts is deleted
-    sol, sta = single_gene_deletion(model,[model.genes.get_by_id(knockouts[0])])
-    print('Status:', sta, 'Solution:', sol)
-else:
-    solution = model.optimize()
-    print('Status:', solution.status, '; Solution:', solution.objective_value)
-
-f = solution.fluxes
-output = f[f != 0]
-print(output)
-output.to_csv('FluxesAfterBound.csv')
+for row in boundslist:
+    reac = model.reactions.get_by_id(row[0])
+    original_lower_bound = reac.lower_bound
+    original_upper_bound = reac.upper_bound
+    reac.lower_bound = float(row[1])
+    reac.upper_bound = float(row[2])
+    print('%s bounds changed' % row[0])
+    print('Cobra results after change')
+    model.objective = objective
+    if knockouts:
+        # WARNING: only the first gene in knockouts is deleted
+        sol, sta = single_gene_deletion(model,[model.genes.get_by_id(knockouts[0])])
+        print('Status:', sta, 'Solution:', sol)
+    else:
+        solution = model.optimize()
+        print('Status:', solution.status, '; Solution:', solution.objective_value)
+    reac.lower_bound = original_lower_bound
+    reac.upper_bound = original_upper_bound
