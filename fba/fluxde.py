@@ -12,9 +12,7 @@ import sys
 #allreactions = ['PGI', 'PFK', 'FBA', 'TPI', 'GDH', 'PGK', 'GPM', 'ENO', 'PYK', 'ZWF', 'PGL', 'GND', 'RPE', 'RPI', 'X5P_GAP_TKT', 'F6P_E4P_TKT', 'S7P_R5P_TKT', 'F6P_GAP_TAL', 'S7P_E4P_TAL', 'FBP', 'PPC', 'PCK', 'PPS', 'MAD', 'PDH', 'GLT', 'ACN_1', 'ACN_2', 'ICD', 'LPD', 'SK', 'SDH', 'FUMA', 'MQO', 'MDH', 'ACEA', 'ACEB', 'ACEK_1', 'ACEK_2', 'EDD', 'EDA', 'NADH_req', 'PNT_req', 'ADK', 'ATP_syn', 'CYA', 'DOS', 'ACK', 'ACS', 'PTA', 'PTS_0', 'PTS_1', 'PTS_2', 'PTS_3', 'PTS_4', 'GLC_feed', 'CYTBO', 'SQR', 'NDHII', 'GROWTH', 'ATP_MAINTENANCE', 'XCH_GLC', 'PIT', 'XCH_P', 'XCH_ACE1', '_ACE_OUT', 'XCH_ACE2', 'GL6P_HYDROLYSIS']
 
 # REMOVED GLC_FEED 2018-07-25 10:00 BECAUSE IT CAUSES PROBLEMS
-#allreactions = ['PGI', 'PFK', 'FBA', 'TPI', 'GDH', 'PGK', 'GPM', 'ENO', 'PYK', 'ZWF', 'PGL', 'GND', 'RPE', 'RPI', 'X5P_GAP_TKT', 'F6P_E4P_TKT', 'S7P_R5P_TKT', 'F6P_GAP_TAL', 'S7P_E4P_TAL', 'FBP', 'PPC', 'PCK', 'PPS', 'MAD', 'PDH', 'GLT', 'ACN_1', 'ACN_2', 'ICD', 'LPD', 'SK', 'SDH', 'FUMA', 'MQO', 'MDH', 'ACEA', 'ACEB', 'ACEK_1', 'ACEK_2', 'EDD', 'EDA', 'NADH_req', 'PNT_req', 'ADK', 'ATP_syn', 'CYA', 'DOS', 'ACK', 'ACS', 'PTA', 'PTS_0', 'PTS_1', 'PTS_2', 'PTS_3', 'PTS_4', 'CYTBO', 'SQR', 'NDHII', 'GROWTH', 'ATP_MAINTENANCE', 'XCH_GLC', 'PIT', 'XCH_P', 'XCH_ACE1', '_ACE_OUT', 'XCH_ACE2', 'GL6P_HYDROLYSIS']
-
-allreactions = ['CYTBO', 'SQR', 'NDHII', 'GROWTH', 'ATP_MAINTENANCE', 'XCH_GLC', 'PIT', 'XCH_P', 'XCH_ACE1', '_ACE_OUT', 'XCH_ACE2', 'GL6P_HYDROLYSIS']
+allreactions = ['PGI', 'PFK', 'FBA', 'TPI', 'GDH', 'PGK', 'GPM', 'ENO', 'PYK', 'ZWF', 'PGL', 'GND', 'RPE', 'RPI', 'X5P_GAP_TKT', 'F6P_E4P_TKT', 'S7P_R5P_TKT', 'F6P_GAP_TAL', 'S7P_E4P_TAL', 'FBP', 'PPC', 'PCK', 'PPS', 'MAD', 'PDH', 'GLT', 'ACN_1', 'ACN_2', 'ICD', 'LPD', 'SK', 'SDH', 'FUMA', 'MQO', 'MDH', 'ACEA', 'ACEB', 'ACEK_1', 'ACEK_2', 'EDD', 'EDA', 'NADH_req', 'PNT_req', 'ADK', 'ATP_syn', 'CYA', 'DOS', 'ACK', 'ACS', 'PTA', 'PTS_0', 'PTS_1', 'PTS_2', 'PTS_3', 'PTS_4', 'CYTBO', 'SQR', 'NDHII', 'GROWTH', 'ATP_MAINTENANCE', 'XCH_GLC', 'PIT', 'XCH_P', 'XCH_ACE1', '_ACE_OUT', 'XCH_ACE2', 'GL6P_HYDROLYSIS']
 
 # Reads wild-type model
 reader = libsbml.SBMLReader()
@@ -64,10 +62,10 @@ listofreactions = ['GLT', 'LPD', 'GROWTH', 'GDH', 'ATP_syn']
 def choose(mylist, n):
     return list(itertools.combinations(mylist, n))
 
-def flux(k, r, x):
-    # k is the reaction whose flux we care about - a number for now because it's easier
+def flux(reacid, r, x):
+    # k is the reaction whose flux we care about - as string (2018-07-25)
     # r is a list of n reactions
-    # x is a numpy axis with n elements
+    # xpy is a numpy axis with n elements
     for i in range(n):
         setVmax(r[i], x[i])
 
@@ -75,6 +73,7 @@ def flux(k, r, x):
     rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(document))
     result = rr.simulate(0, 7200, 100)
     
+    k = rr.model.getReactionIds().index(reacid)
     return rr.model.getReactionRates()[k]
 
 generations = []
@@ -138,10 +137,12 @@ else:
         print(VmaxI)
         bounds = (VmaxI*(boundsrel.T)).T
         print(bounds)
+        
+        reacid = allreactions[jdx]
 
         def fobj(x):
-            return flux(jdx+56, combo, x) # MINIMUM
-            #return -flux(jdx+56, combo, x) # MAXIMUM
+            return flux(reacid, combo, x) # MINIMUM
+            #return -flux(reacid, combo, x) # MAXIMUM
 
         # computation
         result = list(de(fobj, bounds))
