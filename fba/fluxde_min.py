@@ -50,14 +50,14 @@ iniVmaxes = [Vmaxes[r] for r in reacVmaxes] # initial values of Vmax (as in the 
 wtVmaxes = dict(zip(reacVmaxes, iniVmaxes))
 
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
-n = 6
+n = 7
 
 # REDEFINE Vmax RANGE HERE
 boundsrel = [(0.1, 10.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
 #listofreactions = reacVmaxes
-listofreactions = ['GLT', 'LPD', 'GROWTH', 'GDH', 'ATP_syn', 'ACEA']
+listofreactions = ['GLT', 'LPD', 'GROWTH', 'GDH', 'ATP_syn', 'ACEA', 'ZWF']
 
 def choose(mylist, n):
     return list(itertools.combinations(mylist, n))
