@@ -18,3 +18,9 @@ Old boundaries
 
 4d boundaries
 2018-07-25
+0.07230387931751117 (infeasible)
+    This is... ten times as much productivity as 1d boundaries... how??
+    
+    Smaller collection of negative -1e-19 values and bits of -18, -16, -8, all
+    of which can possibly be ignored. H2Otpp is -2.93
+    
