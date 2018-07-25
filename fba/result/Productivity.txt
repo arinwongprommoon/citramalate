@@ -17,6 +17,9 @@ Subsequent runs:
     0.5459307075521906
     0.5459307075521931
 Re-mapping malate dehydrogenases does not affect this result.
+Enriching this with good boundaries found by 6d returned:
+    0.5459307075521898
+    That was useful...
 
 4d boundaries
 2018-07-25 afternoon  
