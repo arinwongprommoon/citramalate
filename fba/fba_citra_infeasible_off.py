@@ -81,22 +81,32 @@ else:
     solution = model.optimize()
     print('Status:', solution.status, '; Solution:', solution.objective_value)
 
-with open('boundaries/7dBoundaries.csv', 'rt') as fobj:
+# Reads in bounds specified in CSV, stores in boundslist
+with open('boundaries/OldBoundaries.csv', 'rt') as fobj:
     reader = csv.reader(fobj)
     boundslist = list(reader)
     boundslist = boundslist[1:] # removes header
-    # for row in boundslist:
-    #     reac = model.reactions.get_by_id(row[0])
-    #     reac.lower_bound = float(row[1])
-    #     reac.upper_bound = float(row[2])
 
+# Stores default bounds in originalbounds
+originalbounds = {}
 for row in boundslist:
     reac = model.reactions.get_by_id(row[0])
     original_lower_bound = reac.lower_bound
     original_upper_bound = reac.upper_bound
+    originalbounds[reac] = (original_lower_bound, original_upper_bound)
+
+# Sets bounds according to CSV    
+for row in boundslist:
+    reac = model.reactions.get_by_id(row[0])
     reac.lower_bound = float(row[1])
     reac.upper_bound = float(row[2])
-    print('%s bounds changed' % row[0])
+
+# Reverts bounds of each reaction in turn
+for row in boundslist:
+    reac = model.reactions.get_by_id(row[0])
+    reac.lower_bound = originalbounds[reac][0]
+    reac.upper_bound = originalbounds[reac][1]
+    print('%s bounds reverted' % row[0])
     print('Cobra results after change')
     model.objective = objective
     if knockouts:
@@ -106,5 +116,5 @@ for row in boundslist:
     else:
         solution = model.optimize()
         print('Status:', solution.status, '; Solution:', solution.objective_value)
-    reac.lower_bound = original_lower_bound
-    reac.upper_bound = original_upper_bound
+    reac.lower_bound = float(row[1])
+    reac.upper_bound = float(row[2])
