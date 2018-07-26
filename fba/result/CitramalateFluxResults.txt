@@ -3,69 +3,37 @@ Default boundaries in stoichiometric model
 12.412173913043482
 
 Old boundaries
-2018-07-24
-0.6820388946283908
-    EX_glc_LPAREN_e_RPAREN_ bounds make solution infeasible
-    (-0.5463636363636376), removed it to produce the above
+2018-07-26 afternoon
+0.30666662241994413
+    EX_glc_LPAREN_e_RPAREN_ fixed to -0.23 (was +0.23 orignally, and caused problems)
 
 1d boundaries
-2018-07-25 afternoon
-0.5459307075521895 (optimal)
-Subsequent runs:
-    0.5459307075521945
-    0.5459307075521899
-    0.5459307075521906
-    0.5459307075521931
-Re-mapping malate dehydrogenases does not affect this result.
-Enriching this with good boundaries found by 6d returned:
-    0.5459307075521898
-    That was useful...
+2018-07-26 afternoon
+0.24126783510010835 (optimal)
 
 4d boundaries
-2018-07-25 afternoon  
-COMPLETELY INFEASIBLE after reversing relevant reactions (something I should do)
-Not one reaction is responsible - effect of many
-0.0 most of the time
-0.07307877471062846
-0.10836051779467817
-0.08371807902086155
+2018-07-26 afternoon  
+COMPLETELY INFEASIBLE
 
 5d boundaries
-2018-07-25 afternoon
-0.059248520315013375 (infeasible) - not one reaction is responsible.
-Subsequent runs:
-    0.0991614659555569
-    0.15653464825000019
-    0.0872926071854217
+2018-07-26 afternoon
+COMPLETELY INFEASIBLE
     
 6d boundaries
-2018-07-25 afternoon
-0.3217833491619046 (infeasible) - not one reaction is responsible.
-Subsequent runs:
-    0.04263138073411965
-    0.2939872403038714
-    0.2528877564999995
-    0.2570475563303036
+2018-07-26 afternoon
+0.15596242756932374 (optimal)
         
 7d boundaries
-2018-07-26 morning
-COMPLETELY INFEASIBLE - not one reaction is responsible.
+2018-07-26 afternoon
+0.03568578471111086 (optimal) - no idea why it's lower than 6d
 
 'Frankenstein' boundaries
     (taking the best lower bounds and upper bounds from 1d, 4d-7d)
-2018-07-26 morning
-0.6345660635833594 (optimal)
-Subsequent runs:
-    0.6345660635833593
-    0.6345660635833582
-    
-    So measurably better than 1d because of 7d enriching most of the maxima,
-    among other minor adjustments, but also very surprisingly close to the 
-    results from the old boundaries
-
+2018-07-26 afternoon
+0.2412678351001083 (optimal)
+    pretty much exactly the same as 1d even though some are replaced by 7d
+    what the hell....
     
 *** negative values of fluxes actually do not necessarily
     automatically make the solver status infleasible, because that also happens
     with the old boundaries.
-    
-*** re-mapping malate dehydrogenases does not change any results or behaviour
