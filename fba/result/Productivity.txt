@@ -47,12 +47,25 @@ Subsequent runs:
     0.2528877564999995
     0.2570475563303036
         
-....
-Okay, today is just what-the-fuck upon what-the-fucks....
+7d boundaries
+2018-07-26 morning
+COMPLETELY INFEASIBLE - not one reaction is responsible.
+
+'Frankenstein' boundaries
+    (taking the best lower bounds and upper bounds from 1d, 4d-7d)
+2018-07-26 morning
+0.6345660635833594 (optimal)
+Subsequent runs:
+    0.6345660635833593
+    0.6345660635833582
+    
+    So measurably better than 1d because of 7d enriching most of the maxima,
+    among other minor adjustments, but also very surprisingly close to the 
+    results from the old boundaries
+
     
 *** negative values of fluxes actually do not necessarily
     automatically make the solver status infleasible, because that also happens
     with the old boundaries.
-    
     
 *** re-mapping malate dehydrogenases does not change any results or behaviour
