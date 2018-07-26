@@ -83,16 +83,20 @@ else:
     print('Status:', solution.status, '; Solution:', solution.objective_value)
 
 ### Reads CSV file listing reactions and intended lower and upper bounds
-with open('boundaries/OldBoundaries.csv', 'rt') as fobj:
-    reader = csv.reader(fobj)
-    boundslist = list(reader)
-    boundslist = boundslist[1:] # removes header
-    for row in boundslist:
-        reac = model.reactions.get_by_id(row[0])
-        reac.lower_bound = float(row[1])
-        reac.upper_bound = float(row[2])
+#with open('boundaries/OldBoundaries.csv', 'rt') as fobj:
+#    reader = csv.reader(fobj)
+#    boundslist = list(reader)
+#    boundslist = boundslist[1:] # removes header
+#    for row in boundslist:
+#        reac = model.reactions.get_by_id(row[0])
+#        reac.lower_bound = float(row[1])
+#        reac.upper_bound = float(row[2])
+        
+glcfeed = model.reactions.get_by_id('EX_glc_LPAREN_e_RPAREN_')
+glcfeed.lower_bound = -0.23
+glcfeed.upper_bound = -0.23
 
-print('Bounds changed')
+print('EX_glc_LPAREN_e_RPAREN_ bounds changed')
 
 print('Cobra results after change')
 model.objective = objective
