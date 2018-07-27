@@ -16,7 +16,7 @@ allreactions = ['PGI', 'PFK', 'FBA', 'TPI', 'GDH', 'PGK', 'GPM', 'ENO', 'PYK', '
 
 # Reads wild-type model
 reader = libsbml.SBMLReader()
-document = reader.readSBMLFromFile("../kinetic/E_coli_Millard2016.xml")
+document = reader.readSBMLFromFile("../kinetic/E_coli_Millard2016_CITRA.xml")
 model = document.getModel()
 
 # Stealing useful functions from ecolicita
@@ -50,14 +50,14 @@ iniVmaxes = [Vmaxes[r] for r in reacVmaxes] # initial values of Vmax (as in the 
 wtVmaxes = dict(zip(reacVmaxes, iniVmaxes))
 
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
-n = 7
+n = 2
 
 # REDEFINE Vmax RANGE HERE
 boundsrel = [(0.1, 10.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
 #listofreactions = reacVmaxes
-listofreactions = ['CYTBO', 'MQO', 'MDH', 'ZWF', 'GLT', 'GDH', 'ATP_syn']
+listofreactions = ['CYTBO', 'MQO']
 
 def choose(mylist, n):
     return list(itertools.combinations(mylist, n))
@@ -71,7 +71,7 @@ def flux(reacid, r, x):
 
     # Simulate
     rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(document))
-    result = rr.simulate(0, 7200, 100)
+    result = rr.simulate(0+1e-8, 7200, 100)
     
     k = rr.model.getReactionIds().index(reacid)
     return rr.model.getReactionRates()[k]
@@ -101,6 +101,7 @@ def de(fobj, bounds, mut=0.6607, crossp=0.9426, popsize=28, its=5):
             trial = np.where(cross_points, mutant, pop[j])
             trial_denorm = min_b + trial*diff
             # Selection
+            print("Selection")
             f = fobj(trial_denorm)
             if f < fitness[j]:
                 fitness[j] = f

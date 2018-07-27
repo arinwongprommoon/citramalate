@@ -22,7 +22,7 @@ run.npoints = 100 # Number of points to be computed in the simulation
 run.tolerance = 9999
 
 # CHANGE LIST OF REACTIONS HERE
-run.listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'ATP_MAINTENANCE', 'GDH', 'ATP_syn', 'ACEA', 'ZWF']
+run.listofreactions = ['CYTBO', 'MQO']
 
 run.writeFileHeader()
 run.computeCouples()
