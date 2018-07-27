@@ -17,7 +17,7 @@ allreactions = ['PGI', 'PFK', 'FBA', 'TPI', 'GDH', 'PGK', 'GPM', 'ENO', 'PYK', '
 
 # Reads wild-type model
 reader = libsbml.SBMLReader()
-document = reader.readSBMLFromFile("../kinetic/E_coli_Millard2016.xml")
+document = reader.readSBMLFromFile("../kinetic/E_coli_Millard2016_CITRA.xml")
 model = document.getModel()
 
 # Stealing useful functions from ecolicita
@@ -54,11 +54,11 @@ wtVmaxes = dict(zip(reacVmaxes, iniVmaxes))
 n = 7
 
 # REDEFINE Vmax RANGE HERE
-boundsrel = [(0.1, 10.0)] * n
+boundsrel = [(0.2, 10.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
 #listofreactions = reacVmaxes
-listofreactions = ['GLT', 'LPD', 'GROWTH', 'GDH', 'ATP_syn', 'ACEA', 'ZWF']
+listofreactions = ['CYTBO', 'MQO', 'MDH', 'ZWF', 'GLT', 'GDH', 'ATP_syn']
 
 def choose(mylist, n):
     return list(itertools.combinations(mylist, n))
