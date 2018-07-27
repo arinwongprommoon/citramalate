@@ -7,8 +7,7 @@ from ecolicitra import ecolicit, mmCITRA, mmGLC
 include_CITRA = True
 ecit = ecolicit(include_CITRA = include_CITRA)
 ecit.setVmax('CITRA_SYN', 4.0)
-ecit.setVmax('CYTBO', 0.854050)
-ecit.setVmax('MQO', 16.3032)
+
 ecit.time0 = 0
 ecit.timef = 2*3600 # final simulation time in seconds
 ecit.npoints = 100 # Number of points to be computed in the simulation
