@@ -9,7 +9,7 @@ import csv
 
 # Reads wild-type model
 reader = libsbml.SBMLReader()
-document = reader.readSBMLFromFile("../kinetic/E_coli_Millard2016.xml")
+document = reader.readSBMLFromFile("../kinetic/E_coli_Millard2016_CITRA.xml")
 model = document.getModel()
 
 # Stealing useful functions from ecolicita
@@ -48,7 +48,7 @@ wtVmaxes = dict(zip(reacVmaxes, iniVmaxes))
 start = 0.1
 end = 10.0
 points = 200
-fluxdata = np.empty(shape=(68,points))
+fluxdata = np.empty(shape=(69,points))
 
 # read the index of the reaction from file
 with open('fluxi.txt', 'r') as fobj:
@@ -75,7 +75,7 @@ else:
         # Simulate
         rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(document))
         result = rr.simulate(0, 7200, 100)
-
+        
         # Put reaction rates into array
         for noreac, reac in enumerate(rr.model.getReactionIds()):
             fluxdata[noreac][i] = rr.model.getReactionRates()[noreac]
