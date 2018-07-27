@@ -37,3 +37,12 @@ COMPLETELY INFEASIBLE
 *** negative values of fluxes actually do not necessarily
     automatically make the solver status infleasible, because that also happens
     with the old boundaries.
+    
+INCORPORATING CITRAMALATE IN KINETIC MODEL
+
+1d boundaries
+0.25992918174195967
+
+7d boundaries (note this uses a different list of reactions in the DE, based on the flux control coefficients)
+0.4787739588018578
+OH MY GOD
