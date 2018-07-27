@@ -57,7 +57,7 @@ boundsrel = [(0.1, 10.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
 #listofreactions = reacVmaxes
-listofreactions = ['GLT', 'LPD', 'GROWTH', 'GDH', 'ATP_syn', 'ACEA', 'ZWF']
+listofreactions = ['CYTBO', 'MQO', 'MDH', 'ZWF', 'GLT', 'GDH', 'ATP_syn']
 
 def choose(mylist, n):
     return list(itertools.combinations(mylist, n))
