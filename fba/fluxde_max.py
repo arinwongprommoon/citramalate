@@ -101,6 +101,7 @@ def de(fobj, bounds, mut=0.6607, crossp=0.9426, popsize=28, its=5):
                 cross_points[np.random.randint(0, dimensions)] = True
             trial = np.where(cross_points, mutant, pop[j])
             trial_denorm = min_b + trial*diff
+            print(trial_denorm) ######################
             # Selection
             f = fobj(trial_denorm)
             if f < fitness[j]:

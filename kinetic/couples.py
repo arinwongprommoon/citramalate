@@ -122,7 +122,13 @@ class Coupl(ecolicit):
                 if writemethod == 'steadystate':
                     Ptemp[ij] = self.compsteady()
                 else:
-                    Ptemp[ij] = self.comproducti(tol=self.tolerance)
+                    #Ptemp[ij] = self.comproducti(tol=self.tolerance)
+                    try:
+                        Ptemp[ij] = self.comproducti(tol=self.tolerance)
+                    except RuntimeError:
+                        print('RuntimeError')
+                        Ptemp[ij] = -1e-4
+                        
                 ij += 1
 
             elapsed_time = time.time() - start_time
