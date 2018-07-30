@@ -83,7 +83,7 @@ else:
     print('Status:', solution.status, '; Solution:', solution.objective_value)
 
 ### Reads CSV file listing reactions and intended lower and upper bounds
-with open('boundaries_citra/7dBoundaries_citra.csv', 'rt') as fobj:
+with open('boundaries_citra/ppptest.csv', 'rt') as fobj:
     reader = csv.reader(fobj)
     boundslist = list(reader)
     boundslist = boundslist[1:] # removes header
