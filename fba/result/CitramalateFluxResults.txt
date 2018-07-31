@@ -62,6 +62,13 @@ ADDING CONSTRAINTS TO GLUCOSE UPTAKE AND PPP
 (alternate set of 7d boundaries found by running the scripts again)
 as expected
 
-'Frankenstein' of all of the above
+0.1874652219843159
+(another alternate set of 7d boundaries)
+
+'Frankenstein' of 1D+7D+7D
 0.2623063738070584
 measurable increase but not very impressive (well, it's 0.9%...)
+
+'Frankenstein' of 1D+7D+7D+7D
+0.2623189049346125
+pretty much no increase from the last Frankenstein
