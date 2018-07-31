@@ -73,7 +73,7 @@ with open('Objectives_default.csv', 'w') as fobj:
     writer = csv.writer(fobj)
     for reaction in model.reactions:
         model.objective = reaction.id
-        solution = model.optimize()
+        solution = model.optimize(objective_sense='minimize')
         # here for entertainment purposes only - who the hell looks at 2,585 lines on the screen?
         print(reaction.id, '; Status:', solution.status, '; Solution:', solution.objective_value)
         writer.writerow([reaction.id, solution.objective_value])
@@ -98,7 +98,7 @@ with open(filename, 'w') as fobj:
     writer = csv.writer(fobj)
     for reaction in model.reactions:
         model.objective = reaction.id
-        solution = model.optimize()
+        solution = model.optimize(objective_sense='minimize')
         # here for entertainment purposes only - who the hell looks at 2,585 lines on the screen?
         print(reaction.id, '; Status:', solution.status, '; Solution:', solution.objective_value)
         writer.writerow([reaction.id, solution.objective_value])
