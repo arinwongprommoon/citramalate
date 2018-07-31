@@ -73,10 +73,8 @@ with open('Objectives_default.csv', 'w') as fobj:
     writer = csv.writer(fobj)
     for reaction in model.reactions:
         model.objective = reaction.id
-        solution = model.optimize()
-        # here for entertainment purposes only - who the hell looks at 2,585 lines on the screen?
-        print(reaction.id, '; Status:', solution.status, '; Solution:', solution.objective_value)
-        writer.writerow([reaction.id, solution.objective_value])
+        solution = model.slim_optimize()
+        writer.writerow([reaction.id, solution])
 
 ### Reads CSV file listing reactions and intended lower and upper bounds
 boundariesfile = '7dBoundaries_stoichall.csv'
@@ -98,10 +96,8 @@ with open(filename, 'w') as fobj:
     writer = csv.writer(fobj)
     for reaction in model.reactions:
         model.objective = reaction.id
-        solution = model.optimize()
-        # here for entertainment purposes only - who the hell looks at 2,585 lines on the screen?
-        print(reaction.id, '; Status:', solution.status, '; Solution:', solution.objective_value)
-        writer.writerow([reaction.id, solution.objective_value])
+        solution = model.slim_optimize()
+        writer.writerow([reaction.id, solution])
 
 #f = solution.fluxes
 #output = f[f != 0]
