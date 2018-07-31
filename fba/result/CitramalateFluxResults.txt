@@ -46,3 +46,13 @@ INCORPORATING CITRAMALATE IN KINETIC MODEL
 7d boundaries (note this uses a different list of reactions in the DE, based on the flux control coefficients)
 (2018-07-30)
 0.1730898762726604
+
+ADDING CONSTRAINTS TO GLUCOSE UPTAKE AND PPP
+
+1d boundaries
+(2018-07-31)
+0.2599291192470501
+
+7d boundaries (derived from above)
+0.17312322210000042 
+(interestingly the flux increases here, but ever so slightly...)
