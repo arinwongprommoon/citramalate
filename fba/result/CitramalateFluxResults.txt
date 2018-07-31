@@ -54,5 +54,6 @@ ADDING CONSTRAINTS TO GLUCOSE UPTAKE AND PPP
 0.2599291192470501
 
 7d boundaries (derived from above)
+(2018-07-31)
 0.17312322210000042 
 (interestingly the flux increases here, but ever so slightly...)
