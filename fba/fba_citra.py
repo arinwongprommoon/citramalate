@@ -79,11 +79,11 @@ if knockouts:
     sol, sta = single_gene_deletion(model,[model.genes.get_by_id(knockouts[0])])
     print('Status:', sta, 'Solution:', sol)
 else:
-    solution = model.optimize()
+    solution = model.optimize(objective_sense='maximize')
     print('Status:', solution.status, '; Solution:', solution.objective_value)
 
 ### Reads CSV file listing reactions and intended lower and upper bounds
-with open('boundaries_citra/frankenstein201807311224.csv', 'rt') as fobj:
+with open('boundaries_citra/1dBoundaries_stoichall.csv', 'rt') as fobj:
     reader = csv.reader(fobj)
     boundslist = list(reader)
     boundslist = boundslist[1:] # removes header
@@ -101,10 +101,17 @@ if knockouts:
     sol, sta = single_gene_deletion(model,[model.genes.get_by_id(knockouts[0])])
     print('Status:', sta, 'Solution:', sol)
 else:
-    solution = model.optimize()
+    solution = model.optimize(objective_sense='maximize')
     print('Status:', solution.status, '; Solution:', solution.objective_value)
 
 f = solution.fluxes
 output = f[f != 0]
-print(output)
 output.to_csv('FluxesAfterBound.csv')
+print('Output to CSV')
+
+print('Model summary.....')
+model.summary()
+print('Citramalate summary....')
+model.metabolites.citramalate_c.summary()
+print('Flux through growth....')
+print(f[7]) # Ec_biomass_iJO1366_core_53p95M is the 8th reaction
