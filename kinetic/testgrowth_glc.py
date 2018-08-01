@@ -3,13 +3,16 @@ from __future__ import division, print_function
 import libsbml
 import roadrunner
 import numpy as np
+import csv
 
 """Read and print main model features"""
 reader = libsbml.SBMLReader()
 document = reader.readSBMLFromFile("E_coli_Millard2016.xml")
 model = document.getModel()
 
-X = np.linspace(0.1, 0.5, 10, endpoint=True)
+X = np.linspace(0.67, 0.69, 21, endpoint=True)
+
+mylist = []
 
 for feed in X:
 
@@ -27,12 +30,12 @@ for feed in X:
     print("Maximum derivative at final time:", max(abs(rr.model.getFloatingSpeciesConcentrationRates())))
     growthidx = rr.model.getReactionIds().index("GROWTH")
 
-
-    specselection = ["GLCx", "GLCp"]
+    specselection = ["GLCx", "GLCp", "G6P"]
     specids = [rr.model.getFloatingSpeciesIds().index(s) for s in specselection]   
     print("Concentrations")
     for i in xrange(len(specselection)):
         print(specselection[i], ":", rr.model.getFloatingSpeciesConcentrations()[specids[i]])
+        mylist.append(rr.model.getFloatingSpeciesConcentrations()[specids[i]])
 
     reacselection = ['GLC_feed', 'XCH_GLC', 'PTS_0', 'PTS_1', 'PTS_2', 'PTS_3', 'PTS_4']
     reacids = [rr.model.getReactionIds().index(r) for r in reacselection]   
@@ -41,3 +44,6 @@ for feed in X:
         print(reacselection[i], ":", rr.model.getReactionRates()[reacids[i]])
         
     print('\n')
+    
+myarray = np.reshape(mylist, (21,3))
+np.savetxt('testgrowth_glc.csv', myarray, delimiter=',')
