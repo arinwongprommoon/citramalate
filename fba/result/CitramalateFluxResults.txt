@@ -86,4 +86,6 @@ CORRECTED MAPPING FOR GLUCOSE AND ACETATE EXCHANGE
     
 8d boundaries, 5 generations
 (2018-08-01)
-....
+0.1924651396176814
+    yeah that'sg better than 7d after 10 generations
+    will just keep adding enzymes in my free time
