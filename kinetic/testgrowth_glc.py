@@ -10,7 +10,26 @@ reader = libsbml.SBMLReader()
 document = reader.readSBMLFromFile("E_coli_Millard2016.xml")
 model = document.getModel()
 
-X = np.linspace(0.67, 0.69, 21, endpoint=True)
+def setVmax(reacId, value):
+    # Units: mM/s
+    reac = model.getReaction(reacId)
+    lo = reac.getListOfAllElements()
+    for el in lo:
+        if type(el) is libsbml.Parameter:
+            if el.getId() == 'Vmax':
+                el.setValue(value)
+
+def setKm(reacId, value):
+    reac = model.getReaction(reacId)
+    lo = reac.getListOfAllElements()
+    for el in lo:
+        if type(el) is libsbml.Parameter:
+            if el.getId() == 'Km':
+                el.setValue(value)
+
+#setVmax('XCH_GLC', 2000)
+
+X = np.linspace(0, 1, 21, endpoint=True)
 
 mylist = []
 
