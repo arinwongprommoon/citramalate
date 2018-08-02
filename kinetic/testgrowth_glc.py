@@ -7,7 +7,7 @@ import csv
 
 """Read and print main model features"""
 reader = libsbml.SBMLReader()
-document = reader.readSBMLFromFile("E_coli_Millard2016.xml")
+document = reader.readSBMLFromFile("E_coli_Millard2016_CITRA.xml")
 model = document.getModel()
 
 def setVmax(reacId, value):
@@ -47,16 +47,15 @@ for feed in X:
 
     """Print results"""
     print("Maximum derivative at final time:", max(abs(rr.model.getFloatingSpeciesConcentrationRates())))
-    growthidx = rr.model.getReactionIds().index("GROWTH")
 
-    specselection = ["GLCx", "GLCp", "G6P"]
+    specselection = ["GLCx", "GLCp", "G6P", 'iGROWTH']
     specids = [rr.model.getFloatingSpeciesIds().index(s) for s in specselection]   
     print("Concentrations")
     for i in xrange(len(specselection)):
         print(specselection[i], ":", rr.model.getFloatingSpeciesConcentrations()[specids[i]])
         mylist.append(rr.model.getFloatingSpeciesConcentrations()[specids[i]])
 
-    reacselection = ['GLC_feed', 'XCH_GLC', 'PTS_0', 'PTS_1', 'PTS_2', 'PTS_3', 'PTS_4']
+    reacselection = ['GROWTH', 'GLC_feed', 'XCH_GLC', 'PTS_0', 'PTS_1', 'PTS_2', 'PTS_3', 'PTS_4']
     reacids = [rr.model.getReactionIds().index(r) for r in reacselection]   
     print("Reaction rates")  
     for i in xrange(len(reacselection)):
@@ -64,5 +63,5 @@ for feed in X:
         
     print('\n')
     
-myarray = np.reshape(mylist, (21,3))
+myarray = np.reshape(mylist, (21,4))
 np.savetxt('testgrowth_glc.csv', myarray, delimiter=',')

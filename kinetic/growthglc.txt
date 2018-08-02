@@ -1,0 +1,378 @@
+Glucose feeding rate: 0.0 mmol/s
+Maximum derivative at final time: 1.6184774958e-08
+Concentrations
+GLCx : 5.98826512946e-41
+GLCp : 5.33340503647e-41
+G6P : 3.36378339227e-24
+iGROWTH : 3.93307087494e-05
+Reaction rates
+GROWTH : -1.90142610697e-228
+GLC_feed : 0.0
+XCH_GLC : 6.54860092984e-41
+PTS_0 : -1.67392743572e-28
+PTS_1 : 3.46944695195e-18
+PTS_2 : 0.0
+PTS_3 : 0.0
+PTS_4 : 6.02749933025e-41
+
+
+Glucose feeding rate: 0.05 mmol/s
+Maximum derivative at final time: 0.0486466844399
+Concentrations
+GLCx : 0.00568861213078
+GLCp : 0.000685425112159
+G6P : 0.0376990976796
+iGROWTH : 4.18403904084e-05
+Reaction rates
+GROWTH : 1.27487983102e-18
+GLC_feed : 0.05
+XCH_GLC : 0.05
+PTS_0 : 0.05
+PTS_1 : 0.05
+PTS_2 : 0.05
+PTS_3 : 0.05
+PTS_4 : 0.05
+
+
+Glucose feeding rate: 0.1 mmol/s
+Maximum derivative at final time: 0.0867777836461
+Concentrations
+GLCx : 0.0114635691113
+GLCp : 0.00145065488734
+G6P : 0.30824443244
+iGROWTH : 0.00215035198516
+Reaction rates
+GROWTH : 2.92391093772e-09
+GLC_feed : 0.1
+XCH_GLC : 0.1
+PTS_0 : 0.1
+PTS_1 : 0.1
+PTS_2 : 0.1
+PTS_3 : 0.1
+PTS_4 : 0.1
+
+
+Glucose feeding rate: 0.15 mmol/s
+Maximum derivative at final time: 0.131097102584
+Concentrations
+GLCx : 0.017358976941
+GLCp : 0.00232944430909
+G6P : 0.560122548489
+iGROWTH : 0.0319553091712
+Reaction rates
+GROWTH : 4.43163830365e-08
+GLC_feed : 0.15
+XCH_GLC : 0.15
+PTS_0 : 0.15
+PTS_1 : 0.15
+PTS_2 : 0.15
+PTS_3 : 0.15
+PTS_4 : 0.15
+
+
+Glucose feeding rate: 0.2 mmol/s
+Maximum derivative at final time: 0.175688854777
+Concentrations
+GLCx : 0.0233963765785
+GLCp : 0.00334289802924
+G6P : 0.837366975778
+iGROWTH : 0.153684429667
+Reaction rates
+GROWTH : 2.13391340406e-07
+GLC_feed : 0.2
+XCH_GLC : 0.2
+PTS_0 : 0.2
+PTS_1 : 0.2
+PTS_2 : 0.2
+PTS_3 : 0.2
+PTS_4 : 0.2
+
+
+Glucose feeding rate: 0.25 mmol/s
+Maximum derivative at final time: 0.219399598227
+Concentrations
+GLCx : 0.0296112702282
+GLCp : 0.0045259272345
+G6P : 1.20032896897
+iGROWTH : 0.477741563649
+Reaction rates
+GROWTH : 6.63511248415e-07
+GLC_feed : 0.25
+XCH_GLC : 0.25
+PTS_0 : 0.25
+PTS_1 : 0.25
+PTS_2 : 0.25
+PTS_3 : 0.25
+PTS_4 : 0.25
+
+
+Glucose feeding rate: 0.3 mmol/s
+Maximum derivative at final time: 0.261297216848
+Concentrations
+GLCx : 0.0360529417821
+GLCp : 0.00592700195092
+G6P : 1.68254405392
+iGROWTH : 1.14114797007
+Reaction rates
+GROWTH : 1.58502807412e-06
+GLC_feed : 0.3
+XCH_GLC : 0.3
+PTS_0 : 0.3
+PTS_1 : 0.3
+PTS_2 : 0.3
+PTS_3 : 0.3
+PTS_4 : 0.3
+
+
+Glucose feeding rate: 0.35 mmol/s
+Maximum derivative at final time: 0.30055748212
+Concentrations
+GLCx : 0.0427917745571
+GLCp : 0.00761534962245
+G6P : 2.32012928583
+iGROWTH : 2.27726191762
+Reaction rates
+GROWTH : 3.16322562852e-06
+GLC_feed : 0.35
+XCH_GLC : 0.35
+PTS_0 : 0.35
+PTS_1 : 0.35
+PTS_2 : 0.35
+PTS_3 : 0.35
+PTS_4 : 0.35
+
+
+Glucose feeding rate: 0.4 mmol/s
+Maximum derivative at final time: 0.336564553411
+Concentrations
+GLCx : 0.0499312181685
+GLCp : 0.00969272240618
+G6P : 3.19322143669
+iGROWTH : 4.00212883339
+Reaction rates
+GROWTH : 5.55936857332e-06
+GLC_feed : 0.4
+XCH_GLC : 0.4
+PTS_0 : 0.4
+PTS_1 : 0.4
+PTS_2 : 0.4
+PTS_3 : 0.4
+PTS_4 : 0.4
+
+
+Glucose feeding rate: 0.45 mmol/s
+Maximum derivative at final time: 0.367864264745
+Concentrations
+GLCx : 0.0576267872232
+GLCp : 0.0123120623999
+G6P : 4.51279537978
+iGROWTH : 6.57635016396
+Reaction rates
+GROWTH : 9.13567644312e-06
+GLC_feed : 0.45
+XCH_GLC : 0.45
+PTS_0 : 0.449999999999
+PTS_1 : 0.45
+PTS_2 : 0.45
+PTS_3 : 0.45
+PTS_4 : 0.45
+
+
+Glucose feeding rate: 0.5 mmol/s
+Maximum derivative at final time: 0.392218020355
+Concentrations
+GLCx : 0.0661227121721
+GLCp : 0.0157135309564
+G6P : 6.63129649941
+iGROWTH : 10.399372005
+Reaction rates
+GROWTH : 1.44474195291e-05
+GLC_feed : 0.5
+XCH_GLC : 0.5
+PTS_0 : 0.5
+PTS_1 : 0.5
+PTS_2 : 0.5
+PTS_3 : 0.5
+PTS_4 : 0.5
+
+
+Glucose feeding rate: 0.55 mmol/s
+Maximum derivative at final time: 0.412172575182
+Concentrations
+GLCx : 0.0758499450602
+GLCp : 0.0203210048357
+G6P : 10.0106620944
+iGROWTH : 15.0341364459
+Reaction rates
+GROWTH : 2.08875192309e-05
+GLC_feed : 0.55
+XCH_GLC : 0.55
+PTS_0 : 0.549999999999
+PTS_1 : 0.55
+PTS_2 : 0.55
+PTS_3 : 0.55
+PTS_4 : 0.55
+
+
+Glucose feeding rate: 0.6 mmol/s
+Maximum derivative at final time: 0.430717916898
+Concentrations
+GLCx : 0.0876277899841
+GLCp : 0.0269403809585
+G6P : 16.3488281477
+iGROWTH : 19.9230180679
+Reaction rates
+GROWTH : 2.76822380472e-05
+GLC_feed : 0.6
+XCH_GLC : 0.6
+PTS_0 : 0.6
+PTS_1 : 0.6
+PTS_2 : 0.6
+PTS_3 : 0.6
+PTS_4 : 0.6
+
+
+Glucose feeding rate: 0.65 mmol/s
+Maximum derivative at final time: 0.448293953303
+Concentrations
+GLCx : 0.103212644309
+GLCp : 0.0372993165629
+G6P : 35.6951447466
+iGROWTH : 24.9147915597
+Reaction rates
+GROWTH : 3.462752737e-05
+GLC_feed : 0.65
+XCH_GLC : 0.65
+PTS_0 : 0.650000000002
+PTS_1 : 0.65
+PTS_2 : 0.65
+PTS_3 : 0.65
+PTS_4 : 0.65
+
+
+Glucose feeding rate: 0.7 mmol/s
+Maximum derivative at final time: 0.465106769862
+Concentrations
+GLCx : 0.127446103959
+GLCp : 0.0561608553047
+G6P : 527.112476157
+iGROWTH : 29.7871871076
+Reaction rates
+GROWTH : 4.17021677589e-05
+GLC_feed : 0.7
+XCH_GLC : 0.699999999403
+PTS_0 : 0.700000001576
+PTS_1 : 0.699999999393
+PTS_2 : 0.699999999393
+PTS_3 : 0.699999999402
+PTS_4 : 0.699999999402
+
+
+Glucose feeding rate: 0.75 mmol/s
+Maximum derivative at final time: 0.482800456893
+Concentrations
+GLCx : 0.178763455288
+GLCp : 0.101660281998
+G6P : 9336.09667105
+iGROWTH : 29.0800320155
+Reaction rates
+GROWTH : 4.09962437149e-05
+GLC_feed : 0.75
+XCH_GLC : 0.749999953889
+PTS_0 : 0.749999907495
+PTS_1 : 0.749999953363
+PTS_2 : 0.749999953376
+PTS_3 : 0.749999953774
+PTS_4 : 0.749999953763
+
+
+Glucose feeding rate: 0.8 mmol/s
+Maximum derivative at final time: 0.498396610862
+Concentrations
+GLCx : 0.438384637724
+GLCp : 0.352061128723
+G6P : 18868.0465747
+iGROWTH : 27.0091814762
+Reaction rates
+GROWTH : 3.81019708561e-05
+GLC_feed : 0.8
+XCH_GLC : 0.799999470541
+PTS_0 : 0.799999479202
+PTS_1 : 0.799999468965
+PTS_2 : 0.799999468969
+PTS_3 : 0.799999469239
+PTS_4 : 0.79999946925
+
+
+Glucose feeding rate: 0.85 mmol/s
+Maximum derivative at final time: 0.505055588045
+Concentrations
+GLCx : 201.127182171
+GLCp : 197.766021619
+G6P : 23066.4248577
+iGROWTH : 26.0489724005
+Reaction rates
+GROWTH : 3.67868548989e-05
+GLC_feed : 0.85
+XCH_GLC : 0.822014286752
+PTS_0 : 0.821945601843
+PTS_1 : 0.821945467811
+PTS_2 : 0.821945467807
+PTS_3 : 0.821945467666
+PTS_4 : 0.821945467672
+
+
+Glucose feeding rate: 0.9 mmol/s
+Maximum derivative at final time: 0.505063474051
+Concentrations
+GLCx : 559.196805044
+GLCp : 549.995229984
+G6P : 23090.1668423
+iGROWTH : 26.0443889685
+Reaction rates
+GROWTH : 3.67858133609e-05
+GLC_feed : 0.9
+XCH_GLC : 0.822162307403
+PTS_0 : 0.821970938801
+PTS_1 : 0.821970893947
+PTS_2 : 0.821970893946
+PTS_3 : 0.821970894067
+PTS_4 : 0.821970894067
+
+
+Glucose feeding rate: 0.95 mmol/s
+Maximum derivative at final time: 0.505065217247
+Concentrations
+GLCx : 918.018508392
+GLCp : 902.962525104
+G6P : 23096.5055595
+iGROWTH : 26.0433724242
+Reaction rates
+GROWTH : 3.67855554882e-05
+GLC_feed : 0.95
+XCH_GLC : 0.822290510561
+PTS_0 : 0.821976366537
+PTS_1 : 0.82197644138
+PTS_2 : 0.82197644139
+PTS_3 : 0.821976441859
+PTS_4 : 0.821976441863
+
+
+Glucose feeding rate: 1.0 mmol/s
+Maximum derivative at final time: 0.505065982195
+Concentrations
+GLCx : 1276.99012276
+GLCp : 1256.07555394
+G6P : 23099.4963354
+iGROWTH : 26.0429609855
+Reaction rates
+GROWTH : 3.67854764868e-05
+GLC_feed : 1.0
+XCH_GLC : 0.822415599066
+PTS_0 : 0.821978877255
+PTS_1 : 0.821978878677
+PTS_2 : 0.82197887868
+PTS_3 : 0.82197887894
+PTS_4 : 0.82197887894
+
+
