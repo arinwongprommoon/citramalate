@@ -99,6 +99,12 @@ Anargyros's boundaries
     yeah that's better than 7d after 10 generations
     will just keep adding enzymes in my free time
     
+46d boundaries, 5 generations
+(2018-08-02)
+0.2917185323901061
+    most of the mins are pretty much 0, unlike the 8d boundaries, so
+    I doubt the authenticity of this
+    
 + exchange reactions constrained according to lund
 1d
 glc = 0.23: 0.2676265673163718

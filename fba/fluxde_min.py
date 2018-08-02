@@ -12,9 +12,8 @@ import sys
 #allreactions = ['PGI', 'PFK', 'FBA', 'TPI', 'GDH', 'PGK', 'GPM', 'ENO', 'PYK', 'ZWF', 'PGL', 'GND', 'RPE', 'RPI', 'X5P_GAP_TKT', 'F6P_E4P_TKT', 'S7P_R5P_TKT', 'F6P_GAP_TAL', 'S7P_E4P_TAL', 'FBP', 'PPC', 'PCK', 'PPS', 'MAD', 'PDH', 'GLT', 'ACN_1', 'ACN_2', 'ICD', 'LPD', 'SK', 'SDH', 'FUMA', 'MQO', 'MDH', 'ACEA', 'ACEB', 'ACEK_1', 'ACEK_2', 'EDD', 'EDA', 'NADH_req', 'PNT_req', 'ADK', 'ATP_syn', 'CYA', 'DOS', 'ACK', 'ACS', 'PTA', 'PTS_0', 'PTS_1', 'PTS_2', 'PTS_3', 'PTS_4', 'GLC_feed', 'CYTBO', 'SQR', 'NDHII', 'GROWTH', 'ATP_MAINTENANCE', 'XCH_GLC', 'PIT', 'XCH_P', 'XCH_ACE1', '_ACE_OUT', 'XCH_ACE2', 'GL6P_HYDROLYSIS']
 
 # REMOVED GLC_FEED 2018-07-25 10:00 BECAUSE IT CAUSES PROBLEMS
-#allreactions = ['PGI', 'PFK', 'FBA', 'TPI', 'GDH', 'PGK', 'GPM', 'ENO', 'PYK', 'ZWF', 'PGL', 'GND', 'RPE', 'RPI', 'X5P_GAP_TKT', 'F6P_E4P_TKT', 'S7P_R5P_TKT', 'F6P_GAP_TAL', 'S7P_E4P_TAL', 'FBP', 'PPC', 'PCK', 'PPS', 'MAD', 'PDH', 'GLT', 'ACN_1', 'ACN_2', 'ICD', 'LPD', 'SK', 'SDH', 'FUMA', 'MQO', 'MDH', 'ACEA', 'ACEB', 'ACEK_1', 'ACEK_2', 'EDD', 'EDA', 'NADH_req', 'PNT_req', 'ADK', 'ATP_syn', 'CYA', 'DOS', 'ACK', 'ACS', 'PTA', 'PTS_0', 'PTS_1', 'PTS_2', 'PTS_3', 'PTS_4', 'CYTBO', 'SQR', 'NDHII', 'GROWTH', 'ATP_MAINTENANCE', 'XCH_GLC', 'PIT', 'XCH_P', 'XCH_ACE1', '_ACE_OUT', 'XCH_ACE2', 'GL6P_HYDROLYSIS']
+allreactions = ['PGI', 'PFK', 'FBA', 'TPI', 'GDH', 'PGK', 'GPM', 'ENO', 'PYK', 'ZWF', 'PGL', 'GND', 'RPE', 'RPI', 'X5P_GAP_TKT', 'F6P_E4P_TKT', 'S7P_R5P_TKT', 'F6P_GAP_TAL', 'S7P_E4P_TAL', 'FBP', 'PPC', 'PCK', 'PPS', 'MAD', 'PDH', 'GLT', 'ACN_1', 'ACN_2', 'ICD', 'LPD', 'SK', 'SDH', 'FUMA', 'MQO', 'MDH', 'ACEA', 'ACEB', 'ACEK_1', 'ACEK_2', 'EDD', 'EDA', 'NADH_req', 'PNT_req', 'ADK', 'ATP_syn', 'CYA', 'DOS', 'ACK', 'ACS', 'PTA', 'PTS_0', 'PTS_1', 'PTS_2', 'PTS_3', 'PTS_4', 'CYTBO', 'SQR', 'NDHII', 'GROWTH', 'ATP_MAINTENANCE', 'XCH_GLC', 'PIT', 'XCH_P', 'XCH_ACE1', '_ACE_OUT', 'XCH_ACE2', 'GL6P_HYDROLYSIS']
 
-allreactions = ['XCH_GLC', 'PIT', 'XCH_P', 'XCH_ACE1', '_ACE_OUT', 'XCH_ACE2', 'GL6P_HYDROLYSIS']
 
 # Reads wild-type model
 reader = libsbml.SBMLReader()
@@ -52,14 +51,14 @@ iniVmaxes = [Vmaxes[r] for r in reacVmaxes] # initial values of Vmax (as in the 
 wtVmaxes = dict(zip(reacVmaxes, iniVmaxes))
 
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
-n = 8
+n = 46
 
 # REDEFINE Vmax RANGE HERE
-boundsrel = [(0.3, 10.0)] * n
+boundsrel = [(0.5, 10.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
 #listofreactions = reacVmaxes
-listofreactions = ['CYTBO', 'MQO', 'MDH', 'ZWF', 'GLT', 'GDH', 'ATP_syn', 'ACK']
+listofreactions = ["CYTBO", "MQO", "MDH", "ZWF", "GLT", "GDH", "ATP_syn", "ACK", "ACEA", "EDD", "ACS", "GROWTH", "GND", "LPD", "PDH", "PPS", "FBP", "MAD", "PPC", "NDHII", "PIT", "PFK", "SDH", "PYK", "PGI", "PCK", "PTA", "ACEB", "EDA", "SQR", "FBA", "RPI", "ENO", "ACN_1", "ACN_2", "TPI", "RPE", "GPM", "PGL", "FUMA", "XCH_GLC", "SK", "XCH_P", "PGK", "XCH_ACE1", "XCH_ACE2"]
 
 def choose(mylist, n):
     return list(itertools.combinations(mylist, n))
