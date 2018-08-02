@@ -98,3 +98,8 @@ Anargyros's boundaries
 0.1924651396176814
     yeah that's better than 7d after 10 generations
     will just keep adding enzymes in my free time
+    
++ exchange reactions constrained according to lund
+1d
+glc = 0.23: 0.2676265673163718
+glc = 0.68: 0.5582743016411907
