@@ -1,0 +1,116 @@
+Default boundaries in stoichiometric model
+2018-07-24
+12.412173913043482
+
+Old boundaries
+2018-07-26 afternoon
+0.30666662241994413
+    EX_glc_LPAREN_e_RPAREN_ fixed to -0.23 (was +0.23 orignally, and caused problems)
+
+1d boundaries
+2018-07-26 afternoon
+0.24126783510010835 (optimal)
+
+4d boundaries
+2018-07-26 afternoon  
+COMPLETELY INFEASIBLE
+
+5d boundaries
+2018-07-26 afternoon
+COMPLETELY INFEASIBLE
+    
+6d boundaries
+2018-07-26 afternoon
+0.15596242756932374 (optimal)
+        
+7d boundaries
+2018-07-26 afternoon
+0.03568578471111086 (optimal) - no idea why it's lower than 6d
+
+'Frankenstein' boundaries
+    (taking the best lower bounds and upper bounds from 1d, 4d-7d)
+2018-07-26 afternoon
+0.2412678351001083 (optimal)
+    pretty much exactly the same as 1d even though some are replaced by 7d
+    what the hell....
+    
+*** negative values of fluxes actually do not necessarily
+    automatically make the solver status infleasible, because that also happens
+    with the old boundaries.
+    
+INCORPORATING CITRAMALATE IN KINETIC MODEL
+
+1d boundaries
+0.25992918174195967
+
+7d boundaries (note this uses a different list of reactions in the DE, based on the flux control coefficients)
+(2018-07-30)
+0.1730898762726604
+
+ADDING CONSTRAINTS TO GLUCOSE UPTAKE AND PPP
+
+1d boundaries
+(2018-07-31)
+0.2599291192470501
+
+7d boundaries (derived from above)
+(2018-07-31)
+0.17312322210000042 
+(interestingly the flux increases here, but ever so slightly...)
+
+0.1875014743555557
+(alternate set of 7d boundaries found by running the scripts again)
+as expected
+
+0.1874652219843159
+(another alternate set of 7d boundaries)
+
+'Frankenstein' of 1D+7D+7D
+0.2623063738070584
+measurable increase but not very impressive (well, it's 0.9%...)
+
+'Frankenstein' of 1D+7D+7D+7D
+0.2623189049346125
+pretty much no increase from the last Frankenstein
+
+CORRECTED MAPPING FOR GLUCOSE AND ACETATE EXCHANGE
+
+Anargyros's boundaries
+    note: take the flux values he found and put in sheet 2 and mapped them to reactions according to my corrected mapping
+(2018-08-02)
+0.3066666224199442
+
+1d boundaries
+(2018-08-02)
+0.2599291817213423
+
+7d boundaries, 5 generations, alternate set 1 (the 2018-07-31 set, but re-mapped because Anargyros is a git)
+(2018-08-01)
+0.18750147435555553
+
+7d boundaries, 10 generations
+(2018-08-01)
+0.1919469906857141
+    increase, but not very good. It's a 2.3% increase
+    
+8d boundaries, 5 generations
+(2018-08-01)
+0.1924651396176814
+    yeah that's better than 7d after 10 generations
+    will just keep adding enzymes in my free time
+    
+46d boundaries, 5 generations
+(2018-08-02)
+0.2917185323901061
+    most of the mins are pretty much 0, unlike the 8d boundaries, so
+    I doubt the authenticity of this
+    
++ exchange reactions constrained according to lund
+1d
+glc = -0.23: 0.2676265673163718
+glc = -0.68: 0.5582743016411907
+(2018-08-03)
+glc = -10.0: 0.7813046236586969
+feed equal to concentration multiplied by growth rate (mu) of 0.1 h-1: infeasible
+everything in the lund medium = -10.0: 4.890173808719396 (this is interesting)
+everything in the lund medium = -1000: 4.978473050910305 (huh...)
