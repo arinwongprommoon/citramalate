@@ -107,5 +107,10 @@ Anargyros's boundaries
     
 + exchange reactions constrained according to lund
 1d
-glc = 0.23: 0.2676265673163718
-glc = 0.68: 0.5582743016411907
+glc = -0.23: 0.2676265673163718
+glc = -0.68: 0.5582743016411907
+(2018-08-03)
+glc = -10.0: 0.7813046236586969
+feed equal to concentration multiplied by growth rate (mu) of 0.1 h-1: infeasible
+everything in the lund medium = -10.0: 4.890173808719396 (this is interesting)
+everything in the lund medium = -1000: 4.978473050910305 (huh...)
