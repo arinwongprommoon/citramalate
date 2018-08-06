@@ -12,15 +12,16 @@ import matplotlib.pyplot as plt
 import roadrunner
 import libsbml
 import time
+from scipy.optimize import differential_evolution
 
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
-n = 10
+n = 2
 
 # REDEFINE Vmax RANGE HERE
 boundsrel = [(0.1, 10.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
-listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'GDH', 'ATP_syn', 'ACEA', 'PYK', 'ZWF', 'NDHII', 'MQO']
+listofreactions = ['GLT', 'LPD']
 
 # Create kinetic model
 include_CITRA = True
@@ -43,40 +44,44 @@ def productivity(r, x):
 generations = []
 
 # DE algorithm adapted from Pablo R Mier
-def de(fobj, bounds, mut=0.6607, crossp=0.9426, popsize=28, its=50):
-    dimensions = len(bounds)
-    # Initialisation
-    pop = np.random.rand(popsize, dimensions)
-    min_b, max_b = np.asarray(bounds).T
-    diff = np.fabs(min_b - max_b)
-    pop_denorm = min_b + pop*diff
-    fitness = np.asarray([fobj(ind) for ind in pop_denorm])
-    best_idx = np.argmin(fitness)
-    for i in range(its):
-        for j in range(popsize):
-            # Mutation
-            idxs = [idx for idx in range(popsize) if idx != j]
-            a, b, c = pop[np.random.choice(idxs, 3, replace = False)]
-            mutant = np.clip(a + mut*(b-c), 0, 1)
-            # Recombination
-            cross_points = np.random.rand(dimensions) < crossp
-            if not np.any(cross_points):
-                cross_points[np.random.randint(0, dimensions)] = True
-            trial = np.where(cross_points, mutant, pop[j])
-            trial_denorm = min_b + trial*diff
-            # Selection
-            f = fobj(trial_denorm)
-            if f < fitness[j]:
-                fitness[j] = f
-                pop[j] = trial
-                if f < fitness[best_idx]:
-                    best_idx = j
-                    best = trial_denorm
-                    generations.append(i)
-                    # I don't actually need this print line but
-                    # I like seeing that stuff happens while I run code
-                    print(str(i) + ' ' + str(j))
-                    yield best, fitness[best_idx]
+#def de(fobj, bounds, mut=0.6607, crossp=0.9426, popsize=28, its=10):
+#    dimensions = len(bounds)
+#    # Initialisation
+#    pop = np.random.rand(popsize, dimensions)
+#    min_b, max_b = np.asarray(bounds).T
+#    diff = np.fabs(min_b - max_b)
+#    pop_denorm = min_b + pop*diff
+#    fitness = np.asarray([fobj(ind) for ind in pop_denorm])
+#    best_idx = np.argmin(fitness)
+#    for i in range(its):
+#        for j in range(popsize):
+#            # Mutation
+#            idxs = [idx for idx in range(popsize) if idx != j]
+#            a, b, c = pop[np.random.choice(idxs, 3, replace = False)]
+#            mutant = np.clip(a + mut*(b-c), 0, 1)
+#            # Recombination
+#            cross_points = np.random.rand(dimensions) < crossp
+#            if not np.any(cross_points):
+#                cross_points[np.random.randint(0, dimensions)] = True
+#            trial = np.where(cross_points, mutant, pop[j])
+#            trial_denorm = min_b + trial*diff
+#            # Selection
+#            f = fobj(trial_denorm)
+#            if f < fitness[j]:
+#                fitness[j] = f
+#                pop[j] = trial
+#                if f < fitness[best_idx]:
+#                    best_idx = j
+#                    best = trial_denorm
+#                    generations.append(i)
+#                    # I don't actually need this print line but
+#                    # I like seeing that stuff happens while I run code
+#                    print(str(i) + ' ' + str(j))
+#                    yield best, fitness[best_idx]
+                    
+def de(fobj, bounds, mut=0.6607, crossp=0.9426, popsize=28, its=10):
+    deresult = differential_evolution(fobj, bounds, maxiter=its, popsize=popsize, mutation=mut, recombination=crossp)
+    return deresult.x, deresult.fun
 
 boundsrel = np.asarray(boundsrel)
 combolist = choose(listofreactions, n)
@@ -99,7 +104,8 @@ for combo in combolist:
         return -productivity(combo, x)
 
     # computation
-    result = list(de(fobj, bounds))
+    #result = list(de(fobj, bounds))
+    result = de(fobj, bounds)
 
     elapsed_time = time.time() - start_time
     print(elapsed_time) # time tracking
@@ -109,14 +115,15 @@ for combo in combolist:
         ecit.setVmax(combo[i], VmaxI[i])
     
     # printing/writing results
-    print(result[-1])
+    #print(result[-1])
+    print(result)
     with open('de.txt', 'a') as f:
         f.write(str(combo) + '\n')
-        f.write(str(result[-1][0]) + '\n')
-        f.write('Fitness: ' + str(result[-1][1]) + '\n')
+        f.write(str(result[0]) + '\n')
+        f.write('Fitness: ' + str(result[1]) + '\n')
 
     # plot convergence
-    x, f = zip(*result)
-    ff = list(f)
-    plt.plot(generations, ff)
-    plt.show()
+#    x, f = zip(*result)
+#    ff = list(f)
+#    plt.plot(generations, ff)
+#    plt.show()
