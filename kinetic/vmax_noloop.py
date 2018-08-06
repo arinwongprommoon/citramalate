@@ -31,7 +31,7 @@ xFormatter = FormatStrFormatter('%.2f')
 # Sets X values from start*default Vmax to 5.0*default Vmax
 # Plot uses 'points' number of points e.g. 20
 start = 0.1
-end = 1.0
+end = 10.0
 points = 100
 
 # writes header
@@ -74,7 +74,7 @@ else:
     ax = plt.subplot(111)
     plt.plot(XX,P)
     #plt.ylim(0.0007, 0.0017)
-    plt.ylim(0.0002, 0.0051) # accomodates CITRA_SYN, which shows highest variation
+    #plt.ylim(0.0002, 0.0051) # accomodates CITRA_SYN, which shows highest variation
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
     ax.xaxis.set_major_formatter(xFormatter)
     plt.title(reaction)
