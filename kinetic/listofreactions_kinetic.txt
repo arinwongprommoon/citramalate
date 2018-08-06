@@ -1,0 +1,97 @@
+List of reactions in the kinetic model that have Vmax as a parameter
+
+ACEA
+ACEB
+ACK
+ACN_1
+ACN_2
+ACS
+ATP_MAINTENANCE - several reactions that consume ATP lumped together
+ATP_syn
+CITRA_SYN - citramalate synthesis, added in this project
+CYTBO
+EDA
+EDD
+ENO
+FBA
+FBP
+FUMA
+GDH
+GLT
+GND
+GPM
+GROWTH - artificial reaction to simulate biomass synthesis
+LPD
+MAD
+MDH
+MQO
+NADH_req - I'm guessing these are reactions that require NADH lumped together??
+NDHII - ??
+PCK
+PDH
+PFK
+PGI
+PGK
+PGL
+PIT - transport of phosphate, rate modelled as a function of H+ gradient
+PPC
+PPS
+PTA
+PYK
+RPE
+RPI
+SDH
+SK
+SQR
+TPI
+XCH_ACE1 - exchange reaction, with arbitrary parameter values
+XCH_ACE2 - exchange reaction, with arbitrary parameter values
+XCH_GLC - exchange reaction, with arbitrary parameter values
+XCH_P - exchange reaction, with arbitrary parameter values
+ZWF
+
+This is therefore a list of 'real' reactions, to the best of my knowledge:
+
+ACEA
+ACEB
+ACK
+ACN_1
+ACN_2
+ACS
+ATP_syn
+CITRA_SYN
+CYTBO
+EDA
+EDD
+ENO
+FBA
+FBP
+FUMA
+GDH
+GLT
+GND
+GPM
+LPD
+MAD
+MDH
+MQO
+PCK
+PDH
+PFK
+PGI
+PGK
+PGL
+PIT
+PPC
+PPS
+PTA
+PYK
+RPE
+RPI
+SDH
+SK
+SQR
+TPI
+ZWF
+
+41 reactions
