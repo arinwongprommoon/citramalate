@@ -1,0 +1,3 @@
+list: fcc top 10
+vmax: 0.4 to 10.0 to avoid cvode errors
+tol: 1e-6 (steadystate)

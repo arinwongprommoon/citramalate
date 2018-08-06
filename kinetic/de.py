@@ -17,10 +17,10 @@ import time
 n = 10
 
 # REDEFINE Vmax RANGE HERE
-boundsrel = [(0.1, 10.0)] * n
+boundsrel = [(0.4, 10.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
-listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'GDH', 'ATP_syn', 'ACEA', 'PYK', 'ZWF', 'NDHII', 'MQO']
+listofreactions = ['CYTBO', 'MQO', 'MDH', 'ZWF', 'GLT', 'GDH', 'ATP_syn', 'ACK', 'ACEA', 'EDD']
 
 # Create kinetic model
 include_CITRA = True

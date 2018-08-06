@@ -15,13 +15,13 @@ import time
 from scipy.optimize import differential_evolution
 
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
-n = 2
+n = 10
 
 # REDEFINE Vmax RANGE HERE
-boundsrel = [(0.1, 10.0)] * n
+boundsrel = [(0.4, 10.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
-listofreactions = ['GLT', 'LPD']
+listofreactions = ['CYTBO', 'MQO', 'MDH', 'ZWF', 'GLT', 'GDH', 'ATP_syn', 'ACK', 'ACEA', 'EDD']
 
 # Create kinetic model
 include_CITRA = True
@@ -41,8 +41,8 @@ def productivity(r, x):
         ecit.setVmax(r[i], x[i])
     return ecit.comproducti()
                     
-def de(fobj, bounds, mut=0.6607, crossp=0.9426, popsize=28, its=10):
-    deresult = differential_evolution(fobj, bounds, strategy='rand1bin', maxiter=its, popsize=popsize, mutation=(0.5,1), recombination=crossp, disp=True)
+def de(fobj, bounds, mut=0.6607, crossp=0.9426, popsize=28, its=20):
+    deresult = differential_evolution(fobj, bounds, strategy='best1bin', maxiter=its, popsize=popsize, mutation=(0.5,1), recombination=crossp, disp=True)
     return deresult.x, deresult.fun
 
 boundsrel = np.asarray(boundsrel)

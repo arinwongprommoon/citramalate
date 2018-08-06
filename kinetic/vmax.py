@@ -62,6 +62,7 @@ for reaction in listofreactions:
     plt.plot(XX,P)
     #plt.ylim(0.0007, 0.0017)
     #plt.ylim(0.0002, 0.0051) # accomodates CITRA_SYN, which shows highest variation
+    plt.ylim(0.0070, 0.23) # for flux
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
     ax.xaxis.set_major_formatter(xFormatter)
 
