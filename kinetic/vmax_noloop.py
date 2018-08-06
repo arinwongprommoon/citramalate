@@ -77,6 +77,8 @@ else:
     plt.ylim(0.0002, 0.0051) # accomodates CITRA_SYN, which shows highest variation
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
     ax.xaxis.set_major_formatter(xFormatter)
+    plt.xlabel('Vmax, in multiples of the wild-type Vmax for this reaction')
+    plt.ylabel('Citramalate productivity, h-1')
 
     filename = 'ONE_' + reaction + '.png'
     plt.savefig(filename, bbox_inches='tight')
