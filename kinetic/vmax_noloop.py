@@ -34,8 +34,8 @@ start = 0.1
 end = 1.0
 points = 100
 
-# Clears data in file, writes header
-with open("VMAXDATA.txt", 'w') as fobj:
+# writes header
+with open("VMAXDATA.txt", 'a') as fobj:
     fobj.write('time0 ' + str(ecit.time0) + '\n')
     fobj.write('timef ' + str(ecit.timef) + '\n')
     fobj.write('Vmax ' + str(start) + 'to' + str(end) + '\n\n')
@@ -74,9 +74,10 @@ else:
     ax = plt.subplot(111)
     plt.plot(XX,P)
     #plt.ylim(0.0007, 0.0017)
-    plt.ylim(0.0002, 0.0051) # accomodates CITRA_SYN, which shows highest variation
+    #plt.ylim(0.0002, 0.0051) # accomodates CITRA_SYN, which shows highest variation
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
     ax.xaxis.set_major_formatter(xFormatter)
+    plt.title(reaction)
     plt.xlabel('Vmax, in multiples of the wild-type Vmax for this reaction')
     plt.ylabel('Citramalate productivity, h-1')
 
