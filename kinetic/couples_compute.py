@@ -12,15 +12,15 @@ from couples import Coupl
 import sys
 
 #Run simulations, writes data both into TXT and NPZ
-run = Coupl(xstart=0.1, xend=10.0, ystart=0.1, yend=10.0, points=10) # define vmax ranges here
+run = Coupl(xstart=0.4, xend=10.0, ystart=0.4, yend=10.0, points=10) # define vmax ranges here
 run.setVmax('CITRA_SYN', 4.0)
 run.time0 = 0
 run.timef = 2*3600 # final simulation time in seconds
 run.npoints = 100 # Number of points to be computed in the simulation
-run.tolerance = 1e-8
+run.tolerance = 1e-6
 #run.listofreactions = ['CITRA_SYN', 'GLT', 'LPD'] # define list of reactions
-run.listofreactions = ['CITRA_SYN', 'GLT', 'LPD', 'ATP_MAINTENANCE', 'GDH', 'ATP_syn', 'ACEA', 'ZWF']
+run.listofreactions = ['CYTBO', 'MQO', 'MDH', 'ZWF', 'GLT', 'GDH', 'ATP_syn', 'ACK', 'ACEA', 'EDD']
 
 run.writeFileHeader()
-out = run.computeCouplesNoLoop(writemethod='steadystate')
+out = run.computeCouplesNoLoop(writemethod='writeToBoth')
 sys.exit(out)

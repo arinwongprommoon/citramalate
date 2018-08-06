@@ -163,15 +163,14 @@ class ecolicit:
                       If the system has not reached steady state, this function
                       will return -1e-4 instead of the productivity value.
         """
-        selection = ["CITRA"]
         rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
-        rr.timeCourseSelections = selection
+       # rr.timeCourseSelections = selection
         result = rr.simulate(self.time0, self.timef, self.npoints)
         # -2: removes GROWTH and CITRA from the list because they aren't steady
         # state anyway
         st = max(abs(rr.model.getFloatingSpeciesConcentrationRates())[:-2])
         if st < tol:
-            return result[-1,selection.index("CITRA")]
+            return rr.model.getReactionRates()[68] # CITRA_SYN is reaction No.69
         else:
             return -1e-4
 
