@@ -31,7 +31,7 @@ xFormatter = FormatStrFormatter('%.2f')
 # Sets X values from start*default Vmax to 5.0*default Vmax
 # Plot uses 'points' number of points e.g. 20
 start = 0.1
-end = 10.0
+end = 1.0
 points = 100
 
 # writes header
@@ -64,7 +64,7 @@ else:
     P = []
     for i in range(points):
         ecit.setVmax(reaction, X[i])
-        P.append(ecit.comproducti())
+        P.append(ecit.comflux())
     # redefines X so that I can get a plot of productivity against multiples of
     # Vmax because all the methods I used to get rid of floating point
     # representation errors while plotting do not work. X still retained for
@@ -79,7 +79,7 @@ else:
     ax.xaxis.set_major_formatter(xFormatter)
     plt.title(reaction)
     plt.xlabel('Vmax, in multiples of the wild-type Vmax for this reaction')
-    plt.ylabel('Citramalate productivity, h-1')
+    plt.ylabel('Citramalate flux, mM s-1')
 
     filename = 'ONE_' + reaction + '.png'
     plt.savefig(filename, bbox_inches='tight')
