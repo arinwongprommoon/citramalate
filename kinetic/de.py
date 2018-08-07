@@ -14,13 +14,13 @@ import libsbml
 import time
 
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
-n = 10
+n = 41
 
 # REDEFINE Vmax RANGE HERE
-boundsrel = [(0.4, 10.0)] * n
+boundsrel = [(0.5, 10.0)] * n
 
 # REDEFINE LIST OF REACTIONS HERE
-listofreactions = ['CYTBO', 'MQO', 'MDH', 'ZWF', 'GLT', 'GDH', 'ATP_syn', 'ACK', 'ACEA', 'EDD']
+listofreactions = ["ACEA", "ACEB", "ACK", "ACN_1", "ACN_2", "ACS", "ATP_syn", "CITRA_SYN", "CYTBO", "EDA", "EDD", "ENO", "FBA", "FBP", "FUMA", "GDH", "GLT", "GND", "GPM", "LPD", "MAD", "MDH", "MQO", "PCK", "PDH", "PFK", "PGI", "PGK", "PGL", "PIT", "PPC", "PPS", "PTA", "PYK", "RPE", "RPI", "SDH", "SK", "SQR", "TPI", "ZWF"]
 
 # Create kinetic model
 include_CITRA = True
@@ -43,7 +43,7 @@ def productivity(r, x):
 generations = []
 
 # DE algorithm adapted from Pablo R Mier
-def de(fobj, bounds, mut=0.6607, crossp=0.9426, popsize=28, its=50):
+def de(fobj, bounds, mut=0.6876, crossp=0.9784, popsize=48, its=25):
     dimensions = len(bounds)
     # Initialisation
     pop = np.random.rand(popsize, dimensions)
