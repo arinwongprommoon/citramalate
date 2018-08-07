@@ -151,7 +151,9 @@ class ecolicit:
                 st = max(ff)
                 ii = np.where(ff==st)
                 sp = rr.model.getFloatingSpeciesIds()[ii[0][0]]
-                print("st = ", st, "(", sp, ")")
+                glcx = rr.model.getFloatingSpeciesConcentrations()[rr.model.getFloatingSpeciesIds().index("GLCx")]
+                glcp = rr.model.getFloatingSpeciesConcentrations()[rr.model.getFloatingSpeciesIds().index("GLCp")]
+                print("st", st, "(", sp, "); GLCx =", glcx, "; GLCp =", glcp)
             return st
         else:
             if st < tol:
