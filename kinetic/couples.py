@@ -220,8 +220,11 @@ class Coupl(ecolicit):
             if writemethod == 'steadystate':
                 Ptemp[ij] = self.compsteady()
             else:
-                print("Vmaxes", xi, ",", yi)
                 Ptemp[ij] = self.comproducti(tol=self.tolerance, steadystate=True)
+                # BODGE 20180807
+                if Ptemp[ij] == -1:
+                    print("Vmaxes", xi, ",", yi)
+                    
             ij += 1
 
         elapsed_time = time.time() - start_time

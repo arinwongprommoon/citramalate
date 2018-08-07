@@ -154,7 +154,9 @@ class ecolicit:
                 glcx = rr.model.getFloatingSpeciesConcentrations()[rr.model.getFloatingSpeciesIds().index("GLCx")]
                 glcp = rr.model.getFloatingSpeciesConcentrations()[rr.model.getFloatingSpeciesIds().index("GLCp")]
                 print("st", st, "(", sp, "); GLCx =", glcx, "; GLCp =", glcp)
-            return st
+                return -1 #BODGE 20180807
+            else: #BODGE 20180807
+                return st
         else:
             if st < tol:
                 Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
