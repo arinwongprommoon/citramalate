@@ -114,3 +114,70 @@ glc = -10.0: 0.7813046236586969
 feed equal to concentration multiplied by growth rate (mu) of 0.1 h-1: infeasible
 everything in the lund medium = -10.0: 4.890173808719396 (this is interesting)
 everything in the lund medium = -1000: 4.978473050910305 (huh...)
+
+
+FINAL
+
+41d boundaries, 5 generations
+(2018-08-08)
+
+Reactions: 2585 ; Metabolites 1806 ; Genes: 1368
+Cobra results before change
+Status: optimal ; Solution: 12.412173913043478
+Bounds changed
+Cobra results after change
+Status: optimal ; Solution: 0.2921942327636263
+Output to CSV
+Model summary.....
+IN FLUXES             OUT FLUXES    OBJECTIVES
+--------------------  ------------  ----------------
+glc_DASH_D_e  0.23    h_e    0.292  CitraSink  0.292
+co2_e         0.081   h2o_e  0.211
+o2_e          0.0651
+Citramalate summary....
+PRODUCING REACTIONS -- (R)-citramalate (citrama...)
+---------------------------------------------------
+%       FLUX  RXN ID     REACTION
+----  ------  ---------  -------------------------------------------------
+100%   0.292  CIMA       accoa_c + h2o_c + pyr_c --> citramalate_c + coa_c
+
+CONSUMING REACTIONS -- (R)-citramalate (citrama...)
+---------------------------------------------------
+%       FLUX  RXN ID     REACTION
+----  ------  ---------  -------------------------------------------------
+100%   0.292  CitraSink  citramalate_c -->
+Flux through growth....
+0.0
+
+41d boundaries, 5 generations, everything in the Lund medium = -1000
+(2018-08-08)
+
+Reactions: 2585 ; Metabolites 1806 ; Genes: 1368
+Cobra results before change
+Status: optimal ; Solution: 12.412173913043475
+Bounds changed
+Cobra results after change
+Status: optimal ; Solution: 1.1692861450338867
+Output to CSV
+Model summary.....
+IN FLUXES            OUT FLUXES        OBJECTIVES
+-------------------  ----------------  ---------------
+glc_DASH_D_e  3.57   h_e       3.12    CitraSink  1.17
+o2_e          2.34   5dglcn_e  3.11
+co2_e         0.77   h2o_e     2.73
+cit_e         0.398  succ_e    0.0144
+Citramalate summary....
+PRODUCING REACTIONS -- (R)-citramalate (citrama...)
+---------------------------------------------------
+%       FLUX  RXN ID     REACTION
+----  ------  ---------  -------------------------------------------------
+100%    1.17  CIMA       accoa_c + h2o_c + pyr_c --> citramalate_c + coa_c
+
+CONSUMING REACTIONS -- (R)-citramalate (citrama...)
+---------------------------------------------------
+%       FLUX  RXN ID     REACTION
+----  ------  ---------  -------------------------------------------------
+100%    1.17  CitraSink  citramalate_c -->
+Flux through growth....
+0.0
+
