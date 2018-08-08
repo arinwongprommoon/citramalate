@@ -64,7 +64,7 @@ print('Reactions:', len(model.reactions),
       
 # Re-defining objective function to be the product of flux through citramalate
 # and the growth reaction
-model.solver = 'scipy' # can't do it - must use the commercial 'cplex''
+model.solver = 'scipy' # can't do it - must use the commercial 'cplex'
 product_objective = model.problem.Objective(
     model.reactions.get_by_id('Ec_biomass_iJO1366_core_53p95M').flux_expression * 
     model.reactions.get_by_id('CitraSink').flux_expression, direction = 'max')
