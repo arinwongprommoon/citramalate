@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
-# Transform cobra model to Flexible Net (FN)
+# Uses bondaries specified in CSV file to set boundaries for FBA on the
+# stoichiometric model. Finds optimal solution (maximise sense) using
+# citramalate flux as the objective function, and prints out additional info
 from __future__ import division, print_function
 import csv
-import pandas
 import cobra.test
 from cobra import Reaction, Metabolite
-from cobra.flux_analysis import (
-    single_gene_deletion, single_reaction_deletion, double_gene_deletion,
-    double_reaction_deletion)
+
+# DEFINE FILE TO BE LOADED FOR FBA BOUNDS HERE
+loc = 'result/obj/Objectives_bounds-41dBoundaries_ALL.csv'
+
+modelfile = "MODEL1108160000" # DEFINE MODEL FILE HERE
+objective = 'CitraSink' # DEFINE OBJECTIVE REACTION HERE
 
 def addCimA(model):
-    """Add CimA reaction and sink for citramalate to cobra model model"""
+    """Add CimA reaction and sink for citramalate to cobra model"""
     reaccima = Reaction('CIMA')
     reaccima.name = '(R)-Citramalate production'
     reaccima.lower_bound = 0.0
@@ -51,39 +55,16 @@ def addCimA(model):
     model.add_reaction(reaccisink)
     reaccisink.objective_coefficient = 0.0
 
-#########  MAIN
-
-test = 'all'
-#knockouts = ['b1380', 'b0903'] # list of genes to knock out
-#knockouts = ['b0903'] # list of genes to knock out
-knockouts = []
-
-if test == 'core':
-    modelfile = "ecoli_core_model"
-    objective = 'Biomass_Ecoli_core_w_GAM'
-elif test == 'all':
-    modelfile = "MODEL1108160000"
-#        objective = 'Ec_biomass_iJO1366_core_53p95M'
-    objective = 'CitraSink'
-
 model = cobra.io.read_sbml_model(modelfile+'.xml')
 addCimA(model)
-print('Reactions:', len(model.reactions),
-      '; Metabolites', len(model.metabolites),
-      '; Genes:', len(model.genes))
 
 print('Cobra results before change')
 model.objective = objective
-if knockouts:
-    # WARNING: only the first gene in knockouts is deleted
-    sol, sta = single_gene_deletion(model,[model.genes.get_by_id(knockouts[0])])
-    print('Status:', sta, 'Solution:', sol)
-else:
-    solution = model.optimize(objective_sense='maximize')
-    print('Status:', solution.status, '; Solution:', solution.objective_value)
+solution = model.optimize(objective_sense='maximize')
+print('Status:', solution.status, '; Solution:', solution.objective_value)
 
 ### Reads CSV file listing reactions and intended lower and upper bounds
-with open('result/obj/Objectives_bounds-41dBoundaries_ALL.csv', 'rt') as fobj:
+with open(loc, 'rt') as fobj:
     reader = csv.reader(fobj)
     boundslist = list(reader)
     boundslist = boundslist[1:] # removes header
@@ -95,14 +76,8 @@ with open('result/obj/Objectives_bounds-41dBoundaries_ALL.csv', 'rt') as fobj:
 print('Bounds changed')
 
 print('Cobra results after change')
-model.objective = objective
-if knockouts:
-    # WARNING: only the first gene in knockouts is deleted
-    sol, sta = single_gene_deletion(model,[model.genes.get_by_id(knockouts[0])])
-    print('Status:', sta, 'Solution:', sol)
-else:
-    solution = model.optimize(objective_sense='maximize')
-    print('Status:', solution.status, '; Solution:', solution.objective_value)
+solution = model.optimize(objective_sense='maximize')
+print('Status:', solution.status, '; Solution:', solution.objective_value)
 
 f = solution.fluxes
 output = f[f != 0]
@@ -113,5 +88,3 @@ print('Model summary.....')
 model.summary()
 print('Citramalate summary....')
 model.metabolites.citramalate_c.summary()
-print('Flux through growth....')
-print(f[7]) # Ec_biomass_iJO1366_core_53p95M is the 8th reaction

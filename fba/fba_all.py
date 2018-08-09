@@ -1,17 +1,23 @@
 #!/usr/bin/env python3
-# Transform cobra model to Flexible Net (FN)
+# Uses bondaries specified in CSV file to set boundaries for FBA on the
+# stoichiometric model. Finds optimal solution (maximise sense) cycling through
+# all objective functions possible
 from __future__ import division, print_function
-import time
 import csv
-import pandas
 import cobra.test
 from cobra import Reaction, Metabolite
-from cobra.flux_analysis import (
-    single_gene_deletion, single_reaction_deletion, double_gene_deletion,
-    double_reaction_deletion)
+
+# DEFINE BOUNDARY FILE HERE
+boundariesfile = '41dBoundaries.csv' # NAME OF FILE
+fileloc = 'boundaries_citra/'+boundariesfile # DIRECTORY
+
+modelfile = "MODEL1108160000" # DEFINE MODEL FILE HERE
+
+ # DEFINE OBJECTIVE SENSE HERE 'minimize' or 'maximize'
+objective_sense = 'minimize'
 
 def addCimA(model):
-    """Add CimA reaction and sink for citramalate to cobra model model"""
+    """Add CimA reaction and sink for citramalate to cobra model"""
     reaccima = Reaction('CIMA')
     reaccima.name = '(R)-Citramalate production'
     reaccima.lower_bound = 0.0
@@ -52,20 +58,9 @@ def addCimA(model):
     model.add_reaction(reaccisink)
     reaccisink.objective_coefficient = 0.0
 
-#########  MAIN
-
-modelfile = "MODEL1108160000"
-#objective = 'Ec_biomass_iJO1366_core_53p95M'
-objective = 'CitraSink'
-
-# Adds citramalate reaction
 model = cobra.io.read_sbml_model(modelfile+'.xml')
 addCimA(model)
-print('Citramalate reaction added to stoichiometric model')
-print('Reactions:', len(model.reactions),
-      '; Metabolites', len(model.metabolites),
-      '; Genes:', len(model.genes))
-      
+
 # Loops through all 2,585 reactions - prints objective values to CSV
 # (here as a control)
 print('Cobra results before change')
@@ -73,14 +68,11 @@ with open('Objectives_default.csv', 'w') as fobj:
     writer = csv.writer(fobj)
     for reaction in model.reactions:
         model.objective = reaction.id
-        solution = model.optimize(objective_sense='minimize')
-        # here for entertainment purposes only - who the hell looks at 2,585 lines on the screen?
-        print(reaction.id, '; Status:', solution.status, '; Solution:', solution.objective_value)
+        solution = model.optimize(objective_sense=objective_sense)
+        #print(reaction.id, '; Status:', solution.status, '; Solution:', solution.objective_value)
         writer.writerow([reaction.id, solution.objective_value])
 
 ### Reads CSV file listing reactions and intended lower and upper bounds
-boundariesfile = '41dBoundaries.csv'
-fileloc = 'boundaries_citra/'+boundariesfile
 with open(fileloc, 'rt') as fobj:
     reader = csv.reader(fobj)
     boundslist = list(reader)
@@ -92,18 +84,12 @@ with open(fileloc, 'rt') as fobj:
 
 print('Bounds changed')
 
-print('Cobra results before change')
+# Loops through all 2,585 reactions - prints objective values to CSV
 filename = 'Objectives_bounds-' + boundariesfile
 with open(filename, 'w') as fobj:
     writer = csv.writer(fobj)
     for reaction in model.reactions:
         model.objective = reaction.id
-        solution = model.optimize(objective_sense='minimize')
-        # here for entertainment purposes only - who the hell looks at 2,585 lines on the screen?
-        print(reaction.id, '; Status:', solution.status, '; Solution:', solution.objective_value)
+        solution = model.optimize(objective_sense=objective_sense)
+        #print(reaction.id, '; Status:', solution.status, '; Solution:', solution.objective_value)
         writer.writerow([reaction.id, solution.objective_value])
-
-#f = solution.fluxes
-#output = f[f != 0]
-#print(output)
-#output.to_csv('FluxesAfterBound.csv')

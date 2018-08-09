@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# Use differential evolution with specified dimensions to vary the Vmax values
+# of enzymes in a list in the kinetic model, in order to obtain the minimum
+# fluxes through all enzymes in the kinetic model.
 
 from __future__ import division, print_function
 import itertools
@@ -12,9 +15,40 @@ import sys
 #allreactions = ['PGI', 'PFK', 'FBA', 'TPI', 'GDH', 'PGK', 'GPM', 'ENO', 'PYK', 'ZWF', 'PGL', 'GND', 'RPE', 'RPI', 'X5P_GAP_TKT', 'F6P_E4P_TKT', 'S7P_R5P_TKT', 'F6P_GAP_TAL', 'S7P_E4P_TAL', 'FBP', 'PPC', 'PCK', 'PPS', 'MAD', 'PDH', 'GLT', 'ACN_1', 'ACN_2', 'ICD', 'LPD', 'SK', 'SDH', 'FUMA', 'MQO', 'MDH', 'ACEA', 'ACEB', 'ACEK_1', 'ACEK_2', 'EDD', 'EDA', 'NADH_req', 'PNT_req', 'ADK', 'ATP_syn', 'CYA', 'DOS', 'ACK', 'ACS', 'PTA', 'PTS_0', 'PTS_1', 'PTS_2', 'PTS_3', 'PTS_4', 'GLC_feed', 'CYTBO', 'SQR', 'NDHII', 'GROWTH', 'ATP_MAINTENANCE', 'XCH_GLC', 'PIT', 'XCH_P', 'XCH_ACE1', '_ACE_OUT', 'XCH_ACE2', 'GL6P_HYDROLYSIS']
 
 # REMOVED GLC_FEED 2018-07-25 10:00 BECAUSE IT CAUSES PROBLEMS
-#allreactions = ['PGI', 'PFK', 'FBA', 'TPI', 'GDH', 'PGK', 'GPM', 'ENO', 'PYK', 'ZWF', 'PGL', 'GND', 'RPE', 'RPI', 'X5P_GAP_TKT', 'F6P_E4P_TKT', 'S7P_R5P_TKT', 'F6P_GAP_TAL', 'S7P_E4P_TAL', 'FBP', 'PPC', 'PCK', 'PPS', 'MAD', 'PDH', 'GLT', 'ACN_1', 'ACN_2', 'ICD', 'LPD', 'SK', 'SDH', 'FUMA', 'MQO', 'MDH', 'ACEA', 'ACEB', 'ACEK_1', 'ACEK_2', 'EDD', 'EDA', 'NADH_req', 'PNT_req', 'ADK', 'ATP_syn', 'CYA', 'DOS', 'ACK', 'ACS', 'PTA', 'PTS_0', 'PTS_1', 'PTS_2', 'PTS_3', 'PTS_4', 'CYTBO', 'SQR', 'NDHII', 'GROWTH', 'ATP_MAINTENANCE', 'XCH_GLC', 'PIT', 'XCH_P', 'XCH_ACE1', '_ACE_OUT', 'XCH_ACE2', 'GL6P_HYDROLYSIS']
+# LIST OF REACTIONS TO FIND FLUX BOUNDARIES FOR
+allreactions = ['PGI', 'PFK', 'FBA', 'TPI', 'GDH', 'PGK', 'GPM', 'ENO', 'PYK',
+'ZWF', 'PGL', 'GND', 'RPE', 'RPI', 'X5P_GAP_TKT', 'F6P_E4P_TKT', 'S7P_R5P_TKT',
+'F6P_GAP_TAL', 'S7P_E4P_TAL', 'FBP', 'PPC', 'PCK', 'PPS', 'MAD', 'PDH', 'GLT',
+ 'ACN_1', 'ACN_2', 'ICD', 'LPD', 'SK', 'SDH', 'FUMA', 'MQO', 'MDH', 'ACEA',
+  'ACEB', 'ACEK_1', 'ACEK_2', 'EDD', 'EDA', 'NADH_req', 'PNT_req', 'ADK',
+  'ATP_syn', 'CYA', 'DOS', 'ACK', 'ACS', 'PTA', 'PTS_0', 'PTS_1', 'PTS_2',
+  'PTS_3', 'PTS_4', 'CYTBO', 'SQR', 'NDHII', 'GROWTH', 'ATP_MAINTENANCE',
+  'XCH_GLC', 'PIT', 'XCH_P', 'XCH_ACE1', '_ACE_OUT', 'XCH_ACE2', 'GL6P_HYDROLYSIS']
 
-allreactions = ['PPS', 'MDH', 'ACEA']
+# REDEFINE LIST OF REACTIONS VARIED IN DE HERE
+#listofreactions = reacVmaxes
+listofreactions = ["ACEA", "ACEB", "ACK", "ACN_1", "ACN_2", "ACS", "ATP_syn",
+"CITRA_SYN", "CYTBO", "EDA", "EDD", "ENO", "FBA", "FBP", "FUMA", "GDH", "GLT",
+"GND", "GPM", "LPD", "MAD", "MDH", "MQO", "PCK", "PDH", "PFK", "PGI", "PGK",
+ "PGL", "PIT", "PPC", "PPS", "PTA", "PYK", "RPE", "RPI", "SDH", "SK", "SQR",
+  "TPI", "ZWF"]
+
+# REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
+n = 41
+
+# REDEFINE Vmax RANGE HERE
+boundsrel = [(0.5, 10.0)] * n
+
+# DIFFERENTIAL EVOLUTION PARAMETERS
+mut=0.6876 # F
+crossp=0.9784 # CR
+popsize=48 # NP
+its=5 # generations
+
+# SIMULATION PARAMETERS
+timestart = 0
+timeend = 7200
+rrpoints = 100
 
 # Reads wild-type model
 reader = libsbml.SBMLReader()
@@ -51,15 +85,6 @@ reacVmaxes = sorted(Vmaxes) # ids of reactions sorted alphabetically that have V
 iniVmaxes = [Vmaxes[r] for r in reacVmaxes] # initial values of Vmax (as in the kinetic model)
 wtVmaxes = dict(zip(reacVmaxes, iniVmaxes))
 
-# REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
-n = 41
-
-# REDEFINE Vmax RANGE HERE
-boundsrel = [(0.5, 10.0)] * n
-
-# REDEFINE LIST OF REACTIONS HERE
-#listofreactions = reacVmaxes
-listofreactions = ["ACEA", "ACEB", "ACK", "ACN_1", "ACN_2", "ACS", "ATP_syn", "CITRA_SYN", "CYTBO", "EDA", "EDD", "ENO", "FBA", "FBP", "FUMA", "GDH", "GLT", "GND", "GPM", "LPD", "MAD", "MDH", "MQO", "PCK", "PDH", "PFK", "PGI", "PGK", "PGL", "PIT", "PPC", "PPS", "PTA", "PYK", "RPE", "RPI", "SDH", "SK", "SQR", "TPI", "ZWF"]
 
 def choose(mylist, n):
     return list(itertools.combinations(mylist, n))
@@ -73,15 +98,15 @@ def flux(reacid, r, x):
 
     # Simulate
     rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(document))
-    result = rr.simulate(0, 7200, 100)
-    
+    result = rr.simulate(timestart, timeend, rrpoints)
+
     k = rr.model.getReactionIds().index(reacid)
     return rr.model.getReactionRates()[k]
 
 generations = []
 
 # DE algorithm adapted from Pablo R Mier
-def de(fobj, bounds, mut=0.6876, crossp=0.9784, popsize=48, its=5):
+def de(fobj, bounds, mut=mut, crossp=crossp, popsize=popsize, its=its):
     dimensions = len(bounds)
     # Initialisation
     pop = np.random.rand(popsize, dimensions)
@@ -118,15 +143,15 @@ def de(fobj, bounds, mut=0.6876, crossp=0.9784, popsize=48, its=5):
 
 boundsrel = np.asarray(boundsrel)
 combolist = choose(listofreactions, n)
-  
+
 with open('jmin.txt', 'r') as fobj:
     mystr = fobj.readline()
     jdx = int(mystr.strip('\n'))
-    
+
 if jdx >= len(allreactions):
     print('DONE')
     sys.exit(1)
-    
+
 else:
     print(jdx)
     print(allreactions[jdx])
@@ -139,12 +164,11 @@ else:
         print(VmaxI)
         bounds = (VmaxI*(boundsrel.T)).T
         print(bounds)
-        
+
         reacid = allreactions[jdx]
 
         def fobj(x):
             return flux(reacid, combo, x) # MINIMUM
-            #return -flux(reacid, combo, x) # MAXIMUM
 
         # computation
         result = list(de(fobj, bounds))
@@ -163,11 +187,11 @@ else:
             f.write(str(combo) + '\n')
             f.write(str(result[-1][0]) + '\n')
             f.write('Fitness: ' + str(result[-1][1]) + '\n')
-            
+
         # write the index of reaction to file
         jdx += 1
         with open('jmin.txt', 'w') as fobj:
             fobj.write(str(jdx))
-            
-            
+
+
         sys.exit(2)
