@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# Gets the mins and maxes from CSV
+# Used to create minmax_citra.csv
+
 import csv
 
 with open('minmax.csv', 'wb') as f:

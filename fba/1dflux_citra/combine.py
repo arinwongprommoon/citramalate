@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# Combines values of all CSV files in this directory
+# Used to produce analysis/combined_citra.csv
 import csv
 import itertools as IT
 import glob, os
