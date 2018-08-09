@@ -4,7 +4,6 @@ from __future__ import division, print_function
 import roadrunner
 import libsbml
 import matplotlib.pyplot as plt
-import numpy as np
 
 mmCITRA = 146.098 # g/mol # Molecular mass of Citramalate https://pubchem.ncbi.nlm.nih.gov/compound/5460281
 mmGLC = 180.156 # g/mol  # Molecular mass of Glucose https://pubchem.ncbi.nlm.nih.gov/compound/79025
@@ -126,10 +125,10 @@ class ecolicit:
         self.reacVmaxes = sorted(Vmaxes) # ids of reactions sorted alphabetically that have Vmax
         self.iniVmaxes = [Vmaxes[r] for r in self.reacVmaxes] # initial values of Vmax (as in the kinetic model)
 
-    def comproducti(self, tol=99999, steadystate=False):
+    def comproducti(self, tol=99999):
         """
-            Computes steady state productivity...
-            Arguments:
+            Computes steady state productivity.
+            Argument:
                 tol = 'epsilon' value to check the maximum absolute value of
                       floating species concentration among all species in the
                       model against to determine if the system has reached
@@ -145,26 +144,13 @@ class ecolicit:
         # -2: removes GROWTH and CITRA from the list because they aren't steady
         # state anyway
         st = max(abs(rr.model.getFloatingSpeciesConcentrationRates())[:-2])
-        if steadystate == True:
-            if st > tol:
-                ff = abs(rr.model.getFloatingSpeciesConcentrationRates())[:-2]
-                st = max(ff)
-                ii = np.where(ff==st)
-                sp = rr.model.getFloatingSpeciesIds()[ii[0][0]]
-                glcx = rr.model.getFloatingSpeciesConcentrations()[rr.model.getFloatingSpeciesIds().index("GLCx")]
-                glcp = rr.model.getFloatingSpeciesConcentrations()[rr.model.getFloatingSpeciesIds().index("GLCp")]
-                print("st", st, "(", sp, "); GLCx =", glcx, "; GLCp =", glcp)
-                return -1 #BODGE 20180807
-            else: #BODGE 20180807
-                return st
+        if st < tol:
+            Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
+            mu = result[-1,selection.index("iGROWTH'")]*3600
+            return mu*Y_PS
         else:
-            if st < tol:
-                Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
-                mu = result[-1,selection.index("iGROWTH'")]*3600
-                return mu*Y_PS
-            else:
-                return -1e-4
-
+            return -1e-4
+            
     def comflux(self, tol=99999):
         """
             Computes steady state flux of citramalate synthesis reaction.

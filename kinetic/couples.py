@@ -220,7 +220,7 @@ class Coupl(ecolicit):
             if writemethod == 'steadystate':
                 Ptemp[ij] = self.compsteady()
             else:
-                Ptemp[ij] = self.comproducti(tol=self.tolerance, steadystate=True)
+                Ptemp[ij] = self.comproducti(tol=self.tolerance)
                 # BODGE 20180807
                 if Ptemp[ij] == -1:
                     print("Vmaxes", xi, ",", yi)
