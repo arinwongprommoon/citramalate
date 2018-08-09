@@ -64,7 +64,7 @@ else:
     P = []
     for i in range(points):
         ecit.setVmax(reaction, X[i])
-        P.append(ecit.comflux())
+        P.append(ecit.comproducti())
     # redefines X so that I can get a plot of productivity against multiples of
     # Vmax because all the methods I used to get rid of floating point
     # representation errors while plotting do not work. X still retained for
@@ -75,12 +75,12 @@ else:
     plt.plot(XX,P)
     #plt.ylim(0.0007, 0.0017)
     #plt.ylim(0.0002, 0.0051) # accomodates CITRA_SYN, which shows highest variation
-    plt.ylim(0.0070, 0.23) # for flux
+    #plt.ylim(0.0070, 0.23) # for flux
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
     ax.xaxis.set_major_formatter(xFormatter)
     plt.title(reaction)
     plt.xlabel('Vmax, in multiples of the wild-type Vmax for this reaction')
-    plt.ylabel('Citramalate flux, mM s-1')
+    plt.ylabel('iGROWTH, h-1')
 
     filename = 'ONE_' + reaction + '.png'
     plt.savefig(filename, bbox_inches='tight')
