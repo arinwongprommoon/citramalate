@@ -40,14 +40,6 @@ def productivity(r, x):
     for i in range(n):
         ecit.setVmax(r[i], x[i])
     return ecit.comproducti()
-    
-
-    
-
-                    
-def de(fobj, bounds, mut=0.6876, crossp=0.9784, popsize=28, its=10):
-    deresult = differential_evolution(fobj, bounds, strategy='best1bin', maxiter=its, popsize=popsize, mutation=(0.5,1), recombination=crossp, disp=True)
-    return deresult.x, deresult.fun
 
 boundsrel = np.asarray(boundsrel)
 combolist = choose(listofreactions, n)
@@ -84,25 +76,27 @@ for combo in combolist:
             
     prob = pg.problem(citraprod(n))
     algo = pg.algorithm(pg.sade(gen = 10))
+    algo.set_verbosity(1)
     pop = pg.population(prob, 28)
     pop = algo.evolve(pop)
-    print(pop.champion_f)
+    result = pop.champion_f
+    print(result)
 
-    # computation
-    #result = list(de(fobj, bounds))
-    #result = de(fobj, bounds)
-
+    print('Vmaxes')
+    for i in combo:
+        print(ecit.getVmax(i))
+    
     elapsed_time = time.time() - start_time
     print(elapsed_time) # time tracking
+  
+    # printing/writing results
+    print(result)
+    with open('de.txt', 'a') as f:
+        f.write(str(combo) + '\n')
+        for i in combo:
+            f.write(str(ecit.getVmax(i)) + '\n')
+        f.write('Fitness: ' + str(result) + '\n')
 
     # reassigns Vmaxes
     for i in range(len(combo)):
         ecit.setVmax(combo[i], VmaxI[i])
-    
-    # printing/writing results
-    #print(result[-1])
-    print(result)
-    with open('de.txt', 'a') as f:
-        f.write(str(combo) + '\n')
-        f.write(str(result[0]) + '\n')
-        f.write('Fitness: ' + str(result[1]) + '\n')
