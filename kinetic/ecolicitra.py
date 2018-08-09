@@ -161,7 +161,7 @@ class ecolicit:
             if st < tol:
                 Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
                 mu = result[-1,selection.index("iGROWTH'")]*3600
-                return mu
+                return mu*Y_PS
             else:
                 return -1e-4
             
