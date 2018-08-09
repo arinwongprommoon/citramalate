@@ -1,6 +1,7 @@
 #!/bin/bash
-# Runs differential evolution for tuples of reactions from a specified list,
-# writes data to a txt file.
+# Runs computations for reactions within a specified list, writes data to TXT
+# file, then plots graphs of productivity against multiple of Vmax and saves
+# them as image files
 
 # This gets around the memory leak
 

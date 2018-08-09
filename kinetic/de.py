@@ -9,8 +9,6 @@ import ecolicitra
 import itertools
 import numpy as np
 import matplotlib.pyplot as plt
-import roadrunner
-import libsbml
 import time
 
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
@@ -107,7 +105,7 @@ for combo in combolist:
     # reassigns Vmaxes
     for i in range(len(combo)):
         ecit.setVmax(combo[i], VmaxI[i])
-    
+
     # printing/writing results
     print(result[-1])
     with open('de.txt', 'a') as f:

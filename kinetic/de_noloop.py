@@ -8,8 +8,6 @@ from __future__ import division, print_function
 import ecolicitra
 import itertools
 import numpy as np
-import roadrunner
-import libsbml
 import sys
 import time
 
@@ -41,7 +39,7 @@ def productivity(r, x):
     return ecit.comproducti()
 
 # DE algorithm adapted from Pablo R Mier
-def de(fobj, bounds, mut=0.6301, crossp=0.7122, popsize=17, its=30):
+def de(fobj, bounds, mut=0.6301, crossp=0.7122, popsize=17, its=30): # REDEFINE DE PARAMETERS HERE
     dimensions = len(bounds)
     # Initialisation
     pop = np.random.rand(popsize, dimensions)

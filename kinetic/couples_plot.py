@@ -1,24 +1,24 @@
 #!/usr/bin/env python
 
-# Plots heatmaps from saved numpy arrays.
+# Plots heatmaps from all numpy arrays (*.npz) saved in current directory
 
 import glob, os
 import numpy as np
 import matplotlib.pyplot as plt
 import heatmap
 
-for npz in glob.glob("COUPLES*.npz"):
+for npz in glob.glob("*.npz"):
     # Read from file into numpy arrays
     container = np.load(npz)
     data = [container[key] for key in container]
 
     # Creates the heatmaps
+    
     XRxns = data[0]
     YRxns = data[1]
     productivity_raw = data[2]
+    # multiplies by 10,000 to get numbers that can be easily visualised by eye
     productivity = 10000*productivity_raw
-    # Transpose here because I don't want to mess with couples.py, which
-    # generates the data
     productivity = np.transpose(productivity)
 
     XLabs = ['%.2f' % i for i in XRxns]

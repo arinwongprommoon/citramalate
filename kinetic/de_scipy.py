@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# VARIANT: using scipy - differential_evolution
 # Compute optimal absolute Vmax values for n-tuples of enzymes for maximising
 # citramalate productivity, using differential evolution
 
@@ -14,6 +15,17 @@ import libsbml
 import time
 from scipy.optimize import differential_evolution
 
+# REDEFINE DIFFERENTIAL EVOULTION PARAMETERS HERE
+
+# F ...
+#   IF DITHER DEFINE AS A TUPLE (x,y)
+#   IF NO DITHER JUST DEFINE AS A FLOAT
+mutation = (0.5,1)
+
+crossp = 0.9784 # CR
+popsize = 28 # POPULATION SIZE
+its = 10 # MAX NUMBER OF GENERATIONS
+strategy='best1bin' # DIFFERENTIAL EVOULTION STRATEGY
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
 n = 41
 
@@ -40,10 +52,6 @@ def productivity(r, x):
     for i in range(n):
         ecit.setVmax(r[i], x[i])
     return ecit.comproducti()
-                    
-def de(fobj, bounds, mut=0.6876, crossp=0.9784, popsize=28, its=10):
-    deresult = differential_evolution(fobj, bounds, strategy='best1bin', maxiter=its, popsize=popsize, mutation=(0.5,1), recombination=crossp, disp=True)
-    return deresult.x, deresult.fun
 
 boundsrel = np.asarray(boundsrel)
 combolist = choose(listofreactions, n)
@@ -66,8 +74,10 @@ for combo in combolist:
         return -productivity(combo, x)
 
     # computation
-    #result = list(de(fobj, bounds))
-    result = de(fobj, bounds)
+    deresult = differential_evolution(fobj, bounds, strategy=strategy,
+                maxiter=its, popsize=popsize, mutation=mutation,
+                recombination=crossp, disp=True)
+    result = (deresult.x, deresult.fun)
 
     elapsed_time = time.time() - start_time
     print(elapsed_time) # time tracking
@@ -75,9 +85,8 @@ for combo in combolist:
     # reassigns Vmaxes
     for i in range(len(combo)):
         ecit.setVmax(combo[i], VmaxI[i])
-    
+
     # printing/writing results
-    #print(result[-1])
     print(result)
     with open('de.txt', 'a') as f:
         f.write(str(combo) + '\n')

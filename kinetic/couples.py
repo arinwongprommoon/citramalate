@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# MODULE for looking at two enzymes at the same time
 
 from __future__ import division, print_function
 from ecolicitra import ecolicit, mmCITRA, mmGLC
@@ -40,8 +41,8 @@ class Coupl(ecolicit):
         self.ystart = ystart
         self.yend = yend
         self.points = points
-        
-        self.tolerance = 1e-8
+
+        self.tolerance = 1e-8 # for stead state checking
 
     def writeFileHeader(self, filename = "COUPLESDATA.txt"):
         """
@@ -71,7 +72,7 @@ class Coupl(ecolicit):
         np.savez(filename, *data)
 
     def pairs(self, mylist):
-        return list(itertools.combinations(mylist, 2)) # generator
+        return list(itertools.combinations(mylist, 2))
 
     def computeCouples(self, writemethod='writeToBoth'):
         """
@@ -212,7 +213,6 @@ class Coupl(ecolicit):
 
         # The real bit
         ij = 0
-        #Ptemp = []
         Ptemp = np.empty(self.points**2) # initialise
         for (xi, yi) in itertools.product(X, Y):
             self.setVmax(XRxn, xi)
@@ -224,7 +224,7 @@ class Coupl(ecolicit):
                 # BODGE 20180807
                 if Ptemp[ij] == -1:
                     print("Vmaxes", xi, ",", yi)
-                    
+
             ij += 1
 
         elapsed_time = time.time() - start_time

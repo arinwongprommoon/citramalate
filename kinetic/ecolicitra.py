@@ -128,8 +128,8 @@ class ecolicit:
 
     def comproducti(self, tol=99999, steadystate=False):
         """
-            Computes steady state productivity.
-            Argument:
+            Computes steady state productivity...
+            Arguments:
                 tol = 'epsilon' value to check the maximum absolute value of
                       floating species concentration among all species in the
                       model against to determine if the system has reached
@@ -164,7 +164,7 @@ class ecolicit:
                 return mu*Y_PS
             else:
                 return -1e-4
-            
+
     def comflux(self, tol=99999):
         """
             Computes steady state flux of citramalate synthesis reaction.

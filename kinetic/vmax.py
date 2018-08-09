@@ -5,42 +5,36 @@
 # them as image files
 
 from __future__ import division, print_function
-from ecolicitra import ecolicit, mmCITRA, mmGLC
+from ecolicitra import ecolicit
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FormatStrFormatter
 import numpy as np
-import roadrunner
-import libsbml
 
 # Parameters of kinetic model
 include_CITRA = True
 ecit = ecolicit(include_CITRA = include_CITRA)
 ecit.setVmax('CITRA_SYN', 4.0)
-
 ecit.time0 = 0
 ecit.timef = 2*3600 # final simulation time in seconds
 ecit.npoints = 100 # Number of points to be computed in the simulation
+ecit.getVmaxes()
+listofreactions = ecit.reacVmaxes # REDEFINE LIST OF REACTIONS HERE
 
-wildprod = ecit.comproducti()
-print("Final simulation time: ", ecit.timef)
-print("Number of points: ", ecit.npoints)
+start = 0.2 # START VALUE IN MULTIPLES OF WT VMAX
+end = 0.3 # END VALUE IN MULTIPLES OF WT VMAX
+points = 300 # NUMBER OF DATA POINTS
+
+yaxisfixed = True # IF YOU WANT TO FIX THE Y-AXIS
+y = (0.0070, 0.23) # DEFINE Y-AXIS LIMITS HERE
+yl = 'Citramalate productivity, h-1' # DEFINE Y-AXIS LABEL HERE
 
 xFormatter = FormatStrFormatter('%.2f')
-
-# Sets X values from start*default Vmax to 5.0*default Vmax
-# Plot uses 'points' number of points e.g. 20
-start = 0.2
-end = 0.3
-points = 300
 
 # Clears data in file, writes header
 with open("VMAXDATA.txt", 'w') as fobj:
     fobj.write('time0 ' + str(ecit.time0) + '\n')
     fobj.write('timef ' + str(ecit.timef) + '\n')
     fobj.write('Vmax ' + str(start) + 'to' + str(end) + '\n\n')
-
-ecit.getVmaxes()
-listofreactions = ['ATP_MAINTENANCE']
 
 for reaction in listofreactions:
     print(reaction)
@@ -60,11 +54,15 @@ for reaction in listofreactions:
 
     ax = plt.subplot(111)
     plt.plot(XX,P)
-    #plt.ylim(0.0007, 0.0017)
-    #plt.ylim(0.0002, 0.0051) # accomodates CITRA_SYN, which shows highest variation
-    plt.ylim(0.0070, 0.23) # for flux
+    if yaxisfixed:
+        plt.ylim(y)
+    else:
+        pass
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
     ax.xaxis.set_major_formatter(xFormatter)
+    plt.title(reaction)
+    plt.xlabel('Vmax, in multiples of the wild-type Vmax for this reaction')
+    plt.ylabel(yl)
 
     filename = 'ONE_' + reaction + '.png'
     plt.savefig(filename, bbox_inches='tight')

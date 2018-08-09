@@ -2,7 +2,7 @@
 # Runs computations for couples of reactions from a specified list, writes data
 # to numpy array files. Run couples_plot.py to generate heatmaps after.
 
-# This gets around the memory leak
+# This gets around the memory leak from roadrunner
 
 echo "0" > 'couplesi.txt'
 
