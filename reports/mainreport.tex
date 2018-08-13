@@ -1,0 +1,50 @@
+\documentclass[parskip=full]{scrreprt}
+
+\usepackage{url}
+\usepackage{cite}
+\usepackage{varioref}
+\usepackage{tabularx}
+  \newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\usepackage[version=4]{mhchem}
+  
+\author{Arin Wongprommoon\\University of Cambridge}
+\title{Optimising production of citramalate based on the \emph{E. coli} kinetic model}
+\subtitle{Project Report}
+\date{17 August 2018}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\begin{abstract}
+  Using living organisms to synthesise chemicals is an alternative to synthesising chemicals from fossil fuels, as it serves as a renewable resource with potentially high efficiency and low cost. The procedures can be sped up by optimising conditions using mathematical models. Citramalate ((2S)-2-Hydroxy-2-methylbutanedioate) is a chemical of industrial interest as it can be a precursor for methacrylic acid, a monomer for the production of plastics. 
+  
+  The project aimed to find conditions to maximise the production of citramalate using modelling approaches. In this project, an existing kinetic model for \emph{E. coli} metabolism was extended by adding a reaction that produces citramalate from acetyl coenzyme A and pyruvate. \emph{E. coli} was chosen as the model organism as its metabolism is very well characterised in the literature. The project employed Python and libraries specific to genetic algorithms, modelling, and manipulating information presented in SBML (systems biology markup language).
+  
+  First, the effect of $V_{max}$ values of enzymes in the kinetic model on productivity of citramalate was investigated. $V_{max}$ values were chosen as a parameter as it can be easily tested \emph{in vivo} by relying on the principle that $V_{max}$ is proportional to enzyme concentration. The differential evolution genetic algorthim was then employed to compute the set of $V_{max}$ values of enzymes that optimises the production of citramalate, assuming Michaelis-Menten kinetics.
+  
+  In the second part of the project, information from the kinetic model was used to enrich the stoichiometric model. More specifically, information about the possible values of fluxes through each reaciton was used to set the boundaries for each reaction in a stoichiometric model. Flux balance analysis (FBA) was then performed to evaluate the highest possible flux through the citramalate-producing reaction as a proxy for citramalate productivity. The composition of the Lund medium was studied in an attempt to create boundaries for relevant uptake reactions.
+  
+  The project took place at the Cambridge Systems Biology Centre, Department of Biochemistry, in Prof Steve Oliver's group. Research associate Dr Jorge J\'ulvez supervised me throughout the project. The project was entirely computational, and ran from 25 June 2018 to 17 August 2018.
+\end{abstract}
+
+\chapter{Foobar}
+\label{ch:foobar}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum a justo at diam cursus consequat ac at risus. Sed et mollis nibh. Morbi venenatis luctus mauris sed vehicula. Nunc lacinia luctus urna, et rhoncus lorem ultricies nec. Curabitur dictum pulvinar nunc, a sodales eros varius ut. Nulla placerat, nisl quis maximus tristique, arcu nisl dictum lectus, non lobortis magna nunc quis dolor. Morbi nulla lacus, consectetur ut pharetra non, tristique eget arcu.
+
+Ut auctor ligula nibh, quis suscipit ipsum euismod vitae. Curabitur sem est, pulvinar quis dictum non, fringilla eget felis. Etiam at quam diam. Suspendisse suscipit in arcu ac condimentum. Maecenas in dignissim est. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc sodales blandit elit a gravida. Vivamus vel augue odio. Vivamus ex quam, scelerisque in sapien nec, aliquet aliquam turpis. Sed luctus vulputate mi vel rhoncus. Nam quis vehicula est. Sed tincidunt velit id rutrum volutpat.
+
+Aliquam erat volutpat. Nam sed felis dui. Suspendisse rhoncus dui vel mi accumsan, malesuada tempus ligula aliquet. Nulla purus dui, feugiat non justo tempor, consectetur vehicula sem. Aenean at libero ipsum. Suspendisse aliquet nec metus sed tincidunt. Donec vel sapien id diam condimentum cursus.
+
+Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse pellentesque quis nunc eget feugiat. Praesent eu neque dapibus, tincidunt dolor eu, elementum neque. Donec sit amet augue justo. Suspendisse condimentum lectus sed tellus mollis, non commodo ipsum porttitor. Nam efficitur, leo id egestas feugiat, augue odio hendrerit ligula, non tempor mi elit a quam. Sed sagittis pulvinar lorem, non ornare metus tempor nec. Nullam interdum rutrum nulla non suscipit. Ut orci enim, molestie in rhoncus ut, placerat in nunc. Nulla scelerisque ullamcorper nibh, quis commodo augue laoreet faucibus. Donec fermentum faucibus venenatis. In convallis, ligula ut accumsan gravida, lectus quam gravida metus, nec tempor ipsum mi eu nulla. Nulla aliquam vestibulum felis, interdum tincidunt velit ultrices ac. Curabitur a libero sagittis, pulvinar urna vel, auctor urna. Donec tempus sem mi, sit amet ornare mi suscipit vitae.
+
+Donec porta ipsum fermentum arcu semper lacinia. Mauris sodales non sapien non auctor. Pellentesque nec odio vitae felis varius sodales. Proin eu velit ac nunc congue mollis. Nullam ut lectus nec ligula fermentum finibus. Fusce maximus aliquet nisi, rhoncus scelerisque felis sollicitudin vulputate. Maecenas molestie enim at lacus pharetra, eget interdum leo imperdiet. Nunc ut placerat velit. Cras volutpat a lorem sit amet euismod. Nullam pretium suscipit nibh vel placerat. Curabitur maximus, tellus ut tempor blandit, tellus elit suscipit lectus, vitae rhoncus mi purus condimentum mi. Vivamus congue lacus libero, ac rhoncus leo convallis sit amet. Integer vel accumsan lorem. Sed vitae lacus quis nisl consequat tincidunt. Nunc ut urna quam. 
+
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{mainreport}
+
+\end{document}
