@@ -1,7 +1,12 @@
 \documentclass[parskip=full]{scrreprt}
 
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
+\usepackage[backend=biber]{biblatex}
+\addbibresource{mainreport.bib}
+
 \usepackage{url}
-\usepackage{cite}
 \usepackage{varioref}
 \usepackage{tabularx}
   \newcolumntype{L}{>{\raggedright\arraybackslash}X}
@@ -30,21 +35,85 @@
   The project took place at the Cambridge Systems Biology Centre, Department of Biochemistry, in Prof Steve Oliver's group. Research associate Dr Jorge J\'ulvez supervised me throughout the project. The project was entirely computational, and ran from 25 June 2018 to 17 August 2018.
 \end{abstract}
 
-\chapter{Foobar}
-\label{ch:foobar}
+\chapter*{Introduction}
+\label{ch:intro}
+
+\chapter{Investigating the kinetic model}
+\label{ch:kinetic}
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum a justo at diam cursus consequat ac at risus. Sed et mollis nibh. Morbi venenatis luctus mauris sed vehicula. Nunc lacinia luctus urna, et rhoncus lorem ultricies nec. Curabitur dictum pulvinar nunc, a sodales eros varius ut. Nulla placerat, nisl quis maximus tristique, arcu nisl dictum lectus, non lobortis magna nunc quis dolor. Morbi nulla lacus, consectetur ut pharetra non, tristique eget arcu.
 
+\section{Varying $V_{max}$ values of one reaction at a time}
+\label{sec:onereac}
+
 Ut auctor ligula nibh, quis suscipit ipsum euismod vitae. Curabitur sem est, pulvinar quis dictum non, fringilla eget felis. Etiam at quam diam. Suspendisse suscipit in arcu ac condimentum. Maecenas in dignissim est. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc sodales blandit elit a gravida. Vivamus vel augue odio. Vivamus ex quam, scelerisque in sapien nec, aliquet aliquam turpis. Sed luctus vulputate mi vel rhoncus. Nam quis vehicula est. Sed tincidunt velit id rutrum volutpat.
+
+\section{Varying $V_{max}$ values of two reactions at a time}
+\label{sec:couples}
 
 Aliquam erat volutpat. Nam sed felis dui. Suspendisse rhoncus dui vel mi accumsan, malesuada tempus ligula aliquet. Nulla purus dui, feugiat non justo tempor, consectetur vehicula sem. Aenean at libero ipsum. Suspendisse aliquet nec metus sed tincidunt. Donec vel sapien id diam condimentum cursus.
 
+\section{Using differential evolution}
+\label{sec:de}
+
 Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse pellentesque quis nunc eget feugiat. Praesent eu neque dapibus, tincidunt dolor eu, elementum neque. Donec sit amet augue justo. Suspendisse condimentum lectus sed tellus mollis, non commodo ipsum porttitor. Nam efficitur, leo id egestas feugiat, augue odio hendrerit ligula, non tempor mi elit a quam. Sed sagittis pulvinar lorem, non ornare metus tempor nec. Nullam interdum rutrum nulla non suscipit. Ut orci enim, molestie in rhoncus ut, placerat in nunc. Nulla scelerisque ullamcorper nibh, quis commodo augue laoreet faucibus. Donec fermentum faucibus venenatis. In convallis, ligula ut accumsan gravida, lectus quam gravida metus, nec tempor ipsum mi eu nulla. Nulla aliquam vestibulum felis, interdum tincidunt velit ultrices ac. Curabitur a libero sagittis, pulvinar urna vel, auctor urna. Donec tempus sem mi, sit amet ornare mi suscipit vitae.
+
+\chapter{Enriching the stoichiometric model}
+\label{ch:stoich}
 
 Donec porta ipsum fermentum arcu semper lacinia. Mauris sodales non sapien non auctor. Pellentesque nec odio vitae felis varius sodales. Proin eu velit ac nunc congue mollis. Nullam ut lectus nec ligula fermentum finibus. Fusce maximus aliquet nisi, rhoncus scelerisque felis sollicitudin vulputate. Maecenas molestie enim at lacus pharetra, eget interdum leo imperdiet. Nunc ut placerat velit. Cras volutpat a lorem sit amet euismod. Nullam pretium suscipit nibh vel placerat. Curabitur maximus, tellus ut tempor blandit, tellus elit suscipit lectus, vitae rhoncus mi purus condimentum mi. Vivamus congue lacus libero, ac rhoncus leo convallis sit amet. Integer vel accumsan lorem. Sed vitae lacus quis nisl consequat tincidunt. Nunc ut urna quam. 
 
+\section{Mapping reactions in the kinetic model to the stoichiometric model}
+\label{sec:mapping}
+
+In hac habitasse platea dictumst. Sed a metus ante. Pellentesque eget imperdiet nulla. Sed convallis sagittis augue at vehicula. Nulla nec efficitur arcu. Suspendisse hendrerit massa nec mauris fermentum, eu iaculis tortor vehicula. Vestibulum sed tristique nulla.
+
+Integer vel ullamcorper augue, nec congue quam. Quisque luctus molestie lectus quis sagittis. Vivamus facilisis placerat eros ut aliquet. Aliquam volutpat elit eget risus gravida, sed luctus erat interdum. In id suscipit tellus, a mollis elit. Sed pulvinar, diam et aliquam varius, lectus risus rutrum libero, vitae posuere urna odio eget neque. Etiam aliquet ante quis porttitor lobortis. Nullam elit sapien, pharetra at libero non, ullamcorper efficitur ex. Etiam laoreet ullamcorper orci, vitae pretium risus convallis et. Proin et orci felis. In hendrerit lectus eget nisl tincidunt, ut faucibus justo tempus. Nulla at elit auctor, aliquet orci et, euismod magna.
+
+\section{Creating boundaries for FBA}
+\label{sec:bounds}
+
+Vestibulum placerat purus vel nisl imperdiet, eu condimentum ex semper. Sed semper dignissim enim quis condimentum. Suspendisse potenti. Vivamus molestie tortor vitae volutpat ultrices. Aenean nec accumsan sapien. Suspendisse potenti. Donec dignissim felis sed ex accumsan venenatis. Suspendisse varius mi sed mattis sagittis. Donec dapibus rhoncus ipsum, non mattis ex finibus sed. Quisque eget volutpat justo.
+
+Etiam massa tellus, tincidunt ut metus at, volutpat viverra lectus. In sapien velit, tempor vitae vestibulum eu, lobortis dictum turpis. Aliquam blandit finibus venenatis. Quisque vestibulum viverra tellus, non bibendum ex molestie in. Maecenas non ante odio. Donec iaculis at nunc sed luctus. Suspendisse iaculis nibh eget eleifend tempus. Vestibulum porta ultrices volutpat. Donec semper lorem vitae hendrerit ultricies.
+
+\section{Flux balance analysis}
+\label{sec:fba}
+
+Nullam lorem ligula, lacinia sit amet condimentum eu, aliquet vel lorem. Nam ut mollis nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam blandit, eros ac elementum consectetur, sem ante suscipit ante, vitae laoreet lectus elit ac sem. Fusce nunc velit, ullamcorper quis magna semper, tempus sodales magna. Nullam vel pharetra libero. Nam rutrum posuere neque quis suscipit. Donec tristique sapien orci. Ut eros orci, malesuada id leo nec, bibendum semper metus. Pellentesque ut dictum lectus. Donec auctor dapibus arcu et tincidunt. Sed cursus est posuere felis lacinia, quis sollicitudin erat vestibulum. Proin lobortis felis eget neque suscipit mattis.
+
+Phasellus leo augue, porta et consequat gravida, ullamcorper eu ligula. Curabitur eu neque vitae enim porta egestas. Sed commodo ligula ex, at faucibus augue convallis eu. Suspendisse tortor augue, lacinia sit amet nisi vel, posuere varius turpis. Quisque ut mauris eget arcu luctus blandit. Vestibulum egestas vehicula diam non accumsan. Suspendisse pulvinar nec tellus vitae luctus.
+
+\section{Using information from the Lund medium}
+\label{sec:lund}
+
+Pellentesque imperdiet quam vitae commodo pellentesque. Donec vitae eros dolor. Phasellus sit amet euismod augue. Integer dictum a arcu vitae ornare. Quisque interdum nibh eu arcu gravida dapibus sit amet et tortor. Nam laoreet ultrices dapibus. Cras tincidunt sem sodales massa rutrum efficitur a non arcu. Etiam porta massa a fermentum maximus. Curabitur sit amet pulvinar justo, sed congue magna. Nulla non sem non augue rhoncus rutrum ut in risus. Aliquam varius, ipsum vitae laoreet dignissim, odio augue convallis dolor, quis mollis mauris sem eget nibh. Nunc finibus turpis ac lectus volutpat, eu egestas ex porta. Cras ante justo, blandit sit amet viverra non, rhoncus sodales mi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+
+\chapter{Remarks}
+\label{ch:remarks}
+
+Donec at rutrum tellus, ut posuere urna. Nulla facilisi. Quisque ut orci tincidunt, ultricies eros sed, ultrices purus. Praesent scelerisque nunc urna, in pharetra augue pharetra ut. In quis quam consectetur, finibus orci sit amet, molestie massa. Nullam vel dictum lorem. 
+
+\section{Issues in the project}
+\label{sec:issues}
+
+Memory leak, things that don't make sense, etc. Things that get in the way of me making revolutionary discoveries.
+
+Vestibulum sed est molestie, feugiat justo vitae, aliquam augue. Ut accumsan massa dignissim, maximus nulla at, imperdiet ligula. Donec vitae tortor vitae libero dapibus maximus. Fusce a enim faucibus, sollicitudin sapien nec, maximus nibh. Morbi pharetra egestas lorem, non semper arcu faucibus vitae. Morbi vehicula urna ac odio blandit gravida. Integer id magna pharetra, gravida odio et, pulvinar magna. Praesent consequat elementum mollis.
+
+\section{Future direction and suggestions}
+\label{sec:future}
+
+Nunc orci justo, ultricies id pharetra a, consequat at dolor. Curabitur posuere nisl eget leo viverra, non cursus nunc consectetur. Fusce non turpis non sem porttitor cursus id a lacus. Mauris iaculis sit amet risus ut viverra. Nunc eget arcu magna. Donec quis suscipit metus. Donec aliquet imperdiet consectetur. Ut tempus, dui et sodales posuere, diam est sagittis est, nec consectetur mi dolor nec mi. Ut in lacus vitae sapien lacinia aliquam in tincidunt nisi. Etiam non pretium justo. Phasellus augue lectus, condimentum vel orci et, suscipit semper dolor. Fusce at finibus nulla.
+
+\section{Notes about files}
+\label{sec:files}
+
+Notes about the scripts, text files, image files, spreadsheets etc.\ used. Notes about Git/GitHub.
+
+Sed nec erat iaculis lectus rhoncus ornare. Duis ante ex, sodales sed mi sed, blandit venenatis dui. Donec vel ornare odio, laoreet viverra felis. Phasellus aliquam mi et sollicitudin fermentum. Ut vitae mollis lacus. Sed tempor nulla at rutrum iaculis. Vestibulum convallis elementum nibh, fermentum porttitor leo vulputate eget. Sed vel sagittis elit, eu faucibus ante. Aliquam erat volutpat. Donec mattis sit amet ante quis luctus. Fusce lectus risus, molestie at tincidunt non, consectetur nec massa. Duis arcu justo, lacinia ut nulla tristique, congue interdum purus. Maecenas finibus, urna eu mollis commodo, nisi metus tincidunt velit, at convallis libero justo id turpis. Etiam iaculis sodales quam vitae fringilla. 
+
 \nocite{*}
-\bibliographystyle{plain}
-\bibliography{mainreport}
+\printbibliography
 
 \end{document}
