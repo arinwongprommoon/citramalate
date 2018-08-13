@@ -28,15 +28,17 @@
   
   The project aimed to find conditions to maximise the production of citramalate using modelling approaches. In this project, an existing kinetic model for \emph{E. coli} metabolism was extended by adding a reaction that produces citramalate from acetyl coenzyme A and pyruvate. \emph{E. coli} was chosen as the model organism as its metabolism is very well characterised in the literature. The project employed Python and libraries specific to genetic algorithms, modelling, and manipulating information presented in SBML (systems biology markup language).
   
-  First, the effect of $V_{max}$ values of enzymes in the kinetic model on productivity of citramalate was investigated. $V_{max}$ values were chosen as a parameter as it can be easily tested \emph{in vivo} by relying on the principle that $V_{max}$ is proportional to enzyme concentration. The differential evolution genetic algorthim was then employed to compute the set of $V_{max}$ values of enzymes that optimises the production of citramalate, assuming Michaelis-Menten kinetics.
+  First, the effect of $V_{max}$ values of enzymes in the kinetic model~\cite{millard_metabolic_2017} on productivity of citramalate was investigated. $V_{max}$ values were chosen as a parameter as it can be easily tested \emph{in vivo} by relying on the principle that $V_{max}$ is proportional to enzyme concentration. The differential evolution genetic algorthim was then employed to compute the set of $V_{max}$ values of enzymes that optimises the production of citramalate, assuming Michaelis-Menten kinetics.
   
-  In the second part of the project, information from the kinetic model was used to enrich the stoichiometric model. More specifically, information about the possible values of fluxes through each reaciton was used to set the boundaries for each reaction in a stoichiometric model. Flux balance analysis (FBA) was then performed to evaluate the highest possible flux through the citramalate-producing reaction as a proxy for citramalate productivity. The composition of the Lund medium was studied in an attempt to create boundaries for relevant uptake reactions.
+  In the second part of the project, information from the kinetic model was used to enrich the stoichiometric model~\cite{orth_comprehensive_2011}. More specifically, information about the possible values of fluxes through each reaciton was used to set the boundaries for each reaction in a stoichiometric model. Flux balance analysis (FBA) was then performed to evaluate the highest possible flux through the citramalate-producing reaction as a proxy for citramalate productivity. The composition of the Lund medium~\cite{eastham_process_2015} was studied in an attempt to create boundaries for relevant uptake reactions.
   
   The project took place at the Cambridge Systems Biology Centre, Department of Biochemistry, in Prof Steve Oliver's group. Research associate Dr Jorge J\'ulvez supervised me throughout the project. The project was entirely computational, and ran from 25 June 2018 to 17 August 2018.
 \end{abstract}
 
 \chapter*{Introduction}
 \label{ch:intro}
+
+Mostly this is expanding on the abstract, giving more specific information.
 
 \chapter{Investigating the kinetic model}
 \label{ch:kinetic}
