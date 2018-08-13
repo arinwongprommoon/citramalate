@@ -38,7 +38,28 @@
 \chapter*{Introduction}
 \label{ch:intro}
 
-Mostly this is expanding on the abstract, giving more specific information.
+The project concerns two models of \emph{E. coli} metabolism: a kinetic model described by Millard \emph{et al} in 2017~\cite{millard_metabolic_2017} and a stoichiometric model described by Orth \emph{et al} in 2011~\cite{orth_comprehensive_2011}. The kinetic model concerns a smaller set of reactions than the stoichiometric model, but it contains information about initial conditions (substrate concentrations and flux through reactions) which the stoichiometric model lacks.
+
+The kinetic model contains 68 reactions, 49 of which include $V_{max}$ as a parameter. Of these, 41\footnote{ACEA, ACEB, ACK, ACN\_1, ACN\_2, ACS, ATP\_syn, CITRA\_SYN, CYTBO, EDA, EDD, ENO, FBA, FBP, FUMA, GDH, GLT, GND, GPM, LPD, MAD, MDH, MQO, PCK, PDH, PFK, PGI, PGK, PGL, PIT, PPC, PPS, PTA, PYK, RPE, RPI, SDH, SK, SQR, TPI, and ZWF} correspond to real enzyme-catalyzed reactions in \emph{E. coli}. To investigate citramalate production, a 69th reaction, modelling the reaction:
+
+\begin{center}
+  acetyl-CoA + pyruvate + \ce{H2O} $\rightarrow$ CoA-SH + \ce{H^+} + citramalate
+\end{center}
+
+with the kinetic law
+
+\[
+  \frac{\mathrm{d}[citramalate]}{\mathrm{d}t} = 
+  \frac{V_{max} \cdot [acetyl-CoA]}{[acetyl-CoA] + K_{m}}
+\]
+
+assuming pyruvate is saturating. The $V_{max}$ is set to 4 mM s\textsuperscript{-1} and $K_{m}$ to 0.495 mM in the modified model.
+
+Citramalate productivity is defined as $\mu Y_{P/S}$, where $\mu$ is the growth rate in reciprocal time units (h\textsuperscript{-1} in this project) and $Y_{P/S}$ is defined as mass of product over mass of substrate, which is glucose in this context.
+
+The stoichiometric model contains 2,584 reactions, and I have mapped 57 of them to their equivalents in the kinetic model (more details in section~\vref{sec:mapping}). By default, most of these reactions are unbounded (Orth \emph{et al}~\cite{orth_comprehensive_2011} provided details about this). In a similar vein to the kinetic model, a 2,585th reaction for citramalate production was added to the stoichiometric model using the COBRA module in Python. However, no kinetic parameters were added, as stoichiometric models do not contain this information.
+
+elaborate more here, expanding on the abstract
 
 \chapter{Investigating the kinetic model}
 \label{ch:kinetic}
