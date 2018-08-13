@@ -6,3 +6,5 @@
 *.pdf
 *.toc
 *.tex~
+*.bbl
+*.blg
