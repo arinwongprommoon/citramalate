@@ -1,4 +1,4 @@
-\documentclass[parskip=full]{scrreprt}
+\documentclass[parskip=full]{scrartcl}
 
 \usepackage{url}
 \usepackage{cite}
@@ -16,14 +16,14 @@
 
 \maketitle
 
-\tableofcontents
+%\tableofcontents
 
-\begin{abstract}
+%\begin{abstract}
  Previously, an Anargyros who worked with Dr Jorge J\'ulvez at the Cambridge Systems Biology Centre produced a mapping table which mapped reactions in a kinetic model in \emph{E. coli}~\cite{millard_metabolic_2017} to corresponding reactions in a stoichiometric model~\cite{orth_comprehensive_2011}. I provide an updated version of the mapping spreadsheet, correcting mistakes and mapping more enzymes. Here I detail the changes and the rationale behind them.
-\end{abstract}
+%\end{abstract}
 
-\chapter{Re-mapping}
-\label{ch:remapping}
+\section{Re-mapping}
+\label{sec:remapping}
 
 To correct mistakes, I changed mapping pairs as follows:
 
@@ -51,19 +51,19 @@ Anargyros provided limited flux bound information for the glucose uptake reactio
 
 These derive from observations that these relationships between flux values hold regardless of the initial conditions.
 
-\chapter{Making the table more informative}
-\label{ch:moreinformative}
+\section{Making the table more informative}
+\label{sec:moreinformative}
 
 I re-defined the categories for the reactions and the corresponding colour-coding scheme. `Plus small chemical species' refers to reactions in the stoichiometric model that are otherwise identical to the corresponding reaction in the kinetic model, except for the addition of small chemical species like \ce{H^+} and \ce{H2O}. I moved the species into a separate column for ease of sorting. `Acid hydrolysis' is a variation on that category, in which \ce{HCO3^-} occurrences in the kinetic model are shown as \ce{CO2} in the stoichiometric model, with \ce{H2O} in some cases. `Different reversibility' refers to reactions that are indicated as reversible in the kinetic model, but irreversible in the stoichiometric model. If a reaction is in one of the previously stated categories, then the flux through the stoichiometric model version of the reaction is defined to be equal to the flux through the kinetic model version of the reaction.
 
-`Reversed' means that the equation specified in the stoichiometric model is reversed with respect to the equation specified in the kinetic model. So, to obtain the flux bounds for the stoichiometric model, one must negate the values obtained from the kinetic model -- i.e. $(lb, ub) \rightarrow (-ub, -lb)$. `Sub-network different structure' is applied to sets of reactions that form sub-networks with different structures in the stoichiometric and kinetic models. These have special rules for mapping boundaries, which I detailed in chapter~\vref{ch:remapping}. There are a few reactions that are marked `absent', and one reaction -- CYTBO in the kinetic model and CYTBO3\_4pp in the stoichiometric model -- has different stoichiometries between the two models. The stoichiometric model equation has stoichiometric coefficients that are half that of the kinetic model equation.
+`Reversed' means that the equation specified in the stoichiometric model is reversed with respect to the equation specified in the kinetic model. So, to obtain the flux bounds for the stoichiometric model, one must negate the values obtained from the kinetic model -- i.e. $(lb, ub) \rightarrow (-ub, -lb)$. `Sub-network different structure' is applied to sets of reactions that form sub-networks with different structures in the stoichiometric and kinetic models. These have special rules for mapping boundaries, which I detailed in section~\vref{sec:remapping}. There are a few reactions that are marked `absent', and one reaction -- CYTBO in the kinetic model and CYTBO3\_4pp in the stoichiometric model -- has different stoichiometries between the two models. The stoichiometric model equation has stoichiometric coefficients that are half that of the kinetic model equation.
 
 To extend on the mapping table, I added EC numbers. EC numbers for the kinetic model are extracted from the supplementary data in Millard \emph{et al}'s paper~\cite{millard_metabolic_2017}, while the EC numbers for the stoichiometric model are extracted from the model file itself. The EC numbers are verified by looking them up in KEGG (\url{https://www.genome.jp/kegg/kegg2.html})
 
 In separate sheets, I included the wild-type flux values for each enzyme in the kinetic model, and the default flux boundaries for each enzyme in the stoichiometric model. These values are from the models' respective SBML files.
 
-\chapter{Flux bounds}
-\label{ch:fluxbounds}
+\section{Flux bounds}
+\label{sec:fluxbounds}
 
 In separate sheets, I added sets of lower and upper bounds for reactions in the stoichiometric model that have equivalents in the kinetic model. These bounds are found by varying the $V_{max}$ values of all 41 enzymes in the kinetic model that correspond to real-life reactions over the range of 0.4--10.0 times the wild-type $V_{max}$ values. To be more accurate, the varying was done in a differential evolution algorithm to save computational time. As a result, these values should be considered estimates of the minimum and maximum values of the flux values which each reaction can attain.
 
