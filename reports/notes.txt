@@ -4,6 +4,8 @@ MAIN REPORT -> looks like it will be 20-30 pages long (not that surprising thoug
 - Instead of putting lists of enzymes as footnotes, move them to the appendix?
 - Add original list and FCC list to the appendix
 - Name the original list using a name that is informative
+- Issues/future: using other algorithms in DE (Scipy, PyGMO -- how they are good and why I haven't implemented them)
+- Issues/future: investigating synergistic effects in couples
 
 Appendix
 - original list

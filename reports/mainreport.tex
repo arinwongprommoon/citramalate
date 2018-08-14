@@ -178,25 +178,34 @@ It was difficult to determine if there are synergistic effects between reactions
 \section{Using differential evolution}
 \label{sec:de}
 
-Differential evolution is a genetic algorithm. I’ve used it to maximise the citramalate productivity while multiple enzymes in a list are varied in their $V_{max}$ values at the same time. Strictly speaking, the algorithm minimises the value of a function, but with the use of one minus sign, I got it to maximise what I need.
+% Find way to cite Mier
+Differential evolution is a genetic algorithm developed by Storn and Price~\cite{storn_differential_1997}. I used the \texttt{rand/1/bin} strategy, adapting code by Pablo R. Mier (\url{https://pablormier.github.io/2017/09/05/a-tutorial-on-differential-evolution-with-python/}). I used the algorithm to maximise the citramalate productivity while multiple enzymes in a list are varied in their $V_{max}$ values simultaneously.
 
-Differential evolution has the following parameters:
-F\\
-CR\\
-NP\\
-D (dimensions)-- is the number of enzymes varied at once\\
-number of iterations/generations
+Differential evolution has the following parameters: $F$, the mutation constant or differential weight; $CR$, the recombination constant or crossover probability, $NP$, the population size; and $D$, the number of dimensions and the number of enzymes investigated simultaneously. The number of iterations is also specified.
 
-2. Using differential evolution to validate couples heatmaps
-
-In general agreement -- sometimes discovers maxima not seen by the heatmaps.
+Using default values of the parameters, in identifying the $V_{max}$ values of pairs of reactions that resulted in maximal productivity, differential evolution agrees with heatmaps. Occasionally, it discovers maxima not seen in the heatmaps, owing to the relatively low resolution of the heatmaps.
 
 \subsection{Finding optimal parameters}
 \label{ssec:deoptimise}
 
-I tested the values quoted by Storn and MEH Pedersen (2010) on optimising citramalate productivity by playing with enzymes in the glycolytic pathway (why it is the glycolytic pathway will be evident later). Values are chosen based on the times it takes for the algorithm, how fast the algorithm exhibits convergence, and how well the algorithm returns roughly the same values each time it is run.
+I tested how well the optimal differential evolution parameter values quoted by Storn and Price (1997)~\cite{storn_differential_1997} and Pedersen (2010)~\cite{pedersen_good_2010} optimised citramalate productivity. I used enzymes in the glycolytic pathway (refer to subsection~\vref{ssec:glycolytic}) and enzymes in the list I made in chapter~\vref{sec:onereac}. Values were chosen based on algorithm run time and how fast convergence is realised.
 
-(Add table here)
+\begin{table}[htbp]
+  \caption{Differential evolution optimal parameter search}
+  \label{tab:deoptimise}
+  \centering
+  \begin{tabular}{lllllll}
+    $F$ & $CR$ & $NP$ & iterations & $D$ & Source & Notes\\
+    0.8 & 0.7 & 20 & & 2-3 & Pablo R. Mier & Original\\
+    0.8 & 0.7 & 20 & 25-40 & 5 & Pablo R. Mier & List from section~\ref{sec:onereac}\\
+    0.6 & 0.9 & \< 40 & \> 20 & 5 & Storn & List from section~\ref{sec:onereac}\\
+    0.6301 & 0.7122 & 17 & 50 & 6-7 & Pedersen, for D = 5 & Glycolytic enzymes\\
+    0.6301 & 0.7122 & 17 & 70 & 7 & Pedersen, for D = 5 & Glycolytic enzymes\\
+    0.6607 & 0.9426 & 28 & 50 & 7-10 & Pedersen, for D = 10, first set & Glycolytic enzymes and list from section~\ref{sec:onereac}, best\\
+    0.6702 & 0.2368 & 12 & 100 & 7 & Pedersen, for D = 10, second set & Glycolytic enzymes
+  \end{tabular}
+\end{table}
+
 
 \subsection{Glycolytic enzymes}
 \label{ssec:glycolytic}
