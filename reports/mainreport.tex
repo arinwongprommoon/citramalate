@@ -12,7 +12,8 @@
 \usepackage{varioref}
 \usepackage{tabularx}
   \newcolumntype{L}{>{\raggedright\arraybackslash}X}
-\usepackage[version=4]{mhchem}
+  \usepackage[version=4]{mhchem}
+\usepackage{siunitx}
   
 \author{Arin Wongprommoon\\University of Cambridge}
 \title{Optimising production of citramalate based on the \emph{E. coli} kinetic model}
@@ -57,7 +58,7 @@ with the kinetic law
 
 assuming pyruvate is saturating. The $V_{max}$ is set to 4 mM s\textsuperscript{-1} and $K_{m}$ to 0.495 mM in the modified model.
 
-Citramalate productivity is defined as $\mu Y_{P/S}$, where $\mu$ is the growth rate in reciprocal time units (h\textsuperscript{-1} in this project) and $Y_{P/S}$ is defined as mass of product over mass of substrate, which is glucose in this context. Manipulating the SBML file required the Python library \texttt{libsbml} and running simulations employed the \texttt{roadrunner} module. Throughout the project, the simulations were from 0 to 7200 seconds, at which steady-state is attained for almost all the conditions (also see section~\vref{sec:couples}) %change this to a subsection investigating steady-state later
+Citramalate productivity is defined as $\mu Y_{P/S}$, where $\mu$ is the growth rate in reciprocal time units (h\textsuperscript{-1} in this project) and $Y_{P/S}$ is defined as mass of product over mass of substrate, which is glucose in this context. Manipulating the SBML file required the Python library \texttt{libsbml} and running simulations employed the \texttt{roadrunner} module. Throughout the project, the simulations were from 0 to 7,200 seconds, at which steady-state is attained for almost all the conditions (also see section~\vref{sec:couples}) %change this to a subsection investigating steady-state later
 
 The stoichiometric model contains 2,584 reactions, and I have mapped 57 of them to their equivalents in the kinetic model (more details in section~\vref{sec:mapping}). By default, most of these reactions are unbounded (Orth \emph{et al}~\cite{orth_comprehensive_2011} provided details about this). In a similar vein to the kinetic model, a 2,585th reaction for citramalate production was added to the stoichiometric model using the COBRA module in Python. However, no kinetic parameters were added, as stoichiometric models do not contain this information. In addition to the citramalate synthesis reaction, a sink reaction to allow citramalate to leave the system was also added.
 
@@ -114,70 +115,65 @@ In addition to the list of reactions ordered by effect on citramalate productivi
 \section{Varying $V_{max}$ values of two reactions at a time}
 \label{sec:couples}
 
-Continuing on from the one-reaction exercises, this part aims to vary the $V_{max}$ values of pairs of reactions to investigate their effect on citramalate productivity. Ideally, I should have looked at all the possible pairs from the 49 reactions that have $V_{max}$ as a parameter -- i.e. 1,176 of them -- but I have limited time, so I choose eight reactions off the top of the list of ‘enzymes’ that caused the greatest relative change in productivity with changing $V_{max}$ (0.5 to 2.0) as found earlier.
+Varying $V_{max}$ values of two reactions at a time aimed to identify pairs of reactions that have significant effects on citramalate productivity, which could be used to identify conditions that optimise citramalate productivity. Ideally, one should look at all pairs from the 49 reactions that have $V_{max}$ as a parameter. However, there are such 1,176 pairs, and extrapolating from my experience, it would take about nine hours to run the simulations needed to generate the data points using the conditions used in the project. Furthermore, for most reactions, the change in citramalate productivity was minimal when $V_{max}$ varied over the range of 0.1--10.0 $V_{max}$, so generating such a number of datasets would produce a large amount of useless information.
 
-These are: CITRA\_SYN, GLT, LPD, ATP\_MAINTENANCE, GDH, ATP\_syn, ACEA, ZWF.
+Therefore, I used only the eight reactions from the top of the list I prepared in section~\ref{sec:onereac}, namely:  CITRA\_SYN, GLT, LPD, ATP\_MAINTENANCE, GDH, ATP\_syn, ACEA, and ZWF. I varied their $V_{max}$ values within 0.1--1.0 $V_{max}$ or 0.1--10.0 $V_{max}$, and plotted the resulting citramalate productivities on 28 heatmaps. The $V_{max}$ values took 10 values in their ranges, so each heatmap had 100 data points. The horizontal axis indicates the absolute $V_{max}$ value of the first reaction in mM s\textsuperscript{-1} and the vertical axis represents the second reaction. So that the numbers that are easily visualised are displayed at each data point, I multiplied the citramalate productivity in h\textsuperscript{-1} by 10,000, as the wild-type productivity is 0.001122. Figure~\ref{fig:heatmapsample} is an example of a heatmap. Here, when the $V_{max}$ of GLT is 256.76 mM s\textsuperscript{-1} and the $V_{max}$ of ACEA is 1.83 mM s\textsuperscript{-1}, productivity is 0.00848.
 
-With these I varied their $V_{max}$ values from 0.1 to 10.0 times their wild-type $V_{max}$ values, and plotted the resulting citramalate productivities on heatmaps. Twenty-eight heatmaps were generated.
+I also used the reactions with the 10 greatest flux control coefficients to generate heatmaps. The trends seen in most heatmaps suggest simple additive effects, and the heatmaps do not have any additional local maxima or minima, suggesting orthogonality.
 
-\subsection{Results}
-\label{ssec:couplesresults}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[scale=0.5]{heatmapsample}
+  \caption{Example of a heatmap: GLT vs ACEA}
+  \label{fig:heatmapsample}
+\end{figure}
 
-The heatmaps are in the relevant folder - I don’t feel like attaching 28 images in this report.
+Plots that involve ATP\_MAINTENANCE exhibit strange behaviour, more evident in higher-resolution heatmaps like figure~\ref{fig:atpmaintenanceheatmap}. The source of this behaviour is unexpected behaviour shown between 0.20 and 0.25 $V_{max}$ in ATP\_MAINTENANCE's one-reaction plot (figure~\ref{fig:atpmaintenanceonereac}). Jorge suggests that it’s because the model is not equipped to deal with small values of $V_{max}$.
 
-(Add one sample `normal' heatmap here)
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[scale=0.5]{atpmaintenanceheatmap}
+  \caption{High-resolution heatmap of GLT vs ATP\_MAINTENANCE}
+  \label{fig:atpmaintenanceheatmap}
+\end{figure}
 
-Plots that include ATP\_MAINTENANCE as one of the reactions exhibited strange behaviour, which becomes more evident when the resolution of the plots are increased:
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[scale=0.5]{atpmaintenanceonereac}
+  \caption{One-reaction plot for ATP\_MAINTENANCE, 300 data points}
+  \label{fig:atpmaintenanceonereac}
+\end{figure}
 
-(Add the weird ATP\_MAINTENANCE heatmap here)
+\subsection{Verifying that the system has reached steady-state}
+\label{ssec:steadystate}
 
-Generating high-resolution one-reaction plots (citramalate productivity against $V_{max}$) revealed the problem:
+The results are only valid if the system has reached steady state. Steady state is achieved if at the end of simulation time, the greatest rate of change of concentration among the species in the system is less than a small threshold value. In other words:
 
-(Add the weird ATP\_MAINTENANCE 1D plot here)
+\[
+  \max_{X_{i}} \left | \frac{\mathrm{d}[X_{i}]}{\mathrm{d}t} \right | < \epsilon
+\]
 
-Jorge suggests that it’s because the model is not equipped to deal with small values of $V_{max}$.
+where X represents a chemical species, and $\epsilon$ is the threshold value. The threshold value was intially set at \num{1.0e-8}, but then adjusted to \num{1.0e-6} following inspection of heatmaps. For ease of visualisation, I generated heatmaps as I did earlier, but with data points replaced by -1 if the system does not reach steady state in those particular situations (see figure~\ref{fig:steadystate})
 
-Apart from that, the trends seen in all the other plots are exactly as expected if you mesh two one-reaction plots together. In other words, the effects are additive without any additional local maxima or minima in the spaces of the plots.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[scale=0.5]{steadystate}
+  \caption{Heatmap for ATP\_MAINTENANCE vs ZWF, with threshold set to \num{1.0e-8}}
+  \label{fig:steadystate}
+\end{figure}
+
+% Make this a paragraph?
+I noticed that:
+\begin{itemize}
+  \item ATP, ADP, P, and Hout are among the species that break the \num{1.0e-8} threshold. However, they stay at around \num{1.0e-7}.
+  \item ATP\_MAINTENANCE at 0.1 $V_{max}$ produced rates on the order of \num{e-1}, and ATP\_syn at 0.1 $V_{max}$ produced rates on the order of \num{e-2}. With these two reactions, the species responsible are BPG and OAA
+  \item GDH at 0.1 $V_{max}$ produced rates on the order of \num{e-3}, with GLCx and GLCp responsible. This is the only situation where GLCx and GLCp concentrations do not reach steady state.
+\end{itemize}
 
 \subsection{Synergistic effects}
 \label{ssec:synergistic}
 
-Whether there are synergistic effects is difficult to determine. I’ve investigated enzymes adjacent to each other. No special effects were observed for PGI and PFK, and some slight synergistic effect was observed for GPM and ENO. Between FBA and GDH, FBA exerts too little effect for the results to be conclusive. In contrast, ACEA and ACEB exhibit \emph{antagonistic} effects, and LPD and GDH, a pair of enzymes far apart from each other in the network seem to have a synergistic effect.
-
-\subsection{Steady-state checking}
-\label{ssec:steadystate}
-
-For each simulation I looked at the rate of change of the concentration of each species in the system at the end of the simulation, two hours (7,200 seconds). I then took the rate with the greatest absolute value, and compared it with a threshold value. Initially, the threshold value was 1e-8. If the greatest absolute value is greater than the threshold value, then the simulation is taken to have not reached steady state. I then incorporated this information into heatmaps. (Obviously I used the computer to do all of these steps for me, but I’m writing it this way to avoid making my explanation convoluted.)
-
-(Add SS plot here)
-
-Additionally, I produced heatmaps showing the greatest absolute values themselves (on a log scale).
-
-With this, I noticed that:\\
-ATP, ADP, P, and Hout are among the species that break the 1e-8 threshold, however, they stay at around 1e-7\\
-ATP\_MAINTENANCE at 0.1 $V_{max}$ produced greatest absolute values on the order of 1e-1\\
-ATP\_syn on the order of 1e-2\\
-For these two, the species that caused the problem are BPG and OAA\\
-GDH on the order of 1e-3, and here the species that caused the problem are GLCx and GLCp
-
-After a discussion with Jorge, a threshold of 1e-6 is reasonable, and it is safe to say that almost all reactions achieve steady state, apart from situations where ATP\_MAINTENANCE, ATP\_syn, and GDH have very low $V_{max}$ values.
-
-% This is redundant, will deal with it later
-
-Removing these species reveals:\\
-BPG for all reactions involving ATP\_MAINTENANCE, at around 0.09\\
-GLCx/GLCp for all reactions involving GDH, at the order of 0.000X\\
-FDP for CITRA\_SYN vs GDH; GLT vs GDH\\
-SUC for GLT vs LPD\\
-OAA for ATP\_MAINTENANCE vs ATP\_syn\\
-SUCCOA for GDH vs ATP\_syn\\
-G6P for ATP\_syn vs ZWF
-
-Looking at the heatmaps for the max concentration rates:\\
-As expected, ATP\_MAINTENANCE reliably screws everything up in its low $V_{max}$ ranges, giving rates at the order of 1e-1 while every other data point in the heatmap ranges from 1e-6 to 1e-11\\
-But so does ATP\_syn (order of 1e-2 to 1e-3 generally) in its low $V_{max}$ ranges. ATP\_MAINTENANCE and ATP\_syn are obviously responsible for the ATP derivates listed earlier.\\
-GDH produces 1e-3 values in its low $V_{max}$ ranges - this is the GLCx/GLCp\\
-Apart from that, no obvious patterns
+It was difficult to determine if there are synergistic effects between reactions. I began by investigating reactions adjacent to each other. No special effects were observed for PGI and PFK, and a slight synergistic effect was observed for GPM and ENO. Between FBA and GDH, FBA exerts too little effect for the results to be conclusive. In contrast, ACEA and ACEB exhibit \emph{antagonistic} effects, and LPD and GDH, a pair of enzymes far apart from each other in the network seem to have a synergistic effect. My investigations are in the appendix. %insert reference here
 
 \section{Using differential evolution}
 \label{sec:de}
