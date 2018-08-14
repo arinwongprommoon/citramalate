@@ -2,3 +2,8 @@ Ideas I have while writing the report about improving the report
 
 MAIN REPORT
 - Instead of putting lists of enzymes as footnotes, move them to the appendix?
+- Add original list and FCC list to the appendix
+- Name the original list using a name that is informative
+
+EXPERIMENTS
+- Prepare a minmax.ods using standard deviations over 0.1-1.0??? (this will necessitate re-generating a lot of plots and re-running a lot of experiments)

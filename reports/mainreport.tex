@@ -42,7 +42,7 @@
 
 The project concerns two models of \emph{E. coli} metabolism: a kinetic model described by Millard \emph{et al} in 2017~\cite{millard_metabolic_2017} and a stoichiometric model described by Orth \emph{et al} in 2011~\cite{orth_comprehensive_2011}. The kinetic model concerns a smaller set of reactions than the stoichiometric model, but it contains information about initial conditions (substrate concentrations and flux through reactions) which the stoichiometric model lacks.
 
-The kinetic model contains 68 reactions, 49 of which include $V_{max}$ as a parameter. Of these, 41\footnote{ACEA, ACEB, ACK, ACN\_1, ACN\_2, ACS, ATP\_syn, CITRA\_SYN, CYTBO, EDA, EDD, ENO, FBA, FBP, FUMA, GDH, GLT, GND, GPM, LPD, MAD, MDH, MQO, PCK, PDH, PFK, PGI, PGK, PGL, PIT, PPC, PPS, PTA, PYK, RPE, RPI, SDH, SK, SQR, TPI, and ZWF} correspond to real enzyme-catalyzed reactions in \emph{E. coli}. To investigate citramalate production, a 69th reaction, modelling the reaction:
+The kinetic model contains 68 reactions, 49 of which include $V_{max}$ as a parameter. Of these, 41\footnote{ACEA, ACEB, ACK, ACN\_1, ACN\_2, ACS, ATP\_syn, CITRA\_SYN, CYTBO, EDA, EDD, ENO, FBA, FBP, FUMA, GDH, GLT, GND, GPM, LPD, MAD, MDH, MQO, PCK, PDH, PFK, PGI, PGK, PGL, PIT, PPC, PPS, PTA, PYK, RPE, RPI, SDH, SK, SQR, TPI, and ZWF} correspond to real enzyme-catalyzed reactions in \emph{E. coli}. To investigate citramalate production, a 69th reaction called CITRA\_SYN was added to the model. It models the reaction:
 
 \begin{center}
   acetyl-CoA + pyruvate + \ce{H2O} $\rightarrow$ CoA-SH + \ce{H^+} + citramalate
@@ -86,21 +86,30 @@ effect = \frac{(max - min)}{(0.5 \cdot (max + min)}
 
 This is the difference between the maximum and minimum productivities obtained over the range, relative to the average, which represents where the value of productivity is. I intended to find the extent of variation from the `typical' value of productivity around this range. Granted, this isn’t the best way to analyse. I’ve tried regression, but it didn’t seem very informative.
 
-This identified CITRA\_SYN, GLT, LPD, GROWTH, ATP\_MAINTENANCE, GDH, ATP\_SYN, ACEA, PYK, and ZWF as among the enzymes that had the greatest effects. Millard et al (2017) listed CYTBO, ZWF, GDH, GLT, and GROWTH as the enzymes found to have the largest shares of flux control (and also exert the strongest controls on concentration). And looking at figure 2A and figure 2B, they are followed by the likes of LPD, ATP\_MAINTENANCE, ACEA, ATP\_SYN, and PYK
+This identified CITRA\_SYN, GLT, LPD, GROWTH, ATP\_MAINTENANCE, GDH, ATP\_SYN, ACEA, PYK, and ZWF as among the enzymes that had the greatest effects. Millard \emph{et al}~\cite{millard_metabolic_2017} listed CYTBO, ZWF, GDH, GLT, and GROWTH as the enzymes found to have the largest shares of flux control. They also exert the strongest controls on concentration. These enzymes are followed by LPD, ATP\_MAINTENANCE, ACEA, ATP\_SYN, and PYK
 
-XCH\_XXX for ACE, GLC, and P have no bearing on productivity. Surprisingly, ACS (acetyl CoA synthetase), ACK (acetate kinase), and PTA (phosphate acetyltransferase), which are all directly related to controlling acetyl CoA levels, do not seem to have a significant bearing on productivity.
+Exchange reactions (XCH\_ACE, XCH\_GLC, and XCH\_P) have no bearing on productivity as all the values in their plots can be attributed to noise. Surprisingly, ACS (acetyl CoA synthetase), ACK (acetate kinase), and PTA (phosphate acetyltransferase), which are all directly related to controlling acetyl CoA levels, do not seem to have ignificant bearings on productivity.
 
-Enzymes found to have the largest shares of flux control unsurprisingly create the plots that demonstrate the greatest change in citramalate productivity in response to Vmax changes. So what's more interesting are:\\
-CYTBO -- has a less effect on productivity as would be expected by this explanation.\\
-PYK. It doesn't exert a lot of control over fluxes. However, the citramalate reaction uses up pyruvate, so that might explain the difference. PYK is also a control point of glycolysis.
+As expected, enzymes found to have the largest shares of flux control create the plots that demonstrate the greatest change in citramalate productivity in response to $V_{max}$ changes. However, CYTBO has a less effect on productivity as would be expected by this explanation. Although PYK does not exert a lot of control over fluxes as expected by its flux control coefficient, it has quite a great effect on citramalate productivity. Possibly it is because the citramalate reaction uses up pyruvate and because PYK is a control point in glycolysis. A few reactions exhibit inflection points in their plots, as shown in table~\ref{tab:inflection}. For reference, the wild-type productivity is 0.001122 h\textsuperscript{-1}. %0.00112225918623
 
-These enzymes have inflection points in their plots (which is surprising, but Prof Oliver said it’s likely due to the feedback control mechanisms). I’ve calculated some of these (absolute values)
-CYTBO: 4.9325456122 to 5.0894110204\\
-PFK: 0.1410191204 to 0.1444217265\\
-GDH: 4.3682353265 to 4.5274017959\\
-EDA: 0.0134480582 to 0.0148719702\\
-MQO: 1.4811924694 to 1.5661015918\\
-CITRA\_SYN: 0.4734693878 to 0.5469387755
+\begin{table}[htbp]
+  \caption{Reactions with inflection points}
+  \label{tab:inflection}
+  \centering
+  \begin{tabular}{lrrl}
+    Reaction & $V_{max}$ (mM s\textsuperscript{-1}) & Productivity (h\textsuperscript{-1}) & Type\\
+    ATP\_syn & 16.804 & 0.00216 & minimum\\
+    & 23.724 & 0.00231 & maximum\\
+    CITRA\_SYN & 0.545 & 0.01660 & maximum\\
+    CYTBO & 5.124 & 0.00113 & maximum\\
+    EDA & 0.014 & 0.00112 & maximum\\
+    GDH & 4.569 & 0.00149 & maximum\\
+    MQO & 1.597 & 0.00098 & minimum\\
+    PFK & 0.145 & 0.00113 & maximum
+  \end{tabular}
+\end{table}
+
+In addition to the list of reactions ordered by effect on citramalate productivity as described earlier, I also extracted a list of reactions arranged by descending order of flux control coefficent (FCC) from the Millard \emph{et al} paper, and used it alongside this list in later parts of the project.
 
 \section{Varying $V_{max}$ values of two reactions at a time}
 \label{sec:couples}
