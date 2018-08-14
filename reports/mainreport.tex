@@ -188,35 +188,35 @@ Using default values of the parameters, in identifying the $V_{max}$ values of p
 \subsection{Finding optimal parameters}
 \label{ssec:deoptimise}
 
-I tested how well the optimal differential evolution parameter values quoted by Storn and Price (1997)~\cite{storn_differential_1997} and Pedersen (2010)~\cite{pedersen_good_2010} optimised citramalate productivity. I used enzymes in the glycolytic pathway (refer to subsection~\vref{ssec:glycolytic}) and enzymes in the list I made in chapter~\vref{sec:onereac}. Values were chosen based on algorithm run time and how fast convergence is realised.
+I tested how well the optimal differential evolution parameter values quoted by Storn and Price (1997)~\cite{storn_differential_1997} and Pedersen (2010)~\cite{pedersen_good_2010} optimised citramalate productivity. I used enzymes in the glycolytic pathway (refer to subsection~\vref{ssec:glycolytic}) and enzymes in the list I made in chapter~\vref{sec:onereac}. Values were chosen based on algorithm run time and how fast convergence is realised. They are presented in table~\vref{tab:deoptimise}.
 
 \begin{table}[htbp]
   \caption{Differential evolution optimal parameter search}
   \label{tab:deoptimise}
   \centering
   \begin{tabularx}{\linewidth}{LLLLLLL}
-    $F$ & $CR$ & $NP$ & iterations & $D$ & Source & Notes\\
-    0.8 & 0.7 & 20 & & 2-3 & Pablo R. Mier & Original\\
-    0.8 & 0.7 & 20 & 25-40 & 5 & Pablo R. Mier & List from section~\ref{sec:onereac}\\
-    0.6 & 0.9 & \textless 40 & \textgreater 20 & 5 & Storn & List from section~\ref{sec:onereac}\\
-    0.6301 & 0.7122 & 17 & 50 & 6-7 & Pedersen, for D = 5 & Glycolytic enzymes\\
-    0.6301 & 0.7122 & 17 & 70 & 7 & Pedersen, for D = 5 & Glycolytic enzymes\\
-    0.6607 & 0.9426 & 28 & 50 & 7-10 & Pedersen, for D = 10, first set & Glycolytic enzymes and list from section~\ref{sec:onereac}, best\\
-    0.6702 & 0.2368 & 12 & 100 & 7 & Pedersen, for D = 10, second set & Glycolytic enzymes\\
+    $F$ & $CR$ & $NP$ & iterations & $D$ & Source\\
+    0.8 & 0.7 & 20 & & 2-3 & Mier\\
+    0.8 & 0.7 & 20 & 25-40 & 5 & Mier\\
+    0.6 & 0.9 & \textless 40 & \textgreater 20 & 5 & Storn\\
+    0.6301 & 0.7122 & 17 & 50 & 6-7 & Pedersen (D = 5)\\
+    0.6301 & 0.7122 & 17 & 70 & 7 & Pedersen (D = 5)\\
+    0.6607 & 0.9426 & 28 & 50 & 7-10 & Pedersen (D = 10, first set), best\\
+    0.6702 & 0.2368 & 12 & 100 & 7 & Pedersen (D = 10, second set)\\
   \end{tabularx}
 \end{table}
 
-
+% This subsection may be moved to the appendix or disappear altogether. It's kind of a side-project, and does not really contribute much to the report. Furthermore, this contributes nothing to the methods.
 \subsection{Glycolytic enzymes}
 \label{ssec:glycolytic}
 
-Enzymes: PGI, PFK, FBA, GDH, PGK, GPM, ENO, PYK, PDH
+Originally I used differential evolution with the set of glycolytic enzymes PGI, PFK, FBA, GDH, PGK, GPM, ENO, PYK, and PDH to investigate whether the $V_{max}$ values of all enzymes in a pathway have to be increased to obtain an appreciable increase in the overall flux through the pathway, resulting in higher productivity. Niederberger \emph{et al}~\cite{niederberger_strategy_1992} stated in their paper that flux through all enzymes in a linear pathway must be increased for flux through the pathway to be increased, judging by their experiments on the tryptophan synthesis pathway in yeast. However, Yamamoto \emph{et al}~\cite{yamamoto_overexpression_2012} stated otherwise, and showed that appreciable increases resulted after increasing the flux through only one or two enzymes. My results support the latter.
 
-Originally I used differential evolution with this set of glycolytic enzymes in order to investigate whether the $V_{max}$ values of all enzymes in a pathway have to be increased to get an appreciable increase in the overall flux through the pathway, resulting in higher productivity. Niederberger et al (1992) stated in their paper that flux through all enzymes in a linear pathway must be increased for flux through the pathway to be increased, judging by their experiments on the tryptophan synthesis pathway in yeast. However, Yamamoto et al (2012) stated otherwise, and showed that appreciable increases resulted after increasing the flux through only one or two enzymes. My results support the latter.
+The objective changed to investigating how much adding an enzyme as an additional dimension in the differential evolution algorithm affects productivity. Adding enzymes relatively low on the section~\ref{sec:onereac} list does not affect the optimum $V_{max}$ values already on there much, and does not cause large improvements in productivity.
 
-The objective of this exercise changed to investigating how much adding an enzyme as an additional dimension in the differential evolution algorithm affects productivity.
-
-Adding enzymes relatively low on the minmax.ods list does not affect the optimum $V_{max}$ values already on there much, and does not cause big leaps in productivity. This is nice because we can get away with not looking at all enzymes in a pathway to optimise productivity, producing a good solution for the memory leak (the corners we have to cut because the writers of RoadRunner didn't deal with this \ldots). The `curse of dimensionality' ruins everything - even if there's no memory leak, I will have to deal with running the damn thing for an awfully long time. So it was worth finding out with enzymes had the most effects on productivity after all.
+%insert appropriate reference to memory leak later
+%also make language more formal
+This is good because it does not seem necessary to include all enzymes in a pathway in differential evolution, which is a good solution for the memory leak in \texttt{roadrunner}. Additionally, the `curse of dimensionality' results in exponential increases in the time required to return solutions as reactions are added. So it was worth finding out with enzymes had the most effects on productivity after all.
 
 \subsection{Optimisation of citramalate production}
 \label{ssec:optcitra}
