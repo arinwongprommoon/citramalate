@@ -182,7 +182,53 @@ Apart from that, no obvious patterns
 \section{Using differential evolution}
 \label{sec:de}
 
-Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse pellentesque quis nunc eget feugiat. Praesent eu neque dapibus, tincidunt dolor eu, elementum neque. Donec sit amet augue justo. Suspendisse condimentum lectus sed tellus mollis, non commodo ipsum porttitor. Nam efficitur, leo id egestas feugiat, augue odio hendrerit ligula, non tempor mi elit a quam. Sed sagittis pulvinar lorem, non ornare metus tempor nec. Nullam interdum rutrum nulla non suscipit. Ut orci enim, molestie in rhoncus ut, placerat in nunc. Nulla scelerisque ullamcorper nibh, quis commodo augue laoreet faucibus. Donec fermentum faucibus venenatis. In convallis, ligula ut accumsan gravida, lectus quam gravida metus, nec tempor ipsum mi eu nulla. Nulla aliquam vestibulum felis, interdum tincidunt velit ultrices ac. Curabitur a libero sagittis, pulvinar urna vel, auctor urna. Donec tempus sem mi, sit amet ornare mi suscipit vitae.
+Differential evolution is a genetic algorithm. I’ve used it to maximise the citramalate productivity while multiple enzymes in a list are varied in their Vmax values at the same time. Strictly speaking, the algorithm minimises the value of a function, but with the use of one minus sign, I got it to maximise what I need.
+
+Differential evolution has the following parameters:
+F\\
+CR\\
+NP\\
+D (dimensions)-- is the number of enzymes varied at once\\
+number of iterations/generations
+
+2. Using differential evolution to validate couples heatmaps
+
+In general agreement -- sometimes discovers maxima not seen by the heatmaps.
+
+\subsection{Finding optimal parameters}
+\label{ssec:deoptimise}
+
+I tested the values quoted by Storn and MEH Pedersen (2010) on optimising citramalate productivity by playing with enzymes in the glycolytic pathway (why it is the glycolytic pathway will be evident later). Values are chosen based on the times it takes for the algorithm, how fast the algorithm exhibits convergence, and how well the algorithm returns roughly the same values each time it is run.
+
+(Add table here)
+
+\subsection{Glycolytic enzymes}
+\label{ssec:glycolytic}
+
+Enzymes: PGI, PFK, FBA, GDH, PGK, GPM, ENO, PYK, PDH
+
+Originally I used differential evolution with this set of glycolytic enzymes in order to investigate whether the Vmax values of all enzymes in a pathway have to be increased to get an appreciable increase in the overall flux through the pathway, resulting in higher productivity. Niederberger et al (1992) stated in their paper that flux through all enzymes in a linear pathway must be increased for flux through the pathway to be increased, judging by their experiments on the tryptophan synthesis pathway in yeast. However, Yamamoto et al (2012) stated otherwise, and showed that appreciable increases resulted after increasing the flux through only one or two enzymes. My results support the latter.
+
+The objective of this exercise changed to investigating how much adding an enzyme as an additional dimension in the differential evolution algorithm affects productivity.
+
+Adding enzymes relatively low on the minmax.ods list does not affect the optimum Vmax values already on there much, and does not cause big leaps in productivity. This is nice because we can get away with not looking at all enzymes in a pathway to optimise productivity, producing a good solution for the memory leak (the corners we have to cut because the writers of RoadRunner didn't deal with this \ldots). The `curse of dimensionality' ruins everything - even if there's no memory leak, I will have to deal with running the damn thing for an awfully long time. So it was worth finding out with enzymes had the most effects on productivity after all.
+
+\subsection{Optimisation of citramalate production}
+\label{ssec:optcitra}
+
+Used the best parameters on differential evolution on the set of seven enzymes: CITRA\_SYN, GLT, LPD, GDH, ATP\_syn, ACEA, ZWF
+
+F = 0.6607, CR = 0.9426, NP = 28, generations = 50
+
+(Insert table for 7 citra enzymes here)
+
+Productivity = 353.66 10-4
+
+Confirmed that DE is useful: took values expected to generate the highest productivity as expected from one-reaction plots alone and plugged them into the model, then used comproducti() to evaluate productivity. Turns out to be 226.96. Conclusion: DE is useful.
+
+Tried it on 10 enzymes - CITRA\_SYN, GLT, LPD, GDH, ATP\_syn, ACEA, PYK, ZWF, NDHII, MQO -- achieved 405.5 productivity, but values swing.
+
+(Insert table for 10 citra enzymes from the old de report here)
 
 \chapter{Enriching the stoichiometric model}
 \label{ch:stoich}
