@@ -114,7 +114,70 @@ In addition to the list of reactions ordered by effect on citramalate productivi
 \section{Varying $V_{max}$ values of two reactions at a time}
 \label{sec:couples}
 
-Aliquam erat volutpat. Nam sed felis dui. Suspendisse rhoncus dui vel mi accumsan, malesuada tempus ligula aliquet. Nulla purus dui, feugiat non justo tempor, consectetur vehicula sem. Aenean at libero ipsum. Suspendisse aliquet nec metus sed tincidunt. Donec vel sapien id diam condimentum cursus.
+Continuing on from the one-reaction exercises, this part aims to vary the Vmax values of pairs of reactions to investigate their effect on citramalate productivity. Ideally, I should have looked at all the possible pairs from the 49 reactions that have Vmax as a parameter -- i.e. 1,176 of them -- but I have limited time, so I choose eight reactions off the top of the list of ‘enzymes’ that caused the greatest relative change in productivity with changing Vmax (0.5 to 2.0) as found earlier.
+
+These are: CITRA\_SYN, GLT, LPD, ATP\_MAINTENANCE, GDH, ATP\_syn, ACEA, ZWF.
+
+With these I varied their Vmax values from 0.1 to 10.0 times their wild-type Vmax values, and plotted the resulting citramalate productivities on heatmaps. Twenty-eight heatmaps were generated.
+
+\subsection{Results}
+\label{ssec:couplesresults}
+
+The heatmaps are in the relevant folder - I don’t feel like attaching 28 images in this report.
+
+(Add one sample `normal' heatmap here)
+
+Plots that include ATP\_MAINTENANCE as one of the reactions exhibited strange behaviour, which becomes more evident when the resolution of the plots are increased:
+
+(Add the weird ATP\_MAINTENANCE heatmap here)
+
+Generating high-resolution one-reaction plots (citramalate productivity against Vmax) revealed the problem:
+
+(Add the weird ATP\_MAINTENANCE 1D plot here)
+
+Jorge suggests that it’s because the model is not equipped to deal with small values of Vmax.
+
+Apart from that, the trends seen in all the other plots are exactly as expected if you mesh two one-reaction plots together. In other words, the effects are additive without any additional local maxima or minima in the spaces of the plots.
+
+\subsection{Synergistic effects}
+\label{ssec:synergistic}
+
+Whether there are synergistic effects is difficult to determine. I’ve investigated enzymes adjacent to each other. No special effects were observed for PGI and PFK, and some slight synergistic effect was observed for GPM and ENO. Between FBA and GDH, FBA exerts too little effect for the results to be conclusive. In contrast, ACEA and ACEB exhibit \emph{antagonistic} effects, and LPD and GDH, a pair of enzymes far apart from each other in the network seem to have a synergistic effect.
+
+\subsection{Steady-state checking}
+\label{ssec:steadystate}
+
+For each simulation I looked at the rate of change of the concentration of each species in the system at the end of the simulation, two hours (7,200 seconds). I then took the rate with the greatest absolute value, and compared it with a threshold value. Initially, the threshold value was 1e-8. If the greatest absolute value is greater than the threshold value, then the simulation is taken to have not reached steady state. I then incorporated this information into heatmaps. (Obviously I used the computer to do all of these steps for me, but I’m writing it this way to avoid making my explanation convoluted.)
+
+(Add SS plot here)
+
+Additionally, I produced heatmaps showing the greatest absolute values themselves (on a log scale).
+
+With this, I noticed that:\\
+ATP, ADP, P, and Hout are among the species that break the 1e-8 threshold, however, they stay at around 1e-7\\
+ATP\_MAINTENANCE at 0.1 Vmax produced greatest absolute values on the order of 1e-1\\
+ATP\_syn on the order of 1e-2\\
+For these two, the species that caused the problem are BPG and OAA\\
+GDH on the order of 1e-3, and here the species that caused the problem are GLCx and GLCp
+
+After a discussion with Jorge, a threshold of 1e-6 is reasonable, and it is safe to say that almost all reactions achieve steady state, apart from situations where ATP\_MAINTENANCE, ATP\_syn, and GDH have very low Vmax values.
+
+% This is redundant, will deal with it later
+
+Removing these species reveals:\\
+BPG for all reactions involving ATP\_MAINTENANCE, at around 0.09\\
+GLCx/GLCp for all reactions involving GDH, at the order of 0.000X\\
+FDP for CITRA\_SYN vs GDH; GLT vs GDH\\
+SUC for GLT vs LPD\\
+OAA for ATP\_MAINTENANCE vs ATP\_syn\\
+SUCCOA for GDH vs ATP\_syn\\
+G6P for ATP\_syn vs ZWF
+
+Looking at the heatmaps for the max concentration rates:\\
+As expected, ATP\_MAINTENANCE reliably screws everything up in its low Vmax ranges, giving rates at the order of 1e-1 while every other data point in the heatmap ranges from 1e-6 to 1e-11\\
+But so does ATP\_syn (order of 1e-2 to 1e-3 generally) in its low Vmax ranges. ATP\_MAINTENANCE and ATP\_syn are obviously responsible for the ATP derivates listed earlier.\\
+GDH produces 1e-3 values in its low Vmax ranges - this is the GLCx/GLCp\\
+Apart from that, no obvious patterns
 
 \section{Using differential evolution}
 \label{sec:de}
