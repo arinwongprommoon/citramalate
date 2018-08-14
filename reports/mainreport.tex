@@ -114,11 +114,11 @@ In addition to the list of reactions ordered by effect on citramalate productivi
 \section{Varying $V_{max}$ values of two reactions at a time}
 \label{sec:couples}
 
-Continuing on from the one-reaction exercises, this part aims to vary the Vmax values of pairs of reactions to investigate their effect on citramalate productivity. Ideally, I should have looked at all the possible pairs from the 49 reactions that have Vmax as a parameter -- i.e. 1,176 of them -- but I have limited time, so I choose eight reactions off the top of the list of ‘enzymes’ that caused the greatest relative change in productivity with changing Vmax (0.5 to 2.0) as found earlier.
+Continuing on from the one-reaction exercises, this part aims to vary the $V_{max}$ values of pairs of reactions to investigate their effect on citramalate productivity. Ideally, I should have looked at all the possible pairs from the 49 reactions that have $V_{max}$ as a parameter -- i.e. 1,176 of them -- but I have limited time, so I choose eight reactions off the top of the list of ‘enzymes’ that caused the greatest relative change in productivity with changing $V_{max}$ (0.5 to 2.0) as found earlier.
 
 These are: CITRA\_SYN, GLT, LPD, ATP\_MAINTENANCE, GDH, ATP\_syn, ACEA, ZWF.
 
-With these I varied their Vmax values from 0.1 to 10.0 times their wild-type Vmax values, and plotted the resulting citramalate productivities on heatmaps. Twenty-eight heatmaps were generated.
+With these I varied their $V_{max}$ values from 0.1 to 10.0 times their wild-type $V_{max}$ values, and plotted the resulting citramalate productivities on heatmaps. Twenty-eight heatmaps were generated.
 
 \subsection{Results}
 \label{ssec:couplesresults}
@@ -131,11 +131,11 @@ Plots that include ATP\_MAINTENANCE as one of the reactions exhibited strange be
 
 (Add the weird ATP\_MAINTENANCE heatmap here)
 
-Generating high-resolution one-reaction plots (citramalate productivity against Vmax) revealed the problem:
+Generating high-resolution one-reaction plots (citramalate productivity against $V_{max}$) revealed the problem:
 
 (Add the weird ATP\_MAINTENANCE 1D plot here)
 
-Jorge suggests that it’s because the model is not equipped to deal with small values of Vmax.
+Jorge suggests that it’s because the model is not equipped to deal with small values of $V_{max}$.
 
 Apart from that, the trends seen in all the other plots are exactly as expected if you mesh two one-reaction plots together. In other words, the effects are additive without any additional local maxima or minima in the spaces of the plots.
 
@@ -155,12 +155,12 @@ Additionally, I produced heatmaps showing the greatest absolute values themselve
 
 With this, I noticed that:\\
 ATP, ADP, P, and Hout are among the species that break the 1e-8 threshold, however, they stay at around 1e-7\\
-ATP\_MAINTENANCE at 0.1 Vmax produced greatest absolute values on the order of 1e-1\\
+ATP\_MAINTENANCE at 0.1 $V_{max}$ produced greatest absolute values on the order of 1e-1\\
 ATP\_syn on the order of 1e-2\\
 For these two, the species that caused the problem are BPG and OAA\\
 GDH on the order of 1e-3, and here the species that caused the problem are GLCx and GLCp
 
-After a discussion with Jorge, a threshold of 1e-6 is reasonable, and it is safe to say that almost all reactions achieve steady state, apart from situations where ATP\_MAINTENANCE, ATP\_syn, and GDH have very low Vmax values.
+After a discussion with Jorge, a threshold of 1e-6 is reasonable, and it is safe to say that almost all reactions achieve steady state, apart from situations where ATP\_MAINTENANCE, ATP\_syn, and GDH have very low $V_{max}$ values.
 
 % This is redundant, will deal with it later
 
@@ -174,15 +174,15 @@ SUCCOA for GDH vs ATP\_syn\\
 G6P for ATP\_syn vs ZWF
 
 Looking at the heatmaps for the max concentration rates:\\
-As expected, ATP\_MAINTENANCE reliably screws everything up in its low Vmax ranges, giving rates at the order of 1e-1 while every other data point in the heatmap ranges from 1e-6 to 1e-11\\
-But so does ATP\_syn (order of 1e-2 to 1e-3 generally) in its low Vmax ranges. ATP\_MAINTENANCE and ATP\_syn are obviously responsible for the ATP derivates listed earlier.\\
-GDH produces 1e-3 values in its low Vmax ranges - this is the GLCx/GLCp\\
+As expected, ATP\_MAINTENANCE reliably screws everything up in its low $V_{max}$ ranges, giving rates at the order of 1e-1 while every other data point in the heatmap ranges from 1e-6 to 1e-11\\
+But so does ATP\_syn (order of 1e-2 to 1e-3 generally) in its low $V_{max}$ ranges. ATP\_MAINTENANCE and ATP\_syn are obviously responsible for the ATP derivates listed earlier.\\
+GDH produces 1e-3 values in its low $V_{max}$ ranges - this is the GLCx/GLCp\\
 Apart from that, no obvious patterns
 
 \section{Using differential evolution}
 \label{sec:de}
 
-Differential evolution is a genetic algorithm. I’ve used it to maximise the citramalate productivity while multiple enzymes in a list are varied in their Vmax values at the same time. Strictly speaking, the algorithm minimises the value of a function, but with the use of one minus sign, I got it to maximise what I need.
+Differential evolution is a genetic algorithm. I’ve used it to maximise the citramalate productivity while multiple enzymes in a list are varied in their $V_{max}$ values at the same time. Strictly speaking, the algorithm minimises the value of a function, but with the use of one minus sign, I got it to maximise what I need.
 
 Differential evolution has the following parameters:
 F\\
@@ -207,11 +207,11 @@ I tested the values quoted by Storn and MEH Pedersen (2010) on optimising citram
 
 Enzymes: PGI, PFK, FBA, GDH, PGK, GPM, ENO, PYK, PDH
 
-Originally I used differential evolution with this set of glycolytic enzymes in order to investigate whether the Vmax values of all enzymes in a pathway have to be increased to get an appreciable increase in the overall flux through the pathway, resulting in higher productivity. Niederberger et al (1992) stated in their paper that flux through all enzymes in a linear pathway must be increased for flux through the pathway to be increased, judging by their experiments on the tryptophan synthesis pathway in yeast. However, Yamamoto et al (2012) stated otherwise, and showed that appreciable increases resulted after increasing the flux through only one or two enzymes. My results support the latter.
+Originally I used differential evolution with this set of glycolytic enzymes in order to investigate whether the $V_{max}$ values of all enzymes in a pathway have to be increased to get an appreciable increase in the overall flux through the pathway, resulting in higher productivity. Niederberger et al (1992) stated in their paper that flux through all enzymes in a linear pathway must be increased for flux through the pathway to be increased, judging by their experiments on the tryptophan synthesis pathway in yeast. However, Yamamoto et al (2012) stated otherwise, and showed that appreciable increases resulted after increasing the flux through only one or two enzymes. My results support the latter.
 
 The objective of this exercise changed to investigating how much adding an enzyme as an additional dimension in the differential evolution algorithm affects productivity.
 
-Adding enzymes relatively low on the minmax.ods list does not affect the optimum Vmax values already on there much, and does not cause big leaps in productivity. This is nice because we can get away with not looking at all enzymes in a pathway to optimise productivity, producing a good solution for the memory leak (the corners we have to cut because the writers of RoadRunner didn't deal with this \ldots). The `curse of dimensionality' ruins everything - even if there's no memory leak, I will have to deal with running the damn thing for an awfully long time. So it was worth finding out with enzymes had the most effects on productivity after all.
+Adding enzymes relatively low on the minmax.ods list does not affect the optimum $V_{max}$ values already on there much, and does not cause big leaps in productivity. This is nice because we can get away with not looking at all enzymes in a pathway to optimise productivity, producing a good solution for the memory leak (the corners we have to cut because the writers of RoadRunner didn't deal with this \ldots). The `curse of dimensionality' ruins everything - even if there's no memory leak, I will have to deal with running the damn thing for an awfully long time. So it was worth finding out with enzymes had the most effects on productivity after all.
 
 \subsection{Optimisation of citramalate production}
 \label{ssec:optcitra}
@@ -251,7 +251,7 @@ Steal stuff from the mapping report. Mostly repeat that. Not sure if I intended 
 \section{Creating boundaries for FBA}
 \label{sec:bounds}
 
-Aim: finding the minimum and maximum of the fluxes through the 68 reactions in the kinetic model (69 for the version with citramalate added) by varying the Vmax values of the 49 enzymes with Vmax as a parameter.
+Aim: finding the minimum and maximum of the fluxes through the 68 reactions in the kinetic model (69 for the version with citramalate added) by varying the $V_{max}$ values of the 49 enzymes with $V_{max}$ as a parameter.
 
 Ideally: vary all 49 at once, but computational memory and time is limited, so I have devised two strategies to produce educated guesses for the lower and upper limits of the flux values. The broader the boundaries, the better they are.
 
@@ -259,11 +259,11 @@ A) Varying one enzyme at a time
 
 B) Varying many enzymes at a time using differential evolution to obtain minimum and maximum values.
 
-First method: varying one enzyme at a time. Found by varying the Vmax values of one enzyme at a time over the range of 0.1-10.0 Vmax in a modification of the Millard et al (2017) kinetic model, namely, with the citramalate reaction added
+First method: varying one enzyme at a time. Found by varying the $V_{max}$ values of one enzyme at a time over the range of 0.1-10.0 $V_{max}$ in a modification of the Millard et al (2017) kinetic model, namely, with the citramalate reaction added
 
 Varying many enzymes (will just not mention 4D, 5D, 6D, 7D as its unnecessary)
 
-8D: Use original list. CYTBO, MQO, MDH, ZWF, GLT, GDH, ATP\_syn, ACK. Over range of 0.3 -- 10.0 Vmax because of CVODE. Say something about Vmax not reliable in this region anyway. State DE parameters. Maybe put the boundaries in the appendix.
+8D: Use original list. CYTBO, MQO, MDH, ZWF, GLT, GDH, ATP\_syn, ACK. Over range of 0.3 -- 10.0 $V_{max}$ because of CVODE. Say something about $V_{max}$ not reliable in this region anyway. State DE parameters. Maybe put the boundaries in the appendix.
 
 41D: List of all enzymes. Over 0.4 -- 10.0 because CVODE. State DE parameters.
 

@@ -1,6 +1,6 @@
 Ideas I have while writing the report about improving the report
 
-MAIN REPORT
+MAIN REPORT -> looks like it will be 20-30 pages long (not that surprising though)
 - Instead of putting lists of enzymes as footnotes, move them to the appendix?
 - Add original list and FCC list to the appendix
 - Name the original list using a name that is informative
