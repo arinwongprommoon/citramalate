@@ -279,12 +279,26 @@ First I used the boundaries that were included in the stoichiometric model (i.e.
 \section{Investigating glucose uptake}
 \label{sec:glucoseuptake}
 
-Insert text here.
+For reference, this is a mapping between the relevant reactions that I settled on.
+
+(Insert table showing mapping here)
+
+First, I looked at the relationship between the glucose feed and the fluxes through the other reactions in the kinetic model. The fluxes through XCH\_GLC and the PTS\_X reactions are always the same. XCH\_GLC is equal to GLC\_feed from GLC\_feed = 0 to GLC\_feed = 0.68, after which XCH\_GLC never increases above 0.68 (saturation).
+
+With increasing GLC\_feed, GLCx and GLCp concentrations remain very low until GLC\_feed = 0.68, after which they increase linearly as GLC\_feed increases. The concentration of G6P increases linearly until GLC\_feed = 0.68, at which it immediately plateaus at 3.19
 
 \section{Using information from the Lund medium}
 \label{sec:lund}
 
-Pellentesque imperdiet quam vitae commodo pellentesque. Donec vitae eros dolor. Phasellus sit amet euismod augue. Integer dictum a arcu vitae ornare. Quisque interdum nibh eu arcu gravida dapibus sit amet et tortor. Nam laoreet ultrices dapibus. Cras tincidunt sem sodales massa rutrum efficitur a non arcu. Etiam porta massa a fermentum maximus. Curabitur sit amet pulvinar justo, sed congue magna. Nulla non sem non augue rhoncus rutrum ut in risus. Aliquam varius, ipsum vitae laoreet dignissim, odio augue convallis dolor, quis mollis mauris sem eget nibh. Nunc finibus turpis ac lectus volutpat, eu egestas ex porta. Cras ante justo, blandit sit amet viverra non, rhoncus sodales mi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+As specified on page 79 of the patent WO 2015/022496, a medium for E. coli BW25113 $\Delta{}pflB\Delta{}ldhA$ transformed with pBAD24-cimA fermentation for the optimal production of (R)-citramalic acid has the composition:
+
+Insert composition in table form here
+
+I calculated the ratios between the moles of each species present in this recipe (will make it into a more presentable format later):
+
+With these ratios, I applied them as bounds (strictly lower bounds, but they represent the maximum rate of uptake because of sign conventions used by the model) for the relevant exchange reactions in the stoichiometric model, fixing glucose feed bound to -0.23, -0.68, and -10.0. The model has exchange reactions for all the above species except for EDTA, and I merged the phosphoric acid derivatives into one ‘phosphates’ species for the model.
+
+Only the glucose and citrate exchange reaction appears in the flux values in the optimal solution. Upon totally unbounding all these exchange reactions (some are bound to 0 in the default model), glucose exchange is -11.13 and citrate exchange is -1.20
 
 \chapter{Remarks}
 \label{ch:remarks}
