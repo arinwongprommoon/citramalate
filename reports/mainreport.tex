@@ -6,6 +6,8 @@
 \usepackage[backend=biber]{biblatex}
 \addbibresource{mainreport.bib}
 
+\usepackage{graphicx}
+  \graphicspath{ {./graphics/} }
 \usepackage{url}
 \usepackage{varioref}
 \usepackage{tabularx}
@@ -62,12 +64,43 @@ The stoichiometric model contains 2,584 reactions, and I have mapped 57 of them 
 \chapter{Investigating the kinetic model}
 \label{ch:kinetic}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum a justo at diam cursus consequat ac at risus. Sed et mollis nibh. Morbi venenatis luctus mauris sed vehicula. Nunc lacinia luctus urna, et rhoncus lorem ultricies nec. Curabitur dictum pulvinar nunc, a sodales eros varius ut. Nulla placerat, nisl quis maximus tristique, arcu nisl dictum lectus, non lobortis magna nunc quis dolor. Morbi nulla lacus, consectetur ut pharetra non, tristique eget arcu.
+%(Maybe write the purpose of doing this here? But I think the abstract and the introduction suffice)
 
 \section{Varying $V_{max}$ values of one reaction at a time}
 \label{sec:onereac}
 
-Ut auctor ligula nibh, quis suscipit ipsum euismod vitae. Curabitur sem est, pulvinar quis dictum non, fringilla eget felis. Etiam at quam diam. Suspendisse suscipit in arcu ac condimentum. Maecenas in dignissim est. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc sodales blandit elit a gravida. Vivamus vel augue odio. Vivamus ex quam, scelerisque in sapien nec, aliquet aliquam turpis. Sed luctus vulputate mi vel rhoncus. Nam quis vehicula est. Sed tincidunt velit id rutrum volutpat.
+Here I investigated the relationship between the value of $V_{max}$ of each reaction in the kinetic model and the resulting citramalate productivity at steady state -- i.e.\ after two hours. I varied the $V_{max}$ values of each of the 49 reactions\footnote{ACEA, ACEB, ACK, ACN\_1, ACN\_2, ACS, ATP\_MAINTENANCE, ATP\_syn, CITRA\_SYN, CYTBO, EDA, EDD, ENO, FBA, FBP, FUMA, GDH, GLT, GND, GPM, GROWTH, LPD, MAD, MDH, MQO, NADH\_req, NDHII, PCK, PDH, PFK, PGI, PGK, PGL, PIT, PPC, PPS, PTA, PYK, RPE, RPI, SDH, SK, SQR, TPI, XCH\_ACE1, XCH\_ACE2, XCH\_GLC, XCH\_ZWF} in the kinetic model that include $V_{max}$ as a parameter. The ranges 0.1--1.0 $V_{max}$ and 0.1--10.0 $V_{max}$, where $V_{max}$ is the wild-type $V_{max}$ for that particular reaction as specified in the SBML file. I used 100 data points for each plot. Figure~\ref{fig:onereacsample} is an example of such a plot.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[scale=0.5]{onereacsample}
+  \caption{Example of a one-reaction plot: the reaction PYK}
+  \label{fig:onereacsample}
+\end{figure}
+
+For some enzymes, varying $V_{max}$ values have a greater effect on citramalate productivity than others. I quantified this effect based on the data points of the 0.5 -- 2.0 $V_{max}$ plots\footnote{created early in the project, not included in the final results. I only mention them here because I used information from them in later parts of the project} as follows:
+
+\[
+effect = \frac{(max - min)}{(0.5 \cdot (max + min)}
+\]
+
+This is the difference between the maximum and minimum productivities obtained over the range, relative to the average, which represents where the value of productivity is. I intended to find the extent of variation from the `typical' value of productivity around this range. Granted, this isn’t the best way to analyse. I’ve tried regression, but it didn’t seem very informative.
+
+This identified CITRA\_SYN, GLT, LPD, GROWTH, ATP\_MAINTENANCE, GDH, ATP\_SYN, ACEA, PYK, and ZWF as among the enzymes that had the greatest effects. Millard et al (2017) listed CYTBO, ZWF, GDH, GLT, and GROWTH as the enzymes found to have the largest shares of flux control (and also exert the strongest controls on concentration). And looking at figure 2A and figure 2B, they are followed by the likes of LPD, ATP\_MAINTENANCE, ACEA, ATP\_SYN, and PYK
+
+XCH\_XXX for ACE, GLC, and P have no bearing on productivity. Surprisingly, ACS (acetyl CoA synthetase), ACK (acetate kinase), and PTA (phosphate acetyltransferase), which are all directly related to controlling acetyl CoA levels, do not seem to have a significant bearing on productivity.
+
+Enzymes found to have the largest shares of flux control unsurprisingly create the plots that demonstrate the greatest change in citramalate productivity in response to Vmax changes. So what's more interesting are:\\
+CYTBO -- has a less effect on productivity as would be expected by this explanation.\\
+PYK. It doesn't exert a lot of control over fluxes. However, the citramalate reaction uses up pyruvate, so that might explain the difference. PYK is also a control point of glycolysis.
+
+These enzymes have inflection points in their plots (which is surprising, but Prof Oliver said it’s likely due to the feedback control mechanisms). I’ve calculated some of these (absolute values)
+CYTBO: 4.9325456122 to 5.0894110204\\
+PFK: 0.1410191204 to 0.1444217265\\
+GDH: 4.3682353265 to 4.5274017959\\
+EDA: 0.0134480582 to 0.0148719702\\
+MQO: 1.4811924694 to 1.5661015918\\
+CITRA\_SYN: 0.4734693878 to 0.5469387755
 
 \section{Varying $V_{max}$ values of two reactions at a time}
 \label{sec:couples}
@@ -133,6 +166,13 @@ Nunc orci justo, ultricies id pharetra a, consequat at dolor. Curabitur posuere 
 Notes about the scripts, text files, image files, spreadsheets etc.\ used. Notes about Git/GitHub.
 
 Sed nec erat iaculis lectus rhoncus ornare. Duis ante ex, sodales sed mi sed, blandit venenatis dui. Donec vel ornare odio, laoreet viverra felis. Phasellus aliquam mi et sollicitudin fermentum. Ut vitae mollis lacus. Sed tempor nulla at rutrum iaculis. Vestibulum convallis elementum nibh, fermentum porttitor leo vulputate eget. Sed vel sagittis elit, eu faucibus ante. Aliquam erat volutpat. Donec mattis sit amet ante quis luctus. Fusce lectus risus, molestie at tincidunt non, consectetur nec massa. Duis arcu justo, lacinia ut nulla tristique, congue interdum purus. Maecenas finibus, urna eu mollis commodo, nisi metus tincidunt velit, at convallis libero justo id turpis. Etiam iaculis sodales quam vitae fringilla. 
+
+\chapter*{Appendix}
+\label{ch:appendix}
+
+%\section
+
+% Here I intend to put lists or figures that would be annoying if in the main text
 
 \nocite{*}
 \printbibliography
