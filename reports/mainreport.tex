@@ -233,28 +233,53 @@ Tried it on 10 enzymes - CITRA\_SYN, GLT, LPD, GDH, ATP\_syn, ACEA, PYK, ZWF, ND
 \chapter{Enriching the stoichiometric model}
 \label{ch:stoich}
 
-Donec porta ipsum fermentum arcu semper lacinia. Mauris sodales non sapien non auctor. Pellentesque nec odio vitae felis varius sodales. Proin eu velit ac nunc congue mollis. Nullam ut lectus nec ligula fermentum finibus. Fusce maximus aliquet nisi, rhoncus scelerisque felis sollicitudin vulputate. Maecenas molestie enim at lacus pharetra, eget interdum leo imperdiet. Nunc ut placerat velit. Cras volutpat a lorem sit amet euismod. Nullam pretium suscipit nibh vel placerat. Curabitur maximus, tellus ut tempor blandit, tellus elit suscipit lectus, vitae rhoncus mi purus condimentum mi. Vivamus congue lacus libero, ac rhoncus leo convallis sit amet. Integer vel accumsan lorem. Sed vitae lacus quis nisl consequat tincidunt. Nunc ut urna quam. 
+An Anargyros who used to work with this group mapped reactions between the kinetic model described by Millard et al (2017) and the stoichiometric model by Orth et al (2011). He took into account reactions that were reversed with respect to each other and differing stoichiometries. He produced a mapping table, sub-network diagrams, and lower/upper limits for fluxes of each reaction common to both models. The focus was more on mapping and he didn’t put specific constraints while generating the lower/upper limits, and the method by which he generated these values was not documented.
+
+Flux balance analysis is employed, and aims to find an optimal solution for an objective reaction (e.g.\ flux of citramalate synthesis reaction) subject to constraints to the possible flux values. Essentially this is linear programming. Orth et al (2010) wrote a good explanation (add reference here)
+
+Reconciling unit differences
+
+In the kinetic model, units of flux through each reaction are in mM s-1, while it is mmol gDW-1 h-1 in the stoichiometric model. Taking into account the cell volume of 1.77e-3 L gDW-1as specified in the kinetic model, I’ve worked out that to convert the units from the kinetic model to the stoichiometric model, multiply by 6.372.
+
+Because of this relationship and the fact that the stoichiometric model does not have any information of enzyme kinetics, I can safely use numbers with kinetic model units on the structure of the stoichiometric network, and if necessary, apply the unit conversion at any time (or never at all)
 
 \section{Mapping reactions in the kinetic model to the stoichiometric model}
 \label{sec:mapping}
 
-In hac habitasse platea dictumst. Sed a metus ante. Pellentesque eget imperdiet nulla. Sed convallis sagittis augue at vehicula. Nulla nec efficitur arcu. Suspendisse hendrerit massa nec mauris fermentum, eu iaculis tortor vehicula. Vestibulum sed tristique nulla.
-
-Integer vel ullamcorper augue, nec congue quam. Quisque luctus molestie lectus quis sagittis. Vivamus facilisis placerat eros ut aliquet. Aliquam volutpat elit eget risus gravida, sed luctus erat interdum. In id suscipit tellus, a mollis elit. Sed pulvinar, diam et aliquam varius, lectus risus rutrum libero, vitae posuere urna odio eget neque. Etiam aliquet ante quis porttitor lobortis. Nullam elit sapien, pharetra at libero non, ullamcorper efficitur ex. Etiam laoreet ullamcorper orci, vitae pretium risus convallis et. Proin et orci felis. In hendrerit lectus eget nisl tincidunt, ut faucibus justo tempus. Nulla at elit auctor, aliquet orci et, euismod magna.
+Steal stuff from the mapping report. Mostly repeat that. Not sure if I intended the main report to have more or less detail than the mapping report -- my memory is horseshit.
 
 \section{Creating boundaries for FBA}
 \label{sec:bounds}
 
-Vestibulum placerat purus vel nisl imperdiet, eu condimentum ex semper. Sed semper dignissim enim quis condimentum. Suspendisse potenti. Vivamus molestie tortor vitae volutpat ultrices. Aenean nec accumsan sapien. Suspendisse potenti. Donec dignissim felis sed ex accumsan venenatis. Suspendisse varius mi sed mattis sagittis. Donec dapibus rhoncus ipsum, non mattis ex finibus sed. Quisque eget volutpat justo.
+Aim: finding the minimum and maximum of the fluxes through the 68 reactions in the kinetic model (69 for the version with citramalate added) by varying the Vmax values of the 49 enzymes with Vmax as a parameter.
 
-Etiam massa tellus, tincidunt ut metus at, volutpat viverra lectus. In sapien velit, tempor vitae vestibulum eu, lobortis dictum turpis. Aliquam blandit finibus venenatis. Quisque vestibulum viverra tellus, non bibendum ex molestie in. Maecenas non ante odio. Donec iaculis at nunc sed luctus. Suspendisse iaculis nibh eget eleifend tempus. Vestibulum porta ultrices volutpat. Donec semper lorem vitae hendrerit ultricies.
+Ideally: vary all 49 at once, but computational memory and time is limited, so I have devised two strategies to produce educated guesses for the lower and upper limits of the flux values. The broader the boundaries, the better they are.
+
+A) Varying one enzyme at a time
+
+B) Varying many enzymes at a time using differential evolution to obtain minimum and maximum values.
+
+First method: varying one enzyme at a time. Found by varying the Vmax values of one enzyme at a time over the range of 0.1-10.0 Vmax in a modification of the Millard et al (2017) kinetic model, namely, with the citramalate reaction added
+
+Varying many enzymes (will just not mention 4D, 5D, 6D, 7D as its unnecessary)
+
+8D: Use original list. CYTBO, MQO, MDH, ZWF, GLT, GDH, ATP\_syn, ACK. Over range of 0.3 -- 10.0 Vmax because of CVODE. Say something about Vmax not reliable in this region anyway. State DE parameters. Maybe put the boundaries in the appendix.
+
+41D: List of all enzymes. Over 0.4 -- 10.0 because CVODE. State DE parameters.
 
 \section{Flux balance analysis}
 \label{sec:fba}
 
-Nullam lorem ligula, lacinia sit amet condimentum eu, aliquet vel lorem. Nam ut mollis nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam blandit, eros ac elementum consectetur, sem ante suscipit ante, vitae laoreet lectus elit ac sem. Fusce nunc velit, ullamcorper quis magna semper, tempus sodales magna. Nullam vel pharetra libero. Nam rutrum posuere neque quis suscipit. Donec tristique sapien orci. Ut eros orci, malesuada id leo nec, bibendum semper metus. Pellentesque ut dictum lectus. Donec auctor dapibus arcu et tincidunt. Sed cursus est posuere felis lacinia, quis sollicitudin erat vestibulum. Proin lobortis felis eget neque suscipit mattis.
+Add results from CitraFluxResults.txt here -- easier just to write it \emph{de novo} instead of Frankensteninig sentences from different report files/Evernote.
 
-Phasellus leo augue, porta et consequat gravida, ullamcorper eu ligula. Curabitur eu neque vitae enim porta egestas. Sed commodo ligula ex, at faucibus augue convallis eu. Suspendisse tortor augue, lacinia sit amet nisi vel, posuere varius turpis. Quisque ut mauris eget arcu luctus blandit. Vestibulum egestas vehicula diam non accumsan. Suspendisse pulvinar nec tellus vitae luctus.
+Then, instead of using the flux through the citramalate reaction as the objective function in the FBA, I looped through all 2,585 reactions in the model and used each as an objective function, for both the minimising and maximising senses. The results are (of course) in large CSV files.
+
+First I used the boundaries that were included in the stoichiometric model (i.e. no constraints), then applied the 41D boundaries. The optimal minimum and maximum values will be used to create a further set of constraints for each reaction in the stoichiometric model later.
+
+\section{Investigating glucose uptake}
+\label{sec:glucoseuptake}
+
+Insert text here.
 
 \section{Using information from the Lund medium}
 \label{sec:lund}
