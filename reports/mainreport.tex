@@ -15,7 +15,7 @@
   \usepackage[version=4]{mhchem}
 \usepackage{siunitx}
   
-\author{Arin Wongprommoon\\University of Cambridge}
+\author{Arin Wongprommoon\thanks{\texttt{aw729@cam.ac.uk}} \\University of Cambridge}
 \title{Optimising production of citramalate based on the \emph{E. coli} kinetic model}
 \subtitle{Project Report}
 \date{17 August 2018}
@@ -260,6 +260,29 @@ Furthermore, I tried the same parameters on 10 enzymes -- CITRA\_SYN, GLT, LPD, 
   \end{tabular}
 \end{table}
 
+In parallel, I repeated the investigation using the ten enzymes with the greatest flux control coefficients -- CYTBO, MQO, MDH, ZWF, GLT, GDH, ATP\_syn, ACK, ACEA, and EDD, with results shown in table~\ref{tab:optfcc10}. The productivity was \num{224.2e-4} h\textsuperscript{-1}.
+
+\begin{table}[htbp]
+  \caption{Optimisation of citramalate production using ten reactions with the greatest FCCs}
+  \label{tab:optfcc10}
+  \centering
+  \begin{tabular}{lSl}
+    Reaction & \multicolumn{1}{c}{Optimal $V_{max}$}\\
+    CYTBO & 3.416 \\
+    MQO & 1.849 \\
+    MDH & 61.15 \\
+    ZWF & 0.1072 \\
+    GLT & 378.7 \\
+    GDH & 4.485 \\
+    ATP\_syn & 43.49 \\
+    ACK & 20.15 \\
+    ACEA & 0.6189 \\
+    EDD & 0.6605
+  \end{tabular}
+\end{table}
+
+Using all 41 biologically relevant reactions that have $V_{max}$ as a parameter does not exhibit enough convergence due to the high number of dimensions, but was able to return productivity on the order of \num{200e-4}, which is still a significant improvement from the wild-type productivity.
+
 \chapter{Enriching the stoichiometric model}
 \label{ch:stoich}
 
@@ -357,7 +380,7 @@ With increasing GLC\_feed, GLCx and GLCp concentrations remain very low until GL
 \section{Using information from the Lund medium}
 \label{sec:lund}
 
-The patent WO 2015/022496~\cite{eastham_process_2015} (p.79) describes a medium for E. coli BW25113 $\Delta$pflB$\Delta$ldhA transformed with pBAD24-cimA fermentation for the optimal production of (R)-citramalic acid:
+The patent WO 2015/022496~\cite{eastham_process_2015} (p.79) describes a medium, referred in this project as the Lund medium, for E. coli BW25113 $\Delta$pflB$\Delta$ldhA transformed with pBAD24-cimA fermentation for the optimal production of (R)-citramalic acid:
 
 \begin{tabular}{lSl}
   Glucose & 11.9 & g L\textsuperscript{-1}\\
@@ -402,6 +425,20 @@ I then specifed the maximum rate of exchange of these species into the \emph{E. 
 
 Only the glucose and citrate exchange reactions have non-zero flux values in the optimal solution. When the exchange reactions for the chemical species present in the Lund model were unbouded, glucose exchange is -11.13 and citrate exchange is -1.20.
 
+Given
+\begin{itemize}
+\item a concentration of a chemical species $[X_{i}]$
+\item the growth rate or dilution rate $\mu$
+\item a measured OD\textsubscript{600}
+\item that a OD\textsubscript{600} of 1 corresponds to an \emph{E. coli} concentration of $Z$, expressed in g\textsubscript L\textsuperscript{-1} (0.36--0.39 in the literature) %citation here
+\end{itemize}
+  
+the exchange rate $R$ for that chemical species can be calculated as follows:
+
+\[
+  R = \frac{\mu[X_{i}]}{OD_{600} \cdot Z}
+\]
+
 \chapter{Remarks}
 \label{ch:remarks}
 
@@ -422,12 +459,12 @@ Fortunately, the \texttt{cobra} module used to manipulate the stoichiometric mod
 
 There was also an issue with preparing a list of a small number of enzymes to be investigated in the heatmaps and differential evolution, in order to save computational time. The method I used to quantify the effect that varying $V_{max}$ of each reaction had on citramalate productivity as described in section~\ref{sec:onereac} had no real statistical basis (it was sort of a quick-and-dirty method). Any method that uses the data points I generated, however, will have to rationalise using a specific range of $V_{max}$ values, as the ranges in use are arbitrary. Using the flux control coefficients was an alternative, and I generated data accordingly, but here the reactions are sorted by how much control they have over the network as a whole, and not by control over the citramalate synthesis reaction.
 
-Additionally, generating one-reaction plots using flux through the citramalate synthesis reaction and growth as objective functions, which are included in the results directories, instead of citramalate productivity called into question the validity of using flux through the citramalate synthesis reaction as a proxy for citramalate productivity in FBA. The shape of the plots of flux through citramalate synthesis differ a lot from that of citramalate productivity, and growth contributes more to the shape of the plots of citramalate productivity. With this in mind, I have investigated using citramalate productivity as the objective function in FBA, but the existing tools in \textt{cobra} are limited to linear functions. As citramalate productivity is expressed as the product of two functions that exist in the stoichiometric model, other packages such as CPLEX or Gurobi must be used. However, both these are proprietary, though Gurobi offers a free licence for universities.
+Additionally, generating one-reaction plots using flux through the citramalate synthesis reaction and growth as objective functions, which are included in the results directories, instead of citramalate productivity called into question the validity of using flux through the citramalate synthesis reaction as a proxy for citramalate productivity in FBA. The shape of the plots of flux through citramalate synthesis differ a lot from that of citramalate productivity, and growth contributes more to the shape of the plots of citramalate productivity. With this in mind, I have investigated using citramalate productivity as the objective function in FBA, but the existing tools in \texttt{cobra} are limited to linear functions. As citramalate productivity is expressed as the product of two functions that exist in the stoichiometric model, other packages such as CPLEX or Gurobi must be used. However, both these are proprietary, though Gurobi offers a free licence for universities.
 
 As for mapping reactions in the kinetic model to the stoichiometric model, I based it on observations from running simulations rather than theoretical knowledge behind the model networks. Therefore, I do not know the validity. However, I observed that switching from Anargyros's limited treatment of the glucose uptake and pentose phosphate pathway reactions to the method I used did not cause a significant change to the optimal citramalate productivity found by FBA.
 
 % move discussion to main section of report? Equations feel more appropriate there
-Finally, there were issues with working out appropriate FBA bounds from the chemical composition of the Lund medium, which is the matter of translating the concentration of a chemical species into a flux value for the corresponding exchange reaction. This is mainly due to the lack of a reliable conversion factor between OD\textsubscript{600} and \emph{E. coli} dry weight, which Orth \emph{et al.}~\cite{orth_comprehensive_2011} did not specify. Complicating the issue, there is a study by Kavvas \emph{et al.}~\cite{kavvas_updated_2018} which included variations of the same stoichiometric model of \emph{Mycobacterium tuberculosis} that had different bounds for exchange reactions according to differing media conditions, but the bounds seem to be arbitrary round numbers and do not reflect the ratios between the concentrations of the chemical species present in the media. Even if appropriate bounds can be worked out, the observations seen from when the exchange reactions were unbounded as described in section~\ref{sec:lund} calls into question how useful they would be.
+Finally, there were issues with working out appropriate FBA bounds from the chemical composition of the Lund medium, which is the matter of translating the concentration of a chemical species into a flux value for the corresponding exchange reaction. This is mainly due to the lack of definitive OD\textsubscript{600} value for \emph{E. coli} in the stoichiometric model, as Orth \emph{et al.}~\cite{orth_comprehensive_2011} did not specifyit. Complicating the issue, there is a study by Kavvas \emph{et al.}~\cite{kavvas_updated_2018} which included variations of the same stoichiometric model of \emph{Mycobacterium tuberculosis} that had different bounds for exchange reactions according to differing media conditions, but the bounds seem to be arbitrary round numbers and do not reflect the ratios between the concentrations of the chemical species present in the media. Even if appropriate bounds can be worked out, the observations seen from when the exchange reactions were unbounded as described in section~\ref{sec:lund} calls into question how useful they would be.
 
 \section{Future direction and suggestions}
 \label{sec:future}
@@ -442,13 +479,14 @@ Building up on this project may go down some of the following avenues:
 \item Use other genetic algorithms apart from differential evolution
 \item Generate boundaries for FBA using more iterations in differential evolution
 \item Investigate the theoretical basis behind mapping between the kinetic and stoichiometric models
-
+\end{itemize}
+  
 \section{Notes about files}
 \label{sec:files}
 
 The files included alongside this report include text files, image files, spreadsheets, and Python scripts. The text files mainly contain information about the models, such as wild-type conditions, and results from various parts of the project. The image files include the one-reaction plots and heatmaps. Important spreadsheets include an improved version of Anargyros's mapping spreadsheet and one to convert the minimum and maximum fluxes in the kinetic model to corresponding fluxes to be applied in FBA. Finally, the Python scripts were written to manipulate the two models, generate the images, and generate the data in the project.
 
-These files are in a version-controlled directory and in a \emph{private} GitHub repository owned by \url{https://github.com/arinwongprommoon/}.
+These files are in a version-controlled directory and in a \emph{private} GitHub repository owned by \url{https://github.com/arinwongprommoon/}, which only I have access to.
 
 \chapter*{Appendix}
 \label{ch:appendix}
