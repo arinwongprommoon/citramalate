@@ -275,7 +275,7 @@ I varied the $V_{max}$ values of the 49 reactions with $V_{max}$ as a parameter 
 
 Then, I varied the $V_{max}$ values of many enzymes at a time using differential evolution, obtaining minimum and maximum values of flux. I used a method similar to that used in section~\ref{sec:couples} to obtain the minimum values, specifying the flux through each of the 69 reactions in the kinetic model as the objective function in place of citramalate productivity. Obtaining the maximum values was a matter of adding a minus sign to the objective function in the scripts.
 
-First, I included the eight\footnote{excluding ATP\_MAINTENANCE, see section~\ref{sec:couples}} reactions with the greatest flux control coefficients: CYTBO, MQO, MDH, ZWF, GLT, GDH, ATP\_syn, and ACK. The differential evolution parameters used were $F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, and 5 iterations~\cite{pedersen_good_2010}. I used the $V_{max}$ range of of 0.3--10.0 $V_{max}$ as using $V_{max}$ values less than 0.3 $V_{max}$ tended to produce run time errors while the \texttt{roadrunner} simulation was run, involving convergence test failures occurring too many times.\footnote{\texttt{RuntimeError: CVODE Error: CV\_CONV\_FAILURE: Convergence test failures occurred too many times (= MXNCF = 10) during one internal timestep or occurred with \textpipe{}h\textpipe{} = hmin.; In virtual double rr::CVODEIntegrator::integrate(double, double)}}. Judging by the behaviour of ATP\_MAINTENANCE, as described in section~\ref{sec:couples}, results are likely unreliable with small $V_{max}$ values, justifying the use of the more restricted range.
+First, I included the eight\footnote{excluding ATP\_MAINTENANCE, see section~\ref{sec:couples}} reactions with the greatest flux control coefficients: CYTBO, MQO, MDH, ZWF, GLT, GDH, ATP\_syn, and ACK. The differential evolution parameters used were $F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, and 5 iterations~\cite{pedersen_good_2010}. I used the $V_{max}$ range of of 0.3--10.0 $V_{max}$ as using $V_{max}$ values less than 0.3 $V_{max}$ tended to produce run time errors while the \texttt{roadrunner} simulation was run, involving convergence test failures occurring too many times.\footnote{\texttt{RuntimeError: CVODE Error: CV\_CONV\_FAILURE: Convergence test failures occurred too many times (= MXNCF = 10) during one internal timestep or occurred with \textbar{}h\textbar{} = hmin.; In virtual double rr::CVODEIntegrator::integrate(double, double)}}. Judging by the behaviour of ATP\_MAINTENANCE, as described in section~\ref{sec:couples}, results are likely unreliable with small $V_{max}$ values, justifying the use of the more restricted range.
 
 I then moved on to the list of all biologically relevant reactions in the kinetic model, 41 reactions in total. I used the differential evolution parameters of $F$ = 0.6876, $CR$ = 0.9784, $NP$ = 48~\cite{pedersen_good_2010}, and five iterations. To avoid convergence test failures, I set the $V_{max}$ range to 0.5--10.0 $V_{max}$ in this case.
 
@@ -332,12 +332,23 @@ Using the mapping rules described in section~\vref{sec:mapping}, I prepared boun
 
 Then, I looped through all 2,585 reactions in the model and used each as an objective function while using the bounds obtained from including 41 reactions in differential evolution. I set the script to evaluate solutions while setting the objective to both maximising and minimising flux. I used the solutions (optimal minmum and optimal maximum values) as an additional set of bounds for another round of FBA, which returned the solution of 0.2922.
 
+% Merge this section with mapping??
 \section{Investigating glucose uptake}
 \label{sec:glucoseuptake}
 
-For reference, this is a mapping between the relevant reactions that I settled on.
+For reference, table~\vref{tab:glucoseuptake} is a mapping between the relevant reactions that I settled on.
 
-(Insert table showing mapping here)
+\begin{table}
+  \caption{Mapping glucose uptake reactions}
+  \label{tab:glucoseuptake}
+  \centering
+  \begin{tabularx}{\linewidth}{LLL}
+    Kinetic model & Stoichiometric model & What it is\\
+    GLC\_feed & EX\_glc\_(e) & Glucose feed into the environment, set as 0.23 mM s\textsuperscript{-1} in the kinetic model\\
+    XCH\_GLC & GLCtex & Glucose transport from the environment into the periplasm\\
+    PTS\_0, PTS\_1, PTS\_2, PTS\_3, PTS\_4 & GLCptspp & Glucose uptake from the periplam into the cytoplasm\\
+  \end{tabularx}
+\end{table}
 
 First, I looked at the relationship between the glucose feed and the fluxes through the other reactions in the kinetic model. The fluxes through XCH\_GLC and the PTS\_X reactions are always the same. XCH\_GLC is equal to GLC\_feed from GLC\_feed = 0 to GLC\_feed = 0.68, after which XCH\_GLC never increases above 0.68 (saturation).
 
@@ -346,15 +357,50 @@ With increasing GLC\_feed, GLCx and GLCp concentrations remain very low until GL
 \section{Using information from the Lund medium}
 \label{sec:lund}
 
-As specified on page 79 of the patent WO 2015/022496, a medium for E. coli BW25113 $\Delta{}pflB\Delta{}ldhA$ transformed with pBAD24-cimA fermentation for the optimal production of (R)-citramalic acid has the composition:
+The patent WO 2015/022496~\cite{eastham_process_2015} (p.79) describes a medium for E. coli BW25113 $\Delta$pflB$\Delta$ldhA transformed with pBAD24-cimA fermentation for the optimal production of (R)-citramalic acid:
 
-Insert composition in table form here
+\begin{tabular}{lSl}
+  Glucose & 11.9 & g L\textsuperscript{-1}\\
+  \ce{(NH4)2SO4} & 2 & g L\textsuperscript{-1}\\
+  \ce{K2HPO4} & 14.6 & g L\textsuperscript{-1}\\
+  \ce{NaH2PO4.2H2O} & 3.6 & g L\textsuperscript{-1}\\
+  \ce{(NH4)2H} citrate & 0.5 & g L\textsuperscript{-1}\\
+  \ce{MgSO4} & 0.24 & g L\textsuperscript{-1}\\
+  \ce{CaCl2.2H2O} & 2 & mg L\textsuperscript{-1}\\
+  \ce{FeCl3} & 20.06 & mg L\textsuperscript{-1}\\
+  \ce{ZnSO4.7H2O} & 0.36 & mg L\textsuperscript{-1}\\
+  \ce{CuSO4.5H2O} & 0.32 & mg L\textsuperscript{-1}\\
+  \ce{MnSO4.H2O} & 0.30 & mg L\textsuperscript{-1}\\
+  \ce{CoCl2.6H2O} & 0.36 & mg L\textsuperscript{-1}\\
+  \ce{Na2EDTA.2H2O} & 44.6 & mg L\textsuperscript{-1}
+\end{tabular}
 
-I calculated the ratios between the moles of each species present in this recipe (will make it into a more presentable format later):
+Per litre, each chemical species is present in the following amounts (mmol):
 
-With these ratios, I applied them as bounds (strictly lower bounds, but they represent the maximum rate of uptake because of sign conventions used by the model) for the relevant exchange reactions in the stoichiometric model, fixing glucose feed bound to -0.23, -0.68, and -10.0. The model has exchange reactions for all the above species except for EDTA, and I merged the phosphoric acid derivatives into one ‘phosphates’ species for the model.
+\begin{tabular}{lS}
+  glucose & 66.05\\
+  \ce{NH4^+} & 34.69\\
+  \ce{SO4^{2-}} & 17.13\\
+  \ce{K^{+}} & 167.6\\
+  \ce{Hcitrate} & 2.211\\
+  \ce{Mg^{2+}} & 1.994\\
+  \ce{Ca^{2+}} & 0.006802\\
+  \ce{Cl^-} & 0.3876\\
+  \ce{Fe^{3+}} & 0.1237\\
+  \ce{Zn^{2+}} & 0.001252\\
+  \ce{Cu^{2+}} & 0.001282\\
+  \ce{Mn^{2}+} & 0.001775\\
+  \ce{Co^{2}+} & 0.001513\\
+  EDTA & 0.1198\\
+  \ce{Na^+} & 23.32\\
+  phosphates & 106.9
+\end{tabular}
 
-Only the glucose and citrate exchange reaction appears in the flux values in the optimal solution. Upon totally unbounding all these exchange reactions (some are bound to 0 in the default model), glucose exchange is -11.13 and citrate exchange is -1.20
+To conform to the exchange reactions defined in the stoichiometric model, \ce{HPO4^{2-}} and \ce{H2PO4^-} were merged into a `phosphates' species.
+
+I then specifed the maximum rate of exchange of these species into the \emph{E. coli} system by specifying lower bounds for exchange reactions in the stoichiometric model. Exchange reactions for all the above species are present in the stoichiometric model, except for EDTA. I fixed the bound for glucose exchange to -0.23, -0.68, and -10.0 and fixed the bound for the other reactions so that the ratios between the chemical species are conserved. These bounds were added to the boundaries found in section~\ref{sec:bounds} in which 41 enzymes were included in differential evolution.
+
+Only the glucose and citrate exchange reactions have non-zero flux values in the optimal solution. When the exchange reactions for the chemical species present in the Lund model were unbouded, glucose exchange is -11.13 and citrate exchange is -1.20.
 
 \chapter{Remarks}
 \label{ch:remarks}
