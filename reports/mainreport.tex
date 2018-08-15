@@ -221,19 +221,45 @@ This is good because it does not seem necessary to include all enzymes in a path
 \subsection{Optimisation of citramalate production}
 \label{ssec:optcitra}
 
-Used the best parameters on differential evolution on the set of seven enzymes: CITRA\_SYN, GLT, LPD, GDH, ATP\_syn, ACEA, ZWF
+Using the best parameters found in subsection~\ref{ssec:deoptimise} -- $F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, and 50 iterations -- with the set of seven reactions CITRA\_SYN, GLT, LPD, GDH, ATP\_syn, ACEA, and ZWF, varying $V_{max}$ values over 0.1--10.0 $V_{max}$ yields optimal $V_{max}$ values as shown in table~\ref{tab:optcitra7} and the corresponding productivity of \num{353.66e-4} h\textsuperscript{-1}. I confirmed that differential evolution was useful by obtaining $V_{max}$ values expected to generate the greatest productivity as expected from one-reaction plots alone and changed the $V_{max}$ values of the seven reactions in the SBML model accordingly. The resulting productivity was computed to be \num{226.96e-4} h\textsuperscript{-1}, lower than the value obtained from differential evolution, thus comfirming the usefulness of the algorithm.
 
-F = 0.6607, CR = 0.9426, NP = 28, generations = 50
+\begin{table}[htbp]
+  \caption{Optimisation of citramalate production using seven reactions}
+  \label{tab:optcitra7}
+  \centering
+  \begin{tabular}{lSl}
+    Reaction & \multicolumn{1}{c}{Optimal $V_{max}$} & Remark\\
+    CITRA\_SYN & 0.4382 & \\
+    GLT & 5.706 & 0.1 $V_{max}$ \\
+    LPD & 0.006844 & 0.1 $V_{max}$ \\
+    GDH & 3.591 & \\
+    ATP\_syn & 10.87 & 0.1 $V_{max}$ \\
+    ACEA & 0.1526 & 0.1 $V_{max}$ \\
+    ZWF & 0.02658 & 0.1 $V_{max}$
+  \end{tabular}
+\end{table}
 
-(Insert table for 7 citra enzymes here)
+Furthermore, I tried the same parameters on 10 enzymes -- CITRA\_SYN, GLT, LPD, GDH, ATP\_syn, ACEA, PYK, ZWF, NDHII, and MQO -- and achieved the productivity of \num{405.5e-4} h\textsuperscript{-1} with a certain set of $V_{max}$ values as shown in table~\ref{tab:optcitra10}. However, 10 reactions exhibited less convergence, as expected by the limitations of the differential evolution algorithm.
 
-Productivity = 353.66 10-4
+\begin{table}[htbp]
+  \caption{Optimisation of citramalate production using ten reactions}
+  \label{tab:optcitra10}
+  \centering
+  \begin{tabular}{lSl}
+    Reaction & \multicolumn{1}{c}{$V_{max}$ in best solution} & Range\\
+    CITRA\_SYN & 1.689 & \\
+    GLT & 17.35 & 0.1 $V_{max}$ \\
+    LPD & 0.007174 & $\approx$ 0.006844 \\
+    GDH & 0.8910 & 0.08666 $\sim$ 0.08910\\
+    ATP\_syn & 10.87 & 10.87 $\sim$ 13.01 \\
+    ACEA & 0.1826 & 0.1529 $\sim$ 0.01826 \\
+    PYK & 0.007472 & $\approx$ 0.007472 \\
+    ZWF & 0.02658 & always 0.02658 \\
+    NDHII & 10.45 & \\
+    MQO & 0.4623 & almost always 0.4623
+  \end{tabular}
+\end{table}
 
-Confirmed that DE is useful: took values expected to generate the highest productivity as expected from one-reaction plots alone and plugged them into the model, then used comproducti() to evaluate productivity. Turns out to be 226.96. Conclusion: DE is useful.
-
-Tried it on 10 enzymes - CITRA\_SYN, GLT, LPD, GDH, ATP\_syn, ACEA, PYK, ZWF, NDHII, MQO -- achieved 405.5 productivity, but values swing.
-
-(Insert table for 10 citra enzymes from the old de report here)
 
 \chapter{Enriching the stoichiometric model}
 \label{ch:stoich}
