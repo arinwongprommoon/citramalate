@@ -405,14 +405,14 @@ Only the glucose and citrate exchange reactions have non-zero flux values in the
 \chapter{Remarks}
 \label{ch:remarks}
 
-Donec at rutrum tellus, ut posuere urna. Nulla facilisi. Quisque ut orci tincidunt, ultricies eros sed, ultrices purus. Praesent scelerisque nunc urna, in pharetra augue pharetra ut. In quis quam consectetur, finibus orci sit amet, molestie massa. Nullam vel dictum lorem. 
+% Put interpretations and evaluation of the project here
 
 \section{Issues in the project}
 \label{sec:issues}
 
-Memory leak, things that don't make sense, etc. Things that get in the way of me making revolutionary discoveries.
+The most consequential issue within this project is that \texttt{roadrunner} has a memory leak in \texttt{roadrunner.RoadRunner()}. Memory can only be relased when the Python program ends. The function is required to run the simulations required to generate almost all the data in the project. \texttt{libsbml.writeSBMLToString()} also makes a contribution. This function writes a modified SBML file, namely with different $V_{max}$ values, derived from a model object in the program, to a string stored in the memory accessible by the Python program. \texttt{roadrunner.RoadRunner()} then takes the string as an argument in creating an object which can be used to run simulations. Arguably, it is more logical to pass the model object directly into the simulation, but as of 17 August 2018, the official documentation for \texttt{libroadrunner} 1.5.1 states that `In future version, we will also support loading directly from a \texttt{libSBML} Document object.'
 
-Vestibulum sed est molestie, feugiat justo vitae, aliquam augue. Ut accumsan massa dignissim, maximus nulla at, imperdiet ligula. Donec vitae tortor vitae libero dapibus maximus. Fusce a enim faucibus, sollicitudin sapien nec, maximus nibh. Morbi pharetra egestas lorem, non semper arcu faucibus vitae. Morbi vehicula urna ac odio blandit gravida. Integer id magna pharetra, gravida odio et, pulvinar magna. Praesent consequat elementum mollis.
+The memory leak has a large impact on the project as almost all scripts include running simulations on modified kinetic models many times in succession. The workaround of writing shell scripts to run and stop the scripts after each round of looping which includes running simulations partially alleviates the problem. This method, however, does not work with differential evolution on account of how the algorithm was built in. As a result, the number of iterations that can be carried out before Python uses up all the random access memory in the system is limited, and adequate convergence may not be realised when there are many dimensions ($D$ is high). The `curse of dimensionality', a limitation of differential evolution, exacerbates the problem: with an increasing number of dimensions, the difficulty of finding the optimal solution increases exponentially.
 
 \section{Future direction and suggestions}
 \label{sec:future}
