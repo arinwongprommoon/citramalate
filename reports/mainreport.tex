@@ -20,7 +20,7 @@
 
 \author{Arin Wongprommoon\thanks{\texttt{aw729@cam.ac.uk}} \\University of Cambridge}
 \title{Optimising production of citramalate based on the \emph{E. coli} kinetic and stoichiometric models}
-\subtitle{Project Report}
+\subtitle{Project report}
 \date{17 August 2018}
 
 \begin{document}
@@ -161,24 +161,23 @@ In most cases, ATP, ADP, P, or Hout was responsible for breaking the \num{1.0e-8
 \section{Using differential evolution}
 \label{sec:de}
 
-% Find way to cite Mier
-Differential evolution is a genetic algorithm developed by Storn and Price~\cite{storn_differential_1997}. I used the \texttt{rand/1/bin} strategy, adapting code by Pablo R. Mier (\url{https://pablormier.github.io/2017/09/05/a-tutorial-on-differential-evolution-with-python/}). I used the algorithm to maximise the citramalate productivity while multiple enzymes in a list are varied in their $V_{max}$ values simultaneously.
+Differential evolution is a genetic algorithm developed by Storn and Price~\cite{storn_differential_1997}. I used the \texttt{rand/1/bin} strategy, adapting code by Mier (2017)~\cite{mier_tutorial_2017, mier_small_2017} to maximise the citramalate productivity while the $V_{max}$ values of multiple reactions in a list are varied simultaneously. Differential evolution includes the following parameters: $F$, the mutation constant or differential weight; $CR$, the recombination constant or crossover probability, $NP$, the population size; and $D$, the number of dimensions, equal to the number of reactions investigated simultaneously. The number of iterations must also be specified.
 
-Differential evolution has the following parameters: $F$, the mutation constant or differential weight; $CR$, the recombination constant or crossover probability, $NP$, the population size; and $D$, the number of dimensions and the number of enzymes investigated simultaneously. The number of iterations is also specified.
-
-Using default values of the parameters, in identifying the $V_{max}$ values of pairs of reactions that resulted in maximal productivity, differential evolution agrees with heatmaps. Occasionally, it discovers maxima not seen in the heatmaps, owing to the relatively low resolution of the heatmaps.
+I used the citramalate productivity calculated after \texttt{roadrunner} simulations as the objective function. Using Mier's parameter values, differential evolution agreed with heatmaps in identifying the $V_{max}$ values that resulted in maximal productivity. Occasionally, it discovered maxima not evident in the heatmaps, owing to the relatively low resolution of the heatmaps. 
 
 \subsection{Finding optimal parameters}
 \label{ssec:deoptimise}
 
-I tested how well the optimal differential evolution parameter values quoted by Storn and Price (1997)~\cite{storn_differential_1997} and Pedersen (2010)~\cite{pedersen_good_2010} optimised citramalate productivity. I used enzymes in the glycolytic pathway (refer to subsection~\vref{ssec:glycolytic}) and enzymes in the list I made in chapter~\vref{sec:onereac}. Values were chosen based on algorithm run time and how fast convergence is realised. They are presented in table~\vref{tab:deoptimise}.
+I tested how well the suggested differential evolution parameter values quoted by Storn (1996)~\cite{storn_usage_1996} and Pedersen (2010)~\cite{pedersen_good_2010} optimised citramalate productivity. I used reactions in the glycolytic pathway (rationale explained in subsection~\vref{ssec:glycolytic}) and the one-reaction list. Values were chosen based on algorithm run time and how fast convergence was realised. They are presented in table~\vref{tab:deoptimise}.
 
 \begin{table}[htbp]
   \caption{Differential evolution optimal parameter search}
   \label{tab:deoptimise}
   \centering
   \begin{tabularx}{\linewidth}{LLLLLLL}
+    \toprule
     $F$ & $CR$ & $NP$ & iterations & $D$ & Source\\
+    \midrule
     0.8 & 0.7 & 20 & & 2-3 & Mier\\
     0.8 & 0.7 & 20 & 25-40 & 5 & Mier\\
     0.6 & 0.9 & \textless 40 & \textgreater 20 & 5 & Storn\\
@@ -186,50 +185,44 @@ I tested how well the optimal differential evolution parameter values quoted by 
     0.6301 & 0.7122 & 17 & 70 & 7 & Pedersen (D = 5)\\
     0.6607 & 0.9426 & 28 & 50 & 7-10 & Pedersen (D = 10, first set), best\\
     0.6702 & 0.2368 & 12 & 100 & 7 & Pedersen (D = 10, second set)\\
+    \bottomrule
   \end{tabularx}
 \end{table}
-
-% This subsection may be moved to the appendix or disappear altogether. It's kind of a side-project, and does not really contribute much to the report. Furthermore, this contributes nothing to the methods.
-\subsection{Glycolytic enzymes}
-\label{ssec:glycolytic}
-
-Originally I used differential evolution with the set of glycolytic enzymes PGI, PFK, FBA, GDH, PGK, GPM, ENO, PYK, and PDH to investigate whether the $V_{max}$ values of all enzymes in a pathway have to be increased to obtain an appreciable increase in the overall flux through the pathway, resulting in higher productivity. Niederberger \emph{et al}~\cite{niederberger_strategy_1992} stated in their paper that flux through all enzymes in a linear pathway must be increased for flux through the pathway to be increased, judging by their experiments on the tryptophan synthesis pathway in yeast. However, Yamamoto \emph{et al}~\cite{yamamoto_overexpression_2012} stated otherwise, and showed that appreciable increases resulted after increasing the flux through only one or two enzymes. My results support the latter.
-
-The objective changed to investigating how much adding an enzyme as an additional dimension in the differential evolution algorithm affects productivity. Adding enzymes relatively low on the section~\ref{sec:onereac} list does not affect the optimum $V_{max}$ values already on there much, and does not cause large improvements in productivity.
-
-%insert appropriate reference to memory leak later
-%also make language more formal
-This is good because it does not seem necessary to include all enzymes in a pathway in differential evolution, which is a good solution for the memory leak in \texttt{roadrunner}. Additionally, the `curse of dimensionality' results in exponential increases in the time required to return solutions as reactions are added. So it was worth finding out with enzymes had the most effects on productivity after all.
 
 \subsection{Optimisation of citramalate production}
 \label{ssec:optcitra}
 
-Using the best parameters found in subsection~\ref{ssec:deoptimise} -- $F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, and 50 iterations -- with the set of seven reactions CITRA\_SYN, GLT, LPD, GDH, ATP\_syn, ACEA, and ZWF, varying $V_{max}$ values over 0.1--10.0 $V_{max}$ yields optimal $V_{max}$ values as shown in table~\ref{tab:optcitra7} and the corresponding productivity of \num{353.66e-4} h\textsuperscript{-1}. I confirmed that differential evolution was useful by obtaining $V_{max}$ values expected to generate the greatest productivity as expected from one-reaction plots alone and changed the $V_{max}$ values of the seven reactions in the SBML model accordingly. The resulting productivity was computed to be \num{226.96e-4} h\textsuperscript{-1}, lower than the value obtained from differential evolution, thus comfirming the usefulness of the algorithm.
+Using the best differential evolution parameters ($F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, and 50 iterations, as listed in table~\ref{tab:deoptimise}) with the set of seven reactions CITRA\_SYN, GLT, LPD, GDH, ATP\_syn, ACEA, and ZWF, varying $V_{max}$ values over 0.1--10.0 $V_{max}$ yielded optimal $V_{max}$ values as shown in table~\vref{tab:optcitra7} and the citramalate productivity of \num{353.66e-4} h\textsuperscript{-1}. I then changed the $V_{max}$ values of these seven reactions to values expected to maximise citramalate productivity as inferred from the one-reaction plots (section~\ref{sec:onereac}) alone. The resulting productivity was \num{226.96e-4} h\textsuperscript{-1}, lower than the productivity found from differential evolution, confirming the usefulness of the genetic algorithm.
 
 \begin{table}[htbp]
-  \caption{Optimisation of citramalate production using seven reactions}
+  \caption{Optimal $V_{max}$ values, using seven reactions from the one-reaction list}
   \label{tab:optcitra7}
   \centering
   \begin{tabular}{lSl}
+    \toprule
     Reaction & \multicolumn{1}{c}{Optimal $V_{max}$} & Remark\\
+    \midrule
     CITRA\_SYN & 0.4382 & \\
     GLT & 5.706 & 0.1 $V_{max}$ \\
     LPD & 0.006844 & 0.1 $V_{max}$ \\
     GDH & 3.591 & \\
     ATP\_syn & 10.87 & 0.1 $V_{max}$ \\
     ACEA & 0.1526 & 0.1 $V_{max}$ \\
-    ZWF & 0.02658 & 0.1 $V_{max}$
+    ZWF & 0.02658 & 0.1 $V_{max}$\\
+    \bottomrule
   \end{tabular}
 \end{table}
 
-Furthermore, I tried the same parameters on 10 enzymes -- CITRA\_SYN, GLT, LPD, GDH, ATP\_syn, ACEA, PYK, ZWF, NDHII, and MQO -- and achieved the productivity of \num{405.5e-4} h\textsuperscript{-1} with a certain set of $V_{max}$ values as shown in table~\ref{tab:optcitra10}. However, 10 reactions exhibited less convergence, as expected by the limitations of the differential evolution algorithm.
+Furthermore, I tried the same parameters on 10 enzymes and achieved the productivity of \num{405.5e-4} h\textsuperscript{-1} with a set of $V_{max}$ values shown in table~\vref{tab:optcitra10}. However, 10 reactions exhibited slower convergence, as expected by the `curse of dimensionality'.
 
 \begin{table}[htbp]
-  \caption{Optimisation of citramalate production using ten reactions}
+  \caption{Optimal $V_{max}$ values, using ten reactions from the one-reaction list}
   \label{tab:optcitra10}
   \centering
   \begin{tabular}{lSl}
+    \toprule
     Reaction & \multicolumn{1}{c}{$V_{max}$ in best solution} & Range\\
+    \midrule
     CITRA\_SYN & 1.689 & \\
     GLT & 17.35 & 0.1 $V_{max}$ \\
     LPD & 0.007174 & $\approx$ 0.006844 \\
@@ -239,18 +232,21 @@ Furthermore, I tried the same parameters on 10 enzymes -- CITRA\_SYN, GLT, LPD, 
     PYK & 0.007472 & $\approx$ 0.007472 \\
     ZWF & 0.02658 & always 0.02658 \\
     NDHII & 10.45 & \\
-    MQO & 0.4623 & almost always 0.4623
+    MQO & 0.4623 & almost always 0.4623\\
+    \bottomrule
   \end{tabular}
 \end{table}
 
-In parallel, I repeated the investigation using the ten enzymes with the greatest flux control coefficients -- CYTBO, MQO, MDH, ZWF, GLT, GDH, ATP\_syn, ACK, ACEA, and EDD, with results shown in table~\ref{tab:optfcc10}. The productivity was \num{224.2e-4} h\textsuperscript{-1}.
+I repeated the investigation using the ten enzymes with the greatest FCCs, with results shown in table~\vref{tab:optfcc10}. In this case, the productivity was \num{224.2e-4} h\textsuperscript{-1}. I excluded ATP\_MAINTENANCE because it does not correspond to an enzyme that exists in \emph{E. coli} and because it was not reliable with small values of $V_{max}$, as discussed in section~\ref{sec:onereac}.
 
 \begin{table}[htbp]
-  \caption{Optimisation of citramalate production using ten reactions with the greatest FCCs}
+  \caption{Optimal $V_{max}$ values, using ten reactions with the greatest FCCs}
   \label{tab:optfcc10}
   \centering
   \begin{tabular}{lSl}
+    \toprule
     Reaction & \multicolumn{1}{c}{Optimal $V_{max}$}\\
+    \midrule
     CYTBO & 3.416 \\
     MQO & 1.849 \\
     MDH & 61.15 \\
@@ -260,11 +256,20 @@ In parallel, I repeated the investigation using the ten enzymes with the greates
     ATP\_syn & 43.49 \\
     ACK & 20.15 \\
     ACEA & 0.6189 \\
-    EDD & 0.6605
+    EDD & 0.6605\\
+    \bottomrule
   \end{tabular}
 \end{table}
 
 Using all 41 biologically relevant reactions that have $V_{max}$ as a parameter does not exhibit enough convergence due to the high number of dimensions, but was able to return productivity on the order of \num{200e-4}, which is still a significant improvement from the wild-type productivity.
+
+\subsection{Glycolytic enzymes}
+\label{ssec:glycolytic}
+
+Originally I used differential evolution with the glycolytic enzymes PGI, PFK, FBA, GDH, PGK, GPM, ENO, PYK, and PDH to investigate whether the $V_{max}$ values of all enzymes in a pathway must be increased for an appreciable increase in the overall flux through the pathway, leading to higher productivity. From their experiments on the tryptophan synthesis pathway in yeast, Niederberger \emph{et al.}~\cite{niederberger_strategy_1992} concluded that the fluxes through each enzyme in a linear pathway must all be increased to increase the flux through the pathway. However, Yamamoto \emph{et al}~\cite{yamamoto_overexpression_2012} show that appreciable increases result after increasing the flux through only one or two enzymes. My results, included in appendix~\ref{ap:glycolytic} support the latter.
+
+The objective changed to investigating how much adding one reaction as an additional dimension in differential evolution affects productivity. Adding enzymes relatively low on the one-reaction list had little effect on the optimum $V_{max}$ values found earlier, and did not cause large improvements in productivity. This suggests that not all reactions in a network have to be included in differential evolution to produce valid results. The conclusion is beneficial as it reduces computation time -- the `curse of dimensionality' exhibited by differential evolution results in exponential increases in computation time as reactions are added.
+
 
 \chapter{Enriching the stoichiometric model}
 \label{ch:stoich}
