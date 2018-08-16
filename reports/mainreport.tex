@@ -313,9 +313,23 @@ Previously, an Anargyros who worked in this group produced a mapping table which
 
 Because reactions in the stoichiometric model are not identical to their kinetic counterparts, I devised specific rules to reconcile differences. Stoichiometric model reactions that are identical, reactions that only differ by having small chemical species like like \ce{H^+} and \ce{H2O}, reactions that only differ by having \ce{CO2} instead of \ce{HCO3^-}, or reactions that are indicated as irreversible while its equivalent is reversible in the kinetic model have the same lower and upper bounds as their kinetic model counterparts.
 
-For stoichiometric model reactions that are reversed with respect to their kinetic model counterparts, the values obtained from the kinetic model were negated -- i.e. $ mathrm{Kinetic} (lb, ub) \rightarrow mathrm{Stoichiometric} (-ub, -lb)$.
+For stoichiometric model reactions that are reversed with respect to their kinetic model counterparts, the values obtained from the kinetic model were negated -- i.e. $ \mathrm{Kinetic} (lb, ub) \rightarrow \mathrm{Stoichiometric} (-ub, -lb)$.
 
-Glucose uptake reactions (PTS\_0, PTS\_1, PTS\_2, PTS\_3, PTS\_4) and the pentose pathway reactions X5P\_GAP\_TKT, F6P\_E4P\_TKT, S7P\_R5P\_TKT, F6P\_GAP\_TAL, and S7P\_E4P\_TAL each form different sub-network structures in the kinetic model compared to the stoichiometric model, and therefore do not allow one-to-one mapping. After investigating the relationship between flux values in both models by conducting simulations, I devised the following solution (applied in \texttt{fba/newmapper.ods}).
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[scale=0.5]{glucoseuptake}
+  \caption{Subnetwork for glucose uptake}
+  \label{fig:glucoseuptake}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[scale=0.25]{ppp}
+  \caption{Subnetwork for part of the pentose phosphate pathway}
+  \label{fig:ppp}
+\end{figure}
+
+Glucose uptake reactions (PTS\_0, PTS\_1, PTS\_2, PTS\_3, PTS\_4) and the pentose phosphate pathway reactions X5P\_GAP\_TKT, F6P\_E4P\_TKT, S7P\_R5P\_TKT, F6P\_GAP\_TAL, and S7P\_E4P\_TAL each form different sub-network structures in the kinetic model compared to the stoichiometric model, and therefore do not allow one-to-one mapping. Figures~\vref{fig:glucoseuptake} and~\vref{fig:ppp} show the structures in the petri net format~\cite{gilbert_unifying_2007, murata_petri_1989}. After investigating the relationship between flux values in both models by conducting simulations, I devised the following solution (applied in \texttt{fba/newmapper.ods}).
 
 \begin{itemize}
 \item Force the flux of Stoich.\ TALA to be equal to the flux of Kinetic S7P\_R5P\_TKT.
@@ -325,62 +339,65 @@ Glucose uptake reactions (PTS\_0, PTS\_1, PTS\_2, PTS\_3, PTS\_4) and the pentos
 
 These derived from how these relationships between flux values hold regardless of the initial conditions.
 
-\section{Flux balance analysis}
-\label{sec:fba}
-
-Using the mapping rules described in section~\vref{sec:mapping}, I prepared bounds for FBA from the values obtained in section~\ref{sec:bounds}. Setting the objective to maximising to flux through the citramalate flux reaction, I obtained the results in table~\ref{tab:citramalatefluxresults}.
-
-\begin{table}
-  \caption{FBA results using citramalate flux as the objective function}
-  \label{tab:citramalatefluxresults}
-  \centering
-  \begin{tabular}{lS}
-    Bounds & Solution\\
-    Default & 12.4122\\
-    Anargyros's & 0.3067\\
-    Varying one reaction at a time & 0.2599\\
-    Differential evolution with 8 reactions & 0.1925\\
-    Differential evolution with 41 reactions & 0.2922
-  \end{tabular}
-\end{table}
-
-Then, I looped through all 2,585 reactions in the model and used each as an objective function while using the bounds obtained from including 41 reactions in differential evolution. I set the script to evaluate solutions while setting the objective to both maximising and minimising flux. I used the solutions (optimal minmum and optimal maximum values) as an additional set of bounds for another round of FBA, which returned the solution of 0.2922.
-
-% Merge this section with mapping??
 \section{Investigating glucose uptake}
 \label{sec:glucoseuptake}
 
-For reference, table~\vref{tab:glucoseuptake} is a mapping between the relevant reactions that I settled on.
+I then investigated the reactions in both models that relate to glucose uptake in order to evaluate whether there is decoupling between the glucose exchange and glucose uptake reactions. This was done to give insight into the relationship between the extracellular and intracellular concentrations of glucose, which would be useful in determining the effects of a nutrient medium containing glucose in citramalate productivity (discussed in section~\ref{sec:lund}). For clarification on the similar reactions involved, I present how I mapped relevant reactions in the kinetic model to their equivalents in the stoichiometric model in table~\vref{tab:glucoseuptake}.
 
 \begin{table}
   \caption{Mapping glucose uptake reactions}
   \label{tab:glucoseuptake}
   \centering
   \begin{tabularx}{\linewidth}{LLL}
+    \toprule
     Kinetic model & Stoichiometric model & What it is\\
+    \midrule
     GLC\_feed & EX\_glc\_(e) & Glucose feed into the environment, set as 0.23 mM s\textsuperscript{-1} in the kinetic model\\
     XCH\_GLC & GLCtex & Glucose transport from the environment into the periplasm\\
     PTS\_0, PTS\_1, PTS\_2, PTS\_3, PTS\_4 & GLCptspp & Glucose uptake from the periplam into the cytoplasm\\
+    \bottomrule
   \end{tabularx}
 \end{table}
 
-First, I looked at the relationship between the glucose feed and the fluxes through the other reactions in the kinetic model. The fluxes through XCH\_GLC and the PTS\_X reactions are always the same. XCH\_GLC is equal to GLC\_feed from GLC\_feed = 0 to GLC\_feed = 0.68, after which XCH\_GLC never increases above 0.68 (saturation).
+First, I examined the relationship between glucose feed and the fluxes through the other reactions in the kinetic model. The fluxes through XCH\_GLC and the PTS\_X reactions were always the same. XCH\_GLC was equal to GLC\_feed between 0 and 0.68, otherwise XCH\_GLC stayed at 0.68. With increasing GLC\_feed, GLCx and GLCp concentrations remain very low until GLC\_feed was 0.68, after which they increased linearly as GLC\_feed flux increased. The concentration of G6P increased linearly until GLC\_feed was 0.68, at which it immediately plateaued at 3.19 mM.
 
-With increasing GLC\_feed, GLCx and GLCp concentrations remain very low until GLC\_feed = 0.68, after which they increase linearly as GLC\_feed increases. The concentration of G6P increases linearly until GLC\_feed = 0.68, at which it immediately plateaus at 3.19
+\section{Flux balance analysis}
+\label{sec:fba}
+
+Using the mapping rules described in section~\ref{sec:mapping}, I prepared bounds for FBA from the kinetic model flux values obtained in section~\ref{sec:bounds}. Setting the objective to maximising to flux through the citramalate flux reaction, I obtained the results in table~\ref{tab:citramalatefluxresults}.
+
+\begin{table}
+  \caption{FBA results using citramalate flux as the objective function}
+  \label{tab:citramalatefluxresults}
+  \centering
+  \begin{tabular}{lS}
+    \toprule
+    Bounds & \multicolumn{1}{c}{Solution (mM s\textsuperscript{-1})}\\
+    \midrule
+    Default & 12.4122\\
+    Anargyros's & 0.3067\\
+    Varying one reaction at a time & 0.2599\\
+    Differential evolution with 8 reactions & 0.1925\\
+    Differential evolution with 41 reactions & 0.2922\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+I then looped through all 2,585 reactions in the stoichiometric model using each as an objective function. Using the bounds obtained from including 41 reactions in differential evolution, I set the script to evaluate solutions while setting the objective to either maximising or minimising flux. I used the solutions (optimal minmum and optimal maximum values) as an additional set of bounds for another round of FBA, and the solution of 0.2922 mM s\textsuperscript{-1} was returned.
 
 \section{Using information from the Lund medium}
 \label{sec:lund}
 
-The patent WO 2015/022496~\cite{eastham_process_2015} (p.79) describes a medium, referred in this project as the Lund medium, for E. coli BW25113 $\Delta$pflB$\Delta$ldhA transformed with pBAD24-cimA fermentation for the optimal production of (R)-citramalic acid:
+The patent WO 2015/022496~\cite{eastham_process_2015} describes a fermentation medium on p.79, for \emph{E. coli} BW25113 $\Delta$pflB$\Delta$ldhA transformed with pBAD24-cimA to optimise production of (\emph{R})-citramalic acid:
 
-\begin{tabular}{lSl}
+\begin{tabular}{lSr}
   Glucose & 11.9 & g L\textsuperscript{-1}\\
   \ce{(NH4)2SO4} & 2 & g L\textsuperscript{-1}\\
   \ce{K2HPO4} & 14.6 & g L\textsuperscript{-1}\\
   \ce{NaH2PO4.2H2O} & 3.6 & g L\textsuperscript{-1}\\
   \ce{(NH4)2H} citrate & 0.5 & g L\textsuperscript{-1}\\
   \ce{MgSO4} & 0.24 & g L\textsuperscript{-1}\\
-  \ce{CaCl2.2H2O} & 2 & mg L\textsuperscript{-1}\\
+  \ce{CaCl2.2H2O} & 1 & mg L\textsuperscript{-1}\\
   \ce{FeCl3} & 20.06 & mg L\textsuperscript{-1}\\
   \ce{ZnSO4.7H2O} & 0.36 & mg L\textsuperscript{-1}\\
   \ce{CuSO4.5H2O} & 0.32 & mg L\textsuperscript{-1}\\
@@ -389,9 +406,11 @@ The patent WO 2015/022496~\cite{eastham_process_2015} (p.79) describes a medium,
   \ce{Na2EDTA.2H2O} & 44.6 & mg L\textsuperscript{-1}
 \end{tabular}
 
-Per litre, each chemical species is present in the following amounts (mmol):
+This medium is referred to as the `Lund medium' in this project. Each chemical species is present in the following amounts:
 
 \begin{tabular}{lS}
+  Species & \multicolumn{1}{c}{Concentration (mM)}\\
+  \midrule
   glucose & 66.05\\
   \ce{NH4^+} & 34.69\\
   \ce{SO4^{2-}} & 17.13\\
