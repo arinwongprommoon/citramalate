@@ -261,8 +261,7 @@ I repeated the investigation using the ten enzymes with the greatest FCCs, with 
   \end{tabular}
 \end{table}
 
-Using all 41 biologically relevant reactions that have $V_{max}$ as a parameter does not exhibit enough convergence due to the high number of dimensions, but was able to return productivity on the order of \num{200e-4}, which is still a significant improvement from the wild-type productivity.
-
+Using all 41 biologically relevant reactions that have $V_{max}$ as a parameter does not exhibit enough convergence due to the high number of dimensions. However, this produced productivities on the order of \num{200e-4} every time the algorithm was repeated, which was still a significant improvement from wild-type productivity.
 \subsection{Glycolytic enzymes}
 \label{ssec:glycolytic}
 
@@ -270,57 +269,61 @@ Originally I used differential evolution with the glycolytic enzymes PGI, PFK, F
 
 The objective changed to investigating how much adding one reaction as an additional dimension in differential evolution affects productivity. Adding enzymes relatively low on the one-reaction list had little effect on the optimum $V_{max}$ values found earlier, and did not cause large improvements in productivity. This suggests that not all reactions in a network have to be included in differential evolution to produce valid results. The conclusion is beneficial as it reduces computation time -- the `curse of dimensionality' exhibited by differential evolution results in exponential increases in computation time as reactions are added.
 
-
 \chapter{Enriching the stoichiometric model}
 \label{ch:stoich}
 
-% check if FBA is actually linear programming or is actually something more complicated
-The stoichiometric model contains flux bounds -- lower and upper bounds -- for each reaction in the model. These bounds can be specified in order to provide constraints for flux balance analysis (FBA)\footnote{Orth \emph{et al}~\cite{orth_what_2010} wrote a very good introduction.}. Using linear programming, FBA aims to find an optimal solution for an objective function, such as the flux through the citramalate synthesis reaction, subject to constraints to the possible flux values. In doing so, the objective function can either be minimised or maximised, and this can be specified when using \texttt{cobra}. The lowest and highest possible values of fluxes through each reaction in the kinetic model provides reasonable bounds for the stoichiometric model.
+The stoichiometric model contains flux bounds -- lower and upper bounds -- for each reaction. These bounds can be specified to provide constraints for flux balance analysis (FBA)\footnote{Orth \emph{et al}~\cite{orth_what_2010} wrote a very good introduction.}. Using linear programming, FBA aims to find an optimal solution for an objective function, subject to constraints on flux values. The objective function can be minimised or maximised, and this can be specified when using \texttt{cobra} to compute the solutions. The lowest and highest possible values of fluxes through each reaction in the kinetic model provides reasonable bounds for the stoichiometric model.
 
-It should be noted that in the kinetic model, fluxes are in mM s\textsuperscript{-1}, while it is mmol g\textsubscript{DW}\textsuperscript{-1} h\textsuperscript{-1} in the stoichiometric model. Using the cell volume of \num{1.77e-3} L g\textsubscript{DW}\textsuperscript{-1} as specified in the kinetic model, I’ve worked out that converting the units from the kinetic model to the stoichiometric model involves multiplying by 6.372. Because the stoichiometric model does not have any information about enzyme kinetics, the values associated with the kinetic model (with kinetic model units) can be used with the structure of the stoichiometric network without any adjustments.
+It should be noted that fluxes are in mM s\textsuperscript{-1} in the kinetic model, while they are mmol g\textsubscript{DW}\textsuperscript{-1} h\textsuperscript{-1} in the stoichiometric model. Using the cell volume of \num{1.77e-3} L g\textsubscript{DW}\textsuperscript{-1} as specified in the kinetic model, I worked out that converting units from the kinetic model to the stoichiometric model involves multiplying by 6.372. Because the stoichiometric model does not have information about enzyme kinetics, the values associated with the kinetic model (with kinetic model units) can be used with the structure of the stoichiometric model without any adjustments.
 
-\section{Creating boundaries for FBA}
+\section{Creating boundaries for flux balance analysis}
 \label{sec:bounds}
 
-I varied the $V_{max}$ values of the 49 reactions with $V_{max}$ as a parameter in the kinetic model (with the citramalate synthesis reaction added) in order to find the the lowest and highest possible values of the fluxes through the 69 reactions in the model. Ideally, one should vary all the reactions at once, but in the interest of saving computational time, I first varied $V_{max}$ values of one reaction at a time. I did so over the range of 0.1-10.0 $V_{max}$.
+I varied the $V_{max}$ values of the 49 reactions with $V_{max}$ as a parameter in the kinetic model (with the citramalate synthesis reaction added) to find the the lowest and highest possible values of the fluxes through the 69 reactions in the model. Ideally, all the values should be varied together, but to save computation time, I first varied $V_{max}$ values of one reaction at a time. I did so over the range of 0.1-10.0 $V_{max}$.
 
-Then, I varied the $V_{max}$ values of many enzymes at a time using differential evolution, obtaining minimum and maximum values of flux. I used a method similar to that used in section~\ref{sec:couples} to obtain the minimum values, specifying the flux through each of the 69 reactions in the kinetic model as the objective function in place of citramalate productivity. Obtaining the maximum values was a matter of adding a minus sign to the objective function in the scripts.
+Then, I varied the $V_{max}$ values of many reactions at a time using differential evolution, obtaining minimum and maximum values of flux. I used a method similar to that used in section~\ref{sec:de} to obtain the minimum values, specifying the flux through each of the 69 reactions in the kinetic model as the objective function in turn, in place of citramalate productivity. Obtaining the maximum values was a matter of adding a minus sign to the objective function in the script.
 
-First, I included the eight\footnote{excluding ATP\_MAINTENANCE, see section~\ref{sec:couples}} reactions with the greatest flux control coefficients: CYTBO, MQO, MDH, ZWF, GLT, GDH, ATP\_syn, and ACK. The differential evolution parameters used were $F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, and 5 iterations~\cite{pedersen_good_2010}. I used the $V_{max}$ range of of 0.3--10.0 $V_{max}$ as using $V_{max}$ values less than 0.3 $V_{max}$ tended to produce run time errors while the \texttt{roadrunner} simulation was run, involving convergence test failures occurring too many times.\footnote{\texttt{RuntimeError: CVODE Error: CV\_CONV\_FAILURE: Convergence test failures occurred too many times (= MXNCF = 10) during one internal timestep or occurred with \textbar{}h\textbar{} = hmin.; In virtual double rr::CVODEIntegrator::integrate(double, double)}}. Judging by the behaviour of ATP\_MAINTENANCE, as described in section~\ref{sec:couples}, results are likely unreliable with small $V_{max}$ values, justifying the use of the more restricted range.
+First, I included the eight reactions with the greatest flux control coefficients: CYTBO, MQO, MDH, ZWF, GLT, GDH, ATP\_syn, and ACK. The differential evolution parameters used were $F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, and 5 iterations~\cite{pedersen_good_2010}. I used the $V_{max}$ range of of 0.3--10.0 $V_{max}$ as using $V_{max}$ values less than 0.3 $V_{max}$ tended to produce run time errors in the \texttt{roadrunner} simulation, involving convergence test failures occurring too many times.\footnote{\texttt{RuntimeError: CVODE Error: CV\_CONV\_FAILURE: Convergence test failures occurred too many times (= MXNCF = 10) during one internal timestep or occurred with \textbar{}h\textbar{} = hmin.; In virtual double rr::CVODEIntegrator::integrate(double, double)}}. Judging by the behaviour of ATP\_MAINTENANCE, as described in section~\ref{sec:couples}, results were likely unreliable with small $V_{max}$ values, justifying the use of the more restricted range.
 
-I then moved on to the list of all biologically relevant reactions in the kinetic model, 41 reactions in total. I used the differential evolution parameters of $F$ = 0.6876, $CR$ = 0.9784, $NP$ = 48~\cite{pedersen_good_2010}, and five iterations. To avoid convergence test failures, I set the $V_{max}$ range to 0.5--10.0 $V_{max}$ in this case.
+With the 41 enzyme-catalysed reactions in the kinetic model with $V_{max}$ as a parameter, I used the differential evolution parameters of $F$ = 0.6876, $CR$ = 0.9784, $NP$ = 48~\cite{pedersen_good_2010}, and five iterations. To avoid convergence test failures, I set the $V_{max}$ range to 0.5--10.0 $V_{max}$ in this case.
 
-%move this bit? With the mapping section below this the structure is confusing
-Bounds generated by including 41 reactions as described above were mostly wider than both bounds generated by including 8 reactions and bounds generated by varying one reaction at a time. In a set of bounds constructed from choosing the best bounds from the three sets described eariler, 43 out of 57 lower bounds and 42 out of 57 lower bounds for reactions in the stoichiometric model with equivalents in the kinetic model were from the bounds generated by including 41 reactions.
+Bounds generated by including 41 reactions were mostly wider than both bounds generated by including 8 reactions and bounds generated by varying one reaction at a time. In a set of bounds constructed from choosing the best bounds from the three sets, 43 out of 57 lower bounds and 42 out of 57 upper bounds for reactions in the stoichiometric model with equivalents in the kinetic model were from the bounds generated by including 41 reactions.
 
 \section{Mapping reactions in the kinetic model to the stoichiometric model}
 \label{sec:mapping}
 
-Previously, an Anargyros who worked in this group produced a mapping table which mapped reactions in the kinetic model to corresponding reactions in the stoichiometric model. His focus was more on mapping and he did not put specific constraints when generating the bounds, and the method by which he generated these values was not documented. I updated the mapping spreadsheet, correcting mistakes and mapping more enzymes.
+Previously, an Anargyros who worked in this group produced a mapping table which mapped reactions in the kinetic model to reactions in the stoichiometric model, and included flux bounds. He focused more on mapping so he did not put specific constraints when generating the bounds, and the method by which he generated these values was not documented. I updated the mapping spreadsheet by correcting mistakes and mapping more enzymes. Table~\ref{tab:mapping} presents the mapping changes I made to correct the mistakes.
 
-To correct Anargyros's mistakes, I changed mapping pairs as follows:
-
+\begin{table}[htbp]
+  \label{tab:mapping}
+  \caption{Changes to mapping pairs in the mapping table}
+  \centering
 \begin{tabularx}{\linewidth}{|L|L|L|}
   \hline
-  Before & After & Notes\\
+  \bfseries Before & \bfseries After & \bfseries Notes\\
   \hline
-  Kinetic MDH : Stoich. MDH2 & Kinetic MDH : Stoich. MDH, and the reactions are reversed with respect to each other. & Corrected confusion between types of malate dehydrogenases. Re-mapping judged from EC numbers and substrates used\\
+  Kinetic MDH $\rightarrow$ Stoich. MDH2 & Kinetic MDH $\rightarrow$ Stoich MDH, and the reactions are reversed with respect to each other. & Corrected confusion between types of malate dehydrogenases. Re-mapping judged from EC numbers and substrates in the reactions\\
   \hline
-  Kinetic XCH\_GLC : Stoich. GLCtexi & Kinetic XCH\_GLC : Stoich. GLCtex & Chose a reversible reaction to replace an irreversible one\\
+  Kinetic XCH\_GLC $\rightarrow$ Stoich GLCtexi & Kinetic XCH\_GLC $\rightarrow$ Stoich GLCtex & Chose a reversible reaction to replace an irreversible one\\
   \hline
-  Kinetic XCH\_ACE2 : Stoich. ACACtex & Kinetic XCH\_ACE2 : Stoich. ACtex & Corrected a mistake -- it's acetate exchange, not acetoacetate exchange\\
+  Kinetic XCH\_ACE2 $\rightarrow$ Stoich ACACtex & Kinetic XCH\_ACE2 $\rightarrow$ Stoich ACtex & Corrected a mistake -- it's acetate exchange, not acetoacetate exchange\\
   \hline
 \end{tabularx}
+\end{table}
 
-Because reactions in the stoichiometric model are not identical to their kinetic counterparts, I used specific rules to reconcile differences. Stoichiometric model reactions that are identical, only differ by having small chemical species like like \ce{H^+} and \ce{H2O}, only differ by having \ce{CO2} instead of \ce{HCO3^-}, or are indicated as irreversible while its equivalent is reversible in the kinetic model have the same lower and upper bounds. For stoichiometric model reactions that are reversed with respect to their kinetic model counterparts, the values obtained from the kinetic model are negated -- i.e. $(lb, ub) \rightarrow (-ub, -lb)$. Glucose uptake reactions (PTS\_0, PTS\_1, PTS\_2, PTS\_3, PTS\_4) and the pentose pathway reactions X5P\_GAP\_TKT, F6P\_E4P\_TKT, S7P\_R5P\_TKT, F6P\_GAP\_TAL, and S7P\_E4P\_TAL each form different sub-network structures in the stoichiometric model compared to the kinetic model, and therefore do not allow one-to-one mapping. While Anargyros provided limited information for these reactions, after investigating the relationship between flux values in both models by conducting simulations, I devised the following solution, which is applied in newmapper.ods.
+Because reactions in the stoichiometric model are not identical to their kinetic counterparts, I devised specific rules to reconcile differences. Stoichiometric model reactions that are identical, reactions that only differ by having small chemical species like like \ce{H^+} and \ce{H2O}, reactions that only differ by having \ce{CO2} instead of \ce{HCO3^-}, or reactions that are indicated as irreversible while its equivalent is reversible in the kinetic model have the same lower and upper bounds as their kinetic model counterparts.
+
+For stoichiometric model reactions that are reversed with respect to their kinetic model counterparts, the values obtained from the kinetic model were negated -- i.e. $ mathrm{Kinetic} (lb, ub) \rightarrow mathrm{Stoichiometric} (-ub, -lb)$.
+
+Glucose uptake reactions (PTS\_0, PTS\_1, PTS\_2, PTS\_3, PTS\_4) and the pentose pathway reactions X5P\_GAP\_TKT, F6P\_E4P\_TKT, S7P\_R5P\_TKT, F6P\_GAP\_TAL, and S7P\_E4P\_TAL each form different sub-network structures in the kinetic model compared to the stoichiometric model, and therefore do not allow one-to-one mapping. After investigating the relationship between flux values in both models by conducting simulations, I devised the following solution (applied in \texttt{fba/newmapper.ods}).
 
 \begin{itemize}
-\item Forced the flux of Stoich.\ TALA to be equal to the flux of Kinetic S7P\_R5P\_TKT.
-\item Forced the flux of Stoich.\ TKT1 and Stoich.\ TKT2 to be equal to half of the flux of Kinetic RPE.
-\item Forced the flux of Stoich.\ GLCptspp to be equal to the flux of Stoich.\ GLCtex.
+\item Force the flux of Stoich.\ TALA to be equal to the flux of Kinetic S7P\_R5P\_TKT.
+\item Force the flux of Stoich.\ TKT1 and Stoich.\ TKT2 to be equal to half of the flux of Kinetic RPE.
+\item Force the flux of Stoich.\ GLCptspp to be equal to the flux of Stoich.\ GLCtex.
 \end{itemize}
 
-These derive from observations that these relationships between flux values hold regardless of the initial conditions.
+These derived from how these relationships between flux values hold regardless of the initial conditions.
 
 \section{Flux balance analysis}
 \label{sec:fba}
