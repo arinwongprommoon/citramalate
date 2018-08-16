@@ -14,7 +14,9 @@
   \newcolumntype{L}{>{\raggedright\arraybackslash}X}
   \usepackage[version=4]{mhchem}
 \usepackage{siunitx}
-  
+\usepackage{booktabs}
+\usepackage{longtable}
+
 \author{Arin Wongprommoon\thanks{\texttt{aw729@cam.ac.uk}} \\University of Cambridge}
 \title{Optimising production of citramalate based on the \emph{E. coli} kinetic model}
 \subtitle{Project Report}
@@ -79,13 +81,7 @@ Here I investigated the relationship between the value of $V_{max}$ of each reac
   \label{fig:onereacsample}
 \end{figure}
 
-For some enzymes, varying $V_{max}$ values have a greater effect on citramalate productivity than others. I quantified this effect based on the data points of the 0.5 -- 2.0 $V_{max}$ plots\footnote{created early in the project, not included in the final results. I only mention them here because I used information from them in later parts of the project} as follows:
-
-\[
-effect = \frac{(max - min)}{(0.5 \cdot (max + min)}
-\]
-
-This is the difference between the maximum and minimum productivities obtained over the range, relative to the average, which represents where the value of productivity is. I intended to find the extent of variation from the `typical' value of productivity around this range. Granted, this isn’t the best way to analyse. I’ve tried regression, but it didn’t seem very informative.
+For some enzymes, varying $V_{max}$ values have a greater effect on citramalate productivity than others. I quantified this effect based on the data points of the 0.5 -- 2.0 $V_{max}$ plots\footnote{created early in the project, not included in the final results. I only mention them here because I used information from them in later parts of the project} by taking the difference between the maximum and minimum productivities obtained over the range. Granted, this isn’t the best way to analyse. I’ve tried regression, but it didn’t seem very informative.
 
 This identified CITRA\_SYN, GLT, LPD, GROWTH, ATP\_MAINTENANCE, GDH, ATP\_SYN, ACEA, PYK, and ZWF as among the enzymes that had the greatest effects. Millard \emph{et al}~\cite{millard_metabolic_2017} listed CYTBO, ZWF, GDH, GLT, and GROWTH as the enzymes found to have the largest shares of flux control. They also exert the strongest controls on concentration. These enzymes are followed by LPD, ATP\_MAINTENANCE, ACEA, ATP\_SYN, and PYK
 
@@ -493,10 +489,154 @@ These files are in a version-controlled directory and in a \emph{private} GitHub
 \addcontentsline{toc}{chapter}{Appendix}
 \renewcommand{\thesection}{\Alph{section}}
 
-\section{First}
-\section{Second}
+\section{Reactions in the kinetic model}
+\label{ap:kineticreactionlist}
 
-\nocite{*}
+This is a list of the 68 reactions in the kinetic model with their wild-type $V_{max}$ values as specified in the SBML file. 49 reactions have $V_{max}$ as a parameter.
+
+\begin{longtable}{lS}
+  \toprule
+  Reaction & \multicolumn{1}{c}{Wild-type $V_{max}$ (mM s\textsuperscript{-1})}\\
+  \midrule
+  ACEA & 1.52595\\
+ACEB & 0.352769\\
+ACEK\_1 & \multicolumn{1}{c}{None}\\
+ACEK\_2 & \multicolumn{1}{c}{None}\\
+ACK & 7.23\\
+ACN\_1 & 9.72413\\
+ACN\_2 & 9.86571\\
+ACS & 7.3\\
+ADK & \multicolumn{1}{c}{None}\\
+ATP\_MAINTENANCE & 1.30166\\
+ATP\_syn & 108.733\\
+CYA & \multicolumn{1}{c}{None}\\
+CYTBO & 8.54045\\
+DOS & \multicolumn{1}{c}{None}\\
+EDA & 0.0775241\\
+EDD & 0.111359\\
+ENO & 11.7189\\
+F6P\_E4P\_TKT & \multicolumn{1}{c}{None}\\
+F6P\_GAP\_TAL & \multicolumn{1}{c}{None}\\
+FBA & 21.6978\\
+FBP & 0.215583\\
+FUMA & 53.3414\\
+GDH & 8.66573\\
+GL6P\_HYDROLYSIS & \multicolumn{1}{c}{None}\\
+GLC\_feed & \multicolumn{1}{c}{None}\\
+GLT & 57.0584\\
+GND & 4.08105\\
+GPM & 10.9934\\
+GROWTH & 9.74137\\
+ICD & \multicolumn{1}{c}{None}\\
+LPD & 0.0684413\\
+MAD & 6.64269\\
+MDH & 6.11492\\
+MQO & 4.62283\\
+NADH\_req & 23.0735\\
+NDHII & 30.8306\\
+PCK & 8.08777\\
+PDH & 961.706\\
+PFK & 0.185253\\
+PGI & 2.32456\\
+PGK & 16.1089\\
+PGL & 11.5967\\
+PIT & 7.146\\
+PNT\_req & \multicolumn{1}{c}{None}\\
+PPC & 21.439\\
+PPS & 0.0163772\\
+PTA & 2.7\\
+PTS\_0 & \multicolumn{1}{c}{None}\\
+PTS\_1 & \multicolumn{1}{c}{None}\\
+PTS\_2 & \multicolumn{1}{c}{None}\\
+PTS\_3 & \multicolumn{1}{c}{None}\\
+PTS\_4 & \multicolumn{1}{c}{None}\\
+PYK & 0.74716\\
+RPE & 6.00103\\
+RPI & 8.0\\
+S7P\_E4P\_TAL & \multicolumn{1}{c}{None}\\
+S7P\_R5P\_TKT & \multicolumn{1}{c}{None}\\
+SDH & 1.56184\\
+SK & 76.8163\\
+SQR & 3.41617\\
+TPI & 24.1843\\
+X5P\_GAP\_TKT & \multicolumn{1}{c}{None}\\
+XCH\_ACE1 & 100.0\\
+XCH\_ACE2 & 100.0\\
+XCH\_GLC & 100.0\\
+XCH\_P & 100.0\\
+ZWF & 0.2658\\
+\_ACE\_OUT & \multicolumn{1}{c}{None}\\
+\bottomrule
+\end{longtable}
+
+Of these, 41 correspond to real enzymes in \emph{E. coli}: ACEA, ACEB, ACK, ACN\_1, ACN\_2, ACS, ATP\_syn, CITRA\_SYN, CYTBO, EDA, EDD, ENO, FBA, FBP, FUMA, GDH, GLT, GND, GPM, LPD, MAD, MDH, MQO, PCK, PDH, PFK, PGI, PGK, PGL, PIT, PPC, PPS, PTA, PYK, RPE, RPI, SDH, SK, SQR, TPI, and ZWF.
+
+\section{One-reaction list}
+\label{ap:onereactionlist}
+
+Here is the list of kinetic model reactions ordered by effect on citramalate productivity, as quantified by the method described in section~\ref{sec:onereac}. This list is termed the `one-reaction list' in this report.
+\begin{longtable}{lS}
+  \toprule
+  Reaction & \multicolumn{1}{c}{Difference}\\
+  \midrule
+CITRA\_SYN & 0.0047592827\\
+GLT & 0.0028143645\\
+LPD & 0.0024355991\\
+GROWTH & 0.0015196535\\
+ATP\_MAINTENANCE & 0.0013313081\\
+GDH & 0.0009114522\\
+ATP\_syn & 0.0007611072\\
+ACEA & 0.0007511846\\
+PYK & 0.0007372515\\
+ZWF & 0.0003202479\\
+NDHII & 0.0002585753\\
+MQO & 0.0002267894\\
+NADH\_req & 0.0002253453\\
+MDH & 0.0002253183\\
+MAD & 0.000194721\\
+PGI & 0.0001198466\\
+PCK & 0.0001030438\\
+PPC & 9.98662735514203E-05\\
+ACEB & 7.90308554654898E-05\\
+PDH & 7.25091053451472E-05\\
+ENO & 0.000052497\\
+CYTBO & 4.01304504630247E-05\\
+PFK & 0.000029278\\
+SDH & 2.34810929815527E-05\\
+GPM & 0.000017908\\
+RPI & 1.57468888476676E-05\\
+RPE & 1.17187158724425E-05\\
+GND & 7.7970772124512E-06\\
+FBA & 5.78669223682236E-06\\
+PIT & 4.2598627200143E-06\\
+XCH\_GLC & 2.30450409889268E-06\\
+EDD & 1.45414534944354E-06\\
+TPI & 1.13784049543585E-06\\
+ACK & 5.9384816856003E-07\\
+SQR & 2.76393130356403E-07\\
+ACN\_1 & 0.000000163\\
+ACN\_2 & 1.34302723317709E-07\\
+PGL & 1.18091121640955E-07\\
+EDA & 1.13285023008386E-07\\
+FBP & 6.4369739164339E-08\\
+PTA & 0.000000059\\
+PPS & 3.50591144481546E-08\\
+FUMA & 1.57341325584745E-08\\
+PGK & 1.23830399983461E-08\\
+ACS & 3.41921927208243E-09\\
+SK & 2.53497706831883E-09\\
+XCH\_ACE1 & 3.6139094993469E-10\\
+XCH\_P & 1.30011316599662E-10\\
+XCH\_ACE2 & 1.15399255906298E-10\\
+\bottomrule
+\end{longtable}
+
+\section{Synergistic effects between reactions in the kinetic model}
+\label{ap:synergistic}
+
+\section{Glycolytic enzymes and differential evolution}
+\label{ap:glycolytic}
+
 \printbibliography
 
 \end{document}
