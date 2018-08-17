@@ -308,7 +308,7 @@ Previously, an Anargyros who worked in this group produced a mapping table which
 
 Because reactions in the stoichiometric model are not identical to their kinetic counterparts, I devised specific rules to reconcile differences. Stoichiometric model reactions that are identical, reactions that only differ by having small chemical species like \ce{H^+} and \ce{H2O}, reactions that only differ by having \ce{CO2} instead of \ce{HCO3^-}, or reactions that are indicated as irreversible while its equivalent is reversible in the kinetic model have the same lower and upper bounds as their kinetic model counterparts.
 
-For stoichiometric model reactions that are reversed with respect to their kinetic model counterparts, the values obtained from the kinetic model were negated -- i.e. $ \mathrm{Kinetic } (lb, ub) \rightarrow \mathrm{Stoichiometric } (-ub, -lb)$.
+For stoichiometric model reactions that are reversed with respect to their kinetic model counterparts, the values obtained from the kinetic model were negated -- i.e.\\ $ \mathrm{Kinetic } (lb, ub) \rightarrow \mathrm{Stoichiometric } (-ub, -lb)$. %overfull hbox quick fix
 
 \begin{figure}[p]
   \centering
@@ -324,7 +324,7 @@ For stoichiometric model reactions that are reversed with respect to their kinet
   \label{fig:ppp}
 \end{figure}
 
-Glucose uptake reactions (PTS\_0, PTS\_1, PTS\_2, PTS\_3, PTS\_4) and the pentose phosphate pathway reactions X5P\_GAP\_TKT, F6P\_E4P\_TKT, S7P\_R5P\_TKT, F6P\_GAP\_TAL, and S7P\_E4P\_TAL each form different sub-network structures in the kinetic model compared to the stoichiometric model, and therefore do not allow one-to-one mapping. Figures~\vref{fig:glucoseuptake} and~\vref{fig:ppp} show the structures in the petri net format~\cite{gilbert_unifying_2007, murata_petri_1989}. After investigating the relationship between flux values in both models by conducting simulations, I devised the following solution (applied in \texttt{fba/newmapper.ods}).
+Glucose uptake reactions (PTS\_0, PTS\_1, PTS\_2, PTS\_3, PTS\_4) and the pentose phosphate pathway reactions X5P\-\_GAP\-\_TKT, F6P\-\_E4P\-\_TKT, S7P\-\_R5P\-\_TKT, F6P\-\_GAP\-\_TAL, and S7P\-\_E4P\-\_TAL each form different sub-network structures in the kinetic model compared to the stoichiometric model, and therefore do not allow one-to-one mapping. Figures~\ref{fig:glucoseuptake} and~\vref{fig:ppp} show the structures in the petri net format~\cite{gilbert_unifying_2007, murata_petri_1989}. After investigating the relationship between flux values in both models by conducting simulations, I devised the following solution (applied in \texttt{fba/newmapper.ods}).
 
 \begin{itemize}
 \item Force the flux of Stoich TALA to be equal to the flux of Kinetic S7P\_R5P\_TKT.
@@ -455,7 +455,10 @@ I created an improved method of mapping reactions in the kinetic model to corres
 \section{Issues}
 \label{sec:issues}
 
-First, \texttt{roadrunner} has a memory leak in \texttt{roadrunner.RoadRunner()}. Memory could only be released when the Python program ends. The function was required to run the simulations required to generate almost all the data in the project. \texttt{libsbml.writeSBMLToString()} also made a contribution. This function writes a modified SBML file -- in this project, one with modified $V_{max}$ values -- derived from a model object, to a string. \texttt{roadrunner.RoadRunner()} then takes the string as an argument to create an object which is used for running simulations. Arguably, it is more logical to pass the model object directly into the simulation, but as of 17 August 2018, the official documentation\footnote{\url{http://sys-bio.github.io/roadrunner/python\_docs/api\_reference.html?highlight=roadrunner\%20roadrunner#the-main-roadrunner-class}} for \texttt{libroadrunner} 1.5.1 states that `In future version, we will also support loading directly from a \texttt{libSBML} Document object.'
+\urldef\myurl\url{http://sys-bio.github.io/roadrunner/python_docs/api_reference.html?highlight=roadrunner%20roadrunner#the-main-roadrunner-class}
+
+  % defined hyphenation pattens for code in TT to fix overfull hbox
+First, \texttt{roadrunner} has a memory leak in \texttt{road\-runner.\-Road\-Runner\-()}. Memory could only be released when the Python program ends. The function was required to run the simulations required to generate almost all the data in the project. \texttt{libsbml\-.write\-SBML\-To\-String\-()} also made a contribution. This function writes a modified SBML file -- in this project, one with modified $V_{max}$ values -- derived from a model object, to a string. \texttt{road\-runner.\-Road\-Runner\-()} then takes the string as an argument to create an object which is used for running simulations. Arguably, it is more logical to pass the model object directly into the simulation, but as of 17 August 2018, the official documentation\footnote{\myurl} for \texttt{libroadrunner} 1.5.1 states that `In future version, we will also support loading directly from a \texttt{libSBML} Document object.'
 
 The memory leak had a large impact on the project as almost all scripts included running simulations on modified kinetic models multiple times in succession. The workaround of writing shell scripts to run and stop the scripts after each round of looping that included running simulations partially alleviated the problem. This method did not work with differential evolution on account of how the algorithm was written. As a result, the number of iterations that could be carried out before Python used up the random access memory in the system was limited, and adequate convergence might not have been realised with high $D$. The `curse of dimensionality', a limitation of differential evolution, exacerbates the problem: with an increasing number of dimensions, the difficulty of finding the optimal solution increases exponentially.
 
@@ -660,6 +663,10 @@ XCH\_ACE2 & 1.15399255906298E-10\\
 \label{ap:synergistic}
 
 I investigated whether there were synergistic effects between reactions by investigating reactions adjacent to each other, starting from the glycolytic pathway. No effects were observed for PGI and PFK, and a slight synergistic effect was observed for GPM and ENO. Between FBA and GDH, FBA exerts too little effect for the results to be conclusive. In contrast, ACEA and ACEB exhibit \emph{antagonistic} effects, and LPD and GDH, a pair of enzymes far apart from each other in the network seem to have a synergistic effect. Whether there were synergistic effects between reactions remains inconclusive. My investigations are in \texttt{kinetic/result/couples/Adjacent/Adjacent.txt}.
+
+% fix overfull hbox for patent entry
+\newcommand{\typesetmypatent}{WO/-2015/-022496}
+\typesetmypatent
 
 \printbibliography
 
