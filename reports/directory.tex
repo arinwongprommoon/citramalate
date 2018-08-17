@@ -2,7 +2,7 @@
 
 \usepackage{longtable}
 \usepackage{ltablex}
-\usepackage{hyperref}
+  \newcolumntype{L}{>{\raggedright\arraybackslash}X}
 
 \author{Arin Wongprommoon}
 \title{Directory of items as of v2.1}
@@ -24,18 +24,18 @@
 \label{ch:root}
 .:
 
-\begin{longtable}{ll}
+\begin{tabularx}{\linewidth}{LL}
 fba & Enriching the stoichiometric model and FBA\\
 kinetic & Manipulating the kinetic model\\
 LICENSE & MIT licence\\
 sandbox & (empty)
-\end{longtable}
+\end{tabularx}
 
 \chapter{FBA}
 \label{ch:fba}
 ./fba:
 
-\begin{longtable}{ll}
+\begin{tabularx}{\linewidth}{LL}
 1dflux\_citra & Flux minima/maxima data from varying one $V_{max}$ value at a time\\
 Analysing which boundaries best.ods & Sheet where I can paste in bounds to see which is best\\
 boundaries\_citra & FBA bounds found by DE\\
@@ -51,32 +51,32 @@ flux\_noloop.py & Script for flux\_run.sh\\
 flux.py & Creates data in 1dflux\_citra\\
 flux\_run.sh & Creates data in 1dflux\_citra, with memory leak fix\\
 info & Information about the kinetic and stoichiometric models\\
-Mapping\_Kinetic\_Mendes\_Stoc\_Palsson\_Optimized\_ARIN.ods & My mapping\\
-Mapping\_Kinetic\_Mendes\_Stoc\_Palsson\_Optimized.ods & Anargyros's mapping\\
+Mapping\_\-Kinetic\_\-Mendes\_\-Stoc\_\-Palsson\_\-Optimized\_\-ARIN.ods & My mapping\\
+Mapping\_\-Kinetic\_\-Mendes\_\-Stoc\_\-Palsson\_\-Optimized.ods & Anargyros's mapping\\
 MODEL1108160000.xml & Stoichiometric model\\
 newmapper.ods & Sheet where I can paste in bounds to map from kinetic to stoichiometric\\
 result & Results
-\end{longtable}
+\end{tabularx}
 
 ./fba/1dflux\_citra:
 
-\begin{longtable}{ll}
+\begin{tabularx}{\linewidth}{LL}
 analysis\\
 combine.py & Script to combine all sheets\\
 (everything else) & Minimum and maximum fluxes through all kinetic model reactions when the $V_{max}$ of a certain reaction is varied
-\end{longtable}
+\end{tabularx}
 
 ./fba/1dflux\_citra/analysis:
 
-\begin{longtable}{ll}
+\begin{tabularx}{\linewidth}{LL}
 combined\_citra.csv & All sheets combined\\
 getminmax.py & Script to get minimum and maximum values from combined\_citra.csv\\
 minmax\_citra.csv & Bounds
-\end{longtable}
+\end{tabularx}
 
 ./fba/boundaries\_citra:
 
-\begin{longtable}{ll}
+\begin{tabularx}{\linewidth}{LL}
 1dBoundaries.csv & Bounds from varying one reaction\\
 1dBoundaries\_lundall1000.csv & With exchange reactions corresponding to species in the Lund medium added and set to -1000\\
 1dBoundaries\_lund.csv & With exchange reactions corresponding to species in the Lund medium added, glucose feed set to -0.23\\
@@ -88,11 +88,11 @@ minmax\_citra.csv & Bounds
 AnargyrosBoundaries.csv & Bounds from Anargyros\\
 lund.csv & Exchange reactions corresponding to species in the Lund medium\\
 rawtxt & Outputs from fluxde\_max.sh and fluxde\_min.sh
-\end{longtable}
+\end{tabularx}
 
 ./fba/boundaries\_citra/rawtxt:
 
-\begin{longtable}{ll}
+\begin{tabularx}{\linewidth}{LL}
 41dmax\_raw.txt\\
 41dmax.txt\\
 41dmin\_raw.txt\\
@@ -101,11 +101,11 @@ rawtxt & Outputs from fluxde\_max.sh and fluxde\_min.sh
 8dmax.txt\\
 8dmin\_raw.txt\\
 8dmin.txt
-\end{longtable}
+\end{tabularx}
 
 ./fba/info:
 
-\begin{longtable}{ll}
+\begin{tabularx}{\linewidth}{LL}
 initalconditions.txt & Kinetic model wt initial concentrations and fluxes\\
 Kavvas media stoichiometry.ods\\
 kinetic\_ccc.csv & Concentration control coefficients from Millard et al. 2017\\
@@ -123,42 +123,42 @@ res\_mca.RData\\
 wtrates.txt & wt rates of reactions\\
 wtssconcs.txt & wt steady-state concentrations\\
 wtvmaxes.txt & wt $V_{max}$ values
-\end{longtable}
+\end{tabularx}
 
 ./fba/result:
 
-\begin{longtable}{ll}
+\begin{tabularx}{\linewidth}{LL}
 citra & From using citramalate flux as the objective function\\
 obj & From using all reactions as objective functions in turn
-\end{longtable}
+\end{tabularx}
 
 ./fba/result/citra:
 
-\begin{longtable}{ll}
+\begin{tabularx}{\linewidth}{LL}
 CitramalateFluxResults.txt & Show fluxes through citramalate reaction after applying FBA bounds\\
 FluxesAfterBound\_41d.csv & Show the fluxes through all reactions after applying FBA bounds\\
 FluxesAfterBound\_41dlund1000.csv\\
 FluxesAfterBound\_lundall1000.csv\\
 FluxesAfterBound\_lundall10.csv
-\end{longtable}
+\end{tabularx}
 
 ./fba/result/obj:
 
-\begin{longtable}{ll}
+\begin{tabularx}{\linewidth}{LL}
 FluxesAfterBound\_41dOBJ.csv\\
 Objectives\_bounds-41dBoundaries\_ALL.csv\\
 Objectives\_bounds-41dBoundaries\_MAX.csv\\
 Objectives\_bounds-41dBoundaries\_MIN.csv\\
 Objectives\_default\_MAX.csv\\
 Objectives\_default\_MIN.csv
-\end{longtable}
+\end{tabularx}
 
 \chapter{Kinetic}
 \label{ch:kinetic}
 
 ./kinetic:
 
-\begin{longtable}{ll}
+\begin{tabularx}{\linewidth}{LL}
 citra\_plot.py & Demonstrate and use the plot function in ecolicitra\\
 comproducti.py & Test kinetic model of E. coli plus citramalate reaction with different glucose feeds\\
 couples\_compute.py & Script for couples\_run.sh\\
@@ -183,86 +183,86 @@ testsimula.py & Simulate and plot, written by Jorge \\
 vmax\_noloop.py & Script for vmax\_run.sh\\
 vmax.py & Plots one-reaction plots\\
 vmax\_run.sh & Plots one-reaction plots, gets around memory leak
-\end{longtable}
+\end{tabularx}
 
 \section{Info}
 \label{sec:kininfo}
 
 ./kinetic/info:
 
-\begin{longtable}{ll}
+\begin{tabularx}{\linewidth}{LL}
 listofreactions\_kinetic.txt & List of kinetic model reactions with $V_{max}$ as a parameter
-\end{longtable}
+\end{tabularx}
 
 \section{Results}
 \label{sec:kinresult}
 
 ./kinetic/result:
 
-\begin{longtable}{ll}
+\begin{tabularx}{\linewidth}{LL}
 couples & Varying $V_{max}$ values of two reactions at the same time\\
 de & Differential evolution to optimise citramalate productivity\\
 glucoseflux\_fcclist.txt & Concentrations of glucose after 2 hours, using FCC list\\
 glucoseflux\_originallist.txt & Concentrations of glucose after 2 hours, using one-reaction list\\
 growthglc.txt & Investigating glucose uptake\\
 onereaction & Varying $V_{max}$ values of one reaction at a time
-\end{longtable}
+\end{tabularx}
 
 \subsection{Couples}
 \label{ssec:couples}
 
 ./kinetic/result/couples:
 
-\begin{longtable}{ll}
+\begin{tabularx}{\linewidth}{LL}
 Adjacent & Synergistic effects\\
 atp\_maintenance & Investigating the ATP\_MAINTENANCE reaction\\
 FCC\_SS Vmax 0.1-10.0 & Heatmaps indicating steady-state using 10 reactions in the FCC list\\
 SteadyState & Heatmaps indicating steady-state using the one-reaction list\\
 Vmax0.1-1.0 & Heatmaps\\
 Vmax0.1-10.0 & More heatmaps
-\end{longtable}
+\end{tabularx}
 
 In this directory, the data used to draw the heatmaps are stored in TXT and NPZ files. NPZ files are \texttt{numpy} arrays that can be loaded using \texttt{numpy.load()}
 
 ./kinetic/result/couples/SteadyState:
 
-\begin{longtable}{ll}
+\begin{tabularx}{\linewidth}{LL}
 1e-6 & Heatmaps where threshold value is 1e-6\\
 1e-7 & Heatmaps where threshold value is 1e-7\\
 1e-8 & Heatmaps where threshold value is 1e-8\\
 1e-9 & Heatmaps where threshold value is 1e-9\\
 steadyheatmaps & Heatmaps but with logarithm of max rate instead of citramalate productivity displayed
-\end{longtable}
+\end{tabularx}
 
 \subsection{DE}
 \label{ssec:de}
 
 ./kinetic/result/de:
 
-\begin{longtable}{ll}
+\begin{tabularx}{\linewidth}{LL}
 all.txt & Optimise citramalate productivity, using all 41 biologically relevant reactions\\
 cit.txt & Optimise citramalate productivity, using 7 or 10 reactions from one-reaction list\\
 couple.txt & Testing differential evolutoin on couples\\
 de\_fcc10\_50generations.txt & Optimise citramalate productivity, using 10 reactions from FCC list\\
 gly.txt & Optimise citramalate productivity, using glycolytic enzymes
-\end{longtable}
+\end{tabularx}
 
 \subsection{One-reaction}
 \label{ssec:onereaction}
 
 ./kinetic/result/onereaction:
 
-\begin{longtable}{ll}
+\begin{tabularx}{\linewidth}{LL}
 inflectionpoints\_citraprod.csv & Inflection points of plots that have them\\
 minmax.csv & One-reaction list\\
 Note.txt\\
 Vmax 0.1-1.0\\
 Vmax 0.1-10.0\\
-\end{longtable}
+\end{tabularx}
 
 ./kinetic/result/onereaction/Vmax 0.1-1.0:
 
-\begin{longtable}{ll}
+\begin{tabularx}{\linewidth}{LL}
 Citramalate concentration - axes not fixed\\
 Citramalate flux - axes fixed\\
 Citramalate flux - axes not fixed\\
@@ -270,6 +270,6 @@ iGROWTH - axes not fixed\\
 Productivity - Axes fixed\\
 Productivity - Axes not fixed\\
 VMAXDATA.txt\\
-\end{longtable}
+\end{tabularx}
 
 \end{document}
