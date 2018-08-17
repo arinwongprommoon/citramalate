@@ -468,7 +468,21 @@ Fortunately, the \texttt{cobra} module used to manipulate the stoichiometric mod
 
 Next, I address preparing lists of reactions used in generating heatmaps and in differential evolution. The method I used to quantify the effect that varying $V_{max}$ of each reaction had on citramalate productivity as described in section~\ref{sec:onereac} had no real statistical basis (it was a quick-and-dirty method). Regression did not appear to be informative. Any method that uses the data points I generated, however, would have to rationalise using a specific range of $V_{max}$ values, as the ranges in use are arbitrary. Using the flux control coefficients was an alternative, and I generated data accordingly, but the reactions were sorted by how much control they had over the network as a whole, and not by control over the citramalate synthesis reaction.
 
-Additionally, generating one-reaction plots\footnote{included in the result directories} (section~\ref{sec:onereac}) using flux through the citramalate synthesis reaction and growth as objective functions, in place of citramalate productivity called into question the validity of using flux through the citramalate synthesis reaction as a proxy for citramalate productivity in FBA. The shape of the plots of flux through citramalate synthesis differed a lot from that of citramalate productivity, and growth contributed more to the shape of the plots of citramalate productivity. I investigated the use of citramalate productivity as the objective function in FBA, but \texttt{cobra} was limited to linear functions. As citramalate productivity is expressed as the product of two functions that exist in the stoichiometric model, other packages such as CPLEX or Gurobi must be used. However, both are proprietary, though Gurobi offers a free licence for universities.
+Additionally, generating one-reaction plots\footnote{included in the result directories} (section~\ref{sec:onereac}) using flux through the citramalate synthesis reaction and growth as objective functions, in place of citramalate productivity called into question the validity of using flux through the citramalate synthesis reaction as a proxy for citramalate productivity in FBA. The shape of the plots of flux through citramalate synthesis (figure~\vref{fig:issues_citraflux} provides an example) differed a lot from that of citramalate productivity, and growth contributed more to the shape of the plots of citramalate productivity (figure~\vref{fig:issues_igrowth} shows such a plot, which can be compared to figure~\vref{fig:onereacsample}). I investigated the use of citramalate productivity as the objective function in FBA, but \texttt{cobra} was limited to linear functions. As citramalate productivity is expressed as the product of two functions that exist in the stoichiometric model, other packages such as CPLEX or Gurobi must be used. However, both are proprietary, though Gurobi offers a free licence for universities.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[scale=0.5]{issues_citraflux}
+  \caption{Relationship between PYK $V_{max}$ and flux through citramalate synthesis reaction}
+  \label{fig:issues_citraflux}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[scale=0.5]{issues_igrowth}
+  \caption{Relationship between PYK $V_{max}$ and $\mathrm{iGROWTH}'$. iGROWTH is a species created to model growth in the kinetic model.}
+  \label{fig:issues_igrowth}
+\end{figure}
 
 I based mapping reactions in the kinetic model to their equivalents in the stoichiometric model (section~\ref{sec:mapping}) on observations from running simulations rather than theoretical knowledge behind the model networks, and the validity of this method is yet to be assessed. However, I observed that switching from Anargyros's more limited treatment of the glucose uptake and pentose phosphate pathway reactions to the method I used did not cause a significant change to the optimal citramalate productivity found by FBA.
 
