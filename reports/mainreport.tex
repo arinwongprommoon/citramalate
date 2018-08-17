@@ -71,7 +71,7 @@ The stoichiometric model contains 2,584 reactions, and I mapped 57 to their equi
 
 I investigated the relationship between the value of $V_{max}$ of each reaction in the kinetic model and the resulting citramalate productivity at steady state. I varied the $V_{max}$ values of each of the 49 reactions in the kinetic model that includes $V_{max}$ as a parameter (see appendix~\ref{ap:kineticreactionlist}) over the ranges 0.1--1.0 $V_{max}$ and 0.1--10.0 $V_{max}$, where $V_{max}$ is the wild-type $V_{max}$ for that particular reaction as specified in the SBML file. Each plot had 100 data points. Figure~\ref{fig:onereacsample} is an example of such a plot.
 
-\begin{figure}[htbp]
+\begin{figure}[h]
   \centering
   \includegraphics[scale=0.5]{onereacsample}
   \caption{Example of a one-reaction plot: the reaction PYK}
@@ -84,7 +84,7 @@ This identified CITRA\_SYN, GLT, LPD, GROWTH, ATP\_MAINTENANCE, GDH, ATP\_SYN, A
 
 Exchange reactions (XCH\_ACE, XCH\_GLC, and XCH\_P) had no bearing on productivity as all the data points in their plots could be attributed to noise. Surprisingly, ACS, ACK, and PTA which directly controlled acetyl CoA levels, did not seem to have significant bearings on productivity. As expected, enzymes that have the largest shares of flux control created the plots that demonstrated the greatest changes in citramalate productivity in response to $V_{max}$ variation. However, CYTBO had less effect on productivity as would be expected by this explanation. Although PYK did not exert a lot of control over fluxes as expected by its flux control coefficient, it had a large effect on citramalate productivity. Possibly it was because the citramalate reaction used up pyruvate and because PYK is a control point in glycolysis. Some reactions exhibited inflection points in their plots, as shown in table~\ref{tab:inflection}.
 
-\begin{table}[htbp]
+\begin{table}[h]
   \caption{Reactions with inflection points}
   \label{tab:inflection}
   \centering
@@ -113,7 +113,7 @@ Varying $V_{max}$ values of two reactions at a time aimed to identify pairs of r
 
 I varied their $V_{max}$ values within 0.1--1.0 $V_{max}$ or 0.1--10.0 $V_{max}$, and plotted the resulting citramalate productivities on heatmaps (see figure~\ref{fig:heatmapsample}). The $V_{max}$ values took 10 values in their ranges, so each heatmap had 100 data points. The horizontal axis indicates the respective $V_{max}$ value of the first reaction in mM s\textsuperscript{-1} and the vertical axis represents the second reaction. Because the wild-type productivity is 0.001122 h\textsuperscript{-1}, I multiplied the citramalate productivity values by 10,000 so that numbers that can be easily conceptualised are displayed on the heatmaps. In figure~\ref{fig:heatmapsample}, when the $V_{max}$ of GLT is 256.76 mM s\textsuperscript{-1} and the $V_{max}$ of ACEA is 1.83 mM s\textsuperscript{-1}, productivity is 0.00848 h\textsuperscript{-1}.
 
-\begin{figure}[htbp]
+\begin{figure}[hbp]
   \centering
   \includegraphics[scale=0.5]{heatmapsample}
   \caption{Example of a heatmap: GLT vs ACEA}
@@ -122,15 +122,12 @@ I varied their $V_{max}$ values within 0.1--1.0 $V_{max}$ or 0.1--10.0 $V_{max}$
 
 I also used the reactions with the 10 greatest FCCs to generate heatmaps. The trends seen in most heatmaps suggested simple additive effects, and the heatmaps did not have any additional local maxima or minima, suggesting orthogonality. Plots that involved ATP\_MAINTENANCE exhibited strange behaviour, more evident in higher-resolution heatmaps like figure~\ref{fig:atpmaintenanceheatmap}. This can be attributed to the data between 0.20 and 0.25 $V_{max}$ in ATP\_MAINTENANCE's one-reaction plot (figure~\ref{fig:atpmaintenanceonereac}). Dr J\'ulvez suggested that the model was not configured for such small values of $V_{max}$.
 
-\begin{figure}[htbp]
+\begin{figure}[hp]
   \centering
   \includegraphics[scale=0.5]{atpmaintenanceheatmap}
   \caption{High-resolution heatmap of GLT vs ATP\_MAINTENANCE}
   \label{fig:atpmaintenanceheatmap}
-\end{figure}
 
-\begin{figure}[htbp]
-  \centering
   \includegraphics[scale=0.5]{atpmaintenanceonereac}
   \caption{One-reaction plot for ATP\_MAINTENANCE, 300 data points}
   \label{fig:atpmaintenanceonereac}
@@ -147,7 +144,7 @@ The results are only valid if the system has reached steady state. Steady state 
 
 where X represents a chemical species, and $\epsilon$ is the threshold value. The threshold value was intially set at \num{1.0e-8}, but then adjusted to \num{1.0e-6} following inspection of the heatmaps. For  visualisation, I generated heatmaps with data points replaced by -1 if the system does not reach steady state (figure~\ref{fig:steadystate})
 
-\begin{figure}[htbp]
+\begin{figure}[hbp]
   \centering
   \includegraphics[scale=0.5]{steadystate}
   \caption{Heatmap for ATP\_MAINTENANCE vs ZWF, with threshold set to \num{1.0e-8}}
@@ -168,7 +165,7 @@ I used the citramalate productivity calculated after \texttt{roadrunner} simulat
 
 I tested how well the suggested differential evolution parameter values quoted by Storn (1996)~\cite{storn_usage_1996} and Pedersen (2010)~\cite{pedersen_good_2010} optimised citramalate productivity. I used reactions in the glycolytic pathway (rationale explained in subsection~\vref{ssec:glycolytic}) and the one-reaction list. Values were chosen based on algorithm run time and how fast convergence was realised. They are presented in table~\vref{tab:deoptimise}.
 
-\begin{table}[htbp]
+\begin{table}[htb]
   \caption{Differential evolution optimal parameter search}
   \label{tab:deoptimise}
   \centering
@@ -192,7 +189,7 @@ I tested how well the suggested differential evolution parameter values quoted b
 
 Using the best differential evolution parameters ($F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, and 50 iterations, as listed in table~\ref{tab:deoptimise}) with the set of seven reactions CITRA\_SYN, GLT, LPD, GDH, ATP\_syn, ACEA, and ZWF, varying $V_{max}$ values over 0.1--10.0 $V_{max}$ yielded optimal $V_{max}$ values as shown in table~\vref{tab:optcitra7} and the citramalate productivity of \num{353.66e-4} h\textsuperscript{-1}. I then changed the $V_{max}$ values of these seven reactions to values expected to maximise citramalate productivity as inferred from the one-reaction plots (section~\ref{sec:onereac}) alone. The resulting productivity was \num{226.96e-4} h\textsuperscript{-1}, lower than the productivity found from differential evolution, confirming the usefulness of the genetic algorithm.
 
-\begin{table}[htbp]
+\begin{table}[hp]
   \caption{Optimal $V_{max}$ values, using seven reactions from the one-reaction list}
   \label{tab:optcitra7}
   \centering
@@ -213,7 +210,7 @@ Using the best differential evolution parameters ($F$ = 0.6607, $CR$ = 0.9426, $
 
 Furthermore, I tried the same parameters on 10 enzymes and achieved the productivity of \num{405.5e-4} h\textsuperscript{-1} with a set of $V_{max}$ values shown in table~\vref{tab:optcitra10}. However, 10 reactions exhibited slower convergence, as expected by the `curse of dimensionality'. This is a limitation of differential evolution in which the difficulty of finding solutions increases exponentially as dimensions increase.
 
-\begin{table}[htbp]
+\begin{table}[hp]
   \caption{Optimal $V_{max}$ values, using ten reactions from the one-reaction list}
   \label{tab:optcitra10}
   \centering
@@ -237,7 +234,7 @@ Furthermore, I tried the same parameters on 10 enzymes and achieved the producti
 
 I repeated the investigation using the ten enzymes with the greatest FCCs, with results shown in table~\vref{tab:optfcc10}. In this case, the productivity was \num{224.2e-4} h\textsuperscript{-1}. I excluded ATP\_MAINTENANCE because it does not correspond to an enzyme that exists in \emph{E. coli} and because it was not reliable with small values of $V_{max}$, as discussed in section~\ref{sec:onereac}.
 
-\begin{table}[htbp]
+\begin{table}[hp]
   \caption{Optimal $V_{max}$ values, using ten reactions with the greatest FCCs}
   \label{tab:optfcc10}
   \centering
@@ -292,7 +289,7 @@ Bounds generated by including 41 reactions were mostly wider than both bounds ge
 
 Previously, an Anargyros who worked in this group produced a mapping table which mapped reactions in the kinetic model to reactions in the stoichiometric model, and included flux bounds. He focused more on mapping so he did not put specific constraints when generating the bounds, and the method by which he generated these values was not documented. I updated the mapping spreadsheet by correcting mistakes and mapping more enzymes. Table~\ref{tab:mapping} presents the mapping changes I made to correct the mistakes.
 
-\begin{table}[htbp]
+\begin{table}[htb]
   \label{tab:mapping}
   \caption{Changes to mapping pairs in the mapping table}
   \centering
@@ -313,14 +310,14 @@ Because reactions in the stoichiometric model are not identical to their kinetic
 
 For stoichiometric model reactions that are reversed with respect to their kinetic model counterparts, the values obtained from the kinetic model were negated -- i.e. $ \mathrm{Kinetic } (lb, ub) \rightarrow \mathrm{Stoichiometric } (-ub, -lb)$.
 
-\begin{figure}[htbp]
+\begin{figure}[p]
   \centering
   \includegraphics[scale=0.4]{glucoseuptake}
   \caption{Subnetwork for glucose uptake}
   \label{fig:glucoseuptake}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[p]
   \centering
   \includegraphics[scale=0.25]{ppp}
   \caption{Subnetwork for part of the pentose phosphate pathway; left - kinetic model, right - stoichiometric model}
@@ -342,7 +339,7 @@ These derived from how these relationships between flux values held regardless o
 
 I then investigated the reactions in both models that relate to glucose uptake in order to evaluate whether there is decoupling between the glucose exchange and glucose uptake reactions. This was done to give insight into the relationship between the extracellular and intracellular concentrations of glucose, which would be useful in determining the effects of a nutrient medium containing glucose on citramalate productivity (discussed in section~\ref{sec:lund}). For clarification on the similar reactions involved, I present how I mapped relevant reactions in the kinetic model to their equivalents in the stoichiometric model in table~\vref{tab:glucoseuptake}.
 
-\begin{table}
+\begin{table}[hbp]
   \caption{Mapping glucose uptake reactions}
   \label{tab:glucoseuptake}
   \centering
@@ -364,7 +361,7 @@ First, I examined the relationship between glucose feed and the fluxes through t
 
 Using the mapping rules described in section~\ref{sec:mapping}, I prepared bounds for FBA from the kinetic model flux values obtained in section~\ref{sec:bounds}. Setting the objective to maximising to flux through the citramalate flux reaction, I obtained the results in table~\ref{tab:citramalatefluxresults}.
 
-\begin{table}
+\begin{table}[htbp]
   \caption{FBA results using citramalate flux as the objective function}
   \label{tab:citramalatefluxresults}
   \centering
@@ -472,14 +469,14 @@ Additionally, generating one-reaction plots\footnote{included in the result dire
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[scale=0.5]{issues_citraflux}
+  \includegraphics[scale=0.4]{issues_citraflux}
   \caption{Relationship between PYK $V_{max}$ and flux through citramalate synthesis reaction}
   \label{fig:issues_citraflux}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[scale=0.5]{issues_igrowth}
+  \includegraphics[scale=0.4]{issues_igrowth}
   \caption{Relationship between PYK $V_{max}$ and $\mathrm{iGROWTH}'$. iGROWTH is a species created to model growth in the kinetic model.}
   \label{fig:issues_igrowth}
 \end{figure}
