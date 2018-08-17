@@ -18,7 +18,7 @@
 \usepackage{longtable}
 
 
-\author{Arin Wongprommoon\thanks{\texttt{aw729@cam.ac.uk}} \\University of Cambridge}
+\author{Arin Wongprommoon\thanks{\texttt{aw729@cam.ac.uk, bht9216@gmail.com}} \\University of Cambridge}
 \title{Optimising production of citramalate based on the \emph{E. coli} kinetic and stoichiometric models}
 \subtitle{Project report}
 \date{17 August 2018}
@@ -74,7 +74,7 @@ I investigated the relationship between the value of $V_{max}$ of each reaction 
 \begin{figure}[h]
   \centering
   \includegraphics[scale=0.5]{onereacsample}
-  \caption{Example of a one-reaction plot: the reaction PYK}
+  \caption{Example of a one-reaction plot, the reaction PYK}
   \label{fig:onereacsample}
 \end{figure}
 
@@ -92,14 +92,14 @@ Exchange reactions (XCH\_ACE, XCH\_GLC, and XCH\_P) had no bearing on productivi
     \toprule
     Reaction & $V_{max}$ (mM s\textsuperscript{-1}) & Productivity (h\textsuperscript{-1}) & Type\\
     \midrule
-    ATP\_syn & 16.804 & 0.00216 & minimum\\
-    & 23.724 & 0.00231 & maximum\\
-    CITRA\_SYN & 0.545 & 0.01660 & maximum\\
-    CYTBO & 5.124 & 0.00113 & maximum\\
-    EDA & 0.014 & 0.00112 & maximum\\
-    GDH & 4.569 & 0.00149 & maximum\\
-    MQO & 1.597 & 0.00098 & minimum\\
-    PFK & 0.145 & 0.00113 & maximum\\
+    ATP\_syn & 16.804 & 0.00216 & local minimum\\
+    & 23.724 & 0.00231 & local maximum\\
+    CITRA\_SYN & 0.545 & 0.01660 & local maximum\\
+    CYTBO & 5.124 & 0.00113 & local maximum\\
+    EDA & 0.014 & 0.00112 & local maximum\\
+    GDH & 4.569 & 0.00149 & local maximum\\
+    MQO & 1.597 & 0.00098 & local minimum\\
+    PFK & 0.145 & 0.00113 & local maximum\\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -383,7 +383,7 @@ I then looped through all 2,585 reactions in the stoichiometric model using each
 \section{Using information from the Lund medium}
 \label{sec:lund}
 
-The patent WO 2015/022496~\cite{eastham_process_2015} describes a fermentation medium on p.79, for \emph{E. coli} BW25113 $\Delta$pflB$\Delta$ldhA transformed with pBAD24-cimA to optimise production of (\emph{R})-citramalic acid:
+The patent WO 2015/022496~\cite{eastham_process_2015} describes a fermentation medium on p.79, for \emph{E. coli} BW25113 $\Delta$\emph{pflB}$\Delta$\emph{ldhA} transformed with pBAD24-\emph{cimA} to optimise production of (\emph{R})-citramalic acid:
 
 \begin{tabular}{lSr}
   Glucose & 11.9 & g L\textsuperscript{-1}\\
