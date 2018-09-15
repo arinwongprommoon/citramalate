@@ -8,3 +8,7 @@
 *.tex~
 *.bbl
 *.blg
+*.bib#
+*.bcf
+*.run.xml
+*.tex.bak
