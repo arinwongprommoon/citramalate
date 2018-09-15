@@ -12,6 +12,7 @@ loc = 'result/obj/Objectives_bounds-41dBoundaries_ALL.csv'
 
 modelfile = "MODEL1108160000" # DEFINE MODEL FILE HERE
 objective = 'CitraSink' # DEFINE OBJECTIVE REACTION HERE
+#objective = 'Ec_biomass_iJO1366_core_53p95M'
 
 def addCimA(model):
     """Add CimA reaction and sink for citramalate to cobra model"""
@@ -62,8 +63,10 @@ print('Cobra results before change')
 model.objective = objective
 solution = model.optimize(objective_sense='maximize')
 print('Status:', solution.status, '; Solution:', solution.objective_value)
+productivity = solution.fluxes[7]*solution.objective_value
+print('Productivity: ', productivity)
 
-### Reads CSV file listing reactions and intended lower and upper bounds
+# Reads CSV file listing reactions and intended lower and upper bounds
 with open(loc, 'rt') as fobj:
     reader = csv.reader(fobj)
     boundslist = list(reader)
@@ -72,12 +75,14 @@ with open(loc, 'rt') as fobj:
         reac = model.reactions.get_by_id(row[0])
         reac.lower_bound = float(row[1])
         reac.upper_bound = float(row[2])
-
+        
 print('Bounds changed')
 
 print('Cobra results after change')
 solution = model.optimize(objective_sense='maximize')
 print('Status:', solution.status, '; Solution:', solution.objective_value)
+productivity = solution.fluxes[7]*solution.objective_value
+print('Productivity: ', productivity)
 
 f = solution.fluxes
 output = f[f != 0]
@@ -88,3 +93,4 @@ print('Model summary.....')
 model.summary()
 print('Citramalate summary....')
 model.metabolites.citramalate_c.summary()
+
