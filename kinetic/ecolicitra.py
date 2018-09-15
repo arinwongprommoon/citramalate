@@ -151,6 +151,31 @@ class ecolicit:
         else:
             return -1e-4
             
+    def comyield(self, tol=99999):
+        """
+            Computes steady state productivity.
+            Argument:
+                tol = 'epsilon' value to check the maximum absolute value of
+                      floating species concentration among all species in the
+                      model against to determine if the system has reached
+                      steady state or not
+
+                      If the system has not reached steady state, this function
+                      will return -1e-4 instead of the productivity value.
+        """
+        selection = ["CITRA", "iGROWTH'"]
+        rr = roadrunner.RoadRunner(libsbml.writeSBMLToString(self.document))
+        rr.timeCourseSelections = selection
+        result = rr.simulate(self.time0, self.timef, self.npoints)
+        # -2: removes GROWTH and CITRA from the list because they aren't steady
+        # state anyway
+        st = max(abs(rr.model.getFloatingSpeciesConcentrationRates())[:-2])
+        if st < tol:
+            Y_PS = (result[-1,selection.index("CITRA")]*mmCITRA)/(self.getFEED()*self.timef*mmGLC)
+            return Y_PS
+        else:
+            return -1e-4
+            
     def comflux(self, tol=99999):
         """
             Computes steady state flux of citramalate synthesis reaction.

@@ -14,3 +14,6 @@ ecit.npoints = 100 # Number of points to be computed in the simulation
 
 wildprod = ecit.comproducti()
 print("Productivity (wild type): ", wildprod, " h-1")
+
+y = ecit.comyield()
+print("Citramalate yield (wild type): ", y, " (dimensionless)")
