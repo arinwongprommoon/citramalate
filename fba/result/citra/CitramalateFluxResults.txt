@@ -93,3 +93,13 @@ CONSUMING REACTIONS -- (R)-citramalate (citrama...)
 Flux through growth....
 0.0
 
+
+CHANGE PPP MAPPING
+(2018-09-20)
+
+Anargyros: 0.30666662241994436
+1d: 0.25992918161637185
+8d: 0.19246513961768158
+41d: 0.29219423285800805
+
+Yeah... nothing really changes.
