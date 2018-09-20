@@ -10,7 +10,7 @@
 \author{Arin Wongprommoon}
 \title{New mapping}
 %\subtitle{}
-\date{13 August 2018}
+\date{20 September 2018}
 
 \begin{document}
 
@@ -19,7 +19,9 @@
 %\tableofcontents
 
 %\begin{abstract}
- Previously, an Anargyros who worked with Dr Jorge J\'ulvez at the Cambridge Systems Biology Centre produced a mapping table which mapped reactions in a kinetic model in \emph{E. coli}~\cite{millard_metabolic_2017} to corresponding reactions in a stoichiometric model~\cite{orth_comprehensive_2011}. I provide an updated version of the mapping spreadsheet, correcting mistakes and mapping more enzymes. Here I detail the changes and the rationale behind them.
+Previously, an Anargyros who worked with Dr Jorge J\'ulvez at the Cambridge Systems Biology Centre produced a mapping table which mapped reactions in a kinetic model in \emph{E. coli}~\cite{millard_metabolic_2017} to corresponding reactions in a stoichiometric model~\cite{orth_comprehensive_2011}. I provide an updated version of the mapping spreadsheet, correcting mistakes and mapping more enzymes. Here I detail the changes and the rationale behind them.
+
+This version of the document includes a change in a method to determine the mapping for reactions in the pentose phosphate pathway, and thus replaces an earlier version dated 13 August 2018.
 %\end{abstract}
 
 \section{Re-mapping}
@@ -41,15 +43,17 @@ To correct mistakes, I changed mapping pairs as follows:
 
 Furthermore, I changed the relationships between some stoichiometric model enzymes and the kinetic model enzymes they are mapped to. Only the change to glucose feed affects the flux bounds as it corrects the statement that the stoichiometric model version is identical to the kinetic model version -- actually, the two versions are reversed with respect to each other. As a result, to obtain the flux bounds for the stoichiometric model, one must negate the values obtained from the kinetic model -- i.e. $(lb, ub) \rightarrow (-ub, -lb)$. In all the other cases, I specified that the reaction is irreversible in the stoichiometric model, but reversible in the kinetic model.
 
-Anargyros provided limited flux bound information for the glucose uptake reactions (PTS\_0, PTS\_1, PTS\_2, PTS\_3, PTS\_4) and the pentose pathway reactions X5P\_GAP\_TKT, F6P\_E4P\_TKT, S7P\_R5P\_TKT, F6P\_GAP\_TAL, and S7P\_E4P\_TAL, because these reactions do not have equivalents in the stoichiometric model that would allow easy one-to-one mapping. After investigating flux values by simulation experiments, I devised the following solution, which is applied in newmapper.ods:
+Anargyros provided limited flux bound information for the glucose uptake reactions (PTS\_0, PTS\_1, PTS\_2, PTS\_3, PTS\_4) and the pentose pathway reactions X5P\_GAP\_TKT, F6P\_E4P\_TKT, S7P\_R5P\_TKT, F6P\_GAP\_TAL, and S7P\_E4P\_TAL, because these reactions do not have equivalents in the stoichiometric model that would allow easy one-to-one mapping. After inspecting the influx and outflux reactions for each metabolite (X5P, GAP, R5P, S7P, F6P, and E4P) in the kinetic and the stoichiometric models, I equated the fluxes as follows:
 
 \begin{itemize}
-\item Forced the flux of Stoich.\ TALA to be equal to the flux of Kinetic S7P\_R5P\_TKT.
-\item Forced the flux of Stoich.\ TKT1 and Stoich.\ TKT2 to be equal to half of the flux of Kinetic RPE.
-\item Forced the flux of Stoich.\ GLCptspp to be equal to the flux of Stoich.\ GLCtex.
+\item Kinetic X5P\_GAP\_TKT = Stoich.\ TKT1 + Stoich.\ TKT2
+\item Kinetic F6P\_GAP\_TAL = Stoich.\ TALA
+\item Kinetic S7P\_R5P\_TKT = Stoich.\ TKT1
+\item Kinetic S7P\_E4P\_TAL = Stoich.\ TALA
+  \item Kinetic F6P\_E4P\_TKT = Stoich.\ TKT2
 \end{itemize}
 
-These derive from observations that these relationships between flux values hold regardless of the initial conditions.
+These relationships are implemented in newmapper.ods
 
 \section{Making the table more informative}
 \label{sec:moreinformative}
