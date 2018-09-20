@@ -21,7 +21,7 @@
 \author{Arin Wongprommoon\thanks{\texttt{aw729@cam.ac.uk, bht9216@gmail.com}} \\University of Cambridge}
 \title{Optimising production of citramalate based on the \emph{E. coli} kinetic and stoichiometric models}
 \subtitle{Project report}
-\date{17 August 2018}
+\date{20 September 2018}
 
 \begin{document}
 
@@ -34,7 +34,7 @@
   
   This project used modelling approaches to find conditions that maximise the production of citramalate. The kinetic model described by Millard \emph{et al.}~\cite{millard_metabolic_2017} and the stoichiometric model described by Orth \emph{et al.}~\cite{orth_comprehensive_2011}, both for \emph{E. coli} metabolism, were extended by adding a reaction that produced citramalate from acetyl coenzyme A and pyruvate. \emph{E. coli} was chosen as the model organism as its metabolism is very well characterised in the literature. The project employed Python and libraries specific to genetic algorithms, modelling, and manipulating information presented in SBML (systems biology markup language).
   
-  First, the effect of $V_{max}$ values of reactions in the kinetic model on productivity of citramalate was investigated. This parameter was chosen as it can be easily tested \emph{in vivo} by relying on the principle that $V_{max}$ is proportional to enzyme concentration. The differential evolution genetic algorthim was then employed to compute the set of $V_{max}$ values of reactions that optimises the production of citramalate, assuming Michaelis-Menten kinetics. In the second part of the project, information from the kinetic model was used to enrich the stoichiometric model. The possible values of fluxes through each reaction were used to set the bounds for each reaction in the stoichiometric model. Flux balance analysis (FBA) was then performed to evaluate the highest possible flux through the citramalate-producing reaction as a proxy for citramalate productivity. Finally, composition of the Lund medium~\cite{eastham_process_2015} was studied in an attempt to create bounds for relevant uptake reactions.
+  First, the effect of $V_{max}$ values of reactions in the kinetic model on productivity of citramalate was investigated. This parameter was chosen as it can be easily tested \emph{in vivo} by relying on the principle that $V_{max}$ is proportional to enzyme concentration. The differential evolution genetic algorithm was then employed to compute the set of $V_{max}$ values of reactions that optimises the production of citramalate, assuming Michaelis-Menten kinetics. In the second part of the project, information from the kinetic model was used to enrich the stoichiometric model. The possible values of fluxes through each reaction were used to set the bounds for each reaction in the stoichiometric model. Flux balance analysis (FBA) was then performed to evaluate the highest possible flux through the citramalate-producing reaction as a proxy for citramalate productivity. Finally, composition of the Lund medium~\cite{eastham_process_2015} was studied in an attempt to create bounds for relevant uptake reactions.
   
   The project took place at the Cambridge Systems Biology Centre, Department of Biochemistry, in Prof Steve Oliver's group. Research associate Dr Jorge J\'ulvez supervised me throughout the project. The project was entirely computational, and ran from 25 June 2018 to 17 August 2018.
 \end{abstract}
@@ -104,7 +104,7 @@ Exchange reactions (XCH\_ACE, XCH\_GLC, and XCH\_P) had no bearing on productivi
   \end{tabular}
 \end{table}
 
-In addition, I also extracted a list of reactions arranged by descending order of flux control coefficent (FCC) from the Millard \emph{et al.} paper, and used it alongside the one-reaction list in later parts of the project.
+In addition, I also extracted a list of reactions arranged by descending order of flux control coefficient (FCC) from the Millard \emph{et al.} paper, and used it alongside the one-reaction list in later parts of the project.
 
 \section{Varying $V_{max}$ values of two reactions at a time}
 \label{sec:couples}
@@ -324,15 +324,15 @@ For stoichiometric model reactions that are reversed with respect to their kinet
   \label{fig:ppp}
 \end{figure}
 
-Glucose uptake reactions (PTS\_0, PTS\_1, PTS\_2, PTS\_3, PTS\_4) and the pentose phosphate pathway reactions X5P\-\_GAP\-\_TKT, F6P\-\_E4P\-\_TKT, S7P\-\_R5P\-\_TKT, F6P\-\_GAP\-\_TAL, and S7P\-\_E4P\-\_TAL each form different sub-network structures in the kinetic model compared to the stoichiometric model, and therefore do not allow one-to-one mapping. Figures~\ref{fig:glucoseuptake} and~\vref{fig:ppp} show the structures in the petri net format~\cite{gilbert_unifying_2007, murata_petri_1989}. After investigating the relationship between flux values in both models by conducting simulations, I devised the following solution (applied in \texttt{fba/newmapper.ods}).
+Glucose uptake reactions (PTS\_0, PTS\_1, PTS\_2, PTS\_3, PTS\_4) and the pentose phosphate pathway reactions X5P\-\_GAP\-\_TKT, F6P\-\_E4P\-\_TKT, S7P\-\_R5P\-\_TKT, F6P\-\_GAP\-\_TAL, and S7P\-\_E4P\-\_TAL each form different sub-network structures in the kinetic model compared to the stoichiometric model, and therefore do not allow one-to-one mapping. Figures~\ref{fig:glucoseuptake} and~\vref{fig:ppp} show the structures in the Petri net format~\cite{gilbert_unifying_2007, murata_petri_1989}. After inspecting the influx and outflux reactions for each metabolite (X5P, GAP, R5P, S7P, F6P, and E4P) in the kinetic and the stoichiometric models, I equated the fluxes as follows. (applied in \texttt{fba/newmapper.ods})
 
 \begin{itemize}
-\item Force the flux of Stoich TALA to be equal to the flux of Kinetic S7P\_R5P\_TKT.
-\item Force the flux of Stoich TKT1 and Stoich TKT2 to be equal to half of the flux of Kinetic RPE.
-\item Force the flux of Stoich GLCptspp to be equal to the flux of Stoich GLCtex.
+\item Kinetic X5P\_GAP\_TKT = Stoich.\ TKT1 + Stoich.\ TKT2
+\item Kinetic F6P\_GAP\_TAL = Stoich.\ TALA
+\item Kinetic S7P\_R5P\_TKT = Stoich.\ TKT1
+\item Kinetic S7P\_E4P\_TAL = Stoich.\ TALA
+  \item Kinetic F6P\_E4P\_TKT = Stoich.\ TKT2
 \end{itemize}
-
-These derived from how these relationships between flux values held regardless of the initial conditions.
 
 \section{Investigating glucose uptake}
 \label{sec:glucoseuptake}
@@ -378,7 +378,7 @@ Using the mapping rules described in section~\ref{sec:mapping}, I prepared bound
   \end{tabular}
 \end{table}
 
-I then looped through all 2,585 reactions in the stoichiometric model using each as the objective function. Using the bounds obtained from including 41 reactions in differential evolution, I set the script to evaluate solutions while setting the objective to either maximising or minimising flux. I used the solutions (optimal minmum and optimal maximum values) as an additional set of bounds for another round of FBA, and the solution of 0.2922 mM s\textsuperscript{-1} was returned.
+I then looped through all 2,585 reactions in the stoichiometric model using each as the objective function. Using the bounds obtained from including 41 reactions in differential evolution, I set the script to evaluate solutions while setting the objective to either maximising or minimising flux. I used the solutions (optimal minimum and optimal maximum values) as an additional set of bounds for another round of FBA, and the solution of 0.2922 mM s\textsuperscript{-1} was returned.
 
 \section{Using information from the Lund medium}
 \label{sec:lund}
@@ -426,9 +426,9 @@ This medium is referred to as the `Lund medium' in this project. Each chemical s
 
 To conform to the exchange reactions defined in the stoichiometric model, \ce{HPO4^{2-}} and \ce{H2PO4^-} were merged into one entry representing inorganic phosphates.
 
-I then specifed the maximum rates of exchange of these species by specifying lower bounds for exchange reactions in the stoichiometric model. Exchange reactions for all the above species are present in the stoichiometric model, except for EDTA. I fixed the bound for glucose exchange to -0.23, -0.68, or -10.0, and fixed the bounds for other reactions so that the ratios between the chemical species were consistent. These bounds were added to the set of bounds found in section~\ref{sec:bounds}, in which 41 enzymes were included in differential evolution. With all the glucose exchange bound values described, only the glucose and citrate exchange reactions had non-zero flux values in the optimal solution. When the exchange reactions for the chemical species present in the Lund model were unbounded, glucose exchange was -11.13 and citrate exchange was -1.20, while flux though the citramalate synthesis reaction was found to be 1.1692 mM s\textsuperscript{-1}.
+I then specified the maximum rates of exchange of these species by specifying lower bounds for exchange reactions in the stoichiometric model. Exchange reactions for all the above species are present in the stoichiometric model, except for EDTA. I fixed the bound for glucose exchange to -0.23 or -10.0, and fixed the bounds for other reactions so that the ratios between the chemical species were consistent. These bounds were added to the set of bounds found in section~\ref{sec:bounds}, in which 41 enzymes were included in differential evolution. With all the glucose exchange bound values described, only the glucose and citrate exchange reactions had non-zero flux values in the optimal solution. When the exchange reactions for the chemical species present in the Lund model were unbounded, glucose exchange was -11.13 and citrate exchange was -1.20, while flux though the citramalate synthesis reaction was found to be 1.1692 mM s\textsuperscript{-1}.
 
-To use the concentrations of the chemical species present in the Lund medium to set the bounds of exchange reactions, rather than using the ratios alone, additional infomation is needed. Given:
+To use the concentrations of the chemical species present in the Lund medium to set the bounds of exchange reactions, rather than using the ratios alone, additional information is needed. Given:
 
 \begin{itemize}
 \item a concentration of a chemical species $[X_{i}]$
