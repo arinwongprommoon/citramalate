@@ -14,7 +14,7 @@ fileloc = 'boundaries_citra/'+boundariesfile # DIRECTORY
 modelfile = "MODEL1108160000" # DEFINE MODEL FILE HERE
 
  # DEFINE OBJECTIVE SENSE HERE 'minimize' or 'maximize'
-objective_sense = 'minimize'
+objective_sense = 'maximize'
 
 def addCimA(model):
     """Add CimA reaction and sink for citramalate to cobra model"""
