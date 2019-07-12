@@ -1,0 +1,69 @@
+StochReacID,Relationship
+EX_glc_LPAREN_e_RPAREN_,reversed
+EX_ac_LPAREN_e_RPAREN_,identical
+GLCtex,identical
+PItex,identical
+ACt2rpp,plus small chemical species
+ACtex,reversed
+GLCptspp,Sub-network different structure
+9,Sub-network different structure
+10,Sub-network different structure
+11,Sub-network different structure
+GLCptspp,Sub-network different structure
+PIt2rpp,identical
+PGI,identical
+PFK,identical
+FBP,plus small chemical species
+FBA,identical
+TPI,identical
+GAPD,plus small chemical species
+PGK,reversed
+PGM,reversed
+ENO,plus small chemical species
+PYK,plus small chemical species
+PPS,plus small chemical species different reversibility
+PDH,acid hydrolysis different reversibility
+G6PDH2r,plus small chemical species
+PGL,different reversibility
+28,absent
+GND,acid hydrolysis 
+RPE,identical
+RPI,reversed
+32,Sub-network different structure
+TALA,Sub-network different structure
+TKT1,Sub-network different structure
+TKT2,Sub-network different structure
+TALA,Sub-network different structure
+EDD,plus small chemical species different reversibility
+EDA,identical
+PPC,acid hydrolysis different reversibility
+PPCK,acid hydrolysis different reversibility
+ME1,acid hydrolysis 
+CS,plus small chemical species different reversibility
+ACONTa,plus small chemical species
+ACONTb,plus small chemical species
+ICDHyr,acid hydrolysis 
+46,absent
+47,absent
+AKGDH,acid hydrolysis 
+SUCOAS,reversed
+SUCDi,Sub-network different structure
+FUM,plus small chemical species
+MDH2,identical
+MDH,reversed
+ICL,different reversibility
+MALS,different reversibility
+PTAr,identical
+ACKr,reversed
+ACS,identical
+NADH16pp,plus small chemical species
+NADH5,plus small chemical species
+SUCDi,Sub-network different structure
+CYTBO3_4pp,different stoichiometry
+ATPS4rpp,plus small chemical species
+NADTRHD,different reversibility
+ADK1,identical
+ATPM,plus small chemical species
+ADNCYC,identical
+PDE4,plus small chemical species
+Ec_biomass_iJO1366_WT_53p95M,different
