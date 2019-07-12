@@ -1,0 +1,174 @@
+2019-07-12
+
+Analysis done on Objectives_bounds-41dBoundaries_ALL.csv (via the derivative file Objectives_bounds-41dBoundaries_ALL_ANAL.csv).  This file is from an `objective exercise', i.e. using all reactions as objective functions in turn to find out the lower and upper bounds in FBA.
+
+Mean value of UpperBound - LowerBound
+
+    30.56086
+    
+Standard deviation of UpperBound - LowerBound
+
+    175.2825
+    
+Summary of UpperBound - LowerBound
+
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+   0.0000    0.0000    0.0715   30.5600    0.8302 2000.0000 
+
+    The histogram isn't terribly informative.
+    
+Number of reactions with UpperBound = LowerBound
+    (Used sum(abs(numbers - x) < 1e-6) or variations because the values are floating point)
+    
+    Epsilon = 1e-6: 912 (this epsilon is consistent with elsewhere in the project)
+    Epsilon = 1e-8: 890
+    Purely zero: 771
+    
+Number of reactions with UpperBound = LowerBound = 0
+    (same logic)
+    
+    Epsilon = 1e-6: 911
+    Episilon = 1e-8: 889
+    Purely zero: 770
+    
+    The one reaction that makes the difference is EX_glc_LPAREN_e_RPAREN_ with LowerBound = UpperBound = -0.23
+    
+Number of reversible reactions
+
+    236
+    
+Number of reactions that are reversible in the SBML model but LowerBound >= 0 or UpperBound <= 0 (i.e. not actually reversible), using a tolerance of 1e-6
+
+    130, and they are:
+    
+                   Reaction    LowerBound   UpperBound
+4                   DM_AMOB -9.717535e-15 1.330858e-08
+5                 DM_MTHTHF -1.633344e-13 6.085743e-02
+36   EX_ac_LPAREN_e_RPAREN_ -1.350000e-15 3.120000e-11
+252  EX_o2_LPAREN_e_RPAREN_ -2.513800e+02 3.422649e-13
+433                  3OAR60 -5.599749e-29 2.026450e-01
+434                  3OAR80 -5.599749e-29 2.026450e-01
+437                 3OAS121 -3.304997e-29 3.688982e-01
+441                 3OAS161 -3.944305e-31 6.471832e-01
+471                  AACPS8 -1.262177e-29 3.349776e+00
+474                  AADDGT -1.577722e-30 1.744789e-02
+499                  ACCOAL -8.271806e-25 1.000000e+03
+506                  ACGAMT -7.018380e-25 1.744789e-02
+512                    ACKr -7.028115e-02 4.270616e-16
+513                    ACLS -3.281675e-17 2.300000e-01
+530                 ACOAD8f -3.344772e-19 6.471832e-01
+533           ACOLIPAabctex -6.937757e-30 4.850000e-03
+537                  ACONTb -8.480867e-16 3.020982e-01
+538                   ACOTA -9.570277e-02 2.581434e-13
+547                     ACS -1.978765e-12 9.570277e-02
+550                 ACt2rpp -3.120000e-11 1.350000e-15
+552                   ACtex -3.120000e-11 1.350000e-15
+563                  ADNCYC -1.870000e-32 8.801932e-03
+605                  AICART -5.551115e-17 3.435845e-01
+606                   AIRC2 -5.551115e-17 3.435460e-01
+608                   AKGDH -1.060000e-12 2.160645e-01
+613                 ALAALAr -1.799727e-29 3.349776e+00
+616                    ALAR -2.530552e-17 2.255038e+00
+635                 ALLTAMH -8.907662e-14 3.435460e-01
+636                   ALLTN -8.907662e-14 3.435460e-01
+658                  AMPMS2 -1.741711e-15 4.666146e-06
+663                ANHGMtex -6.467265e-02 1.611316e-13
+878                      CS -2.603711e-12 3.457865e-01
+879                    CSND -9.240491e-16 1.116592e+00
+916              CYTBO3_4pp -6.845298e-13 1.039627e+00
+956                    DBTS -1.136868e-13 4.184886e-08
+969                    DDPA -2.423717e-13 7.148699e-02
+988                    DHFR -1.830378e-13 2.626277e-01
+1003               DHPTDCs2 -1.521707e-14 6.085743e-02
+1007                   DHQS -5.525401e-15 7.148699e-02
+1031                 DPCOAK -8.935585e-14 1.205247e-05
+1032                    DPR -8.935585e-14 1.205247e-05
+1094                    EDA -2.469504e-23 1.530294e-01
+1095                    EDD -2.469504e-23 1.530294e-01
+1102                    ENO -5.596824e-19 4.581898e-01
+1151                    FBA -1.130472e-22 2.285933e-01
+1153                    FBP -1.100000e-24 7.008347e-03
+1211                 FESD1s -7.709355e-17 1.263019e+00
+1245                    FUM -1.737543e-12 2.927397e-01
+1267                  G3PD2 -2.378664e+00 2.958228e-31
+1283                G6PDH2r -9.881266e-22 2.202250e-01
+1315                   GAPD -1.367060e-14 4.579513e-01
+1326                 GF6PTA -2.359224e-16 3.349776e+00
+1356                GLCtexi -1.800000e-09 2.294266e-01
+1371                 GLUPRT -1.035547e-15 3.435460e-01
+1423                    GND -8.185207e-07 2.019709e-01
+1503               HEXt2rpp -3.379885e+00 9.327776e-13
+1547                I4FE4ST -1.105517e-22 5.252000e-06
+1548                 ICDHyr -2.397935e-12 2.178543e-01
+1551                 ICHORT -7.776154e-22 7.148699e-02
+1552                    ICL -8.014096e-13 2.615307e-01
+1566                   IMPC -3.435845e-01 2.665293e-18
+1584                   IPPS -8.044946e-18 1.778805e-01
+1589                  KARA1 -2.300000e-01 4.603183e-17
+1593                 KDOCT2 -1.386029e-27 1.940000e-02
+1594                  KDOPP -1.386029e-27 1.940000e-02
+1595                  KDOPS -1.386029e-27 1.940000e-02
+1627               LEUt2rpp -3.431088e+00 1.687019e-16
+1628                 LEUtex -1.778805e-01 1.687019e-16
+1635              LIPAabcpp -4.163336e-17 9.685410e-03
+1636             LIPAabctex -4.163336e-17 9.685410e-03
+1641                 LPADSS -7.426540e-28 9.700000e-03
+1642         LPLIPAL1A120pp -8.968310e-44 5.606807e-01
+1651         LPLIPAL1E141pp -2.076804e-29 4.172955e-01
+1663           LPLIPAL2A120 -1.020658e-16 8.301771e-01
+1714                   MALS -3.678427e-16 3.204812e-01
+1758                    MDH -2.255038e+00 4.532913e-15
+1759                   MDH2 -2.329864e-16 2.760000e+00
+1761                    ME1 -4.440000e-16 5.235072e-01
+1776                   METS -3.898253e-11 4.785139e-02
+1800              MLDCP3App -7.237267e-15 5.355737e-02
+1836                  MOHMT -5.551115e-17 1.205247e-05
+1859               NADH16pp -9.861507e-14 6.272523e-01
+1862                  NADH5 -1.054794e-11 9.190000e-01
+1871                NADTRHD -3.141284e-08 5.676432e-01
+1885                 NH4tex -5.465381e-13 1.211653e+00
+1886                 NH4tpp -1.573083e-12 3.444038e+00
+1929                   NTD4 -8.326673e-17 3.349776e+00
+1975                  O2tex -3.422639e-13 2.513800e+02
+1976                  O2tpp -3.422664e-13 1.380000e+00
+1988                 OHPBAT -1.875753e-34 4.666148e-06
+1991                  OMCDC -3.789619e-31 1.778805e-01
+1994                  OMPDC -2.782465e-31 4.182179e-01
+1998                 OPHBDC -3.455912e-31 4.666148e-06
+2001               OPMEACPD -3.994288e-28 4.184886e-08
+2002               OPMEACPR -3.994288e-28 4.184886e-08
+2003               OPMEACPS -3.994288e-28 4.184886e-08
+2045                   PDE1 -1.870000e-32 8.801932e-03
+2047                    PDH -1.200323e-13 6.274311e-01
+2064                    PFK -2.715157e-09 2.289434e-01
+2078                    PGK -4.579513e-01 2.891716e-17
+2079                    PGL -9.881266e-22 2.202250e-01
+2081                    PGM -4.581898e-01 1.999131e-19
+2105                PGSA140 -1.744430e-24 6.728169e-01
+2106                PGSA141 -6.846709e-30 6.728169e-01
+2158           PLIPA2G141pp -3.596231e-29 4.205105e-01
+2162           PLIPA2G181pp -1.063421e-29 4.205105e-01
+2167                   PNTK -2.775558e-17 1.205247e-05
+2181                    PPC -8.350000e-20 1.311436e+00
+2198                    PPS -9.420000e-17 5.840000e-04
+2240                   PTAr -4.270616e-16 7.028115e-02
+2253                  PUNP6 -2.528260e-24 5.755059e-01
+2256                 PYDAMK -1.632857e-24 3.349776e+00
+2266                    PYK -7.088566e-19 4.644139e-01
+2313                    RPI -6.085696e-02 4.708380e-07
+2316                S2FE2SS -1.600000e-08 5.751837e-06
+2317               S2FE2SS2 -1.654361e-24 5.252000e-06
+2320                S4FE4ST -4.235165e-22 5.252000e-06
+2323                  SADT2 -1.973850e-18 4.607264e-01
+2385                  SUCDi -5.210359e-14 2.876711e-01
+2388                 SUCOAS -2.631901e-01 5.280932e-09
+2442                   TKT1 -4.708384e-07 6.085696e-02
+2451                  TMDPP -6.787280e-10 2.626277e-01
+2454                   TMPK -7.283261e-14 3.349776e+00
+2456                    TPI -3.001983e-22 2.294878e-01
+2497                UACMAMO -2.352797e-29 1.744789e-02
+2498                  UAG2E -2.352797e-29 1.744789e-02
+2499                 UAGAAT -3.155444e-30 1.940000e-02
+2537                 UPPDC1 -5.897713e-17 2.723178e-02
+2544                UREAtex -9.570277e-02 4.846761e-27
+2545                UREAtpp -9.570277e-02 4.846761e-27
