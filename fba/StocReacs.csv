@@ -1,69 +1,69 @@
-StochReacID,Relationship
-EX_glc_LPAREN_e_RPAREN_,reversed
-EX_ac_LPAREN_e_RPAREN_,identical
-GLCtex,identical
-PItex,identical
-ACt2rpp,plus small chemical species
-ACtex,reversed
-GLCptspp,Sub-network different structure
-9,Sub-network different structure
-10,Sub-network different structure
-11,Sub-network different structure
-GLCptspp,Sub-network different structure
-PIt2rpp,identical
-PGI,identical
-PFK,identical
-FBP,plus small chemical species
-FBA,identical
-TPI,identical
-GAPD,plus small chemical species
-PGK,reversed
-PGM,reversed
-ENO,plus small chemical species
-PYK,plus small chemical species
-PPS,plus small chemical species different reversibility
-PDH,acid hydrolysis different reversibility
-G6PDH2r,plus small chemical species
-PGL,different reversibility
-28,absent
-GND,acid hydrolysis 
-RPE,identical
-RPI,reversed
-32,Sub-network different structure
-TALA,Sub-network different structure
-TKT1,Sub-network different structure
-TKT2,Sub-network different structure
-TALA,Sub-network different structure
-EDD,plus small chemical species different reversibility
-EDA,identical
-PPC,acid hydrolysis different reversibility
-PPCK,acid hydrolysis different reversibility
-ME1,acid hydrolysis 
-CS,plus small chemical species different reversibility
-ACONTa,plus small chemical species
-ACONTb,plus small chemical species
-ICDHyr,acid hydrolysis 
-46,absent
-47,absent
-AKGDH,acid hydrolysis 
-SUCOAS,reversed
-SUCDi,Sub-network different structure
-FUM,plus small chemical species
-MDH2,identical
-MDH,reversed
-ICL,different reversibility
-MALS,different reversibility
-PTAr,identical
-ACKr,reversed
-ACS,identical
-NADH16pp,plus small chemical species
-NADH5,plus small chemical species
-SUCDi,Sub-network different structure
-CYTBO3_4pp,different stoichiometry
-ATPS4rpp,plus small chemical species
-NADTRHD,different reversibility
-ADK1,identical
-ATPM,plus small chemical species
-ADNCYC,identical
-PDE4,plus small chemical species
-Ec_biomass_iJO1366_WT_53p95M,different
+Reaction,Relationship,IsReversible
+EX_glc_LPAREN_e_RPAREN_,reversed,1
+EX_ac_LPAREN_e_RPAREN_,identical,1
+GLCtex,identical,1
+PItex,identical,1
+ACt2rpp,plus small chemical species,1
+ACtex,reversed,1
+GLCptspp,Sub-network different structure,0
+9,Sub-network different structure,0
+10,Sub-network different structure,0
+11,Sub-network different structure,0
+GLCptspp,Sub-network different structure,0
+PIt2rpp,identical,1
+PGI,identical,1
+PFK,identical,0
+FBP,plus small chemical species,0
+FBA,identical,1
+TPI,identical,1
+GAPD,plus small chemical species,1
+PGK,reversed,1
+PGM,reversed,1
+ENO,plus small chemical species,1
+PYK,plus small chemical species,0
+PPS,plus small chemical species different reversibility,0
+PDH,acid hydrolysis different reversibility,0
+G6PDH2r,plus small chemical species,1
+PGL,different reversibility,0
+28,absent,0
+GND,acid hydrolysis ,0
+RPE,identical,1
+RPI,reversed,1
+32,Sub-network different structure,0
+TALA,Sub-network different structure,1
+TKT1,Sub-network different structure,1
+TKT2,Sub-network different structure,1
+TALA,Sub-network different structure,0
+EDD,plus small chemical species different reversibility,0
+EDA,identical,0
+PPC,acid hydrolysis different reversibility,0
+PPCK,acid hydrolysis different reversibility,0
+ME1,acid hydrolysis ,0
+CS,plus small chemical species different reversibility,0
+ACONTa,plus small chemical species,1
+ACONTb,plus small chemical species,1
+ICDHyr,acid hydrolysis ,1
+46,absent,0
+47,absent,0
+AKGDH,acid hydrolysis ,0
+SUCOAS,reversed,1
+SUCDi,Sub-network different structure,0
+FUM,plus small chemical species,1
+MDH2,identical,0
+MDH,reversed,1
+ICL,different reversibility,0
+MALS,different reversibility,0
+PTAr,identical,1
+ACKr,reversed,1
+ACS,identical,0
+NADH16pp,plus small chemical species,0
+NADH5,plus small chemical species,0
+SUCDi,Sub-network different structure,0
+CYTBO3_4pp,different stoichiometry,0
+ATPS4rpp,plus small chemical species,1
+NADTRHD,different reversibility,0
+ADK1,identical,1
+ATPM,plus small chemical species,0
+ADNCYC,identical,0
+PDE4,plus small chemical species,0
+Ec_biomass_iJO1366_WT_53p95M,different,0
