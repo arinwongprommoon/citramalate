@@ -15,6 +15,9 @@ modelfile = "MODEL1108160000" # DEFINE MODEL FILE HERE
 #objective = 'CitraSink' # DEFINE OBJECTIVE REACTION HERE
 objective = 'Ec_biomass_iJO1366_core_53p95M'
 
+# DEFINE INTERVAL FOR FVA
+fvainterval = 0.95
+
 def addCimA(model):
     """Add CimA reaction and sink for citramalate to cobra model"""
     reaccima = Reaction('CIMA')
@@ -89,6 +92,8 @@ print('Output to CSV')
 print('Model summary.....')
 model.summary()
 print('Model summary FVA.....')
-model.summary(fva=0.95)
+model.summary(fva=fvainterval)
+flux_variability_analysis(model, model.reactions).to_csv('FVAOutput.csv')
+print('FVA Output to CSV')
 print('Citramalate summary....')
 model.metabolites.citramalate_c.summary()
