@@ -172,3 +172,46 @@ Number of reactions that are reversible in the SBML model but LowerBound >= 0 or
 2537                 UPPDC1 -5.897713e-17 2.723178e-02
 2544                UREAtex -9.570277e-02 4.846761e-27
 2545                UREAtpp -9.570277e-02 4.846761e-27
+
+2019-07-14
+
+Analysed the same file to find out how many reactions are forced to be active.
+I judge this based on whether the lower bounds have values greater than zero (with the tolerance value applied).
+
+There are only two such reactions:
+1. ATPS4rpp (ATP_SYN in the kinetic model): LB = 5.734319e-04, UB = 2.300000e-01
+2. GLCtex (XCH_GLC in the kinetic model): LB = 5.734319e-04, UB = 2.300000e-01
+
+All the others are forced into the negative values, and there are 281 such reactions. All of these are listed in Forced.csv and ForcedInfo.csv
+
+These 283 reactions are broken down into these categories (as specified by Orth el al, 2011):
+
+
+                  Alanine and Aspartate Metabolism                        Alternate Carbon Metabolism 
+                                                 2                                                 13 
+                             Anaplerotic Reactions                    Arginine and Proline Metabolism 
+                                                 1                                                  2 
+                        Cell Envelope Biosynthesis                                  Citric Acid Cycle 
+                                                 2                                                  3 
+        Cofactor and Prosthetic Group Biosynthesis                                  Folate Metabolism 
+                                                 2                                                  2 
+                              Glutamate Metabolism                      Glycine and Serine Metabolism 
+                                                 1                                                  3 
+                        Glycolysis/Gluconeogenesis                               Histidine Metabolism 
+                                                 4                                                  1 
+            Inorganic Ion Transport and Metabolism                          Membrane Lipid Metabolism 
+                                                 3                                                 35 
+                        Nucleotide Salvage Pathway                          Oxidative Phosphorylation 
+                                                19                                                  3 
+                         Pentose Phosphate Pathway                 Purine and Pyrimidine Biosynthesis 
+                                                 4                                                  5 
+                               Pyruvate Metabolism                    Threonine and Lysine Metabolism 
+                                                 5                                                  4 
+                         Transport, Inner Membrane                          Transport, Outer Membrane 
+                                                52                                                  4 
+                   Transport, Outer Membrane Porin Tyrosine, Tryptophan, and Phenylalanine Metabolism 
+                                                77                                                  4 
+                                        Unassigned         Valine, Leucine, and Isoleucine Metabolism 
+                                                 2                                                  6 
+                                                 
+
