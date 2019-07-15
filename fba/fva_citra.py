@@ -16,7 +16,7 @@ modelfile = "MODEL1108160000" # DEFINE MODEL FILE HERE
 objective = 'Ec_biomass_iJO1366_core_53p95M'
 
 # DEFINE INTERVAL FOR FVA
-fvainterval = 0.95
+fvainterval = 0.90
 
 def addCimA(model):
     """Add CimA reaction and sink for citramalate to cobra model"""
@@ -93,7 +93,7 @@ print('Model summary.....')
 model.summary()
 print('Model summary FVA.....')
 model.summary(fva=fvainterval)
-flux_variability_analysis(model, model.reactions).to_csv('FVAOutput.csv')
+flux_variability_analysis(model, model.reactions, loopless=False, fraction_of_optimum=fvainterval).to_csv('FVAOutput.csv')
 print('FVA Output to CSV')
 print('Citramalate summary....')
 model.metabolites.citramalate_c.summary()
