@@ -2,6 +2,9 @@
 # Uses bondaries specified in CSV file to set boundaries for FBA on the
 # stoichiometric model. Finds optimal solution (maximise sense) using
 # citramalate flux as the objective function, and prints out additional info
+
+# pFBA only makes sense with growth as the objective function (refer to theory
+# on pFBA)
 from __future__ import division, print_function
 import csv
 import cobra.test
@@ -11,8 +14,8 @@ from cobra import Reaction, Metabolite
 loc = 'boundaries_citra/41dBoundaries.csv'
 
 modelfile = "MODEL1108160000" # DEFINE MODEL FILE HERE
-objective = 'CitraSink' # DEFINE OBJECTIVE REACTION HERE
-#objective = 'Ec_biomass_iJO1366_core_53p95M'
+#objective = 'CitraSink' # DEFINE OBJECTIVE REACTION HERE
+objective = 'Ec_biomass_iJO1366_core_53p95M'
 
 def addCimA(model):
     """Add CimA reaction and sink for citramalate to cobra model"""
@@ -63,7 +66,7 @@ print('Cobra results before change')
 model.objective = objective
 solution = model.optimize(objective_sense='maximize')
 pfba_solution = cobra.flux_analysis.pfba(model)
-print('Status:', solution.status, '; FBA Solution:', solution.objective_value, '; pFBA Solution:', pfba_solution.objective_value)
+print('Status:', solution.status, '; FBA Solution:', solution.objective_value, '; pFBA Solution:', pfba_solution.fluxes[objective])
 
 ### Reads CSV file listing reactions and intended lower and upper bounds
 with open(loc, 'rt') as fobj:
@@ -80,7 +83,7 @@ print('Bounds changed')
 print('Cobra results after change')
 solution = model.optimize(objective_sense='maximize')
 pfba_solution = cobra.flux_analysis.pfba(model)
-print('Status:', solution.status, '; FBA Solution:', solution.objective_value, '; pFBA Solution:', pfba_solution.objective_value)
+print('Status:', solution.status, '; FBA Solution:', solution.objective_value, '; pFBA Solution:', pfba_solution.fluxes[objective])
 
 f = solution.fluxes
 output = f[f != 0]
