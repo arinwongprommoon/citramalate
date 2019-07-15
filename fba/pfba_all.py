@@ -70,8 +70,8 @@ with open('Objectives_pFBAdefault.csv', 'w') as fobj:
         model.objective = reaction.id
         solution = model.optimize(objective_sense=objective_sense)
         pfba_solution = cobra.flux_analysis.pfba(model)
-        print(reaction.id, '; Status:', solution.status, '; FBA Solution:', solution.objective_value, '; pFBA Solution:', pfba_solution.objective_value)
-        writer.writerow([reaction.id, solution.objective_value, pfba_solution.objective_value])
+        print(reaction.id, '; Status:', solution.status, '; FBA Solution:', solution.objective_value, '; pFBA Solution:', pfba_solution.fluxes[reaction.id])
+        writer.writerow([reaction.id, solution.objective_value, pfba_solution.fluxes[reaction.id]])
 
 ### Reads CSV file listing reactions and intended lower and upper bounds
 with open(fileloc, 'rt') as fobj:
@@ -94,4 +94,4 @@ with open(filename, 'w') as fobj:
         solution = model.optimize(objective_sense=objective_sense)
         pfba_solution = cobra.flux_analysis.pfba(model)
         #print(reaction.id, '; Status:', solution.status, '; Solution:', solution.objective_value)
-        writer.writerow([reaction.id, solution.objective_value, pfba_solution.objective_value])
+        writer.writerow([reaction.id, solution.objective_value, pfba_solution.fluxes[reaction.id]])
