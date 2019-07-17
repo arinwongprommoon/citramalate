@@ -1,0 +1,37 @@
+Plans for `Extended Report'
+
+1. Make the existing language more readable
+
+2. Expand on the existing content:
+   - Provide reason and rationale for the use of various values, reactions, etc
+   - Add more citations
+   - Expand on the introduction, make it more like an introduction to a paper
+     (this should be a slight change)
+   
+3. Add new content:
+   - Work on the Lund medium and unit conversions
+   - Work on calculating citramalate productivity
+     (reconciling with ConBioChem and Wu & Eiteman 2016)
+   - Work on analysing bounds
+   - Work on FVA and pFBA
+   
+4. Add a discussion section:
+   - Sum up findings and relate them to existing literature, e.g. 
+       - Wu & Eiteman 2016, regarding genes to be knocked out to boost
+         citramalate productivity
+       - Millard et al, regarding FCC values
+
+5. Overhaul remarks section
+   - mainly because I've managed to solve some of the issues
+   - provide rationale for why I haven't addressed some of them
+     (e.g. not using Gurobi/CPLEX because the function is convex, and thinking
+     of using flexible nets instead)
+   - provide *new* future issues
+   
+6. Add more stuff to appendix so that it can be read stand-alone
+   - mapping: incorporate the mapping report and the mapping spreadsheet
+     (somehow)
+   - more?
+   
+7. Improve abstract -- make it shorter and summarise results better
+   Notes about where the internship was should be in some extra section
