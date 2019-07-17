@@ -41,7 +41,7 @@
   \\University of Cambridge (Natural Sciences Tripos 2016-2019)
 \\University of Edinburgh (PhD Candidate 2019 --)}
 \title{Optimising production of citramalate based on the \emph{E. coli} kinetic and stoichiometric models}
-\subtitle{Project report}
+\subtitle{Extended project report}
 \date{17 July 2019}
 
 \begin{document}
@@ -65,24 +65,30 @@
 
 The project concerns two models of \emph{E. coli} metabolism: a kinetic model described by \citet{millard_metabolic_2017} and a stoichiometric model described by \citet{orth_comprehensive_2011}. The kinetic model concerns a smaller set of reactions, but it contains initial conditions -- substrate concentrations and flux through reactions -- which the stoichiometric model lacks.
 
-The kinetic model contains 68 reactions, 49 of which include $V_{max}$ as a parameter (see appendix~\ref{ap:kineticreactionlist}). Of these, 41 correspond to real enzyme-catalysed reactions. To investigate citramalate production, a 69th reaction called CITRA\_SYN was added to the model. It models the reaction:
+The kinetic model contains 68 reactions, 49 of which include $V_{max}$ as a parameter (see appendix~\ref{ap:kineticreactionlist}). Of these, 41 correspond to real enzyme-catalysed reactions.
+
+Citramalate synthesis is mediated by citramalate synthase (EC 2.3.1.182) in \emph{Methanococcus janaschii} \citep{wu_production_2016}, which catalyses the reaction:
 
 \begin{center}
   acetyl-CoA + pyruvate + \ce{H2O} $\rightarrow$ CoA-SH + \ce{H^+} + citramalate
 \end{center}
 
-with the Michaelis-Menten kinetic law
+This enzyme is not present in wild-type \emph{E. coli} strains, so in practise such strains are engineered to express the \emph{cimA} gene that encodes citramalate synthase \citep{wu_production_2016}.  To investigate citramalate production, a 69th reaction called CITRA\_SYN was added to the kinetic model to model citramalate synthesis.  In the model, this reaction has the Michaelis-Menten kinetic law:
 
 \[
   \frac{\mathrm{d}[citramalate]}{\mathrm{d}t} = 
   \frac{V_{max} \cdot [acetyl-CoA]}{[acetyl-CoA] + K_{m}}
 \]
 
-which assumes that pyruvate is saturating. $V_{max}$ is set to 4 mM s\textsuperscript{-1} and $K_{m}$ to 0.495 mM in the modified model.
+This kinetic law assumes that pyruvate is saturating. $V_{max}$ is set to 4 mM s\textsuperscript{-1} and $K_{m}$ to 0.495 mM in the modified model. These values are based on experimental values obtained in the ConBioChem project.
 
-Citramalate productivity is defined as $\mu \cdot Y_{P/S}$, where $\mu$ is the growth rate in reciprocal time units (h\textsuperscript{-1} in this project) and $Y_{P/S}$ is defined as the mass of the product (citramalate) divided by the mass of the substrate (glucose). Manipulating the SBML file required the Python library \texttt{libsbml} and running simulations employed the \texttt{roadrunner} module. The simulations were from 0 to 7,200 seconds, at which steady-state was attained for almost all conditions. Verification of steady-state conditions is discussed in subsection~\ref{ssec:steadystate}.
+Citramalate productivity is defined as $\mu \cdot Y_{P/S}$, where $\mu$ is the growth rate in reciprocal time units (h\textsuperscript{-1} in this project) and $Y_{P/S}$ is defined as the mass of the product (citramalate) divided by the mass of the substrate (glucose).
 
-The stoichiometric model contains 2,584 reactions, and I mapped 57 to their equivalents in the kinetic model (detailed in section~\ref{sec:mapping}). By default, most of these reactions are unbounded as stated in the materials and methods section of \citet{orth_comprehensive_2011}. In a similar vein to the kinetic model, a 2,585th reaction for citramalate production was added to the stoichiometric model using the \texttt{cobra} module in Python. In addition to the citramalate synthesis reaction, a sink reaction to allow citramalate to leave the system was also added. However, no kinetic parameters were added, as stoichiometric models do not contain this information.
+Manipulating the SBML file required the Python library \texttt{libsbml} and running simulations employed the \texttt{roadrunner} module. The simulations were from 0 to 7,200 seconds, at which steady-state was attained for almost all conditions. Verification of steady-state conditions is discussed in subsection~\ref{ssec:steadystate}.
+
+The stoichiometric model contains 2,584 reactions, and I mapped 57 to their equivalents in the kinetic model (detailed in section~\ref{sec:mapping}). By default, most of these reactions are unbounded as stated in the materials and methods section of \citet{orth_comprehensive_2011}.
+
+In a similar vein to the kinetic model, a 2,585th reaction for citramalate production was added to the stoichiometric model using the \texttt{cobra} module in Python. This reaction contains the same information as the reaction added to the kinetic model except for the kinetic law, which is normally absent from stoichiometric models. In addition to the citramalate synthesis reaction, a sink reaction to allow citramalate to leave the system was also added.
 
 \chapter{Investigating the kinetic model}
 \label{ch:kinetic}
