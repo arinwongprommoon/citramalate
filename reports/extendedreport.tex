@@ -93,10 +93,16 @@ In a similar vein to the kinetic model, a 2,585th reaction for citramalate produ
 \chapter{Investigating the kinetic model}
 \label{ch:kinetic}
 
-\section{Varying $V_{max}$ values of one reaction at a time}
+I investigated the kinetic model in order to determine the combination of $V_{max}$ values of reactions that would optimise citramalate productivity.
+
+\section{Varying $V_{max}$ values one reaction at a time}
 \label{sec:onereac}
 
-I investigated the relationship between the value of $V_{max}$ of each reaction in the kinetic model and the resulting citramalate productivity at steady state. I varied the $V_{max}$ values of each of the 49 reactions in the kinetic model that includes $V_{max}$ as a parameter (see appendix~\ref{ap:kineticreactionlist}) over the ranges 0.1--1.0 $V_{max}$ and 0.1--10.0 $V_{max}$, where $V_{max}$ is the wild-type $V_{max}$ for that particular reaction as specified in the SBML file. Each plot had 100 data points. Figure~\ref{fig:onereacsample} is an example of such a plot.
+The kinetic model includes 49 reactions that have $V_{max}$ as a parameter. In this section, I varied the $V_{max}$ of each reaction at a time and simulated the resulting citramalate productivity at steady state (7,200 seconds) as a function of $V_{max}$ of each reaction (figure~\ref{fig:onereacsample}).
+For reference, the wild-type citramalate productivity simulated by the model is 0.001122 h\textsuperscript{-1}.
+%% Include information that I varied the values over 0.1-10.0 somewhere, but this is less important. Include the findings from this, this is more important.
+
+%I varied the $V_{max}$ values of each of the 49 reactions in the kinetic model that includes $V_{max}$ as a parameter (see appendix~\ref{ap:kineticreactionlist}) over the ranges 0.1--1.0 $V_{max}$ and 0.1--10.0 $V_{max}$, where $V_{max}$ is the wild-type $V_{max}$ for that particular reaction as specified in the SBML file. Each plot had 100 data points. Figure~\ref{fig:onereacsample} is an example of such a plot.
 
 \begin{figure}[h]
   \centering
@@ -105,14 +111,18 @@ I investigated the relationship between the value of $V_{max}$ of each reaction 
   \label{fig:onereacsample}
 \end{figure}
 
-For some reactions, varying $V_{max}$ values had a greater effect on citramalate productivity than others. I quantified this effect based on the data points of the 0.5 -- 2.0 $V_{max}$ plots\footnote{created early in the project, not included in the final results. I only mention them here because I used information from them in later parts of the project} by taking the difference between the maximum and minimum productivities obtained over the range. This method is discussed along with potential alternatives in section~\ref{sec:issues}. Using these difference values, I ordered the reactions into a list, included in appendix~\ref{ap:onereactionlist}, which will be referred throughout this report as the `one-reaction list'.
+Some reactions exhibited greater changes in citramalate productivity as $V_{max}$ was changed. I quantified these effects based on the data points from varying $V_{max}$ values over the 0.5 -- 2.0 $V_{max}$ range: I took the difference between the maximum and minimum productivity values obtained over the range. Using these difference values, I ordered the reactions into a list I term the `one-reaction list' (appendix~\ref{ap:onereactionlist})
 
-This identified CITRA\_SYN, GLT, LPD, GROWTH, ATP\_MAINTENANCE, GDH, ATP\_SYN, ACEA, PYK, and ZWF as among the reactions that had the greatest effects. \citet{millard_metabolic_2017} listed CYTBO, ZWF, GDH, GLT, and GROWTH as the reactions found to have the largest shares of flux control. They also exert the strongest controls on concentration. These reactions are followed by LPD, ATP\_MAINTENANCE, ACEA, ATP\_SYN, and PYK.
+The one-reaction list identified CITRA\_SYN, GLT, LPD, GROWTH, ATP\_MAINTENANCE, GDH, ATP\_SYN, ACEA, PYK, and ZWF as the reactions that had the greatest effects on citramalate productivity. %[Move this to discussion or something] \citet{millard_metabolic_2017} listed CYTBO, ZWF, GDH, GLT, and GROWTH as the reactions found to have the largest shares of flux control. They also exert the strongest controls on concentration. These reactions are followed by LPD, ATP\_MAINTENANCE, ACEA, ATP\_SYN, and PYK.
 
-Exchange reactions (XCH\_ACE, XCH\_GLC, and XCH\_P) had no bearing on productivity as all the data points in their plots could be attributed to noise. Surprisingly, ACS, ACK, and PTA which directly controlled acetyl CoA levels, did not seem to have significant bearings on productivity. As expected, enzymes that have the largest shares of flux control created the plots that demonstrated the greatest changes in citramalate productivity in response to $V_{max}$ variation. However, CYTBO had less effect on productivity as would be expected by this explanation. Although PYK did not exert a lot of control over fluxes as expected by its flux control coefficient, it had a large effect on citramalate productivity. Possibly it was because the citramalate reaction used up pyruvate and because PYK is a control point in glycolysis. Some reactions exhibited inflection points in their plots, as shown in table~\ref{tab:inflection}.
+Enzymes that have the largest shares of flux control as noted by \citet{millard_metabolic_2017} showed the largest effects on citramalate productivity. However, CYTBO had less effect on productivity as would be expected by this explanation. Although PYK did not exert a lot of control over fluxes as expected by its flux control coefficient, it had a large effect on citramalate productivity. %[Move this to discussion] Possibly it was because the citramalate reaction used up pyruvate and because PYK is a control point in glycolysis.
+
+The exchange reactions (XCH\_ACE, XCH\_GLC, and XCH\_P) had no bearing on productivity as all the data points in their plots could be attributed to noise. Surprisingly the reactions that directly concern acetyl CoA, ACS, ACK, and PTA did not seem to have conspicuous bearings on productivity.
+
+Additionally, some reactions exhibited inflection points (table~\ref{tab:inflection}).
 
 \begin{table}[h]
-  \caption{Reactions with inflection points}
+  \caption{Reactions that exhibited inflection points in citramalate productivity as a function of $V_{max}$, values listed are the values at inflection points}
   \label{tab:inflection}
   \centering
   \begin{tabular}{lrrl}
@@ -131,23 +141,22 @@ Exchange reactions (XCH\_ACE, XCH\_GLC, and XCH\_P) had no bearing on productivi
   \end{tabular}
 \end{table}
 
-In addition, I also extracted a list of reactions arranged by descending order of flux control coefficient (FCC) from the Millard \emph{et al.} paper, and used it alongside the one-reaction list in later parts of the project.
+%In addition, I also extracted a list of reactions arranged by descending order of flux control coefficient (FCC) from the Millard \emph{et al.} paper, and used it alongside the one-reaction list in later parts of the project.
 
-\section{Varying $V_{max}$ values of two reactions at a time}
+\section{Varying $V_{max}$ values two reactions at a time}
 \label{sec:couples}
 
-Varying $V_{max}$ values of two reactions at a time aimed to identify pairs of reactions that had significant effects on citramalate productivity, and this could be used to identify conditions that optimised citramalate productivity. Ideally, all pairs from the 49 reactions that have $V_{max}$ as a parameter should be investigated. To save computation time and to produce only useful information, I used the eight reactions at the top of the one-reaction list: CITRA\_SYN, GLT, LPD, ATP\_MAINTENANCE, GDH, ATP\_syn, ACEA, and ZWF.
+Varying $V_{max}$ values of two reactions at a time aimed to identify pairs of reactions that had significant effects on citramalate productivity. Ideally, all possible reaction pairs should be investigated. However, I restricted this section to the eight reactions at the top of the one-reaction list: CITRA\_SYN, GLT, LPD, ATP\_MAINTENANCE, GDH, ATP\_syn, ACEA, and ZWF. This is to save computation time and to focus on the most useful output. I varied the reactions' $V_{max}$ values within 0.1--1.0 $V_{max}$ or 0.1--10.0 $V_{max}$, and plotted the resulting citramalate productivities on heatmaps (see figure~\ref{fig:heatmapsample}). %The $V_{max}$ values took 10 values in their ranges, so each heatmap had 100 data points. Because the wild-type productivity is 0.001122 h\textsuperscript{-1}, I multiplied the citramalate productivity values by 10,000 so that numbers that can be easily conceptualised are displayed on the heatmaps. In figure~\ref{fig:heatmapsample}, when the $V_{max}$ of GLT is 256.76 mM s\textsuperscript{-1} and the $V_{max}$ of ACEA is 1.83 mM s\textsuperscript{-1}, productivity is 0.00848 h\textsuperscript{-1}.
 
-I varied their $V_{max}$ values within 0.1--1.0 $V_{max}$ or 0.1--10.0 $V_{max}$, and plotted the resulting citramalate productivities on heatmaps (see figure~\ref{fig:heatmapsample}). The $V_{max}$ values took 10 values in their ranges, so each heatmap had 100 data points. The horizontal axis indicates the respective $V_{max}$ value of the first reaction in mM s\textsuperscript{-1} and the vertical axis represents the second reaction. Because the wild-type productivity is 0.001122 h\textsuperscript{-1}, I multiplied the citramalate productivity values by 10,000 so that numbers that can be easily conceptualised are displayed on the heatmaps. In figure~\ref{fig:heatmapsample}, when the $V_{max}$ of GLT is 256.76 mM s\textsuperscript{-1} and the $V_{max}$ of ACEA is 1.83 mM s\textsuperscript{-1}, productivity is 0.00848 h\textsuperscript{-1}.
-
-\begin{figure}[hbp]
+\begin{figure}[h]
   \centering
   \includegraphics[scale=0.5]{heatmapsample}
-  \caption{Example of a heatmap: GLT vs ACEA}
+  \caption{Example of a heatmap: GLT vs ACEA. The horizontal axis indicates the respective $V_{max}$ value of the first reaction in mM s\textsuperscript{-1} and the vertical axis represents the second reaction.}
   \label{fig:heatmapsample}
 \end{figure}
 
-I also used the reactions with the 10 greatest FCCs to generate heatmaps. The trends seen in most heatmaps suggested simple additive effects, and the heatmaps did not have any additional local maxima or minima, suggesting orthogonality. Plots that involved ATP\_MAINTENANCE exhibited strange behaviour, more evident in higher-resolution heatmaps like figure~\ref{fig:atpmaintenanceheatmap}. This can be attributed to the data between 0.20 and 0.25 $V_{max}$ in ATP\_MAINTENANCE's one-reaction plot (figure~\ref{fig:atpmaintenanceonereac}). Dr J\'ulvez suggested that the model was not configured for such small values of $V_{max}$.
+% I also used the reactions with the 10 greatest FCCs to generate heatmaps.
+The trends seen in most heatmaps suggested simple additive effects, and the heatmaps did not have any additional local maxima or minima, suggesting orthogonality. Plots that involved ATP\_MAINTENANCE exhibited strange behaviour, evident in higher-resolution heatmaps (figure~\ref{fig:atpmaintenanceheatmap}). A likely explanation is that the kinetic model was not configured well for small values of $V_{max}$, particularly between 0.20 and 0.25 $V_{max}$ for this reaction (figure~\ref{fig:atpmaintenanceonereac}).
 
 \begin{figure}[hp]
   \centering
@@ -165,35 +174,48 @@ I also used the reactions with the 10 greatest FCCs to generate heatmaps. The tr
 
 The results are only valid if the system has reached steady state. Steady state is achieved if at the end of simulation time, the greatest rate of change of concentration among the species in the system is less than a small threshold value. In other words:
 
-\[
+\begin{equation}
   \max_{X_{i}} \left | \frac{\mathrm{d}[X_{i}]}{\mathrm{d}t} \right | < \epsilon
-\]
+\end{equation}
+\label{eqn:steadystate}
 
-where X represents a chemical species, and $\epsilon$ is the threshold value. The threshold value was intially set at \num{1.0e-8}, but then adjusted to \num{1.0e-6} following inspection of the heatmaps. For  visualisation, I generated heatmaps with data points replaced by -1 if the system does not reach steady state (figure~\ref{fig:steadystate})
+where $X_{i}$ represents a chemical species, and $\epsilon$ is the threshold value. The threshold value was intially set at \num{1.0e-8}, but then adjusted to \num{1.0e-6} following inspection of the heatmaps (figure~\ref{fig:steadystate}).
 
 \begin{figure}[hbp]
   \centering
   \includegraphics[scale=0.5]{steadystate}
-  \caption{Heatmap for ATP\_MAINTENANCE vs ZWF, with threshold set to \num{1.0e-8}}
+  \caption{Heatmap for ATP\_MAINTENANCE vs ZWF, with threshold set to \num{1.0e-8}. Data points are replaced by -1 if the system does not reach steady state.}
   \label{fig:steadystate}
 \end{figure}
 
-In most cases, ATP, ADP, P, or Hout was responsible for breaking the \num{1.0e-8} threshold. However, their rates stayed at around \num{1.0e-7}. ATP\_MAINTENANCE set at 0.1 $V_{max}$ produced rates on the order of \num{e-1}, and ATP\_syn set at 0.1 $V_{max}$ produced rates on the order of \num{e-2}. With these two reactions, the species responsible for breaking the threshold were BPG and OAA. GDH set at 0.1 $V_{max}$ produced rates on the order of \num{e-3}, with GLCx and GLCp responsible. This was the only situation where GLCx and GLCp concentrations did not reach steady state.
+In most cases, ATP, ADP, P, or Hout was responsible for breaking the \num{1.0e-8} threshold. However, their rates stayed at around \num{1.0e-7}.
 
-\section{Using differential evolution}
+ATP\_MAINTENANCE set at 0.1 $V_{max}$ produced rates on the order of \num{e-1}, and ATP\_syn set at 0.1 $V_{max}$ produced rates on the order of \num{e-2}. With these two reactions, the species responsible for breaking the threshold were BPG and OAA.
+
+Finally, GDH set at 0.1 $V_{max}$ produced rates on the order of \num{e-3}, with GLCx and GLCp responsible for breaking the threshold. This was the only situation where GLCx and GLCp concentrations did not reach steady state.
+
+\section{Using differential evolution to vary $V_{max}$ values of multiple reactions}
 \label{sec:de}
 
-Differential evolution is a genetic algorithm developed by \citet{storn_differential_1997}. I used the \texttt{rand/1/bin} strategy, adapting code by \citet{mier_tutorial_2017, mier_small_2017} to maximise the citramalate productivity while the $V_{max}$ values of multiple reactions in a list were varied simultaneously. Differential evolution includes the following parameters: $F$, the mutation constant or differential weight; $CR$, the recombination constant or crossover probability, $NP$, the population size; and $D$, the number of dimensions, equal to the number of reactions investigated simultaneously. The number of iterations must also be specified.
-
-I used the citramalate productivity calculated after \texttt{roadrunner} simulations as the objective function. Using Mier's parameter values, differential evolution agreed with heatmaps in identifying the $V_{max}$ values that resulted in maximal productivity. Occasionally, it discovered maxima not evident in the heatmaps, owing to the relatively low resolution of the heatmaps. 
+Differential evolution is a genetic algorithm developed by \citet{storn_differential_1997}. I used the \texttt{rand/1/bin} strategy, adapting code by \citet{mier_tutorial_2017, mier_small_2017}.
+In this section, I used citramalate productivity calculated after \texttt{roadrunner} simulations as the objective function to be maximised. In using this algorithm, $V_{max}$ values of multiple reactions in a specified list were varied simultaneously. Using Mier's parameter values, differential evolution agreed with heatmaps in identifying the $V_{max}$ values that resulted in maximal productivity. Occasionally, it discovered maxima not evident in the heatmaps, but this could be explained by the relatively low resolution of the heatmaps. 
 
 \subsection{Finding optimal parameters}
 \label{ssec:deoptimise}
 
-I tested how well the suggested differential evolution parameter values quoted by \citet{storn_usage_1996} and \citet{pedersen_good_2010} optimised citramalate productivity. I used reactions in the glycolytic pathway (rationale explained in subsection~\vref{ssec:glycolytic}) and the one-reaction list. Values were chosen based on algorithm run time and how fast convergence was realised. They are presented in table~\vref{tab:deoptimise}.
+Differential evolution includes the following parameters:
+\begin{itemize}
+\item $F$, the mutation constant or differential weight;
+\item $CR$, the recombination constant or crossover probability;
+\item $NP$, the population size; and
+  \item $D$, the number of dimensions, equal to the number of reactions investigated simultaneously.
+\end{itemize}
+The number of iterations must also be specified.
 
-\begin{table}[htb]
-  \caption{Differential evolution optimal parameter search}
+I tested how well the suggested differential evolution parameter values quoted by \citet{storn_usage_1996} and \citet{pedersen_good_2010} optimised citramalate productivity. I used reactions in the glycolytic pathway and the one-reaction list. Values were chosen based on algorithm run time and how fast convergence was realised. They are presented in table~\ref{tab:deoptimise}.
+
+\begin{table}[h]
+  \caption{Development of optimal parameters for using differential evolutionwith the kinetic model, entries lower in the table worked better }
   \label{tab:deoptimise}
   \centering
   \begin{tabularx}{\linewidth}{LLLLLLL}
@@ -214,7 +236,9 @@ I tested how well the suggested differential evolution parameter values quoted b
 \subsection{Optimisation of citramalate production}
 \label{ssec:optcitra}
 
-Using the best differential evolution parameters ($F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, and 50 iterations, as listed in table~\ref{tab:deoptimise}) with the set of seven reactions CITRA\_SYN, GLT, LPD, GDH, ATP\_syn, ACEA, and ZWF, varying $V_{max}$ values over 0.1--10.0 $V_{max}$ yielded optimal $V_{max}$ values as shown in table~\vref{tab:optcitra7} and the citramalate productivity of \num{353.66e-4} h\textsuperscript{-1}. I then changed the $V_{max}$ values of these seven reactions to values expected to maximise citramalate productivity as inferred from the one-reaction plots (section~\ref{sec:onereac}) alone. The resulting productivity was \num{226.96e-4} h\textsuperscript{-1}, lower than the productivity found from differential evolution, confirming the usefulness of the genetic algorithm.
+Using the best differential evolution parameters ($F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, and 50 iterations) with the set of seven reactions -- CITRA\_SYN, GLT, LPD, GDH, ATP\_syn, ACEA, and ZWF -- varying $V_{max}$ values over 0.1--10.0 $V_{max}$ yielded optimal $V_{max}$ values for each reaction (table~\ref{tab:optcitra7}) and the citramalate productivity of \num{353.66e-4} h\textsuperscript{-1}.
+
+I verified these findings by manually setting the $V_{max}$ values of these seven reactions. For each reaction, I chose the $V_{max}$ value within the 0.1 -- 10.0 $V_{max}$ range that corresponds to the greatest citramalate productivity as found in section~\ref{sec:onereac}; the $V_{max}$ value of each reaction was set independently of all other reactions. The simulation returned the productivity of \num{226.96e-4} h\textsuperscript{-1}, lower than the productivity found from differential evolution. This thus confirms that differential evolution is useful.
 
 \begin{table}[hp]
   \caption{Optimal $V_{max}$ values, using seven reactions from the one-reaction list}
@@ -235,7 +259,7 @@ Using the best differential evolution parameters ($F$ = 0.6607, $CR$ = 0.9426, $
   \end{tabular}
 \end{table}
 
-Furthermore, I tried the same parameters on 10 enzymes and achieved the productivity of \num{405.5e-4} h\textsuperscript{-1} with a set of $V_{max}$ values shown in table~\vref{tab:optcitra10}. However, 10 reactions exhibited slower convergence, as expected by the `curse of dimensionality'. This is a limitation of differential evolution in which the difficulty of finding solutions increases exponentially as dimensions increase.
+Furthermore, I tried the same differential evolution parameters on 10 enzymes(table~\ref{tab:optcitra10}) and achieved the productivity of \num{405.5e-4} h\textsuperscript{-1}. However, 10 reactions exhibited slower convergence, as expected by the `curse of dimensionality'. This is a limitation of differential evolution in which the difficulty of finding solutions increases exponentially as dimensions increase.
 
 \begin{table}[hp]
   \caption{Optimal $V_{max}$ values, using ten reactions from the one-reaction list}
@@ -259,7 +283,7 @@ Furthermore, I tried the same parameters on 10 enzymes and achieved the producti
   \end{tabular}
 \end{table}
 
-I repeated the investigation using the ten enzymes with the greatest FCCs, with results shown in table~\vref{tab:optfcc10}. In this case, the productivity was \num{224.2e-4} h\textsuperscript{-1}. I excluded ATP\_MAINTENANCE because it does not correspond to an enzyme that exists in \emph{E. coli} and because it was not reliable with small values of $V_{max}$, as discussed in section~\ref{sec:onereac}.
+I repeated the investigation using the ten enzymes with the greatest FCCs (table~\vref{tab:optfcc10}). In this case, the productivity was \num{224.2e-4} h\textsuperscript{-1}. I excluded ATP\_MAINTENANCE because it does not correspond to an enzyme that exists in \emph{E. coli} and because it was not reliable with small values of $V_{max}$, as discussed in section~\ref{sec:onereac}.
 
 \begin{table}[hp]
   \caption{Optimal $V_{max}$ values, using ten reactions with the greatest FCCs}
@@ -287,9 +311,9 @@ Using all 41 biologically relevant reactions that have $V_{max}$ as a parameter 
 \subsection{Glycolytic enzymes}
 \label{ssec:glycolytic}
 
-Originally I used differential evolution with the glycolytic enzymes PGI, PFK, FBA, GDH, PGK, GPM, ENO, PYK, and PDH to investigate whether the $V_{max}$ values of all enzymes in a pathway must be increased for an appreciable increase in the overall flux through the pathway, leading to higher productivity. From their experiments on the tryptophan synthesis pathway in yeast, \citet{niederberger_strategy_1992} concludes that the fluxes through each enzyme in a linear pathway must all be increased to increase the flux through the pathway. However, \cite{yamamoto_overexpression_2012} show that appreciable increases result after increasing the flux through only one or two enzymes. My results, included in \texttt{kinetic/result/de/gly.txt} support the latter.
+%Originally I used differential evolution with the glycolytic enzymes PGI, PFK, FBA, GDH, PGK, GPM, ENO, PYK, and PDH to investigate whether the $V_{max}$ values of all enzymes in a pathway must be increased for an appreciable increase in the overall flux through the pathway, leading to higher productivity. From their experiments on the tryptophan synthesis pathway in yeast, \citet{niederberger_strategy_1992} concludes that the fluxes through each enzyme in a linear pathway must all be increased to increase the flux through the pathway. However, \cite{yamamoto_overexpression_2012} show that appreciable increases result after increasing the flux through only one or two enzymes. My results, included in \texttt{kinetic/result/de/gly.txt} support the latter.
 
-I changed the objective to investigating how much adding one reaction as an additional dimension in differential evolution affects productivity. Adding enzymes relatively low on the one-reaction list had little effect on the optimum $V_{max}$ values found earlier, and did not cause large improvements in productivity. This suggested that not all reactions in a network have to be included in differential evolution to produce valid results. The conclusion is beneficial as it reduces computation time needed to optimise citramalate productivity.
+I investigated how much adding reactions as additional dimensions in differential evolution affects the use of the algorithm to optimise citramalate productivity. I used differential evolution in a similar fashion as earlier, but on the glycolytic enzymes that are arranged in a linear fashion --  PGI, PFK, FBA, GDH, PGK, GPM, ENO, PYK, and PDH. Adding enzymes lower on the one-reaction list had little effect on the optimum $V_{max}$ values found earlier, and did not cause large improvements in productivity. This suggested that not all reactions in a network have to be included in differential evolution to produce valid results. The conclusion is beneficial as it reduces computation time needed to optimise citramalate productivity.
 
 \chapter{Enriching the stoichiometric model}
 \label{ch:stoich}
