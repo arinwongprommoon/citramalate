@@ -90,6 +90,10 @@ The stoichiometric model contains 2,584 reactions, and I mapped 57 to their equi
 
 In a similar vein to the kinetic model, a 2,585th reaction for citramalate production was added to the stoichiometric model using the \texttt{cobra} module in Python. This reaction contains the same information as the reaction added to the kinetic model except for the kinetic law, which is normally absent from stoichiometric models. In addition to the citramalate synthesis reaction, a sink reaction to allow citramalate to leave the system was also added.
 
+Fluxes through reactions in the stoichiometric model was investigated using flux balance analysis, or FBA \citep{orth_what_2010}. Simulations employed the \texttt{cobra} module in Python.
+
+It should be noted that fluxes are in mM s\textsuperscript{-1} in the kinetic model, while they are mmol g\textsubscript{DW}\textsuperscript{-1} h\textsuperscript{-1} in the stoichiometric model. Using the cell volume of \num{1.77e-3} L g\textsubscript{DW}\textsuperscript{-1} as specified in the kinetic model, I worked out that converting units from the kinetic model to the stoichiometric model involves multiplying by 6.372. Because the stoichiometric model does not have information about enzyme kinetics, the values associated with the kinetic model (with kinetic model units) can be used with the structure of the stoichiometric model without any adjustments.
+
 \chapter{Investigating the kinetic model}
 \label{ch:kinetic}
 
@@ -318,27 +322,30 @@ I investigated how much adding reactions as additional dimensions in differentia
 \chapter{Enriching the stoichiometric model}
 \label{ch:stoich}
 
-The stoichiometric model contains flux bounds -- lower and upper bounds -- for each reaction. These bounds can be specified to provide constraints for flux balance analysis (FBA)\footnote{\citet{orth_what_2010} wrote a very good introduction.}. Using linear programming, FBA aims to find an optimal solution for an objective function, subject to constraints on flux values. The objective function can be minimised or maximised, and this can be specified when using \texttt{cobra} to compute the solutions. The lowest and highest possible values of fluxes through each reaction in the kinetic model provides reasonable bounds for the stoichiometric model.
-
-It should be noted that fluxes are in mM s\textsuperscript{-1} in the kinetic model, while they are mmol g\textsubscript{DW}\textsuperscript{-1} h\textsuperscript{-1} in the stoichiometric model. Using the cell volume of \num{1.77e-3} L g\textsubscript{DW}\textsuperscript{-1} as specified in the kinetic model, I worked out that converting units from the kinetic model to the stoichiometric model involves multiplying by 6.372. Because the stoichiometric model does not have information about enzyme kinetics, the values associated with the kinetic model (with kinetic model units) can be used with the structure of the stoichiometric model without any adjustments.
+The stoichiometric model consists of reaction stoichiometries along with lower and upper bounds for flux for each reaction. These bounds can be specified to provide constraints for flux balance analysis (FBA).% Using linear programming, FBA aims to find an optimal solution for an objective function, subject to constraints on flux values. The objective function can be minimised or maximised, and this can be specified when using \texttt{cobra} to compute the solutions. 
+The lowest and highest possible values of fluxes through each reaction in the kinetic model provides reasonable bounds for the stoichiometric model.
 
 \section{Creating boundaries for flux balance analysis}
 \label{sec:bounds}
 
-I varied the $V_{max}$ values of the 49 reactions with $V_{max}$ as a parameter in the kinetic model (with the citramalate synthesis reaction added) to find the the lowest and highest possible values of the fluxes through the 69 reactions in the model. Ideally, all the values should be varied together, but to save computation time, I first varied $V_{max}$ values of one reaction at a time. I did so over the range of 0.1-10.0 $V_{max}$.
+In order to find the lowest and highest possible flux values through the 69 reactions of the kinetic model, I varied the $V_{max}$ values of the 49 reactions with $V_{max}$ as a parameter, CITRA\_SYN included.
 
-Then, I varied the $V_{max}$ values of many reactions at a time using differential evolution, obtaining minimum and maximum values of flux. I used a method similar to that used in section~\ref{sec:de} to obtain the minimum values, specifying the flux through each of the 69 reactions in the kinetic model as the objective function in turn, in place of citramalate productivity. Obtaining the maximum values was a matter of adding a minus sign to the objective function in the script.
+Initially, to save computation time, I varied $V_{max}$ values of one reaction at a time over the range of 0.1-10.0 $V_{max}$, and recorded the minimum and maximum flux values achieved for each reaction after simulations. These produced a set of flux bounds I term `one-dimension bounds'
 
-First, I included the eight reactions with the greatest flux control coefficients: CYTBO, MQO, MDH, ZWF, GLT, GDH, ATP\_syn, and ACK. The differential evolution parameters used were $F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, and 5 iterations~\cite{pedersen_good_2010}. I used the $V_{max}$ range of of 0.3--10.0 $V_{max}$ as using $V_{max}$ values less than 0.3 $V_{max}$ tended to produce run time errors in the \texttt{roadrunner} simulation, involving convergence test failures occurring too many times.\footnote{\texttt{RuntimeError: CVODE Error: CV\_CONV\_FAILURE: Convergence test failures occurred too many times (= MXNCF = 10) during one internal timestep or occurred with \textbar{}h\textbar{} = hmin.; In virtual double rr::CVODEIntegrator::integrate(double, double)}} Judging by the behaviour of ATP\_MAINTENANCE, as described in section~\ref{sec:couples}, results were likely unreliable with small $V_{max}$ values, justifying the use of the more restricted range.
+Then, I used differential evolution to find the lowest and highest possible fluxes through each kinetic model reaction. I specified the flux through each reaction in turn from \texttt{roadrunner} simulations as the objective function -- to be minimised for calculating the lower bound for each reaction, and to be maximised for calculating the upper bound. I performed differential evolution with multiple lists of reactions.
 
-With the 41 enzyme-catalysed reactions in the kinetic model with $V_{max}$ as a parameter, I used the differential evolution parameters of $F$ = 0.6876, $CR$ = 0.9784, $NP$ = 48 \citep{pedersen_good_2010}, and five iterations. To avoid convergence test failures, I set the $V_{max}$ range to 0.5--10.0 $V_{max}$.
+First, I included the eight reactions with the greatest flux control coefficients: CYTBO, MQO, MDH, ZWF, GLT, GDH, ATP\_syn, and ACK, with parameters $F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, and 5 iterations \citep{pedersen_good_2010}. I used the $V_{max}$ range of of 0.3--10.0 $V_{max}$ because $V_{max}$ values less than 0.3 $V_{max}$ tended to produce run time errors in \texttt{roadrunner} involving convergence test failures occurring too many times. Using this restricted range is justified by the aberrant behaviour of ATP\_MAINTENANCE (section~\ref{sec:couples}) suggesting that the model is not reliable with such small $V_{max}$ values. From this work, I produced `eight-dimension bounds'.
 
-Bounds generated by including 41 reactions were mostly wider than both bounds generated by including 8 reactions and bounds generated by varying one reaction at a time. In a set of bounds constructed from choosing the best bounds from the three sets, 43 out of 57 lower bounds and 42 out of 57 upper bounds for reactions in the stoichiometric model with equivalents in the kinetic model were from the bounds generated by including 41 reactions.
+Second, I included all 41 enzyme-catalysed reactions in the kinetic model with $V_{max}$ as a parameter. Here, I used the differential evolution parameters of $F$ = 0.6876, $CR$ = 0.9784, $NP$ = 48 \citep{pedersen_good_2010}, and five iterations. To avoid convergence test failures, I set the $V_{max}$ range to 0.5--10.0 $V_{max}$. From this, I produced `41-dimension bounds'.
+
+The 41-dimension bounds were mostly wider than both one- and eight-dimension bounds. 41-dimension lower bounds were the most negative among the three sets for 43 of 57 reactions, and 41-dimension upper bounds were the most positive for 42 out of 57 reactions.
 
 \section{Mapping reactions in the kinetic model to the stoichiometric model}
 \label{sec:mapping}
 
-Previously, an Anargyros who worked in this group produced a mapping table which mapped reactions in the kinetic model to reactions in the stoichiometric model, and included flux bounds. He focused more on mapping so he did not put specific constraints when generating the bounds, and the method by which he generated these values was not documented. I updated the mapping spreadsheet by correcting mistakes and mapping more enzymes. Table~\ref{tab:mapping} presents the mapping changes I made to correct the mistakes.
+%% Just fucking put my final map in
+
+Previously (before June 2018), an Anargyros who worked in this group produced a mapping table which mapped reactions in the kinetic model to reactions in the stoichiometric model, and included flux bounds. He focused more on mapping so he did not put specific constraints when generating the bounds, and the method by which he generated these values was not documented. I updated the mapping spreadsheet by correcting mistakes and mapping more enzymes. Table~\ref{tab:mapping} presents the mapping changes I made to correct the mistakes.
 
 \begin{table}[htb]
   \label{tab:mapping}
