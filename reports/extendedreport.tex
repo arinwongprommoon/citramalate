@@ -345,28 +345,52 @@ The 41-dimension bounds were mostly wider than both one- and eight-dimension bou
 
 %% Just fucking put my final map in
 
-Previously (before June 2018), an Anargyros who worked in this group produced a mapping table which mapped reactions in the kinetic model to reactions in the stoichiometric model, and included flux bounds. He focused more on mapping so he did not put specific constraints when generating the bounds, and the method by which he generated these values was not documented. I updated the mapping spreadsheet by correcting mistakes and mapping more enzymes. Table~\ref{tab:mapping} presents the mapping changes I made to correct the mistakes.
+Previously (before June 2018), an Anargyros who worked in this group produced a mapping table which mapped reactions in the kinetic model to reactions in the stoichiometric model. %Flux bounds were also included, but the method by which the bounds were generated had not been documented and no specific constraints had been used.
+I improved on this mapping table by correcting errors, re-defined relationshis between kinetic and stoichiometric model reactions, re-calculated flux bounds, and reconciled differing sub-network structures between the two models.
 
-\begin{table}[htb]
-  \label{tab:mapping}
-  \caption{Changes to mapping pairs in the mapping table}
-  \centering
-\begin{tabularx}{\linewidth}{|L|L|L|}
-  \hline
-  \bfseries Before & \bfseries After & \bfseries Notes\\
-  \hline
-  Kinetic MDH $\rightarrow$ Stoich MDH2 & Kinetic MDH $\rightarrow$ Stoich MDH, and the reactions are reversed with respect to each other. & Corrected confusion between types of malate dehydrogenases. Re-mapping judged from EC numbers and substrates in the reactions\\
-  \hline
-  Kinetic XCH\_GLC $\rightarrow$ Stoich GLCtexi & Kinetic XCH\_GLC $\rightarrow$ Stoich GLCtex & Chose a reversible reaction to replace an irreversible one\\
-  \hline
-  Kinetic XCH\_ACE2 $\rightarrow$ Stoich ACACtex & Kinetic XCH\_ACE2 $\rightarrow$ Stoich ACtex & Corrected a mistake -- it's acetate exchange, not acetoacetate exchange\\
-  \hline
-\end{tabularx}
-\end{table}
+The current mapping table (20 September 2018) %add link to appendix here
+concerns the 68 reactions present in the wild-type kinetic model, including the growth reaction. The following information is included:
+\begin{itemize}
+\item Kinetic and stoichiometric model reaction IDs and stoichiometries, plus stoichiometric model reaction names
+  \item EC numbers for kinetic model reactions quoted by \citet{millard_metabolic_2017} and EC number for stoichiometric model reactions extracted from the respective SBML file
+\item Categorisation of reactions into sub-systems as specified by \citet{millard_metabolic_2017}
+  \item Relationships and differences between stoichiometric model reactions and the corresponding kinetic model reactions
+\end{itemize}
 
-Because reactions in the stoichiometric model are not identical to their kinetic counterparts, I devised specific rules to reconcile differences. Stoichiometric model reactions that are identical, reactions that only differ by having small chemical species like \ce{H^+} and \ce{H2O}, reactions that only differ by having \ce{CO2} instead of \ce{HCO3^-}, or reactions that are indicated as irreversible while its equivalent is reversible in the kinetic model have the same lower and upper bounds as their kinetic model counterparts.
+%% Commented this out because I'm focussing on the end result more than development that no-one will care about in this extended report. I'm going to focus more on WHY things are the way they are
 
-For stoichiometric model reactions that are reversed with respect to their kinetic model counterparts, the values obtained from the kinetic model were negated -- i.e.\\ $ \mathrm{Kinetic } (lb, ub) \rightarrow \mathrm{Stoichiometric } (-ub, -lb)$. %overfull hbox quick fix
+% I updated the mapping spreadsheet by correcting mistakes and mapping more enzymes. Table~\ref{tab:mapping} presents the mapping changes I made to correct the mistakes.
+
+% \begin{table}[htb]
+%   \label{tab:mapping}
+%   \caption{Changes to mapping pairs in the mapping table}
+%   \centering
+% \begin{tabularx}{\linewidth}{|L|L|L|}
+%   \hline
+%   \bfseries Before & \bfseries After & \bfseries Notes\\
+%   \hline
+%   Kinetic MDH $\rightarrow$ Stoich MDH2 & Kinetic MDH $\rightarrow$ Stoich MDH, and the reactions are reversed with respect to each other. & Corrected confusion between types of malate dehydrogenases. Re-mapping judged from EC numbers and substrates in the reactions\\
+%   \hline
+%   Kinetic XCH\_GLC $\rightarrow$ Stoich GLCtexi & Kinetic XCH\_GLC $\rightarrow$ Stoich GLCtex & Chose a reversible reaction to replace an irreversible one\\
+%   \hline
+%   Kinetic XCH\_ACE2 $\rightarrow$ Stoich ACACtex & Kinetic XCH\_ACE2 $\rightarrow$ Stoich ACtex & Corrected a mistake -- it's acetate exchange, not acetoacetate exchange\\
+%   \hline
+% \end{tabularx}
+% \end{table}
+
+There are three reactions absent in the stoichiometric model (GL6P\_HYDROLYSIS, ACEK\_1, and ACEK\_2), and stoichiometric CYTBO3\_4pp has a different stoichiometry from kinetic CYTBO. Furthermore, the growth reactions from the two models use different coefficients.
+
+Fifteen reactions are identical between the kinetic and stoichiometric model. Reactions that are not identical fall into the following categories:
+
+\begin{enumerate}
+\item \emph{Plus small chemical species:} reactions that are otherwise identical, but differ by the addition of the species \ce{H^+} or \ce{H2O}
+\item \emph{Acid hydrolysis:} reactions that are otherwise identical, but \ce{CO2} is listed in the stoichiometric model in place of \ce{HCO3^-}
+\item \emph{Different reversibility:} reactions that are otherwise identical, but are reversible in the stoichiometric model with its counterpart in the kinetic model being irreversible, or vice versa
+\item \emph{Reversed:} reactions that are reversed with respect to one another
+  \item \emph{Sub-network different structure:} reactions that belong to sub-networks that are structured differently and therefore do not allow one-to-one mapping; these include the glucose uptake and the pentose phosphate pathway sub-systems
+  \end{enumerate}
+
+I devised rules to reconcile flux values. For categories 1--3, stoichiometric model reactions have the same lower and upper flux bounds as their kinetic model counterparts. For category 4, the values were negated -- i.e. $ \mathrm{Kinetic } (lb, ub) \rightarrow \mathrm{Stoichiometric } (-ub, -lb)$. %note: might need overfull hbox fixes/bodges depending on how this looks like in the final version
 
 \begin{figure}[p]
   \centering
@@ -382,22 +406,9 @@ For stoichiometric model reactions that are reversed with respect to their kinet
   \label{fig:ppp}
 \end{figure}
 
-Glucose uptake reactions (PTS\_0, PTS\_1, PTS\_2, PTS\_3, PTS\_4) and the pentose phosphate pathway reactions X5P\-\_GAP\-\_TKT, F6P\-\_E4P\-\_TKT, S7P\-\_R5P\-\_TKT, F6P\-\_GAP\-\_TAL, and S7P\-\_E4P\-\_TAL each form different sub-network structures in the kinetic model compared to the stoichiometric model, and therefore do not allow one-to-one mapping. Figures~\ref{fig:glucoseuptake} and~\vref{fig:ppp} show the structures in the Petri net format \citep{gilbert_unifying_2007, murata_petri_1989}. After inspecting the influx and outflux reactions for each metabolite (X5P, GAP, R5P, S7P, F6P, and E4P) in the kinetic and the stoichiometric models, I equated the fluxes as follows. (applied in \texttt{fba/newmapper.ods})
+Reactions in category 5 demanded special treatment. Their architectures in the two models are summarised in figures~\ref{fig:glucoseuptake} and~\ref{fig:ppp}.
 
-\begin{itemize}
-\item Kinetic X5P\_GAP\_TKT = Stoich.\ TKT1 + Stoich.\ TKT2
-\item Kinetic F6P\_GAP\_TAL = Stoich.\ TALA
-\item Kinetic S7P\_R5P\_TKT = Stoich.\ TKT1
-\item Kinetic S7P\_E4P\_TAL = Stoich.\ TALA
-  \item Kinetic F6P\_E4P\_TKT = Stoich.\ TKT2
-\end{itemize}
-
-This suggests a potential general strategy or algorithm in reconciling mapping differences.
-
-\section{Investigating glucose uptake}
-\label{sec:glucoseuptake}
-
-I then investigated the reactions in both models that relate to glucose uptake in order to evaluate whether there is decoupling between the glucose exchange and glucose uptake reactions. This was done to give insight into the relationship between the extracellular and intracellular concentrations of glucose, which would be useful in determining the effects of a nutrient medium containing glucose on citramalate productivity (discussed in section~\ref{sec:lund}). For clarification on the similar reactions involved, I present how I mapped relevant reactions in the kinetic model to their equivalents in the stoichiometric model in table~\vref{tab:glucoseuptake}.
+I mapped glucose uptake reactions according to table~\vref{tab:glucoseuptake}. Mapping GLC\_feed to EX\_glc\_(e) is based on how both correspond to glucose feed into the environment, and XCH\_GLC to GLCtex is based on the sppecies involved on both sides of the reaction. However, mapping PTS\_0 to PTS\_4 to GLCptspp is based on investigating their behaviour in response to varying flux through GLC\_feed.
 
 \begin{table}[hbp]
   \caption{Mapping glucose uptake reactions}
@@ -413,6 +424,39 @@ I then investigated the reactions in both models that relate to glucose uptake i
     \bottomrule
   \end{tabularx}
 \end{table}
+
+For the pentose phosphate pathway reactions, I focussed on each metabolite (X5P, GAP, R5P, S7P, F6P, and E4P) separately to determine the influx reactions (that produce the metabolite) and the outflux reactions (that consume the metabolite). I based the mapping on the principle that the sum of influxes in the kinetic model must be equivalent to the sum of influxes in the stoichiometric model, and that the same holds for outflux. %[Add diagrams in tiks or something]
+As a result, I produced the following rules:
+\begin{itemize}
+\item Kinetic X5P\_GAP\_TKT = Stoich.\ TKT1 + Stoich.\ TKT2
+\item Kinetic F6P\_GAP\_TAL = Stoich.\ TALA
+\item Kinetic S7P\_R5P\_TKT = Stoich.\ TKT1
+\item Kinetic S7P\_E4P\_TAL = Stoich.\ TALA
+  \item Kinetic F6P\_E4P\_TKT = Stoich.\ TKT2
+\end{itemize}
+
+%%[Probably move this to discussion]
+%All these mapping procedures suggest a potention general strategy or algorithm in reconciling two types of models that exhibit differences.
+
+\section{Investigating glucose uptake}
+\label{sec:glucoseuptake}
+
+I then investigated the reactions in both models that relate to glucose uptake in order to evaluate whether there is decoupling between the glucose exchange and glucose uptake reactions. This was done to give insight into the relationship between the extracellular and intracellular concentrations of glucose, which would be useful in determining the effects of a nutrient medium containing glucose on citramalate productivity (discussed in section~\ref{sec:lund}).%For clarification on the similar reactions involved, I present how I mapped relevant reactions in the kinetic model to their equivalents in the stoichiometric model in table~\vref{tab:glucoseuptake}.
+
+% \begin{table}[hbp]
+%   \caption{Mapping glucose uptake reactions}
+%   \label{tab:glucoseuptake}
+%   \centering
+%   \begin{tabularx}{\linewidth}{LLL}
+%     \toprule
+%     Kinetic model & Stoichiometric model & What it is\\
+%     \midrule
+%     GLC\_feed & EX\_glc\_(e) & Glucose feed into the environment, set as 0.23 mM s\textsuperscript{-1} in the kinetic model\\
+%     XCH\_GLC & GLCtex & Glucose transport from the environment into the periplasm\\
+%     PTS\_0, PTS\_1, PTS\_2, PTS\_3, PTS\_4 & GLCptspp & Glucose uptake from the periplam into the cytoplasm\\
+%     \bottomrule
+%   \end{tabularx}
+% \end{table}
 
 First, I examined the relationship between glucose feed and the fluxes through the other reactions in the kinetic model. The fluxes through XCH\_GLC and the PTS\_X reactions were always the same. XCH\_GLC was equal to GLC\_feed between 0 and 0.68, otherwise XCH\_GLC stayed at 0.68. With increasing GLC\_feed, GLCx and GLCp concentrations remained very low until GLC\_feed was 0.68, after which they increased linearly as GLC\_feed flux increased. The concentration of G6P increased linearly until GLC\_feed was 0.68, at which it immediately plateaued at 3.19 mM.
 
