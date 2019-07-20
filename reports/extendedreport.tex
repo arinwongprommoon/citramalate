@@ -441,24 +441,25 @@ As a result, I produced the following rules:
 \section{Investigating glucose uptake}
 \label{sec:glucoseuptake}
 
-I then investigated the reactions in both models that relate to glucose uptake in order to evaluate whether there is decoupling between the glucose exchange and glucose uptake reactions. This was done to give insight into the relationship between the extracellular and intracellular concentrations of glucose, which would be useful in determining the effects of a nutrient medium containing glucose on citramalate productivity (discussed in section~\ref{sec:lund}).%For clarification on the similar reactions involved, I present how I mapped relevant reactions in the kinetic model to their equivalents in the stoichiometric model in table~\vref{tab:glucoseuptake}.
+%% [Just revised this section, but it's still pretty shit. This section can just go if it isn't really used with the Lund medium later. Or figure out a way to link this with the Lund medium thing]
 
-% \begin{table}[hbp]
-%   \caption{Mapping glucose uptake reactions}
-%   \label{tab:glucoseuptake}
-%   \centering
-%   \begin{tabularx}{\linewidth}{LLL}
-%     \toprule
-%     Kinetic model & Stoichiometric model & What it is\\
-%     \midrule
-%     GLC\_feed & EX\_glc\_(e) & Glucose feed into the environment, set as 0.23 mM s\textsuperscript{-1} in the kinetic model\\
-%     XCH\_GLC & GLCtex & Glucose transport from the environment into the periplasm\\
-%     PTS\_0, PTS\_1, PTS\_2, PTS\_3, PTS\_4 & GLCptspp & Glucose uptake from the periplam into the cytoplasm\\
-%     \bottomrule
-%   \end{tabularx}
-% \end{table}
+%% [Also shouldn't this be in like a different section e.g. the bit about the kinetic model?]
 
-First, I examined the relationship between glucose feed and the fluxes through the other reactions in the kinetic model. The fluxes through XCH\_GLC and the PTS\_X reactions were always the same. XCH\_GLC was equal to GLC\_feed between 0 and 0.68, otherwise XCH\_GLC stayed at 0.68. With increasing GLC\_feed, GLCx and GLCp concentrations remained very low until GLC\_feed was 0.68, after which they increased linearly as GLC\_feed flux increased. The concentration of G6P increased linearly until GLC\_feed was 0.68, at which it immediately plateaued at 3.19 mM.
+I investigated the two models to determine whether there is decoupling between the glucose exchange and glucose uptake reactions.
+Specifically, I examined the relationship between glucose feed and the fluxes through the other reactions in the kinetic model. I varied the flux through GLC\_feed and observed the following effects:
+
+%% instead of this list, a diagram of what the hell I was trying to explain would be useful. I hand-drew this at some point, but tiks or some shit would be my friend
+
+\begin{itemize}
+\item Fluxes through XCH\_GLC and all PTS\_X reactions are always equal to each other.
+\item Flux through XCH\_GLC increases linearly with GLC\_feed until the value of 0.68, after which it plateaus. This can be explained by the fact that XCH\_GLC is modelled with saturation kinetics with $V_{max}$ = 100 and $K_{m}$ = 10.
+\item GLCx and GLCp concentrations remain very low as GLC\_feed flux increases up to 0.68. After that, their concentrations increase linearly as GLC\_feed flux increases
+  \item The concentration of G6P increased linearly as GLC\_feed flux increased up to 0.68, at which the concentration immediately plateaued at 3.19 mM.
+\end{itemize}
+
+%% [Perhaps put this in discussion???]
+Results suggest that the model does not predict decoupling between glucose exchange and glucose uptake; however, glucose exchange reaches saturation.
+Information about decoupling between glucose exchange and glucose uptake relates to the relationship between the intracellular and extracellular concentrations of glucose. This relationship in turn would be useful in determining the effects of a nutrient medium containing glucose on citramalate productivity.
 
 \section{Flux balance analysis}
 \label{sec:fba}
