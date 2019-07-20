@@ -483,7 +483,7 @@ Using the mapping rules described in section~\ref{sec:mapping}, I prepared bound
   \end{tabular}
 \end{table}
 
-I then looped through all 2,585 reactions in the stoichiometric model using each as the objective function. Using the bounds obtained from including 41 reactions in differential evolution, I set the script to evaluate solutions while setting the objective to either maximising or minimising flux. I used the solutions (optimal minimum and optimal maximum values) as an additional set of bounds for another round of FBA, and the solution of 0.2922 mM s\textsuperscript{-1} was returned.
+Then, using the 41-dimension bounds, I used FBA to evaluate solutions for all reactions in the stoichiometric models in turn, both to maximise and to minimise flux through each reaction. The optimal minimum and optimal maximum values for each reaction that were returned were then used as a new set of flux bounds for a subsequent round of FBA. From this, I obtained that solution of 0.2922 mM s\textsuperscript{-1}.
 
 \section{Using information from the Lund medium}
 \label{sec:lund}
@@ -531,9 +531,14 @@ This medium is referred to as the `Lund medium' in this project. Each chemical s
 
 To conform to the exchange reactions defined in the stoichiometric model, \ce{HPO4^{2-}} and \ce{H2PO4^-} were merged into one entry representing inorganic phosphates.
 
-I then specified the maximum rates of exchange of these species by specifying lower bounds for exchange reactions in the stoichiometric model. Exchange reactions for all the above species are present in the stoichiometric model, except for EDTA. I fixed the bound for glucose exchange to -0.23 or -10.0, and fixed the bounds for other reactions so that the ratios between the chemical species were consistent. These bounds were added to the set of bounds found in section~\ref{sec:bounds}, in which 41 enzymes were included in differential evolution. With all the glucose exchange bound values described, only the glucose and citrate exchange reactions had non-zero flux values in the optimal solution. When the exchange reactions for the chemical species present in the Lund model were unbounded, glucose exchange was -11.13 and citrate exchange was -1.20, while flux though the citramalate synthesis reaction was found to be 1.1692 mM s\textsuperscript{-1}.
+I then specified the maximum exchange rates of these species by specifying lower bounds for exchange reactions in the stoichiometric model, with the exception of EDTA as it is not present in the model.
+I fixed the bound for glucose exchange to -0.23 and to -10.0, and adjusted the bounds for all other reactions accordingly to maintain the stoichiometries between species present in the Lund medium.
+% read Lund medium experiment notes again because I feel like I'm missing something here... there are leaps in logic
+Only the glucose and citrate exchange reactions had non-zero flux values in the optimal solution.
 
-To use the concentrations of the chemical species present in the Lund medium to set the bounds of exchange reactions, rather than using the ratios alone, additional information is needed. Given:
+When the exchange reactions for the species in the Lund medium were totally unbounded, glucose exchange was -11.13 and citrate exchange was -1.20, while flux though the citramalate synthesis reaction was predicted to be 1.1692 mM s\textsuperscript{-1}.
+
+In order to use the concentrations of the species present in the Lund medium to set the bounds of exchange reactions, rather than using the ratios alone, additional information is needed. Given:
 
 \begin{itemize}
 \item a concentration of a chemical species $[X_{i}]$
