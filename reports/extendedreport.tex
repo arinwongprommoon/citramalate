@@ -35,6 +35,7 @@
 \usepackage{siunitx}
 \usepackage{booktabs}
 \usepackage{longtable}
+\usepackage{pgfplotstable}
 
 
 \author{Arin Wongprommoon\thanks{\texttt{arin.wongprommoon@ed.ac.uk, arin.wongprommoon@gmail.com}}
@@ -774,6 +775,26 @@ XCH\_P & 1.30011316599662E-10\\
 XCH\_ACE2 & 1.15399255906298E-10\\
 \bottomrule
 \end{longtable}
+
+\section{41-dimension bounds}
+
+Here are the 41-dimension bounds for the 57 reactions that the stoichiometric and kinetic models have in common.
+
+\begin{longtable}{lS}
+  % \pgfplotstabletypeset[
+  % col sep = comma,
+  %   every head row/.style = {
+  %   before row = \toprule,
+  %   after row = \midrule
+  % },
+  % every last row/.style = {
+  %   after row = \bottomrule
+  %   }
+  %   ]{41dBoundaries.csv}
+  \pgfplotstabletypeset[
+  col sep = comma
+  ]{linearmodel_b.csv}
+  \end{longtable}
 
 \section{Synergistic effects between reactions in the kinetic model}
 \label{ap:synergistic}
