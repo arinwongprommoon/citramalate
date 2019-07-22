@@ -102,9 +102,8 @@ I investigated the kinetic model in order to determine the combination of $V_{ma
 \section{Varying $V_{max}$ values one reaction at a time}
 \label{sec:onereac}
 
-The kinetic model includes 49 reactions that have $V_{max}$ as a parameter. In this section, I varied the $V_{max}$ of each reaction at a time and simulated the resulting citramalate productivity at steady state (7,200 seconds) as a function of $V_{max}$ of each reaction (figure~\ref{fig:onereacsample}).
+The kinetic model includes 49 reactions that have $V_{max}$ as a parameter. In this section, I varied the $V_{max}$ of each reaction at a time and simulated the resulting citramalate productivity at steady state (7,200 seconds) as a function of $V_{max}$ of each reaction (figure~\ref{fig:onereacsample}). The $V_{max}$ values were chiefly varied over the range of 0.1 to 10.0 times the wild-type $V_{max}$ as specified in the model.
 For reference, the wild-type citramalate productivity simulated by the model is 0.001122 h\textsuperscript{-1}.
-%% Include information that I varied the values over 0.1-10.0 somewhere, but this is less important. Include the findings from this, this is more important.
 
 %I varied the $V_{max}$ values of each of the 49 reactions in the kinetic model that includes $V_{max}$ as a parameter (see appendix~\ref{ap:kineticreactionlist}) over the ranges 0.1--1.0 $V_{max}$ and 0.1--10.0 $V_{max}$, where $V_{max}$ is the wild-type $V_{max}$ for that particular reaction as specified in the SBML file. Each plot had 100 data points. Figure~\ref{fig:onereacsample} is an example of such a plot.
 
@@ -123,9 +122,8 @@ Enzymes that have the largest shares of flux control as noted by \citet{millard_
 
 The exchange reactions (XCH\_ACE, XCH\_GLC, and XCH\_P) had no bearing on productivity as all the data points in their plots could be attributed to noise. Surprisingly the reactions that directly concern acetyl CoA, ACS, ACK, and PTA did not seem to have conspicuous bearings on productivity.
 
-Additionally, some reactions exhibited inflection points (table~\ref{tab:inflection}):
-% Significance of this?? -- comment that it has the potential to complicate finding Vmax combinations to optimise productivity, but then was sort of resolved by DE at the end
-
+While citramalate productivity was mostly either an increasing or a decreasing function as $V_{max}$ increased, some reactions exhibited inflection points (table~\ref{tab:inflection}), which could potentially complicate finding $V_{max}$ combinations to optimise citramalate productivity.
+% Significance of this?? -- comment that it has the potential to complicate finding Vmax combinations to optimise productivity, but then was sort of resolved by DE at the end --> DISCUSSION
 
 \begin{table}[h]
   \caption{Reactions that exhibited inflection points in citramalate productivity as a function of $V_{max}$, values listed are the values at inflection points}
@@ -325,7 +323,10 @@ Using all 41 biologically relevant reactions that have $V_{max}$ as a parameter 
 
 %Originally I used differential evolution with the glycolytic enzymes PGI, PFK, FBA, GDH, PGK, GPM, ENO, PYK, and PDH to investigate whether the $V_{max}$ values of all enzymes in a pathway must be increased for an appreciable increase in the overall flux through the pathway, leading to higher productivity. From their experiments on the tryptophan synthesis pathway in yeast, \citet{niederberger_strategy_1992} concludes that the fluxes through each enzyme in a linear pathway must all be increased to increase the flux through the pathway. However, \cite{yamamoto_overexpression_2012} show that appreciable increases result after increasing the flux through only one or two enzymes. My results, included in \texttt{kinetic/result/de/gly.txt} support the latter.
 
-I investigated how much adding reactions as additional dimensions in differential evolution affects the use of the algorithm to optimise citramalate productivity. I used differential evolution in a similar fashion as earlier, but on the glycolytic enzymes that are arranged in a linear fashion --  PGI, PFK, FBA, GDH, PGK, GPM, ENO, PYK, and PDH. Adding enzymes lower on the one-reaction list had little effect on the optimum $V_{max}$ values found earlier, and did not cause large improvements in productivity.%[Move this sentence to the discussion] This suggested that not all reactions in a network have to be included in differential evolution to produce valid results. The conclusion is beneficial as it reduces computation time needed to optimise citramalate productivity.
+I investigated how much adding reactions as additional dimensions in differential evolution affects the use of the algorithm to optimise citramalate productivity. I used differential evolution in a similar fashion as earlier, but on the glycolytic enzymes that are arranged in a linear fashion --  PGI, PFK, FBA, GDH, PGK, GPM, ENO, PYK, and PDH. Adding enzymes lower on the one-reaction list had little effect on the optimum $V_{max}$ values found earlier, and did not cause large improvements in productivity.
+Specifically, using five reactions -- PGI, GDH, ENO, PYK, and PDH -- resulted in the greatest productivity of \num{269.72e-4} h\textsuperscript{-1} (20 iterations). Adding PFK (23rd on the one-reaction list), FBA (29th), and GPM (25th) returned \num{290.04} h\textsuperscript{-1} ($D$ = 8, $F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, 50 iterations). Finally, when PGK (44th) was added, the simulations never managed to achieve a productivity greater than the previous.
+
+%[Move this sentence to the discussion] This suggested that not all reactions in a network have to be included in differential evolution to produce valid results. The conclusion is beneficial as it reduces computation time needed to optimise citramalate productivity.
 
 \section{Investigating glucose uptake}
 \label{sec:glucoseuptake}
@@ -368,6 +369,8 @@ First, I included the eight reactions with the greatest flux control coefficient
 Second, I included all 41 enzyme-catalysed reactions in the kinetic model with $V_{max}$ as a parameter. Here, I used the differential evolution parameters of $F$ = 0.6876, $CR$ = 0.9784, $NP$ = 48 \citep{pedersen_good_2010}, and five iterations. To avoid convergence test failures, I set the $V_{max}$ range to 0.5--10.0 $V_{max}$. From this, I produced `41-dimension bounds'.
 
 The 41-dimension bounds were mostly wider than both one- and eight-dimension bounds. 41-dimension lower bounds were the most negative among the three sets for 43 of 57 reactions, and 41-dimension upper bounds were the most positive for 42 out of 57 reactions.
+
+% put 41-dimension bounds in appendix
 
 \section{Mapping reactions in the kinetic model to the stoichiometric model}
 \label{sec:mapping}
