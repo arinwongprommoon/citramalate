@@ -780,21 +780,18 @@ XCH\_ACE2 & 1.15399255906298E-10\\
 
 Here are the 41-dimension bounds for the 57 reactions that the stoichiometric and kinetic models have in common.
 
-\begin{table}[h]
-  % \pgfplotstabletypeset[
-  % col sep = comma,
-  %   every head row/.style = {
-  %   before row = \toprule,
-  %   after row = \midrule
-  % },
-  % every last row/.style = {
-  %   after row = \bottomrule
-  %   }
-  %   ]{41dBoundaries.csv}
-  \pgfplotstabletypeset[
-  col sep = comma
+\pgfplotstabletypeset[
+begin table = \begin{longtable},
+col sep = comma,
+  every head row/.style = {
+  before row = \toprule,
+  after row = \midrule
+},
+every last row/.style = {
+  after row = \bottomrule
+},
+end table = \end{longtable}
   ]{41dBoundaries.csv}
-  \end{table}
 
 \section{Synergistic effects between reactions in the kinetic model}
 \label{ap:synergistic}
