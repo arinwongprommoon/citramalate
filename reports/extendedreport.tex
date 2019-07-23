@@ -337,12 +337,11 @@ Specifically, using five reactions -- PGI, GDH, ENO, PYK, and PDH -- resulted in
 I investigated the kinetic model to determine whether there is decoupling between the glucose exchange and glucose uptake reactions.
 Specifically, I examined the relationship between glucose feed and the fluxes through the other reactions in the kinetic model. I varied the flux through GLC\_feed and observed the following effects (figures~\ref{fig:growthglc_XCHGLCvGLCfeed} and \ref{fig:growthglc_species}):
 
-%% Is it 0.68 or 0.82???? The numbers conflict!!
 \begin{itemize}
 \item Fluxes through XCH\_GLC and all PTS\_X reactions are always equal to each other.
-\item Flux through XCH\_GLC increases linearly with GLC\_feed until the value of 0.68, after which it plateaus. This can be explained by the fact that XCH\_GLC is modelled with saturation kinetics with $V_{max}$ = 100 and $K_{m}$ = 10.
-\item GLCx and GLCp concentrations remain very low as GLC\_feed flux increases up to 0.68. After that, their concentrations increase linearly as GLC\_feed flux increases
-  \item The concentration of G6P increased linearly as GLC\_feed flux increased up to 0.68, at which the concentration immediately plateaued at 3.19 mM.
+\item Flux through XCH\_GLC increases linearly with GLC\_feed until the value of 0.82, after which it plateaus. This can be explained by the fact that XCH\_GLC is modelled with saturation kinetics with $V_{max}$ = 100 and $K_{m}$ = 10.
+\item GLCx and GLCp concentrations remain very low as GLC\_feed flux increases up to 0.82. After that, their concentrations increase linearly as GLC\_feed flux increases
+  \item The concentration of G6P increased linearly as GLC\_feed flux increased up to 0.82, at which the concentration immediately plateaued at 3.19 mM.
 \end{itemize}
 
 \begin{figure}[h]
