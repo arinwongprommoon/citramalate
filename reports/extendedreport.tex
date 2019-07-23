@@ -376,11 +376,9 @@ Then, I used differential evolution to find the lowest and highest possible flux
 
 First, I included the eight reactions with the greatest flux control coefficients: CYTBO, MQO, MDH, ZWF, GLT, GDH, ATP\_syn, and ACK, with parameters $F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, and 5 iterations \citep{pedersen_good_2010}. I used the $V_{max}$ range of of 0.3--10.0 $V_{max}$ because $V_{max}$ values less than 0.3 $V_{max}$ tended to produce run time errors in \texttt{roadrunner} involving convergence test failures occurring too many times. Using this restricted range is justified by the aberrant behaviour of ATP\_MAINTENANCE (section~\ref{sec:couples}) suggesting that the model is not reliable with such small $V_{max}$ values. From this work, I produced `eight-dimension bounds'.
 
-Second, I included all 41 enzyme-catalysed reactions in the kinetic model with $V_{max}$ as a parameter. Here, I used the differential evolution parameters of $F$ = 0.6876, $CR$ = 0.9784, $NP$ = 48 \citep{pedersen_good_2010}, and five iterations. To avoid convergence test failures, I set the $V_{max}$ range to 0.5--10.0 $V_{max}$. From this, I produced `41-dimension bounds'.
+Second, I included all 41 enzyme-catalysed reactions in the kinetic model with $V_{max}$ as a parameter. Here, I used the differential evolution parameters of $F$ = 0.6876, $CR$ = 0.9784, $NP$ = 48 \citep{pedersen_good_2010}, and five iterations. To avoid convergence test failures, I set the $V_{max}$ range to 0.5--10.0 $V_{max}$. From this, I produced `41-dimension bounds' (appendix~\ref{ap:41dbounds}).
 
 The 41-dimension bounds were mostly wider than both one- and eight-dimension bounds. 41-dimension lower bounds were the most negative among the three sets for 43 of 57 reactions, and 41-dimension upper bounds were the most positive for 42 out of 57 reactions.
-
-% put 41-dimension bounds in appendix
 
 \section{Mapping reactions in the kinetic model to the stoichiometric model}
 \label{sec:mapping}
@@ -786,6 +784,7 @@ XCH\_ACE2 & 1.15399255906298E-10\\
 \end{longtable}
 
 \section{41-dimension bounds}
+\label{ap:41dbounds}
 
 Here are the 41-dimension bounds for the 57 reactions that the stoichiometric and kinetic models have in common.
 
