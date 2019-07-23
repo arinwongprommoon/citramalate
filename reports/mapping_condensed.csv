@@ -1,0 +1,69 @@
+Sub-system,Kinetic model reaction,Stoichiometric model reaction,Kinetic model EC number,Relationship
+-,\_GLC\_FEED,EX\_glc\_(e),,reversed
+-,\_ACE\_OUT,EX\_ac\_(e),,identical
+Exchange reactions,XCH\_GLC,GLCtex,,identical
+,XCH\_P,PItex,,identical
+,XCH\_ACE1,ACt2rpp,,plus small chemical species
+,XCH\_ACE2,ACtex,,reversed
+Glucose uptake,PTS\_0,GLCptspp,2.7.3.9,Sub-network different structure
+,PTS\_1,,2.7.1.199,Sub-network different structure
+,PTS\_2,,2.7.1.199,Sub-network different structure
+,PTS\_3,,2.7.1.199,Sub-network different structure
+,PTS\_4,GLCptspp,2.7.1.199,Sub-network different structure
+Phosphate uptake,PIT,PIt2rpp,,identical
+Glycolysis & gluconeogenesis,PGI,PGI,5.3.1.9,identical
+,PFK,PFK,2.7.1.11,identical
+,FBP,FBP,3.1.3.11,plus small chemical species
+,FBA,FBA,4.1.2.13,identical
+,TPI,TPI,5.3.1.1,identical
+,GDH,GAPD,1.2.1.12,plus small chemical species
+,PGK,PGK,2.7.2.3,reversed
+,GPM,PGM,5.4.2.11/12,reversed
+,ENO,ENO,4.2.1.11,plus small chemical species
+,PYK,PYK,2.7.1.40,plus small chemical species
+,PPS,PPS,2.7.9.2,plus small chemical species and different reversibility
+,PDH,PDH,1.2.1.-,acid hydrolysis and different reversibility
+PP pathway,ZWF,G6PDH2r,1.1.1.49,plus small chemical species
+,PGL,PGL,3.1.1.31,different reversibility
+,GL6P\_HYDROLYSIS,,,absent
+,GND,GND,1.1.1.44,acid hydrolysis 
+,RPE,RPE,5.1.3.1,identical
+,RPI,RPI,5.3.1.6,reversed
+,X5P\_GAP\_TKT,TKT1 + TKT2,2.2.1.1,Sub-network different structure
+,F6P\_E4P\_TKT,TALA,2.2.1.1,Sub-network different structure
+,S7P\_R5P\_TKT,TKT1,2.2.1.1,Sub-network different structure
+,F6P\_GAP\_TAL,TKT2,2.2.1.2,Sub-network different structure
+,S7P\_E4P\_TAL,TALA,2.2.1.2,Sub-network different structure
+ED pathway,EDD,EDD,4.2.1.12,plus small chemical species and different reversibility
+,EDA,EDA,4.1.2.14,identical
+Anaplerotic reactions,PPC,PPC,4.1.1.31,acid hydrolysis and different reversibility
+,PCK,PPCK,4.1.1.49,acid hydrolysis and different reversibility
+,MAE,ME1,1.1.1.39,acid hydrolysis 
+TCA cycle,GLT,CS,2.3.3.1,plus small chemical species and different reversibility
+,ACN\_1,ACONTa,4.2.1.3,plus small chemical species
+,ACN\_2,ACONTb,4.2.1.3,plus small chemical species
+,ICD,ICDHyr,1.1.1.42,acid hydrolysis 
+,ACEK\_1,,3.1.3.-,absent
+,ACEK\_2,,3.1.3.-,absent
+,LPD,AKGDH,1.2.4.2,acid hydrolysis 
+,SK,SUCOAS,6.2.1.5,reversed
+,SDH,SUCDi,1.3.5.1,Sub-network different structure
+,FUMA,FUM,4.2.1.2,plus small chemical species
+,MQO,MDH2,1.1.5.4,identical
+,MDH,MDH,1.1.1.37,reversed
+Glyoxylate shunt,ACEA,ICL,4.1.3.1,different reversibility
+,ACEB,MALS,2.3.3.9,different reversibility
+Acetate metabolism,PTA,PTAr,2.3.1.8,identical
+,ACK,ACKr,2.7.2.1,reversed
+,ACS,ACS,6.2.1.1,identical
+Oxidative phosphorylation,NDHI,NADH16pp,1.6.5.3,plus small chemical species
+,NDHII,NADH5,1.6.5.9,plus small chemical species
+,SQR,SUCDi,1.3.5.1,Sub-network different structure
+,CYTBO,CYTBO3\_4pp,1.10.3.10,different stoichiometry
+,ATP\_SYN,ATPS4rpp,3.6.3.14,plus small chemical species
+Additional reactions for nucleotides and redox cofactor,PNT,NADTRHD,1.6.1.1/2/3,different reversibility
+,ADK,ADK1,2.7.4.3,identical
+,ATP\_MAINTENANCE,ATPM,,plus small chemical species
+,CYA,ADNCYC,4.6.1.1,identical
+,DOS,PDE4,3.1.4.53,plus small chemical species
+Biomass synthesis,GROWTH,Ec\_biomass\_iJO1366\_WT\_53p95M,,different
