@@ -35,6 +35,7 @@
 \usepackage{siunitx}
 \usepackage{booktabs}
 \usepackage{longtable}
+\usepackage{ltablex}
 \usepackage{pgfplotstable}
 
 
@@ -808,8 +809,10 @@ end table = \end{longtable}
 
 Here is the mapping table to map reactions in the kinetic model to the stoichiometric model.
 
-\pgfplotstabletypeset[
-begin table = \begin{longtable},
+\begin{small}
+  \pgfplotstabletypeset[
+  column type =,
+begin table = {\begin{tabularx}{\linewidth}{LLL}},
 col sep = comma,
 display columns/0/.style={string type},
 display columns/1/.style={string type},
@@ -824,8 +827,9 @@ precision = 4,
 every last row/.style = {
 after row = \bottomrule
 },
-end table = \end{longtable}
+end table = {\end{tabularx}}
 ]{mapping_condensed.csv}
+\end{small}
 
 \section{Synergistic effects between reactions in the kinetic model}
 \label{ap:synergistic}
