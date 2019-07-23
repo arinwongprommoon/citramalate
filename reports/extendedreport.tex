@@ -335,16 +335,26 @@ Specifically, using five reactions -- PGI, GDH, ENO, PYK, and PDH -- resulted in
 %% [Just revised this section, but it's still pretty shit. This section can just go if it isn't really used with the Lund medium later. Or figure out a way to link this with the Lund medium thing]
 
 I investigated the kinetic model to determine whether there is decoupling between the glucose exchange and glucose uptake reactions.
-Specifically, I examined the relationship between glucose feed and the fluxes through the other reactions in the kinetic model. I varied the flux through GLC\_feed and observed the following effects:
+Specifically, I examined the relationship between glucose feed and the fluxes through the other reactions in the kinetic model. I varied the flux through GLC\_feed and observed the following effects (figures~\ref{fig:growthglc_XCHGLCvGLCfeed} and \ref{fig:growthglc_species}):
 
-%% instead of this list, a diagram of what the hell I was trying to explain would be useful. I hand-drew this at some point, but tiks or some shit would be my friend
-
+%% Is it 0.68 or 0.82???? The numbers conflict!!
 \begin{itemize}
 \item Fluxes through XCH\_GLC and all PTS\_X reactions are always equal to each other.
 \item Flux through XCH\_GLC increases linearly with GLC\_feed until the value of 0.68, after which it plateaus. This can be explained by the fact that XCH\_GLC is modelled with saturation kinetics with $V_{max}$ = 100 and $K_{m}$ = 10.
 \item GLCx and GLCp concentrations remain very low as GLC\_feed flux increases up to 0.68. After that, their concentrations increase linearly as GLC\_feed flux increases
   \item The concentration of G6P increased linearly as GLC\_feed flux increased up to 0.68, at which the concentration immediately plateaued at 3.19 mM.
 \end{itemize}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.5]{growthglc_XCHGLCvGLCfeed}
+  \caption{Effect of GLC\_feed on XCH\_GLC; XCH\_GLC values are equal to that of PTS\_0 to PTS\_4}
+  \label{fig:growthglc_XCHGLCvGLCfeed}
+
+  \includegraphics[scale=0.5]{growthglc_species}
+  \caption{Effect of GLC\_feed on concentrations of various species; red is GLCx = GLCp, black is G6P}
+  \label{fig:growthglc_species}
+\end{figure}
 
 %% [Perhaps put this in discussion???]
 Results suggest that the model does not predict decoupling between glucose exchange and glucose uptake; however, glucose exchange reaches saturation.
