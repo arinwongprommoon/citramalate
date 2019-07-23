@@ -860,8 +860,17 @@ Here are the 41-dimension bounds for the 57 reactions that the stoichiometric an
 % ]{41dBoundaries-ori.csv}
 
 \pgfplotstabletypeset[
+begin table = \begin{longtable},
 col sep = comma,
-display columns/0/.style={string type}
+display columns/0/.style={string type},
+every head row/.style = {
+  before row = \toprule,
+  after row = \midrule
+},
+every last row/.style = {
+after row = \bottomrule
+},
+end table = \end{longtable}
 ]{41dBoundaries-fuckifthisdoesntwork.csv}
 
 \section{Synergistic effects between reactions in the kinetic model}
