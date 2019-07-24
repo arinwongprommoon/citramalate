@@ -44,7 +44,7 @@
 \\University of Edinburgh (PhD Candidate 2019 --)}
 \title{Optimising production of citramalate based on the \emph{E. coli} kinetic and stoichiometric models}
 \subtitle{Extended project report}
-\date{17 July 2019}
+\date{24 July 2019}
 
 \begin{document}
 
@@ -636,12 +636,84 @@ I combined the one-dimension flux bounds with a glucose exchange bound of -0.23 
 
 %[Discussion: comment on how only these two]
 
-\chapter{Remarks}
-\label{ch:remarks}
+\chapter{Discussion}
+\label{ch:discussion}
+
+% COME BACK TO THIS WHEN I'VE FINISHED EVERYTHING
 
 In this project, I was able to identify reactions in the kinetic model that had relatively large effects on citramalate productivity. Steady-state conditions were achieved in most combinations of $V_{max}$ values used in the project, and situations in which steady-state conditions were not achieved could be attributed to certain reactions acquiring low $V_{max}$ values. I showed that the kinetic model was not reliable with such low values of $V_{max}$. Furthermore, I demonstrated that differential evolution was a viable method to find the best $V_{max}$ values to optimise citramalate productivity, and that only including a small subset of the reactions in the kinetic model was sufficient.
 
 I created an improved method of mapping reactions in the kinetic model to corresponding reactions in the stoichiometric model and assigning bounds for FBA. I also demonstrated that differential evolution could be used to generate useful FBA bounds. Finally, I investigated how the concentrations of chemical species in the Lund medium could be used to set bounds for the exchange reactions in the stoichiometric model.
+
+\section{Kinetic model}
+\label{sec:discussion-kinetic}
+
+%% TOPICS TO DISCUSS, IN BRIEF (in addtion to what has already been discussed)
+%% Rationale: summarise what I've learnt, what this means, and any caveats (OCDC!)
+
+% 0.712 citramalate yield compared to 0.2 of ConBioChem and 0.77 of Wu and Etiman:
+% This shows that the model(s) predict a yield that is in the range of real life, giving legitimacy points to our model(s)
+% Further discussion of Wu and Etiman (as per my notes) and link them to the one-reaction findings in my project
+
+% Validity of the one-reaction list:
+% 0.5-2.0 range is arbitrary, but we need some sort of range. Using FCC list is not appropriate as we want to prioritise citramalate production. This is supported by the differences between the one-reaction list and the FCC list. In any case, DE demonstrates the utility of the one-reaction list, and DE on 41 reactions shows that you can do away with it if you like.
+
+% Explaining differences between one-reaction list and FCC list: exchange reactions, reactions that directly concern AcCoA, etc.
+
+% Inflection points: can complicate heatmaps and DE, but it is later shown that it really doesn't
+
+% Species that break the steady-state threshold: comment on WHY I think they do
+% ATP_MAINTENANCE/ATP_syn and BPG/OAA -- can these be ignored owing to the strange behaviour of the reactions? What roles do BPG and OAA play?
+% GLCx and GLCp -- significant because glucose
+% However it should be noted that the threshold was only broken when $V_{max}$ was at 0.1, a value unused later because it is in the `small' range that causes problems. Perhaps there is no need to worry about the species that break the threshold after all.
+
+% Differential evolution is useful:
+% - Agrees with heatmaps
+% - Produces greater productivity
+% Other genetic algorithms? Why use differential evolution in particular? Please address this.
+
+% Limitation of differential evolution: curse of dimensionality, but both optimisation of citramalate production and glycolytic enzyme exercises demonstrate that there isn't much need to add reactions down the list (thus also confirming that the one-reaction plots are useful)
+
+% Finding optimal parameters for differential evolution:
+% Rather than using the values in the table, dithering or black-box optimisation can be used (and yes, I have tried). However, the memory leak gets in the way of this, plus black-box optimisation. Arguably a thorough investigation of all methods to optimise differential evolution parameters may not be needed or may be useless -- these parameters depend wildly on the number of reactions or the functions, so it would be difficult anyway. Perhaps a general guideline may be more useful, but this is beyond the scope of this project -- let the people who study differential evolution in its own right take care of this.
+
+% How applicable are the optimal $V_{max}$ values to real life? (this can be right at the end of this section):
+% Some of them are 0.1 $V_{max}$, at the limit. Maybe this just indicates that enzyme activity should be minimised?
+% Otherwise, the issue is with translating optimal %V_{max}% to enzyme concentration to gene expression control. With how wet-lab biology works it's probably going to be practically impossible to get exactly the $V_{max}$ stated (cloning, noise in gene expression, things being poorly characterised, etc) though.
+
+% Investigating glucose uptake:
+% (see evernote -- link between decoupling and glucose uptake from environment, how apply to lund)
+
+\section{Stoichiometric model}
+\label{sec:discussion-stoichiometric}
+
+%% TOPICS TO DISCUSS, IN BRIEF
+
+% Unit conversion (Jorge proposed a different number apart from 6.372)
+
+% Boundaries for FBA:
+% How realistic \emph{in vivo} are the highest and lowest possible flux values?
+% This shows how useful differential evolution is, again
+
+% Mapping:
+% Suggests a general strategy for mapping and reconciling different structures in sub-networks, which can be streamlined later. Really, really useful thing to come out of this project as this may be applied to other models.
+% How valid is my strategy of reconciling different structures in sub-networks though?
+
+% Implications for fork between fluxes of growth and citramalate synthesis??
+
+% Analysing flux bounds, what are the implications?:
+% - Upper bound = lower bound -> flux fixed to one possible value, represents regulation? There are quite a lot of reactions (912) that are like this, which reactions are they? Why do you think they are this way?
+% - `Fake reversible' -> does this mean a different way of looking at the reactions? Some of these have been established as reversible in studies on thermodynamics. Does this suggest a flaw in the model or a flaw in our reasoning to determine reactions that are not truly reversible?
+% - Why are ATPS4rpp and GLCtex forced to be active? What do they do?
+% - Say that is `not surprising' that a lot of transport reactions are forced to be active.
+
+% FVA and pFBA:
+% Agree with FBA results. This means that these methods are concordant with FBA. Comment on FVA not being able to return results when the biologically relevant loopless condition is used (explain what the loopless condition is). Perhaps in the long run we can stick with FBA because it doesn't have these problems and because it takes less compuatational time.
+
+% Lund:
+% How does one get a reliable value for OD600?
+% I think I made some more notes here
+% This is the only bit where NOTHING is resolved
 
 \section{Issues}
 \label{sec:issues}
