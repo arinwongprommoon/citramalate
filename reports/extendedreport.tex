@@ -497,11 +497,10 @@ As a result, I produced the following rules:
 \section{Flux balance analysis}
 \label{sec:fba}
 
-% Part 1: testing different bounds and FBA using citramalate productivity as the objective function
-
+I performed FBA to test how flux information from the kinetic model can enrich the stoichiometric model in restricting reaction fluxes.
 Using the mapping rules described in section~\ref{sec:mapping}, I prepared bounds for FBA from the kinetic model flux values obtained in section~\ref{sec:bounds}. Setting the objective to maximising to flux through the citramalate flux reaction, I obtained the results in table~\ref{tab:citramalatefluxresults}.
 
-\begin{table}[htbp]
+\begin{table}[h]
   \caption{FBA results using citramalate flux as the objective function}
   \label{tab:citramalatefluxresults}
   \centering
@@ -518,10 +517,17 @@ Using the mapping rules described in section~\ref{sec:mapping}, I prepared bound
   \end{tabular}
 \end{table}
 
-Then, using the 41-dimension bounds, I used FBA to evaluate solutions for all reactions in the stoichiometric models in turn, both to maximise and to minimise flux through each reaction. The optimal minimum and optimal maximum values for each reaction that were returned were then used as a new set of flux bounds -- the `objective-exercise bounds' (data not shown). I used these bounds for a subsequent round of FBA, and I obtained the solution of 0.2922 mM s\textsuperscript{-1}.
-% what is the significance of these bounds, i.e. why the hell did I go through all this trouble?
+% NEW: FBA failing on growth
+FBA applied on the stoichiometric model using default bounds predicts zero growth if citramalate flux is maximised and predicts zero citramalate flux if growth is maximised. In other words, the solution of FBA diverts all the incoming flux either towards growth or towards citramalate production, depending on the objective function.
+% [This sentence can be moved to the discussion]
+This is likely because of a fork between the fluxes of the growth and citramalate synthesis reactions. The other reason is that the fluxes of these reactions are not bounded, but this is not realistic \emph{in vivo}.
 
-% Part 2: analysing the objective-exercise bounds, looking at properties of associated reactions
+As the stoichiometric model does not incorporate concentrations of chemical species, there is no way to find out citramalate productivity from the stoichiometric model.
+
+Then, using the 41-dimension bounds, I used FBA to evaluate solutions for all reactions in the stoichiometric models in turn, both to maximise and to minimise flux through each reaction. The optimal minimum and optimal maximum values for each reaction that were returned were then used as a new set of flux bounds -- the `objective-exercise bounds' (data not shown). I used these bounds for a subsequent round of FBA, and I obtained the solution of 0.2922 mM s\textsuperscript{-1}. This work completes using flux bounds found from the kinetic model to create more restrictive bounds for the stoichiometric model for FBA by extending it to all reactions in the stoichiometric model.
+
+\subsection{Analysing flux bounds}
+\label{ssec:objectiveexercise}
 
 The objective-exercise bounds were then analysed. The flux ranges (upper bound minus lower bound) had a mean value of +30.56 and a standard deviation of 175.3. Most of the values were near zero, as evidenced by the median of +0.0715. Using the floating-point tolerance of \num{1e-6}, there were 912 reactions for which the upper bound was equal to the lower bound. All these reactions had both bound values equal to zero, except for EX\_glc(e) that represents glucose uptake, which was -0.23.
 
@@ -535,19 +541,12 @@ Extending on this, two reactions are forced to be active, based on the fact that
 
   In contrast, 281 reactions have flux bounds forced into negative values. Together with ATPS4rpp and GLCtex, the 283 reactions include 133 transport reactions (transport, outer membrane porin, 77; transport, inner membrane, 52; transport, outer membrane, 4), 35 reactions assigned to membrane lipid metabolism, 19 reactions assigned to the nucleotide salvage pathway, and 13 assigned to alternate carbon metabolism. These categories are the ones used by \citet{orth_comprehensive_2011}.
 
-% Part 3: FBA failing on growth
+  \section{Flux variability analysis and parsimonious flux balanace analysis}
+  \label{sec:fva}
 
-FBA applied on the stoichiometric model using default bounds predicts zero growth if citramalate flux is maximised and predicts zero citramalate flux if growth is maximised. In other words, the solution of FBA diverts all the incoming flux either towards growth or towards citramalate production, depending on the objective function.
-% [This sentence can be moved to the discussion]
-This is likely because of a fork between the fluxes of the growth and citramalate synthesis reactions. The other reason is that the fluxes of these reactions are not bounded, but this is not realistic \emph{in vivo}.
+Further analysis was carried out with methods related to FBA in order to establish whether they give the same conclusions.
 
-As the stoichiometric model does not incorporate concentrations of chemical species, there is no way to find out citramalate productivity from the stoichiometric model.
-
-% Part 4: pFBA and FVA -- this might even be section in its own right because... well they're not technically FBA
-
-% also add WHY you did this
-
-FVA (flux variability analysis) can be used to address the possibility that more than one solution can lead to the same optimal growth rate, or the same for any other objective function. It does so by maximising and minimising every reaction in a network.
+Flux variability analysis, or FVA \citep{orth_what_2010} can be used to address the possibility that more than one solution can lead to the same optimal growth rate, or the same for any other objective function. It does so by maximising and minimising every reaction in a network.
 
 I applied the 41-dimension boundaries on the stoichiometric model in FVA and specified growth as the objective function to be maximised. Initially, I applied the loopless condition, which is more realistic \emph{in vivo}. The solver reported infeasibility or invalid bounds when this was performed when the desired fraction of optimum growth was set at values between 0.50 and 1. These errors also occured when citramalate production was set as the objective function. However, removing the loopless condition produced results for the fraction of 1.
 
@@ -561,9 +560,9 @@ I then compared these results with FBA. In general, the bounds agree and the ran
   \item ADK1 85.96\%
   \end{itemize}
 
-  Additonally, parsimonious FBA (pFBA) was used. pFBA is based on the principle that under exponential growth, there is selection for both fast-growing strains and strains that require the least enzyme mass for optimal growth. This is resolved by having the algorithm solve two sequential linear programs: one to optimise growth, and the other to minimise the overall flux through the metabolic network.
+  Additonally, parsimonious FBA, or pFBA \citep{lewis_omic_2010} was used. pFBA is based on the principle that under exponential growth, there is selection for both fast-growing strains and strains that require the least enzyme mass for optimal growth. This is resolved by having the algorithm solve two sequential linear programs: one to optimise growth, and the other to minimise the overall flux through the metabolic network.
 
-  In this project, pFBA returns the same flux values as FBA, for all reactions and objective functions used up to this point.
+  In this project, pFBA returned the same flux values as FBA, for all reactions and objective functions used up to this point.
 
 \section{Using information from the Lund medium}
 \label{sec:lund}
