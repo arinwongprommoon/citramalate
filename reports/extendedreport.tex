@@ -53,17 +53,20 @@
 \tableofcontents
 
 \begin{abstract}
-  Using living organisms to synthesise chemicals is an alternative to synthesising chemicals from fossil fuels, as it serves as a renewable resource with potentially high efficiency and low cost. The procedures can be sped up by optimising conditions using mathematical models. Citramalate ((2\emph{S})-2-hydroxy-2-methylbutanedioate) is a chemical of industrial interest as it can be a precursor for methacrylic acid, a monomer for the production of plastics. 
+
+  % REWRITE ABSTRACT AFTER I WRITE DISCUSSION
   
   This project used modelling approaches to find conditions that maximise the production of citramalate. The kinetic model described by \citet{millard_metabolic_2017} and the stoichiometric model described by \citet{orth_comprehensive_2011}, both for \emph{E. coli} metabolism, were extended by adding a reaction that produced citramalate from acetyl coenzyme A and pyruvate. \emph{E. coli} was chosen as the model organism as its metabolism is very well characterised in the literature. The project employed Python and libraries specific to genetic algorithms, modelling, and manipulating information presented in SBML (systems biology markup language).
   
   First, the effect of $V_{max}$ values of reactions in the kinetic model on productivity of citramalate was investigated. This parameter was chosen as it can be easily tested \emph{in vivo} by relying on the principle that $V_{max}$ is proportional to enzyme concentration. The differential evolution genetic algorithm was then employed to compute the set of $V_{max}$ values of reactions that optimises the production of citramalate, assuming Michaelis-Menten kinetics. In the second part of the project, information from the kinetic model was used to enrich the stoichiometric model. The possible values of fluxes through each reaction were used to set the bounds for each reaction in the stoichiometric model. Flux balance analysis (FBA) was then performed to evaluate the highest possible flux through the citramalate-producing reaction as a proxy for citramalate productivity. Finally, composition of the Lund medium \citep{eastham_process_2015} was studied in an attempt to create bounds for relevant uptake reactions.
   
-  The project took place at the Cambridge Systems Biology Centre, Department of Biochemistry, in Prof Steve Oliver's group. Research associate Dr Jorge J\'ulvez supervised me throughout the project. The project was entirely computational, and ran from 25 June 2018 to 17 August 2018.
+  %The project took place at the Cambridge Systems Biology Centre, Department of Biochemistry, in Prof Steve Oliver's group. Research associate Dr Jorge J\'ulvez supervised me throughout the project. The project was entirely computational, and ran from 25 June 2018 to 17 August 2018.
 \end{abstract}
 
 \chapter*{Introduction}
 \label{ch:intro}
+
+Using living organisms to synthesise chemicals is an alternative to synthesising chemicals from fossil fuels, as it serves as a renewable resource with potentially high efficiency and low cost. The procedures can be sped up by optimising conditions using mathematical models. Citramalate ((2\emph{S})-2-hydroxy-2-methylbutanedioate) is a chemical of industrial interest as it can be a precursor for methacrylic acid, a monomer for the production of plastics. \emph{E. coli} was chosen as the model organism because its metabolism is well-characterised in mathematical models, because predictions from models can be verified in cultures that are easy to maintain, and because there are \emph{E. coli} strains that have been genetically engineered to produce citramalate.
 
 This project concerns two models of \emph{E. coli} metabolism: a kinetic model described by \citet{millard_metabolic_2017} and a stoichiometric model described by \citet{orth_comprehensive_2011}.
 The stoichiometric model is a genome-scale reconstruction of the \emph{E. coli} metabolic network. In contrast, the kinetic model only concerns central carbon metabolism, but contains initial conditions and substrate concentrations, which the stoichiometric model lacks.
@@ -94,12 +97,23 @@ The stoichiometric model contains 2,584 reactions, and I mapped 57 to their equi
 In a similar vein to the kinetic model, a 2,585th reaction for citramalate production was added to the stoichiometric model using the \texttt{cobra} module in Python. This reaction contains the same information as the reaction added to the kinetic model except for the kinetic law, which is normally absent from stoichiometric models. In addition to the citramalate synthesis reaction, a sink reaction to allow citramalate to leave the system was also added.
 Fluxes through reactions in the stoichiometric model was investigated using flux balance analysis, or FBA \citep{orth_what_2010}, and FBA simulations employed the \texttt{cobra} module in Python \citep{ebrahim_cobrapy:_2013}.
 
+% [This might be more appropriate in the discussion; it is an important part of the project and it does relate the two models, but it seems out of place in an otherwise `expository' introduction.]
 It should be noted that fluxes are in mM s\textsuperscript{-1} in the kinetic model, while they are mmol g\textsubscript{DW}\textsuperscript{-1} h\textsuperscript{-1} in the stoichiometric model. Using the cell volume of \num{1.77e-3} L g\textsubscript{DW}\textsuperscript{-1} as specified in the kinetic model, I worked out that converting units from the kinetic model to the stoichiometric model involves multiplying by 6.372. Because the stoichiometric model does not have information about enzyme kinetics, the values associated with the kinetic model (with kinetic model units) can be used with the structure of the stoichiometric model without any adjustments.
+
+% AIMS
+
+This project had the following aims:
+
+\begin{enumerate}
+\item Investigating how $V_{max}$ values of reactions in the kinetic model affect citramalate productivity, and finding a method to find such values that would optimise citramalate productivity;
+\item Enriching the stoichiometric model with information from the kinetic model regarding fluxes through reactions, along with reconciling differences between the models in mapping reactions; and
+  \item Applying the models to the Lund medium \citep{eastham_process_2015} to determine how nutrient medium composition affects citramalate productivity, and investigating how this information can be used to improve the Lund medium.
+\end{enumerate}
 
 \chapter{Investigating the kinetic model}
 \label{ch:kinetic}
 
-I investigated the kinetic model in order to determine the combination of $V_{max}$ values of reactions that would optimise citramalate productivity. This parameter was chosen as it can be easily tested \emph{in vivo} by relying on the principle that $V_{max}$ is proportional to enzyme concentration.
+I investigated the kinetic model in order to determine the combination of $V_{max}$ values of reactions that would optimise citramalate productivity. This parameter was chosen as it can be easily tested \emph{in vivo} by relying on the principle that $V_{max}$ is proportional to enzyme concentration. I started from varying $V_{max}$ values one and two reactions at a time to establish any patterns, and then used differential evolution as a method to vary multiple $V_{max}$ values simultaneously to take advantage of the genetic algorithm's capacity to narrow down the solution space.
 
 \section{Varying $V_{max}$ values one reaction at a time}
 \label{sec:onereac}
@@ -570,7 +584,6 @@ However, I was not able to obtain a reliable value for the OD\textsubscript{600}
 
 As an alternative, I then specified the maximum exchange rates of the species present in the Lund medium by specifying lower bounds for exchange reactions in the stoichiometric model (except for EDTA).
 I fixed the bound for glucose exchange to -0.23 and to -10.0, and adjusted the bounds for all other exchange reactions accordingly to maintain the stoichiometries between species present in the medium.
-% read Lund medium experiment notes again because I feel like I'm missing something here... there are leaps in logic
 
 I combined the one-dimension flux bounds with a glucose exchange bound of -0.23 and bounds for other exchange reactions to conserve ratios in a new set of bounds for FBA with the stoichiometric model. When a simulation was run using maximisation of citramalate productivity as an objective, it was predicted that uptake only occured for glucose (-0.23) and citrate (-0.00770). When glucose exchange was fixed to -0.68, uptake still only existed for these two species. Finally, when the exchange reactions for the species in the Lund medium were totally unbounded, glucose exchange was -11.13 and citrate exchange was -1.20, while flux though the citramalate synthesis reaction was predicted to be 1.1692 mM s\textsuperscript{-1}.
 
