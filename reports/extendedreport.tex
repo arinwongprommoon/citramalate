@@ -68,9 +68,6 @@
 
 Using living organisms to synthesise chemicals is an alternative to synthesising chemicals from fossil fuels, as it serves as a renewable resource with potentially high efficiency and low cost. The procedures can be sped up by optimising conditions using mathematical models. Citramalate ((2\emph{S})-2-hydroxy-2-methylbutanedioate) is a chemical of industrial interest as it can be a precursor for methacrylic acid, a monomer for the production of plastics. \emph{E. coli} was chosen as the model organism because its metabolism is well-characterised in mathematical models, because predictions from models can be verified in cultures that are easy to maintain, and because there are \emph{E. coli} strains that have been genetically engineered to produce citramalate.
 
-This project concerns two models of \emph{E. coli} metabolism: a kinetic model described by \citet{millard_metabolic_2017} and a stoichiometric model described by \citet{orth_comprehensive_2011}.
-The stoichiometric model is a genome-scale reconstruction of the \emph{E. coli} metabolic network. In contrast, the kinetic model only concerns central carbon metabolism, but contains initial conditions and substrate concentrations, which the stoichiometric model lacks.
-
 Citramalate synthesis is mediated by citramalate synthase (EC 2.3.1.182) in \emph{Methanococcus janaschii} \citep{wu_production_2016}, which catalyses the reaction:
 
 \begin{center}
@@ -78,6 +75,17 @@ Citramalate synthesis is mediated by citramalate synthase (EC 2.3.1.182) in \emp
 \end{center}
 
 This enzyme is not present in wild-type \emph{E. coli} strains, so in experiments such strains are engineered to express the \emph{cimA} gene that encodes citramalate synthase \citep{wu_production_2016}.
+
+This project concerns two models of \emph{E. coli} metabolism: a kinetic model described by \citet{millard_metabolic_2017} and a stoichiometric model described by \citet{orth_comprehensive_2011}.
+The stoichiometric model is a genome-scale reconstruction of the \emph{E. coli} metabolic network. In contrast, the kinetic model only concerns central carbon metabolism, but contains initial conditions and substrate concentrations, which the stoichiometric model lacks.
+
+This project had the following aims:
+
+\begin{enumerate}
+\item Investigating how $V_{max}$ values of reactions in the kinetic model affect citramalate productivity, and finding a method to find such values that would optimise citramalate productivity;
+\item Enriching the stoichiometric model with information from the kinetic model regarding fluxes through reactions, along with reconciling differences between the models in mapping reactions; and
+  \item Applying the models to the Lund medium \citep{eastham_process_2015} to determine how nutrient medium composition affects citramalate productivity, and investigating how this information can be used to improve the Lund medium.
+\end{enumerate}
 
 The kinetic model contains 68 reactions, 49 of which include $V_{max}$ as a parameter (see appendix~\ref{ap:kineticreactionlist}). Of these, 41 correspond to real enzyme-catalysed reactions.
 To investigate citramalate production, a 69th reaction called CITRA\_SYN was added to the kinetic model to model citramalate synthesis.  In the model, this reaction has the Michaelis-Menten kinetic law:
@@ -99,16 +107,6 @@ Fluxes through reactions in the stoichiometric model was investigated using flux
 
 % [This might be more appropriate in the discussion; it is an important part of the project and it does relate the two models, but it seems out of place in an otherwise `expository' introduction.]
 It should be noted that fluxes are in mM s\textsuperscript{-1} in the kinetic model, while they are mmol g\textsubscript{DW}\textsuperscript{-1} h\textsuperscript{-1} in the stoichiometric model. Using the cell volume of \num{1.77e-3} L g\textsubscript{DW}\textsuperscript{-1} as specified in the kinetic model, I worked out that converting units from the kinetic model to the stoichiometric model involves multiplying by 6.372. Because the stoichiometric model does not have information about enzyme kinetics, the values associated with the kinetic model (with kinetic model units) can be used with the structure of the stoichiometric model without any adjustments.
-
-% AIMS
-
-This project had the following aims:
-
-\begin{enumerate}
-\item Investigating how $V_{max}$ values of reactions in the kinetic model affect citramalate productivity, and finding a method to find such values that would optimise citramalate productivity;
-\item Enriching the stoichiometric model with information from the kinetic model regarding fluxes through reactions, along with reconciling differences between the models in mapping reactions; and
-  \item Applying the models to the Lund medium \citep{eastham_process_2015} to determine how nutrient medium composition affects citramalate productivity, and investigating how this information can be used to improve the Lund medium.
-\end{enumerate}
 
 \chapter{Investigating the kinetic model}
 \label{ch:kinetic}
