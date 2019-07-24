@@ -117,7 +117,10 @@ I investigated the kinetic model in order to determine the combination of $V_{ma
 \label{sec:onereac}
 
 The kinetic model includes 49 reactions that have $V_{max}$ as a parameter. In this section, I varied the $V_{max}$ of each reaction at a time and simulated the resulting citramalate productivity at steady state (7,200 seconds) as a function of $V_{max}$ of each reaction (figure~\ref{fig:onereacsample}). The $V_{max}$ values were chiefly varied over the range of 0.1 to 10.0 times the wild-type $V_{max}$ as specified in the model.
+
 For reference, the wild-type citramalate productivity simulated by the model is 0.001122 h\textsuperscript{-1}.
+% [From epilogue]
+The citramalate yield alone, $Y_{P/S}$ (i.e. mass of citramalate divided by mass of glucose), from the wild-type kinetic model is 0.712.
 
 %I varied the $V_{max}$ values of each of the 49 reactions in the kinetic model that includes $V_{max}$ as a parameter (see appendix~\ref{ap:kineticreactionlist}) over the ranges 0.1--1.0 $V_{max}$ and 0.1--10.0 $V_{max}$, where $V_{max}$ is the wild-type $V_{max}$ for that particular reaction as specified in the SBML file. Each plot had 100 data points. Figure~\ref{fig:onereacsample} is an example of such a plot.
 
@@ -494,6 +497,8 @@ As a result, I produced the following rules:
 \section{Flux balance analysis}
 \label{sec:fba}
 
+% Part 1: testing different bounds and FBA using citramalate productivity as the objective function
+
 Using the mapping rules described in section~\ref{sec:mapping}, I prepared bounds for FBA from the kinetic model flux values obtained in section~\ref{sec:bounds}. Setting the objective to maximising to flux through the citramalate flux reaction, I obtained the results in table~\ref{tab:citramalatefluxresults}.
 
 \begin{table}[htbp]
@@ -513,7 +518,52 @@ Using the mapping rules described in section~\ref{sec:mapping}, I prepared bound
   \end{tabular}
 \end{table}
 
-Then, using the 41-dimension bounds, I used FBA to evaluate solutions for all reactions in the stoichiometric models in turn, both to maximise and to minimise flux through each reaction. The optimal minimum and optimal maximum values for each reaction that were returned were then used as a new set of flux bounds for a subsequent round of FBA. From this, I obtained the solution of 0.2922 mM s\textsuperscript{-1}.
+Then, using the 41-dimension bounds, I used FBA to evaluate solutions for all reactions in the stoichiometric models in turn, both to maximise and to minimise flux through each reaction. The optimal minimum and optimal maximum values for each reaction that were returned were then used as a new set of flux bounds -- the `objective-exercise bounds' (data not shown). I used these bounds for a subsequent round of FBA, and I obtained the solution of 0.2922 mM s\textsuperscript{-1}.
+% what is the significance of these bounds, i.e. why the hell did I go through all this trouble?
+
+% Part 2: analysing the objective-exercise bounds, looking at properties of associated reactions
+
+The objective-exercise bounds were then analysed. The flux ranges (upper bound minus lower bound) had a mean value of +30.56 and a standard deviation of 175.3. Most of the values were near zero, as evidenced by the median of +0.0715. Using the floating-point tolerance of \num{1e-6}, there were 912 reactions for which the upper bound was equal to the lower bound. All these reactions had both bound values equal to zero, except for EX\_glc(e) that represents glucose uptake, which was -0.23.
+
+In the SBML model, 236 reactions were denoted as reversible. Of these, 130 had a lower bound greater than zero or an upper bound less than zero (tolerance of \num{1e-6}), suggesting that they are not truly reversible. Thes include reactions involved in acetate exchange, glycolysis/gluconeogenesis, the tricarboxylic acid cyle, and the pentose phosphate pathway.
+
+Extending on this, two reactions are forced to be active, based on the fact that their lower bounds were greater that zero:
+\begin{enumerate}
+\item ATPS4rpp (ATP\_SYN in the kinetic model): lower bound \num{5.73e-4}, upper bound \num{2.30e-1}; and
+  \item GLCtex (XCH\_GLC in the kinetic model): lower bound \num{5.73e-4}, upper bound \num{2.30e-1}.
+  \end{enumerate}
+
+  In contrast, 281 reactions have flux bounds forced into negative values. Together with ATPS4rpp and GLCtex, the 283 reactions include 133 transport reactions (transport, outer membrane porin, 77; transport, inner membrane, 52; transport, outer membrane, 4), 35 reactions assigned to membrane lipid metabolism, 19 reactions assigned to the nucleotide salvage pathway, and 13 assigned to alternate carbon metabolism. These categories are the ones used by \citet{orth_comprehensive_2011}.
+
+% Part 3: FBA failing on growth
+
+FBA applied on the stoichiometric model using default bounds predicts zero growth if citramalate flux is maximised and predicts zero citramalate flux if growth is maximised. In other words, the solution of FBA diverts all the incoming flux either towards growth or towards citramalate production, depending on the objective function.
+% [This sentence can be moved to the discussion]
+This is likely because of a fork between the fluxes of the growth and citramalate synthesis reactions. The other reason is that the fluxes of these reactions are not bounded, but this is not realistic \emph{in vivo}.
+
+As the stoichiometric model does not incorporate concentrations of chemical species, there is no way to find out citramalate productivity from the stoichiometric model.
+
+% Part 4: pFBA and FVA -- this might even be section in its own right because... well they're not technically FBA
+
+% also add WHY you did this
+
+FVA (flux variability analysis) can be used to address the possibility that more than one solution can lead to the same optimal growth rate, or the same for any other objective function. It does so by maximising and minimising every reaction in a network.
+
+I applied the 41-dimension boundaries on the stoichiometric model in FVA and specified growth as the objective function to be maximised. Initially, I applied the loopless condition, which is more realistic \emph{in vivo}. The solver reported infeasibility or invalid bounds when this was performed when the desired fraction of optimum growth was set at values between 0.50 and 1. These errors also occured when citramalate production was set as the objective function. However, removing the loopless condition produced results for the fraction of 1.
+
+I then compared these results with FBA. In general, the bounds agree and the ranges from FVA tend to be narrow. Otherwise, most fluxes from FBA conform to the minimum or maximum value as found from FVA, with none being out of range. Specifically, 22 reactions have FBA fluxes equal to the minimum predicted by FVA, 32 reactions have FBA fluxes equal to the maximum predicted by FVA. Six reactions have FBA values at these fractions of the way between the minimum and maximum fluxes predicted by FVA: %admittedly this language is confusing but i'm tired
+\begin{itemize}
+\item THRD 42.30\%
+\item GLYAT 57.70\%
+\item THRAi 57.70\%
+\item FBA 72.90\%
+\item PFK 72.90\%
+  \item ADK1 85.96\%
+  \end{itemize}
+
+  Additonally, parsimonious FBA (pFBA) was used. pFBA is based on the principle that under exponential growth, there is selection for both fast-growing strains and strains that require the least enzyme mass for optimal growth. This is resolved by having the algorithm solve two sequential linear programs: one to optimise growth, and the other to minimise the overall flux through the metabolic network.
+
+  In this project, pFBA returns the same flux values as FBA, for all reactions and objective functions used up to this point.
 
 \section{Using information from the Lund medium}
 \label{sec:lund}
@@ -578,7 +628,7 @@ the exchange rate $R$ for that chemical species can be calculated as follows:
   R = \frac{\mu[X_{i}]}{OD_{600} \cdot Z}
 \]
 
-However, I was not able to obtain a reliable value for the OD\textsubscript{600} in the experiments described by \citet{orth_comprehensive_2011}, so I was not able to calculate definitive exchange rates (see issues in section~\ref{sec:issues}).
+However, I was not able to obtain a reliable value for the OD\textsubscript{600} in the experiments described by \citet{orth_comprehensive_2011}, so I was not able to calculate definitive exchange rates (see issues in section~\ref{sec:issues}). A potential value for OD\textsubscript{600} is 0.336 (SD = 0.0975), the OD\textsubscript{600} value with the highest frequency in the values from glucose M9 aerobic plate 1 \citep{orth_comprehensive_2011} that fit a normal distribution.
 
 As an alternative, I then specified the maximum exchange rates of the species present in the Lund medium by specifying lower bounds for exchange reactions in the stoichiometric model (except for EDTA).
 I fixed the bound for glucose exchange to -0.23 and to -10.0, and adjusted the bounds for all other exchange reactions accordingly to maintain the stoichiometries between species present in the medium.
@@ -844,6 +894,28 @@ after row = \bottomrule
 end table = {\end{tabularx}}
 ]{mapping_condensed.csv}
 \end{small}
+
+%% NOTE TO SELF: DO NOT ATTEMPT TO INCLUDE THE OBJECTIVE-EXERCISE BOUNDS HERE BECAUSE THERE ARE 2,000 ENTRIES IN THE CSV FILE
+
+% \section{Objective-exercise bounds}
+% \label{ap:41dbounds}
+
+% Here are the objective-exercise bounds. These bounds were obtained when I used the 41-dimension bounds to evaluate solutions for all reactions in the stoichiometric model in turn, both to maximise and to minimise flux through each reaction. The optimal minimum and optimal maximum values for each reaction formed the bounds shown here.
+
+% \pgfplotstabletypeset[
+% begin table = \begin{longtable},
+% col sep = comma,
+% display columns/0/.style={string type},
+% every head row/.style = {
+%   before row = \toprule,
+%   after row = \midrule
+% },
+% precision = 4,
+% every last row/.style = {
+% after row = \bottomrule
+% },
+% end table = \end{longtable}
+% ]{41dBoundaries-ori.csv}
 
 \section{Synergistic effects between reactions in the kinetic model}
 \label{ap:synergistic}
