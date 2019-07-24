@@ -506,6 +506,8 @@ Then, using the 41-dimension bounds, I used FBA to evaluate solutions for all re
 \section{Using information from the Lund medium}
 \label{sec:lund}
 
+In this section, I investigated how to use the composition of a fermentation medium to inform the choice of flux bounds for the stoichiometric model. The aim is to improve the recipe of the medium to optimise citramalate production, based on how the model predicts fluxes for exchange reactions involving specific chemical species.
+
 The patent WO 2015/022496 \citep{eastham_process_2015} describes a fermentation medium on p.79, for \emph{E. coli} BW25113 $\Delta$\emph{pflB}$\Delta$\emph{ldhA} transformed with pBAD24-\emph{cimA} to optimise production of (\emph{R})-citramalic acid:
 
 \begin{tabular}{lSr}
@@ -524,7 +526,7 @@ The patent WO 2015/022496 \citep{eastham_process_2015} describes a fermentation 
   \ce{Na2EDTA.2H2O} & 44.6 & mg L\textsuperscript{-1}
 \end{tabular}
 
-This medium is referred to as the `Lund medium' in this project. Each chemical species is present in the following amounts:
+This medium is referred to as the `Lund medium' in this project and is also investigated in the ConBioChem project. Each chemical species is present in the following amounts:
 
 \begin{tabular}{lS}
   Species & \multicolumn{1}{c}{Concentration (mM)}\\
@@ -547,16 +549,9 @@ This medium is referred to as the `Lund medium' in this project. Each chemical s
   \ce{Zn^{2+}} & 0.001252\\
 \end{tabular}
 
-To conform to the exchange reactions defined in the stoichiometric model, \ce{HPO4^{2-}} and \ce{H2PO4^-} were merged into one entry representing inorganic phosphates.
+To conform to the exchange reactions defined in the stoichiometric model, \ce{HPO4^{2-}} and \ce{H2PO4^-} were merged into one entry representing inorganic phosphates. The stoichiometric model lacks an exchange reaction for EDTA, so this species was ignored in subsequent examinations.
 
-I then specified the maximum exchange rates of these species by specifying lower bounds for exchange reactions in the stoichiometric model, with the exception of EDTA as it is not present in the model.
-I fixed the bound for glucose exchange to -0.23 and to -10.0, and adjusted the bounds for all other reactions accordingly to maintain the stoichiometries between species present in the Lund medium.
-% read Lund medium experiment notes again because I feel like I'm missing something here... there are leaps in logic
-Only the glucose and citrate exchange reactions had non-zero flux values in the optimal solution.
-
-When the exchange reactions for the species in the Lund medium were totally unbounded, glucose exchange was -11.13 and citrate exchange was -1.20, while flux though the citramalate synthesis reaction was predicted to be 1.1692 mM s\textsuperscript{-1}.
-
-In order to use the concentrations of the species present in the Lund medium to set the bounds of exchange reactions, rather than using the ratios alone, additional information is needed. Given:
+In order to use the concentrations of the species present in the Lund medium to set the bounds of exchange reactions, additional information is needed. Given:
 
 \begin{itemize}
 \item a concentration of a chemical species $[X_{i}]$
@@ -572,6 +567,14 @@ the exchange rate $R$ for that chemical species can be calculated as follows:
 \]
 
 However, I was not able to obtain a reliable value for the OD\textsubscript{600} in the experiments described by \citet{orth_comprehensive_2011}, so I was not able to calculate definitive exchange rates (see issues in section~\ref{sec:issues}).
+
+As an alternative, I then specified the maximum exchange rates of the species present in the Lund medium by specifying lower bounds for exchange reactions in the stoichiometric model (except for EDTA).
+I fixed the bound for glucose exchange to -0.23 and to -10.0, and adjusted the bounds for all other exchange reactions accordingly to maintain the stoichiometries between species present in the medium.
+% read Lund medium experiment notes again because I feel like I'm missing something here... there are leaps in logic
+
+I combined the one-dimension flux bounds with a glucose exchange bound of -0.23 and bounds for other exchange reactions to conserve ratios in a new set of bounds for FBA with the stoichiometric model. When a simulation was run using maximisation of citramalate productivity as an objective, it was predicted that uptake only occured for glucose (-0.23) and citrate (-0.00770). When glucose exchange was fixed to -0.68, uptake still only existed for these two species. Finally, when the exchange reactions for the species in the Lund medium were totally unbounded, glucose exchange was -11.13 and citrate exchange was -1.20, while flux though the citramalate synthesis reaction was predicted to be 1.1692 mM s\textsuperscript{-1}.
+
+%[Discussion: comment on how only these two]
 
 \chapter{Remarks}
 \label{ch:remarks}
