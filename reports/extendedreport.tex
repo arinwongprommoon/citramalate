@@ -393,8 +393,6 @@ The 41-dimension bounds were mostly wider than both one- and eight-dimension bou
 \section{Mapping reactions in the kinetic model to the stoichiometric model}
 \label{sec:mapping}
 
-%% Just fucking put my final map in
-
 Previously (before June 2018), an Anargyros who worked in this group produced a mapping table which mapped reactions in the kinetic model to reactions in the stoichiometric model. %Flux bounds were also included, but the method by which the bounds were generated had not been documented and no specific constraints had been used.
 I improved on this mapping table by correcting errors, re-defined relationships between kinetic and stoichiometric model reactions, re-calculated flux bounds, and reconciled differing sub-network structures between the two models.
 
@@ -484,9 +482,6 @@ As a result, I produced the following rules:
 \item Kinetic S7P\_E4P\_TAL = Stoich.\ TALA
   \item Kinetic F6P\_E4P\_TKT = Stoich.\ TKT2
 \end{itemize}
-
-%%[Probably move this to discussion]
-%All these mapping procedures suggest a potention general strategy or algorithm in reconciling two types of models that exhibit differences.
 
 \section{Flux balance analysis}
 \label{sec:fba}
@@ -648,7 +643,7 @@ I created an improved method of mapping reactions in the kinetic model to corres
 \subsection{Comparing citramalate yield predicted by the model to experimental data}
 \label{ssec:discussion-kinetic-experimental}
 
-The kinetic model predicts a 0.712 citramalate yield with the model supplemented with a citramalate synthesis reaction and otherwise unchanged $V_{max}$ values. This is within the same order of magnitude as values suggested by the ConBioChem project and \citet{wu_production_2016}. Specifically, ConBioChem proposed a yield of 0.2. \citet{wu_production_2016} suggests 0.63, but also specifies a 0.77 value for steady-state fermentation using a dilution rate of about 0.06 h\textsuperscript{h}, and a theoretical maximum yield of 0.82. These figures confirm the validity of the kinetic model.
+The kinetic model predicts a 0.712 citramalate yield with the model supplemented with a citramalate synthesis reaction and otherwise unchanged $V_{max}$ values. This is within the same order of magnitude as values suggested by the ConBioChem project and \citet{wu_production_2016}. Specifically, ConBioChem proposed a yield of 0.2. \citet{wu_production_2016} suggests 0.63, but also specifies a 0.77 value for steady-state fermentation using a dilution rate of about 0.06 h\textsuperscript{-1}, and a theoretical maximum yield of 0.82. These figures confirm the validity of the kinetic model.
 
 \subsection{One-reaction list}
 \label{ssec:discussion-kinetic-onereaction}
@@ -694,25 +689,26 @@ Additionally, there is an issue is with translating optimal $V_{max}$ values to 
 % With how wet-lab biology works it's probably going to be practically impossible to get exactly the $V_{max}$ stated (cloning, noise in gene expression, things being poorly characterised, etc) though.
 
 
-%% SEPARATE SECTION??
+%% SEPARATE SECTION?? ALSO NOT SURE IF IT EVEN SHOULD BE HERE AT ALL
 % Investigating glucose uptake:
-% (see evernote -- link between decoupling and glucose uptake from environment, how apply to lund)
+% The main text states that investigating glucose uptake was done to give insight between the intracellular and extracellular concentrations of glucose, and that this relationship is useful in determining the effects of a nutrient medium containing glucose on citramalate productivity. However, this was not really addressed in the Lund medium part of  the report.
 
 \section{Stoichiometric model}
 \label{sec:discussion-stoichiometric}
 
-%% TOPICS TO DISCUSS, IN BRIEF
+\subsection{Relationship between the kinetic and stoichiometric models}
+\label{ssec:discussion-stoichiometric-ks}
 
 % Unit conversion (Jorge proposed a different number apart from 6.372)
 
 % Boundaries for FBA:
-% How realistic \emph{in vivo} are the highest and lowest possible flux values?
-% This shows how useful differential evolution is, again
+The results suggest that kinetic model simulations are useful in informing the flux bounds for FBA on the stoichiometric model, and the differential evolution is a useful strategy to establish such flux bounds. Specifically, the 41-dimension bounds found by differential evolution were mostly wider and bounds found by individually varying $V_{max}$ values in the kinetic model.
+%[Move to `summary of discussion'] How realistic \emph{in vivo} are the highest and lowest possible flux values?
 
-% Mapping:
-% Suggests a general strategy for mapping and reconciling different structures in sub-networks, which can be streamlined later. Really, really useful thing to come out of this project as this may be applied to other models.
-% How valid is my strategy of reconciling different structures in sub-networks though?
+Additionally, mapping reactions in the kinetic model to the stoichiometric model suggest a general strategy for mapping reactions that have one-to-one correspondence, and reconciling different sub-network structures for reactions that do not. Such a strategy may be applied to models of other metabolic networks.
 
+\subsection{Flux balance analysis}
+\label{ssec:discussion-stoichiometric-fba}
 % Implications for fork between fluxes of growth and citramalate synthesis??
 
 % Analysing flux bounds, what are the implications?:
@@ -723,6 +719,9 @@ Additionally, there is an issue is with translating optimal $V_{max}$ values to 
 
 % FVA and pFBA:
 % Agree with FBA results. This means that these methods are concordant with FBA. Comment on FVA not being able to return results when the biologically relevant loopless condition is used (explain what the loopless condition is). Perhaps in the long run we can stick with FBA because it doesn't have these problems and because it takes less compuatational time.
+
+\subsection{Lund medium}
+\label{ssec:discussion-stoichiometric-lund}
 
 % Lund:
 % How does one get a reliable value for OD600?
