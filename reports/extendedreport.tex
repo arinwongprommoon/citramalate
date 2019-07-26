@@ -654,8 +654,24 @@ In support of this assertion, there are differences between the one-reaction lis
 Nevertheless, differential evolution shows that the one-reaction list is useful.
 Differential evolution was able to optimise parameters for citramalate production so that the yield was 36.1 times of that predicted by the wild-type model. This differential evolution used ten reactions from the top of the one-reaction list. In contrast, using reactions with the ten greatest flux control coefficients only increased the yield to 20.0 times of that predicted by the wild-type model.
 
-%% FROM OLD ISSUES SECTION --> is a bit out of place here!!
-Additionally, generating one-reaction plots\footnote{included in the result directories} (section~\ref{sec:onereac}) using flux through the citramalate synthesis reaction and growth as objective functions, in place of citramalate productivity called into question the validity of using flux through the citramalate synthesis reaction as a proxy for citramalate productivity in FBA. The shape of the plots of flux through citramalate synthesis (figure~\vref{fig:issues_citraflux} provides an example) differed a lot from that of citramalate productivity, and growth contributed more to the shape of the plots of citramalate productivity (figure~\vref{fig:issues_igrowth} shows such a plot, which can be compared to figure~\vref{fig:onereacsample}). I investigated the use of citramalate productivity as the objective function in FBA, but \texttt{cobra} was limited to linear functions. As citramalate productivity is expressed as the product of two functions that exist in the stoichiometric model, other packages such as CPLEX or Gurobi must be used. However, both are proprietary, though Gurobi offers a free licence for universities.
+Finally, I produced plots for each kinetic model reaction regarding the relationship between $V_{max}$ and flux through citramalate synthesis or growth.
+Plots for flux through citramalate synthesis (figure~\ref{fig:issues_citraflux}) had different shapes from plot for citramalate productivity (figure~\ref{fig:issues_igrowth}). Growth seemed to contribute more to the shape of the plots for citramalate productivity (figure~\ref{fig:onereacsample}). These observations call into question the validity of using flux through citramalate synthesis as a proxy for citramalate productivity in FBA.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.4]{issues_citraflux}
+  \caption{Relationship between PYK $V_{max}$ and flux through citramalate synthesis reaction}
+  \label{fig:issues_citraflux}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.4]{issues_igrowth}
+  \caption{Relationship between PYK $V_{max}$ and $\mathrm{iGROWTH}'$. iGROWTH is a species created to model growth in the kinetic model.}
+  \label{fig:issues_igrowth}
+\end{figure}
+
+With this in mind, citramalate productivity can be used as the objective function instead of flux through citramalate synthesis in the stoichiometric model. This would necessitate using libraries other than \texttt{cobra}, which is restricted to linear functions. CPLEX and Gurobi are potential alternatives, but are not appropriate with a function that is not convex. Another alternative would be the use of flexible nets \citep{julvez_handling_2018}, which can also address uncertainties in the model.
 
 %% SEPARATE SECTION??
 % Species that break the steady-state threshold: comment on WHY I think they do
