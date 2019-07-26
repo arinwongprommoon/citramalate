@@ -697,9 +697,6 @@ Variants of the differential evolution algorithm used in the project exist in th
 It remains to be seen how applicable the optimal $V_{max}$ values are to bacterial cultures. Optimal $V_{max}$ values for some reactions are at 0.1 $V_{max}$, at the limit, which could indicate the activity of the corresponding enzyme should be minimised. Gene knockout studies preformed on the \emph{E. coli} MG1655 CimA3.7 mutant grown on XC growth medium suggest that the key knockout to optimise citramalate productivity is \emph{gltA} corresponding to citrate synthase \citep{wu_production_2016}. This agrees with the previous assertion; in support, GLT is second on the one-reaction list (after CITRA\_SYN) and consistently had its $V_{max}$ minimised in differential evolution. However, \citet{wu_production_2016} also suggest that \emph{ackA} (ACK/ACKr), \emph{acs} (ACS/ACS), \emph{pta} (PTA/PTAr), and \emph{poxB} are key reactions to be knocked out to optimise citramalate production, but these reactions are very low in the one-reaction list.
 
 Additionally, there is an issue is with translating optimal $V_{max}$ values to enzyme concentrations and appropriate gene expression control. 
-%[Move the following to `summary of discussion' part I plan to write at the end of the discussion]
-% With how wet-lab biology works it's probably going to be practically impossible to get exactly the $V_{max}$ stated (cloning, noise in gene expression, things being poorly characterised, etc) though.
-
 
 %% SEPARATE SECTION?? ALSO NOT SURE IF IT EVEN SHOULD BE HERE AT ALL
 % Investigating glucose uptake:
@@ -717,8 +714,7 @@ Additionally, there is an issue is with translating optimal $V_{max}$ values to 
 % Unit conversion (Jorge proposed a different number apart from 6.372)
 
 % Boundaries for FBA:
-The results suggest that kinetic model simulations are useful in informing the flux bounds for FBA on the stoichiometric model, and the differential evolution is a useful strategy to establish such flux bounds. Specifically, the 41-dimension bounds found by differential evolution were mostly wider and bounds found by individually varying $V_{max}$ values in the kinetic model.
-%[Move to `summary of discussion'] How realistic \emph{in vivo} are the highest and lowest possible flux values?
+The results suggest that kinetic model simulations are useful in informing the flux bounds for FBA on the stoichiometric model, and the differential evolution is a useful strategy to establish such flux bounds. Specifically, the 41-dimension bounds found by differential evolution were mostly wider and bounds found by individually varying $V_{max}$ values in the kinetic model. However, it remains to be seen how realistic \emph{in vivo} are the highest and lowest possible flux values are.
 
 Additionally, mapping reactions in the kinetic model to the stoichiometric model suggest a general strategy for mapping reactions that have one-to-one correspondence, and reconciling different sub-network structures for reactions that do not. Such a strategy may be applied to models of other metabolic networks.
 
@@ -726,7 +722,6 @@ Additionally, mapping reactions in the kinetic model to the stoichiometric model
 \label{ssec:discussion-stoichiometric-fba}
 
 Flux balance analysis using 41-dimension bounds predicted an optimum solution of 0.2922 mM s\textsuperscript{-1} for citramalate production. This corresponds to 458.57 h\textsuperscript{-1} using the units of the kinetic model, greater than any productivity found by differential evolution so far, demonstrating the utility of the stoichiometric model. However, flux balance analysis also suggested a fork between the growth and citramalate synthesis reactions, as evidenced by how optimising one excludes flux through the other. Alternatively, this phenomenon could be explained by how the fluxes of these reactions are not bounded, but this explanation is not realistic \emph{in vivo}. This observation may hold important implications in optimising citramalate productivity in culture -- growth must be taken into account.
-% Implications for fork between fluxes of growth and citramalate synthesis?? --> link/mention this in the end section where i tie this to real-life applications
 
 Analysis of the objective-exercise bounds covered flux ranges, reaction reversibility, and activity of reactions.
 Having most flux bounds being near zero is expected for a large genome-scale metabolic model, suggesting regulation.
@@ -743,6 +738,10 @@ There were issues with working out FBA bounds from the composition of the Lund m
 
 \section{Applications}
 \label{sec:discussion-applications}
+
+Translating findings from this project to \emph{in vivo} applications faces some challenges. Even if a combination of $V_{max}$ values that would optimise citramalate productivity can be found, obtaining such $V_{max}$ values \emph{in vivo} will take into consideration the biological variability in gene expression and may be hindered by poorly-characterised genes.
+
+Additionally, this project has demonstrated a strategy to use flux limits from the kinetic model and reaction mapping to enrich the stoichiometric model. Subsequently, FBA seems useful in optimising productivity, especially with flux bound qualities agreeing with \emph{in vivo} qualities. Validity can be improved if citramalate productivity is used as the objective rather than flux through citramalate synthesis. However, this project has so far not been sucessful in extending this to study the effect of nutrient medium composition on metabolic models.
 
 % \section{Future direction and suggestions}
 % \label{sec:future}
@@ -981,10 +980,10 @@ end table = {\end{tabularx}}
 % end table = \end{longtable}
 % ]{41dBoundaries-ori.csv}
 
-\section{Synergistic effects between reactions in the kinetic model}
-\label{ap:synergistic}
+% \section{Synergistic effects between reactions in the kinetic model}
+% \label{ap:synergistic}
 
-I investigated whether there were synergistic effects between reactions by investigating reactions adjacent to each other, starting from the glycolytic pathway. No effects were observed for PGI and PFK, and a slight synergistic effect was observed for GPM and ENO. Between FBA and GDH, FBA exerts too little effect for the results to be conclusive. In contrast, ACEA and ACEB exhibit \emph{antagonistic} effects, and LPD and GDH, a pair of enzymes far apart from each other in the network seem to have a synergistic effect. Whether there were synergistic effects between reactions remains inconclusive. My investigations are in \texttt{kinetic/result/couples/Adjacent/Adjacent.txt}.
+% I investigated whether there were synergistic effects between reactions by investigating reactions adjacent to each other, starting from the glycolytic pathway. No effects were observed for PGI and PFK, and a slight synergistic effect was observed for GPM and ENO. Between FBA and GDH, FBA exerts too little effect for the results to be conclusive. In contrast, ACEA and ACEB exhibit \emph{antagonistic} effects, and LPD and GDH, a pair of enzymes far apart from each other in the network seem to have a synergistic effect. Whether there were synergistic effects between reactions remains inconclusive. My investigations are in \texttt{kinetic/result/couples/Adjacent/Adjacent.txt}.
 
 \printbibliography
 
