@@ -668,29 +668,34 @@ Differential evolution was able to optimise parameters for citramalate productio
 %% FROM OLD ISSUES SECTION --> is a bit out of place here!!
 Additionally, generating one-reaction plots\footnote{included in the result directories} (section~\ref{sec:onereac}) using flux through the citramalate synthesis reaction and growth as objective functions, in place of citramalate productivity called into question the validity of using flux through the citramalate synthesis reaction as a proxy for citramalate productivity in FBA. The shape of the plots of flux through citramalate synthesis (figure~\vref{fig:issues_citraflux} provides an example) differed a lot from that of citramalate productivity, and growth contributed more to the shape of the plots of citramalate productivity (figure~\vref{fig:issues_igrowth} shows such a plot, which can be compared to figure~\vref{fig:onereacsample}). I investigated the use of citramalate productivity as the objective function in FBA, but \texttt{cobra} was limited to linear functions. As citramalate productivity is expressed as the product of two functions that exist in the stoichiometric model, other packages such as CPLEX or Gurobi must be used. However, both are proprietary, though Gurobi offers a free licence for universities.
 
+%% SEPARATE SECTION??
 % Species that break the steady-state threshold: comment on WHY I think they do
 % ATP_MAINTENANCE/ATP_syn and BPG/OAA -- can these be ignored owing to the strange behaviour of the reactions? What roles do BPG and OAA play?
 % GLCx and GLCp -- significant because glucose
 % However it should be noted that the threshold was only broken when $V_{max}$ was at 0.1, a value unused later because it is in the `small' range that causes problems. Perhaps there is no need to worry about the species that break the threshold after all.
 
-% Differential evolution is useful:
-% - Agrees with heatmaps
-% - Produces greater productivity
-% - resolves complications that (may) be introduced by inflection points
+\subsection{Differential evolution}
+\label{ssec:discussion-kinetic-de}
+
+The results suggest that differential evolution is a useful genetic evolution algorithm to search for a combination of reaction $V_{max}$ values that maximise citramalate productivity. The maxima found in differential evolution agree with heatmaps, and seem to resolve complications that may be introduced by inflection points in the one-reaction plots. Importantly, using differential evolution predicted higher productivity than using one-reaction plots alone: using seven reactions from the one-reaction list, differential evolution predicted 1.56 times as much productivity compared to using the one-reaction plots.
+
+Nevertheless, differential evolution has the `curse of dimensionality' as a limitation, and there are difficulties in finding optimal algorithm parameters for differential evolution.
+
+The `curse of dimensionality' refers to the fact that, with an increasing number of dimensions, the difficulty of finding the optimal solution increases exponentially \cite{mier_small_2017}. The `curse' was reflected in the increased computation time and difficulty in reaching convergence when sets with more reactions were used. This was exacerbated with the memory leak in \texttt{roadrunner.RoadRunner()} and contributions from \texttt{libsbml.write-SBMLToString()}, both of which had a large impact on the project as almost all scripts relied on them. Specifically, with \texttt{roadrunner}, memory could only be released when the Python program ends, and the model object must be passed into the simulation via a string intermediate instead of directly.
+
+However, both optimisation of citramalate production and investigating glycolytic enzymes demonstrate that including few reactions can be sufficient. Specifically, with using glycolytic enzymes, adding reactions lower on the one-reactin list had little effec on citramalate productivity. This suggested that not all reactions in a network have to be included in differential evolution to produce valid results. The conclusion is beneficial as it reduces computation time needed to optimise citramalate productivity, and partically circuments the memory leak described earlier.
+
+Variants of the differential evolution algorithm used in the project exist in the \texttt{scipy} and \texttt{pygmo} modules. These alternatives can use strategies other than \texttt{rand/1/bin} and can carry out self-optimisation of parameters. Furthermore, they can perform dithering on $F$, which was shown to improve convergence \citep{storn_usage_1996}. However, these alternatives took longer to compute and even exacerbated the memory leak problem, using up more memory for each iteration, presumably because they called the objective function more times. As they are black-box optimisation methods, I was unable to probe into the problem or improve on the algorithms.
+
 % Other genetic algorithms? Why use differential evolution in particular? Please address this.
 
-% Limitation of differential evolution: curse of dimensionality, but both optimisation of citramalate production and glycolytic enzyme exercises demonstrate that there isn't much need to add reactions down the list (thus also confirming that the one-reaction plots are useful)
+It remains to be seen how applicable the optimal $V_{max}$ values are to bacterial cultures. Optimal $V_{max}$ values for some reactions are at 0.1 $V_{max}$, at the limit, which could indicate the activity of the corresponding enzyme should be minimised
+Otherwise, the issue is with translating optimal $V_{max}$ values to enzyme concentrations and appropriate gene expression control.
+%[Move this to `summary of discussion' part I plan to write at the end of the discussion]
+% With how wet-lab biology works it's probably going to be practically impossible to get exactly the $V_{max}$ stated (cloning, noise in gene expression, things being poorly characterised, etc) though.
 
-% Finding optimal parameters for differential evolution:
-% Rather than using the values in the table, dithering or black-box optimisation can be used (and yes, I have tried). However, the memory leak gets in the way of this, plus black-box optimisation. Arguably a thorough investigation of all methods to optimise differential evolution parameters may not be needed or may be useless -- these parameters depend wildly on the number of reactions or the functions, so it would be difficult anyway. Perhaps a general guideline may be more useful, but this is beyond the scope of this project -- let the people who study differential evolution in its own right take care of this.
 
-% How applicable are the optimal $V_{max}$ values to real life? (this can be right at the end of this section):
-% Some of them are 0.1 $V_{max}$, at the limit. Maybe this just indicates that enzyme activity should be minimised?
-% Otherwise, the issue is with translating optimal %V_{max}% to enzyme concentration to gene expression control. With how wet-lab biology works it's probably going to be practically impossible to get exactly the $V_{max}$ stated (cloning, noise in gene expression, things being poorly characterised, etc) though.
-
-% Glycolytic enzymes
-%[Add a little `primer' to remind people of results] This suggested that not all reactions in a network have to be included in differential evolution to produce valid results. The conclusion is beneficial as it reduces computation time needed to optimise citramalate productivity.
-
+%% SEPARATE SECTION??
 % Investigating glucose uptake:
 % (see evernote -- link between decoupling and glucose uptake from environment, how apply to lund)
 
