@@ -105,8 +105,8 @@ The stoichiometric model contains 2,584 reactions, and I mapped 57 to their equi
 In a similar vein to the kinetic model, a 2,585th reaction for citramalate production was added to the stoichiometric model using the \texttt{cobra} module in Python. This reaction contains the same information as the reaction added to the kinetic model except for the kinetic law, which is normally absent from stoichiometric models. In addition to the citramalate synthesis reaction, a sink reaction to allow citramalate to leave the system was also added.
 Fluxes through reactions in the stoichiometric model was investigated using flux balance analysis, or FBA \citep{orth_what_2010}, and FBA simulations employed the \texttt{cobra} module in Python \citep{ebrahim_cobrapy:_2013}.
 
-% [This might be more appropriate in the discussion; it is an important part of the project and it does relate the two models, but it seems out of place in an otherwise `expository' introduction.]
-It should be noted that fluxes are in mM s\textsuperscript{-1} in the kinetic model, while they are mmol g\textsubscript{DW}\textsuperscript{-1} h\textsuperscript{-1} in the stoichiometric model. Using the cell volume of \num{1.77e-3} L g\textsubscript{DW}\textsuperscript{-1} as specified in the kinetic model, I worked out that converting units from the kinetic model to the stoichiometric model involves multiplying by 6.372. Because the stoichiometric model does not have information about enzyme kinetics, the values associated with the kinetic model (with kinetic model units) can be used with the structure of the stoichiometric model without any adjustments.
+% [This might be more appropriate in the discussion; it is an important part of the project and it does relate the two models, but it seems out of place in an otherwise `expository' introduction. If this is moved to the discussion, I might comment on using different values for the ratio between cell dry weight and cell volume, but I honestly don't think it's important enough to deserve a mention]
+The kinetic and stoichiometric models use different units. It should be noted that fluxes are in mM s\textsuperscript{-1} in the kinetic model, while they are mmol g\textsubscript{DW}\textsuperscript{-1} h\textsuperscript{-1} in the stoichiometric model. Using the cell volume of \num{1.77e-3} L g\textsubscript{DW}\textsuperscript{-1} as specified in the kinetic model, I worked out that converting values from the kinetic model to the stoichiometric model involves multiplying by 6.372. Because the stoichiometric model does not have information about enzyme kinetics, the values associated with the kinetic model (with kinetic model units) can be used with the structure of the stoichiometric model without any adjustments.
 
 \chapter{Investigating the kinetic model}
 \label{ch:kinetic}
@@ -133,14 +133,10 @@ The citramalate yield alone, $Y_{P/S}$ (i.e. mass of citramalate divided by mass
 
 Some reactions exhibited greater changes in citramalate productivity as $V_{max}$ was changed. I quantified these effects based on the data points from varying $V_{max}$ values over the 0.5 -- 2.0 $V_{max}$ range: I took the difference between the maximum and minimum productivity values obtained over the range. Using these difference values, I ordered the reactions into a list I term the `one-reaction list' (appendix~\ref{ap:onereactionlist})
 
-The one-reaction list identified CITRA\_SYN, GLT, LPD, GROWTH, ATP\_MAINTENANCE, GDH, ATP\_SYN, ACEA, PYK, and ZWF as the reactions that had the greatest effects on citramalate productivity. %[Move this to discussion or something] \citet{millard_metabolic_2017} listed CYTBO, ZWF, GDH, GLT, and GROWTH as the reactions found to have the largest shares of flux control. They also exert the strongest controls on concentration. These reactions are followed by LPD, ATP\_MAINTENANCE, ACEA, ATP\_SYN, and PYK.
-
-Enzymes that have the largest shares of flux control as noted by \citet{millard_metabolic_2017} showed the largest effects on citramalate productivity. However, CYTBO had less effect on productivity as would be expected by this explanation. Although PYK did not exert much control over fluxes as would be expected from its large flux control coefficient, it had a large effect on citramalate productivity. %[Move this to discussion] Possibly it was because the citramalate reaction used up pyruvate and because PYK is a control point in glycolysis.
-
+The one-reaction list identified CITRA\_SYN, GLT, LPD, GROWTH, ATP\_MAINTENANCE, GDH, ATP\_SYN, ACEA, PYK, and ZWF as the reactions that had the greatest effects on citramalate productivity.
 The exchange reactions (XCH\_ACE, XCH\_GLC, and XCH\_P) had no bearing on productivity as all the data points in their plots could be attributed to noise. Surprisingly the reactions that directly concern acetyl CoA, ACS, ACK, and PTA did not seem to have conspicuous bearings on productivity.
 
 While citramalate productivity was mostly either an increasing or a decreasing function as $V_{max}$ increased, some reactions exhibited inflection points (table~\ref{tab:inflection}), which could potentially complicate finding $V_{max}$ combinations to optimise citramalate productivity.
-% Significance of this?? -- comment that it has the potential to complicate finding Vmax combinations to optimise productivity, but then was sort of resolved by DE at the end --> DISCUSSION
 
 \begin{table}[h]
   \caption{Reactions that exhibited inflection points in citramalate productivity as a function of $V_{max}$, values listed are the values at inflection points}
@@ -342,8 +338,6 @@ Using all 41 biologically relevant reactions that have $V_{max}$ as a parameter 
 
 I investigated how much adding reactions as additional dimensions in differential evolution affects the use of the algorithm to optimise citramalate productivity. I used differential evolution in a similar fashion as earlier, but on the glycolytic enzymes that are arranged in a linear fashion --  PGI, PFK, FBA, GDH, PGK, GPM, ENO, PYK, and PDH. Adding enzymes lower on the one-reaction list had little effect on the optimum $V_{max}$ values found earlier, and did not cause large improvements in productivity.
 Specifically, using five reactions -- PGI, GDH, ENO, PYK, and PDH -- resulted in the greatest productivity of \num{269.72e-4} h\textsuperscript{-1} (20 iterations). Adding PFK (23rd on the one-reaction list), FBA (29th), and GPM (25th) returned \num{290.04} h\textsuperscript{-1} ($D$ = 8, $F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, 50 iterations). Finally, when PGK (44th) was added, the simulations never managed to achieve a productivity greater than the previous.
-
-%[Move this sentence to the discussion] This suggested that not all reactions in a network have to be included in differential evolution to produce valid results. The conclusion is beneficial as it reduces computation time needed to optimise citramalate productivity.
 
 \section{Investigating glucose uptake}
 \label{sec:glucoseuptake}
@@ -651,16 +645,28 @@ I created an improved method of mapping reactions in the kinetic model to corres
 %% TOPICS TO DISCUSS, IN BRIEF (in addtion to what has already been discussed)
 %% Rationale: summarise what I've learnt, what this means, and any caveats (OCDC!)
 
+\subsection{Comparing citramalate yield predicted by the model to experimental data}
+\label{ssec:discussion-kinetic-experimental}
+
 % 0.712 citramalate yield compared to 0.2 of ConBioChem and 0.77 of Wu and Etiman:
 % This shows that the model(s) predict a yield that is in the range of real life, giving legitimacy points to our model(s)
 % Further discussion of Wu and Etiman (as per my notes) and link them to the one-reaction findings in my project
 
-% Validity of the one-reaction list:
-% 0.5-2.0 range is arbitrary, but we need some sort of range. Using FCC list is not appropriate as we want to prioritise citramalate production. This is supported by the differences between the one-reaction list and the FCC list. In any case, DE demonstrates the utility of the one-reaction list, and DE on 41 reactions shows that you can do away with it if you like.
+\subsection{One-reaction list}
+\label{ssec:discussion-kinetic-onereaction}
 
-% Explaining differences between one-reaction list and FCC list: exchange reactions, reactions that directly concern AcCoA, etc.
+The one-reaction list has caveats. The method I used to evaluate how much effect varying $V_{max}$ of each reaction had on citramalate productivity had no real statistical basis, and the 0.5 -- 2.0 $V_{max}$ range was arbitrary. However, regression did not appear to be informative (data not shown).
 
-% Inflection points: can complicate heatmaps and DE, but it is later shown that it really doesn't
+Using a list based on flux control coefficients, as devised by \citet{millard_metabolic_2017}, is an alternative. However, such a list may not be appropriate as the reactions would be sorted by how much control they have over the metabolic network as a whole, and not by effect on citramalate synthetsis.
+
+In support of this assertion, there are differences between the one-reaction list and a list of reactions sorted by their flux control coefficients.
+\citet{millard_metabolic_2017} lists CYTBO, ZWF, GDH, GLT, and GROWTH as the reactions found to have the largest shares of flux control. These reactions are followed by LPD, ATP\_MAINTENANCE, ACEA, ATP\_SYN, and PYK. From this, most enzymes that have the largest shares of flux control showed the largest effects on citramalate productivity. However, CYTBO had less effect on productivity as would be expected by this explanation. Although PYK did not exert much control over fluxes as would be expected from its large flux control coefficient, it had a large effect on citramalate productivity. Possibly it was because the citramalate reaction used up pyruvate and because PYK is a control point in glycolysis.
+
+Nevertheless, differential evolution shows that the one-reaction list is useful.
+Differential evolution was able to optimise parameters for citramalate production so that the yield was 36.1 times of that predicted by the wild-type model. This differential evolution used ten reactions from the top of the one-reaction list. In contrast, using reactions with the ten greatest flux control coefficients only increased the yield to 20.0 times of that predicted by the wild-type model.
+
+%% FROM OLD ISSUES SECTION --> is a bit out of place here!!
+Additionally, generating one-reaction plots\footnote{included in the result directories} (section~\ref{sec:onereac}) using flux through the citramalate synthesis reaction and growth as objective functions, in place of citramalate productivity called into question the validity of using flux through the citramalate synthesis reaction as a proxy for citramalate productivity in FBA. The shape of the plots of flux through citramalate synthesis (figure~\vref{fig:issues_citraflux} provides an example) differed a lot from that of citramalate productivity, and growth contributed more to the shape of the plots of citramalate productivity (figure~\vref{fig:issues_igrowth} shows such a plot, which can be compared to figure~\vref{fig:onereacsample}). I investigated the use of citramalate productivity as the objective function in FBA, but \texttt{cobra} was limited to linear functions. As citramalate productivity is expressed as the product of two functions that exist in the stoichiometric model, other packages such as CPLEX or Gurobi must be used. However, both are proprietary, though Gurobi offers a free licence for universities.
 
 % Species that break the steady-state threshold: comment on WHY I think they do
 % ATP_MAINTENANCE/ATP_syn and BPG/OAA -- can these be ignored owing to the strange behaviour of the reactions? What roles do BPG and OAA play?
@@ -670,6 +676,7 @@ I created an improved method of mapping reactions in the kinetic model to corres
 % Differential evolution is useful:
 % - Agrees with heatmaps
 % - Produces greater productivity
+% - resolves complications that (may) be introduced by inflection points
 % Other genetic algorithms? Why use differential evolution in particular? Please address this.
 
 % Limitation of differential evolution: curse of dimensionality, but both optimisation of citramalate production and glycolytic enzyme exercises demonstrate that there isn't much need to add reactions down the list (thus also confirming that the one-reaction plots are useful)
@@ -680,6 +687,9 @@ I created an improved method of mapping reactions in the kinetic model to corres
 % How applicable are the optimal $V_{max}$ values to real life? (this can be right at the end of this section):
 % Some of them are 0.1 $V_{max}$, at the limit. Maybe this just indicates that enzyme activity should be minimised?
 % Otherwise, the issue is with translating optimal %V_{max}% to enzyme concentration to gene expression control. With how wet-lab biology works it's probably going to be practically impossible to get exactly the $V_{max}$ stated (cloning, noise in gene expression, things being poorly characterised, etc) though.
+
+% Glycolytic enzymes
+%[Add a little `primer' to remind people of results] This suggested that not all reactions in a network have to be included in differential evolution to produce valid results. The conclusion is beneficial as it reduces computation time needed to optimise citramalate productivity.
 
 % Investigating glucose uptake:
 % (see evernote -- link between decoupling and glucose uptake from environment, how apply to lund)
