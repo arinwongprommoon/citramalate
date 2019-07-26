@@ -507,11 +507,7 @@ Using the mapping rules described in section~\ref{sec:mapping}, I prepared bound
 \end{table}
 
 % NEW: FBA failing on growth
-FBA applied on the stoichiometric model using default bounds predicts zero growth if citramalate flux is maximised and predicts zero citramalate flux if growth is maximised. In other words, the solution of FBA diverts all the incoming flux either towards growth or towards citramalate production, depending on the objective function.
-% [This sentence can be moved to the discussion]
-This is likely because of a fork between the fluxes of the growth and citramalate synthesis reactions. The other reason is that the fluxes of these reactions are not bounded, but this is not realistic \emph{in vivo}.
-
-As the stoichiometric model does not incorporate concentrations of chemical species, there is no way to find out citramalate productivity from the stoichiometric model.
+FBA applied on the stoichiometric model using default bounds predicts zero growth if citramalate flux is maximised and predicts zero citramalate flux if growth is maximised. In other words, the solution of FBA diverts all the incoming flux either towards growth or towards citramalate production, depending on the objective function. As the stoichiometric model does not incorporate concentrations of chemical species, there is no way to find out citramalate productivity from the stoichiometric model.
 
 Then, using the 41-dimension bounds, I used FBA to evaluate solutions for all reactions in the stoichiometric models in turn, both to maximise and to minimise flux through each reaction. The optimal minimum and optimal maximum values for each reaction that were returned were then used as a new set of flux bounds -- the `objective-exercise bounds' (data not shown). I used these bounds for a subsequent round of FBA, and I obtained the solution of 0.2922 mM s\textsuperscript{-1}. This work completes using flux bounds found from the kinetic model to create more restrictive bounds for the stoichiometric model for FBA by extending it to all reactions in the stoichiometric model.
 
@@ -709,16 +705,17 @@ Additionally, mapping reactions in the kinetic model to the stoichiometric model
 
 \subsection{Flux balance analysis}
 \label{ssec:discussion-stoichiometric-fba}
-% Implications for fork between fluxes of growth and citramalate synthesis??
 
-% Analysing flux bounds, what are the implications?:
-% - Upper bound = lower bound -> flux fixed to one possible value, represents regulation? There are quite a lot of reactions (912) that are like this, which reactions are they? Why do you think they are this way?
-% - `Fake reversible' -> does this mean a different way of looking at the reactions? Some of these have been established as reversible in studies on thermodynamics. Does this suggest a flaw in the model or a flaw in our reasoning to determine reactions that are not truly reversible?
-% - Why are ATPS4rpp and GLCtex forced to be active? What do they do?
-% - Say that is `not surprising' that a lot of transport reactions are forced to be active.
+Flux balance analysis using 41-dimension bounds predicted an optimum solution of 0.2922 mM s\textsuperscript{-1} for citramalate production. This corresponds to 458.57 h\textsuperscript{-1} using the units of the kinetic model, greater than any productivity found by differential evolution so far, demonstrating the utility of the stoichiometric model. However, flux balance analysis also suggested a fork between the growth and citramalate synthesis reactions, as evidenced by how optimising one excludes flux through the other. Alternatively, this phenomenon could be explained by how the fluxes of these reactions are not bounded, but this explanation is not realistic \emph{in vivo}. This observation may hold important implications in optimising citramalate productivity in culture -- growth must be taken into account.
+% Implications for fork between fluxes of growth and citramalate synthesis?? --> link/mention this in the end section where i tie this to real-life applications
 
-% FVA and pFBA:
-% Agree with FBA results. This means that these methods are concordant with FBA. Comment on FVA not being able to return results when the biologically relevant loopless condition is used (explain what the loopless condition is). Perhaps in the long run we can stick with FBA because it doesn't have these problems and because it takes less compuatational time.
+Analysis of the objective-exercise bounds covered flux ranges, reaction reversibility, and activity of reactions.
+Having most flux bounds being near zero is expected for a large genome-scale metabolic model, suggesting regulation.
+Investigating reversibility based on flux values correctly identified reactions established in the literature as irreversible; 19 reactions identified as reversible in the SBML model were only included in the 130 reactions deemed irreversible because they had a lower bound or an upper bound equal to zero.
+Identifying reactions whose fluxes are forced to be non-zero identified ATP synthase as being constantly active, and identified 281 reactions with negative flux bounds, many of which are transport reactions. These observations would be expected for a cell's self-maintenance.
+Thus, these findings confirm the validity of the 41-dimension flux bounds in the context of \emph{E. coli} \emph{in vivo}.
+
+Finally, FVA and pFBA results are in agreement with that of FBA. This means that these methods are concordant with FBA. Standard FVA may contain high absolute flux values that can only be high if they participate in loops, which are a mathematical artefact that cannot occur \emph{in vivo}. However, using the loopless condition in \texttt{cobra} when performing FVA resulting in the algorithm unable to return results. Ultimately, with our investigations, it may be sufficient to continue using FBA as it does not have such problems and takes less computational time.
 
 \subsection{Lund medium}
 \label{ssec:discussion-stoichiometric-lund}
