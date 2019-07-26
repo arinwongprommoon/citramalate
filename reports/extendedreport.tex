@@ -648,9 +648,7 @@ I created an improved method of mapping reactions in the kinetic model to corres
 \subsection{Comparing citramalate yield predicted by the model to experimental data}
 \label{ssec:discussion-kinetic-experimental}
 
-% 0.712 citramalate yield compared to 0.2 of ConBioChem and 0.77 of Wu and Etiman:
-% This shows that the model(s) predict a yield that is in the range of real life, giving legitimacy points to our model(s)
-% Further discussion of Wu and Etiman (as per my notes) and link them to the one-reaction findings in my project
+The kinetic model predicts a 0.712 citramalate yield with the model supplemented with a citramalate synthesis reaction and otherwise unchanged $V_{max}$ values. This is within the same order of magnitude as values suggested by the ConBioChem project and \citet{wu_production_2016}. Specifically, ConBioChem proposed a yield of 0.2. \citet{wu_production_2016} suggests 0.63, but also specifies a 0.77 value for steady-state fermentation using a dilution rate of about 0.06 h\textsuperscript{h}, and a theoretical maximum yield of 0.82. These figures confirm the validity of the kinetic model.
 
 \subsection{One-reaction list}
 \label{ssec:discussion-kinetic-onereaction}
@@ -689,9 +687,10 @@ Variants of the differential evolution algorithm used in the project exist in th
 
 % Other genetic algorithms? Why use differential evolution in particular? Please address this.
 
-It remains to be seen how applicable the optimal $V_{max}$ values are to bacterial cultures. Optimal $V_{max}$ values for some reactions are at 0.1 $V_{max}$, at the limit, which could indicate the activity of the corresponding enzyme should be minimised
-Otherwise, the issue is with translating optimal $V_{max}$ values to enzyme concentrations and appropriate gene expression control.
-%[Move this to `summary of discussion' part I plan to write at the end of the discussion]
+It remains to be seen how applicable the optimal $V_{max}$ values are to bacterial cultures. Optimal $V_{max}$ values for some reactions are at 0.1 $V_{max}$, at the limit, which could indicate the activity of the corresponding enzyme should be minimised. Gene knockout studies preformed on the \emph{E. coli} MG1655 CimA3.7 mutant grown on XC growth medium suggest that the key knockout to optimise citramalate productivity is \emph{gltA} corresponding to citrate synthase \citep{wu_production_2016}. This agrees with the previous assertion; in support, GLT is second on the one-reaction list (after CITRA\_SYN) and consistently had its $V_{max}$ minimised in differential evolution. However, \citet{wu_production_2016} also suggest that \emph{ackA} (ACK/ACKr), \emph{acs} (ACS/ACS), \emph{pta} (PTA/PTAr), and \emph{poxB} are key reactions to be knocked out to optimise citramalate production, but these reactions are very low in the one-reaction list.
+
+Additionally, there is an issue is with translating optimal $V_{max}$ values to enzyme concentrations and appropriate gene expression control. 
+%[Move the following to `summary of discussion' part I plan to write at the end of the discussion]
 % With how wet-lab biology works it's probably going to be practically impossible to get exactly the $V_{max}$ stated (cloning, noise in gene expression, things being poorly characterised, etc) though.
 
 
