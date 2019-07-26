@@ -54,13 +54,13 @@
 
 \begin{abstract}
 
-  % REWRITE ABSTRACT AFTER I WRITE DISCUSSION
+    Genetically modified \emph{E. coli} can be used to synthesise chemicals of industrial interest. For example, strains possessing citramalate synthase can produce citramalate ((2\emph{S})-2-hydroxy-2-methylbutanedioate), a precursor for the production of plastics.
+  This project used modelling approaches to find conditions that maximise the production of citramalate. The kinetic model described by \citet{millard_metabolic_2017} and the stoichiometric model described by \citet{orth_comprehensive_2011}, both for \emph{E. coli} metabolism, were extended by adding a reaction that produced citramalate from acetyl coenzyme A and pyruvate.
   
-  This project used modelling approaches to find conditions that maximise the production of citramalate. The kinetic model described by \citet{millard_metabolic_2017} and the stoichiometric model described by \citet{orth_comprehensive_2011}, both for \emph{E. coli} metabolism, were extended by adding a reaction that produced citramalate from acetyl coenzyme A and pyruvate. \emph{E. coli} was chosen as the model organism as its metabolism is very well characterised in the literature. The project employed Python and libraries specific to genetic algorithms, modelling, and manipulating information presented in SBML (systems biology markup language).
+  First, the effect of $V_{max}$ values of reactions in the kinetic model on productivity of citramalate was investigated. The differential evolution genetic algorithm was employed to compute the set of $V_{max}$ values of reactions that optimises the production of citramalate, assuming Michaelis-Menten kinetics. Differential evolution optimised $V_{max}$ combinations for ten reactions determined to have the greatest effects on citramalate productivity (CITRA\_SYN, GLT, LPD, GDH, ATP\_syn, ACEA, PYK, ZWF, NDHII, and MQO), predicting the productivity of \num{405.5e-4} h\textsuperscript{-1}.
+
+  In the second part of the project, information from the kinetic model was used to enrich the stoichiometric model. The possible values of fluxes through each reaction were used to set the bounds for each reaction in the stoichiometric model. A strategy of mapping reactions from the kinetic model to the stoichiometric model was devised. Flux balance analysis (FBA) was then performed to evaluate the highest possible flux through the citramalate-producing reaction as a proxy for citramalate productivity. This achieved an optimum solution of 0.2922 mM s\textsuperscript{-1}, and subsequent analysis of flux bounds saw concordance with what is expected \emph{in vivo}. Finally, composition of the Lund medium \citep{eastham_process_2015} was studied in an attempt to create bounds for relevant uptake reactions.
   
-  First, the effect of $V_{max}$ values of reactions in the kinetic model on productivity of citramalate was investigated. This parameter was chosen as it can be easily tested \emph{in vivo} by relying on the principle that $V_{max}$ is proportional to enzyme concentration. The differential evolution genetic algorithm was then employed to compute the set of $V_{max}$ values of reactions that optimises the production of citramalate, assuming Michaelis-Menten kinetics. In the second part of the project, information from the kinetic model was used to enrich the stoichiometric model. The possible values of fluxes through each reaction were used to set the bounds for each reaction in the stoichiometric model. Flux balance analysis (FBA) was then performed to evaluate the highest possible flux through the citramalate-producing reaction as a proxy for citramalate productivity. Finally, composition of the Lund medium \citep{eastham_process_2015} was studied in an attempt to create bounds for relevant uptake reactions.
-  
-  %The project took place at the Cambridge Systems Biology Centre, Department of Biochemistry, in Prof Steve Oliver's group. Research associate Dr Jorge J\'ulvez supervised me throughout the project. The project was entirely computational, and ran from 25 June 2018 to 17 August 2018.
 \end{abstract}
 
 \chapter*{Introduction}
@@ -626,9 +626,9 @@ I combined the one-dimension flux bounds with a glucose exchange bound of -0.23 
 
 % COME BACK TO THIS WHEN I'VE FINISHED EVERYTHING
 
-In this project, I was able to identify reactions in the kinetic model that had relatively large effects on citramalate productivity. Steady-state conditions were achieved in most combinations of $V_{max}$ values used in the project, and situations in which steady-state conditions were not achieved could be attributed to certain reactions acquiring low $V_{max}$ values. I showed that the kinetic model was not reliable with such low values of $V_{max}$. Furthermore, I demonstrated that differential evolution was a viable method to find the best $V_{max}$ values to optimise citramalate productivity, and that only including a small subset of the reactions in the kinetic model was sufficient.
+% In this project, I was able to identify reactions in the kinetic model that had relatively large effects on citramalate productivity. Steady-state conditions were achieved in most combinations of $V_{max}$ values used in the project, and situations in which steady-state conditions were not achieved could be attributed to certain reactions acquiring low $V_{max}$ values. I showed that the kinetic model was not reliable with such low values of $V_{max}$. Furthermore, I demonstrated that differential evolution was a viable method to find the best $V_{max}$ values to optimise citramalate productivity, and that only including a small subset of the reactions in the kinetic model was sufficient.
 
-I created an improved method of mapping reactions in the kinetic model to corresponding reactions in the stoichiometric model and assigning bounds for FBA. I also demonstrated that differential evolution could be used to generate useful FBA bounds. Finally, I investigated how the concentrations of chemical species in the Lund medium could be used to set bounds for the exchange reactions in the stoichiometric model.
+% I created an improved method of mapping reactions in the kinetic model to corresponding reactions in the stoichiometric model and assigning bounds for FBA. I also demonstrated that differential evolution could be used to generate useful FBA bounds. Finally, I investigated how the concentrations of chemical species in the Lund medium could be used to set bounds for the exchange reactions in the stoichiometric model.
 
 \section{Kinetic model}
 \label{sec:discussion-kinetic}
@@ -768,6 +768,10 @@ Additionally, this project has demonstrated a strategy to use flux limits from t
 \chapter*{Appendix}
 \addcontentsline{toc}{chapter}{Appendix}
 \renewcommand{\thesection}{\Alph{section}}
+
+The project took place at the Cambridge Systems Biology Centre, Department of Biochemistry, in Prof Steve Oliver's group. Research associate Dr Jorge J\'ulvez supervised me throughout the project. The project was entirely computational, and ran for eight weeks from 25 June 2018 to 17 August 2018.
+
+Further work was done from 27 August 2018 to 3 October 2018, and resumed from 12 July 2019.
 
 \section{Reactions in the kinetic model}
 \label{ap:kineticreactionlist}
