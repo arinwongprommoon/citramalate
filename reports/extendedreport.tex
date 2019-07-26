@@ -689,6 +689,9 @@ Additionally, there is an issue is with translating optimal $V_{max}$ values to 
 % Investigating glucose uptake:
 % The main text states that investigating glucose uptake was done to give insight between the intracellular and extracellular concentrations of glucose, and that this relationship is useful in determining the effects of a nutrient medium containing glucose on citramalate productivity. However, this was not really addressed in the Lund medium part of  the report.
 
+% Information about decoupling between glucose exchange and glucose uptake relates to the relationship between the intracellular and extracellular concentrations of glucose. This relationship in turn would be useful in determining the effects of a nutrient medium containing glucose on citramalate productivity.
+
+
 \section{Stoichiometric model}
 \label{sec:discussion-stoichiometric}
 
@@ -720,10 +723,7 @@ Finally, FVA and pFBA results are in agreement with that of FBA. This means that
 \subsection{Lund medium}
 \label{ssec:discussion-stoichiometric-lund}
 
-% Lund:
-% How does one get a reliable value for OD600?
-% I think I made some more notes here
-% This is the only bit where NOTHING is resolved
+There were issues with working out FBA bounds from the composition of the Lund medium, which involved translating the concentration of a chemical species into a flux value for the corresponding exchange reaction. This was mainly due to the lack of a definitive OD\textsubscript{600} value for \emph{E. coli} in the stoichiometric model. Complicating the issue, a study by \citet{kavvas_updated_2018} includes variations of a stoichiometric model for \emph{Mycobacterium tuberculosis} that had different bounds for exchange reactions according to differing media conditions, but the bounds seem to be arbitrary round numbers and do not reflect the ratios between the concentrations of the chemical species in the media. Even if appropriate bounds could be worked out, the observations resulting from unbounding exchange reactions called into question how useful they would be; only glucose and citrate uptake were observed, which would be unsurprising given optimisation of citramalate productivity.
 
 \section{Issues}
 \label{sec:issues}
