@@ -443,20 +443,20 @@ I devised rules to map flux values from the kinetic model onto the stoichiometri
 \begin{figure}[p]
   \centering
   \includegraphics[scale=0.4]{glucoseuptake}
-  \caption{Subnetwork for glucose uptake}
+  \caption{Sub-network for glucose uptake}
   \label{fig:glucoseuptake}
 \end{figure}
 
 \begin{figure}[p]
   \centering
   \includegraphics[scale=0.25]{ppp}
-  \caption{Subnetwork for part of the pentose phosphate pathway; left - kinetic model, right - stoichiometric model}
+  \caption{Sub-network for part of the pentose phosphate pathway; left - kinetic model, right - stoichiometric model}
   \label{fig:ppp}
 \end{figure}
 
 Reactions in category 5 demanded special treatment. Their architectures in the two models are summarised in figures~\ref{fig:glucoseuptake} and~\ref{fig:ppp}.
 
-I mapped glucose uptake reactions according to table~\ref{tab:glucoseuptake}. Mapping GLC\_feed to EX\_glc\_(e) is based on how both correspond to glucose feed into the environment, and mapping XCH\_GLC to GLCtex is based on the sppecies involved on both sides of the reaction. However, mapping PTS\_0 to PTS\_4 to GLCptspp is based on investigating their behaviour in response to varying flux through GLC\_feed.
+I mapped glucose uptake reactions according to table~\ref{tab:glucoseuptake}. Mapping GLC\_feed to EX\_glc\_(e) is based on how both correspond to glucose feed into the environment, and mapping XCH\_GLC to GLCtex is based on the species involved on both sides of the reaction. However, mapping PTS\_0 to PTS\_4 to GLCptspp is based on investigating their behaviour in response to varying flux through GLC\_feed.
 
 \begin{table}[hbp]
   \caption{Mapping glucose uptake reactions}
@@ -516,7 +516,7 @@ Using the 41-dimension bounds, I used FBA to evaluate solutions for each reactio
 
 The objective-exercise bounds were then analysed. The flux ranges (upper bound minus lower bound) had a mean value of +30.56 and a standard deviation of 175.3. Most of the values were near zero, as evidenced by the median of +0.0715. Using the floating-point tolerance of \num{1e-6}, there were 912 reactions for which the upper bound was equal to the lower bound. All these reactions had both bound values equal to zero, except for EX\_glc(e) that represents glucose uptake, which was -0.23.
 
-In the SBML model, 236 reactions were denoted as reversible. Of these, 130 had a lower bound greater than zero or an upper bound less than zero (tolerance of \num{1e-6}), suggesting that they were not truly reversible. These included reactions involved in acetate exchange, glycolysis/gluconeogenesis, the tricarboxylic acid cyle, and the pentose phosphate pathway.
+In the SBML model, 236 reactions were denoted as reversible. Of these, 130 had a lower bound greater than zero or an upper bound less than zero (tolerance of \num{1e-6}), suggesting that they were not truly reversible. These included reactions involved in acetate exchange, glycolysis/gluconeogenesis, the tricarboxylic acid cycle, and the pentose phosphate pathway.
 
 Extending on this, two reactions were forced to be active, based on how that their lower bounds were greater than zero:
 \begin{enumerate}
@@ -526,14 +526,14 @@ Extending on this, two reactions were forced to be active, based on how that the
 
   In contrast, 281 reactions had flux bounds forced into negative values. Together with ATPS4rpp and GLCtex, the 283 reactions included 133 transport reactions (transport, outer membrane porin, 77; transport, inner membrane, 52; transport, outer membrane, 4), 35 reactions assigned to membrane lipid metabolism, 19 reactions assigned to the nucleotide salvage pathway, and 13 assigned to alternate carbon metabolism. These categories are the ones used by \citet{orth_comprehensive_2011}.
 
-  \section{Flux variability analysis and parsimonious flux balanace analysis}
+  \section{Flux variability analysis and parsimonious flux balance analysis}
   \label{sec:fva}
 
 Further analysis was carried out with methods related to FBA in order to determine whether they give the same conclusions.
 
 Flux variability analysis, or FVA \citep{orth_what_2010} can be used to address the possibility that more than one solution can lead to the same optimal growth rate, or the same for any other objective function. It does so by maximising and minimising every reaction in a network.
 
-I applied the 41-dimension boundaries on the stoichiometric model in FVA and specified growth as the objective function to be maximised. Initially, I applied the loopless condition, which is more realistic \emph{in vivo}. The solver reported infeasibility or invalid bounds when the desired fraction of optimal growth was set at values between 0.50 and 1. These errors also occured when citramalate production was set as the objective function.
+I applied the 41-dimension boundaries on the stoichiometric model in FVA and specified growth as the objective function to be maximised. Initially, I applied the loopless condition, which is more realistic \emph{in vivo}. The solver reported infeasibility or invalid bounds when the desired fraction of optimal growth was set at values between 0.50 and 1. These errors also occurred when citramalate production was set as the objective function.
 
 However, removing the loopless condition produced results for the fraction of 1.
 I then compared these results with FBA. In general, the bounds agree and the ranges from FVA tended to be narrow. Most fluxes from FBA conformed to the minimum or maximum value as found from FVA, with none being out of range. Specifically, 22 reactions had FBA fluxes equal to the minimum predicted by FVA, and 32 reactions had FBA fluxes equal to the maximum predicted by FVA. The remaining six reactions had FBA fluxes at these fractions of the way from the minimum and maximum fluxes predicted by FVA:
@@ -546,7 +546,7 @@ I then compared these results with FBA. In general, the bounds agree and the ran
   \item ADK1 85.96\%
   \end{itemize}
 
-  Additonally, parsimonious FBA, or pFBA \citep{lewis_omic_2010} was used. pFBA is based on the principle that under exponential growth, there is selection for both fast-growing strains and strains that require the least enzyme mass for optimal growth. This is resolved by having the algorithm solve two sequential linear programs: one to optimise growth, and the other to minimise the overall flux through the metabolic network.
+  Additionally, parsimonious FBA, or pFBA \citep{lewis_omic_2010} was used. pFBA is based on the principle that under exponential growth, there is selection for both fast-growing strains and strains that require the least enzyme mass for optimal growth. This is resolved by having the algorithm solve two sequential linear programs: one to optimise growth, and the other to minimise the overall flux through the metabolic network.
 
   In this project, pFBA returned the same flux values as FBA, for all reactions and objective functions used so far.
 
@@ -622,7 +622,7 @@ However, I was not able to obtain a reliable value for the OD\textsubscript{600}
 As an alternative, I then specified the maximum exchange rates of the species present in the Lund medium by specifying lower bounds for exchange reactions in the stoichiometric model (except for EDTA).
 I fixed the bound for glucose exchange to -0.23 and to -10.0, and adjusted the bounds for all other exchange reactions to maintain the stoichiometries between species present in the medium.
 
-I then combined the one-dimension flux bounds with a glucose exchange bound of -0.23 and bounds for other exchange reactions to conserve stoichiometries. I used these bounds in FBA on the stoichiometric model. When a simulation was run using maximisation of citramalate productivity as an objective, it was predicted that uptake only occured for glucose (-0.23 mmol g\textsubscript{DW}\textsuperscript{-1} h\textsuperscript{-1}) and citrate (-0.00770 mmol g\textsubscript{DW}\textsuperscript{-1} h\textsuperscript{-1}). When glucose exchange was fixed to -0.68, uptake still only existed for these two species. Finally, when the exchange reactions for the species in the Lund medium were totally unbounded, glucose exchange was -11.13 and citrate exchange was -1.20, while flux though the citramalate synthesis reaction was predicted to be 1.1692 mM s\textsuperscript{-1}.
+I then combined the one-dimension flux bounds with a glucose exchange bound of -0.23 and bounds for other exchange reactions to conserve stoichiometries. I used these bounds in FBA on the stoichiometric model. When a simulation was run using maximisation of citramalate productivity as an objective, it was predicted that uptake only occurred for glucose (-0.23 mmol g\textsubscript{DW}\textsuperscript{-1} h\textsuperscript{-1}) and citrate (-0.00770 mmol g\textsubscript{DW}\textsuperscript{-1} h\textsuperscript{-1}). When glucose exchange was fixed to -0.68, uptake still only existed for these two species. Finally, when the exchange reactions for the species in the Lund medium were totally unbounded, glucose exchange was -11.13 and citrate exchange was -1.20, while flux though the citramalate synthesis reaction was predicted to be 1.1692 mM s\textsuperscript{-1}.
 
 %[Discussion: comment on how only these two]
 
@@ -651,7 +651,7 @@ The kinetic model predicted a 0.712 citramalate yield ($Y_{P/S}$). This is withi
 
 The one-reaction list has caveats. The method I used to evaluate how much effect varying $V_{max}$ of each reaction had on citramalate productivity had no real statistical basis, and the 0.5 -- 2.0 $V_{max}$ range was arbitrary. However, regression did not appear to be informative (data not shown).
 
-Using a list based on flux control coefficients, as devised by \citet{millard_metabolic_2017}, is an alternative. However, such a list may not be appropriate as the reactions would be sorted by how much control they have over the metabolic network as a whole, and not by effect on citramalate synthetsis.
+Using a list based on flux control coefficients, as devised by \citet{millard_metabolic_2017}, is an alternative. However, such a list may not be appropriate as the reactions would be sorted by how much control they have over the metabolic network as a whole, and not by effect on citramalate synthesis.
 
 In support of this assertion, there are differences between the one-reaction list and a list of reactions sorted by their flux control coefficients.
 \citet{millard_metabolic_2017} lists CYTBO, ZWF, GDH, GLT, and GROWTH as the reactions that have the largest shares of flux control. These reactions are followed by LPD, ATP\_MAINTENANCE, ACEA, ATP\_SYN, and PYK. Most enzymes that have the largest shares of flux control showed the largest effects on citramalate productivity. However, CYTBO had less effect on productivity as would be expected by this explanation. Although PYK had a small flux control coefficient, it had a large effect on citramalate productivity. Possibly it was because the citramalate reaction used up pyruvate and because PYK is a control point in glycolysis.
@@ -692,7 +692,7 @@ Nevertheless, differential evolution has the `curse of dimensionality' as a limi
 
 The `curse of dimensionality' refers to the fact that, with an increasing number of dimensions, the difficulty of finding the optimal solution increases exponentially \citep{mier_small_2017}. The `curse' was reflected in the increased computation time and difficulty in reaching convergence when sets with more reactions were used. This was made worse by the memory leak in \texttt{roadrunner.RoadRunner()} and contributions from \texttt{libsbml.write-SBMLToString()}, both of which had a large impact on the project as almost all scripts relied on them. Specifically, with \texttt{roadrunner}, memory could only be released when the Python program ended, and the model object must be passed into the simulation via a string intermediate instead of directly.
 
-However, both optimisation of citramalate production and investigating glycolytic enzymes demonstrated that including few reactions could be sufficient. Specifically, with using glycolytic enzymes, adding reactions lower on the one-reactin list had little effect on citramalate productivity. The observation suggested that not all reactions in a network have to be included in differential evolution to produce valid results. This conclusion is beneficial as it reduces computation time needed to optimise citramalate productivity, and partially circuments the memory leak described earlier.
+However, both optimisation of citramalate production and investigating glycolytic enzymes demonstrated that including few reactions could be sufficient. Specifically, with using glycolytic enzymes, adding reactions lower on the one-reaction list had little effect on citramalate productivity. The observation suggested that not all reactions in a network have to be included in differential evolution to produce valid results. This conclusion is beneficial as it reduces computation time needed to optimise citramalate productivity, and partially circumvents the memory leak described earlier.
 
 Variants of differential evolution exist in the \texttt{scipy} and \texttt{pygmo} modules. These alternatives can use strategies other than \texttt{rand/1/bin} and can carry out self-optimisation of parameters. Furthermore, they can perform dithering on $F$, which was shown to improve convergence \citep{storn_usage_1996}. However, these alternatives took longer to compute and even exacerbated the memory leak problem, using up more memory for each iteration, presumably because they called the objective function more times. As they are black-box optimisation methods, I was unable to improve the algorithms.
 
@@ -744,7 +744,7 @@ There were issues with working out FBA bounds from the composition of the Lund m
 
 Translating findings from this project to \emph{in vivo} applications faces some challenges. Even if a combination of $V_{max}$ values that would optimise citramalate productivity can be found, obtaining such $V_{max}$ values \emph{in vivo} will have to take into consideration the biological variability in gene expression and may be hindered by poorly-characterised genes.
 
-Additionally, this project demonstrated a strategy to use flux limits from the kinetic model and reaction mapping to enrich the stoichiometric model. Subsequently, FBA seemed useful in optimising productivity, especially with flux bound qualities agreeing with \emph{in vivo} qualities. Validity can be improved if citramalate productivity is used as the objective rather than flux through citramalate synthesis. However, this project has so far not been sucessful in extending this to study the effect of nutrient medium composition on metabolic models.
+Additionally, this project demonstrated a strategy to use flux limits from the kinetic model and reaction mapping to enrich the stoichiometric model. Subsequently, FBA seemed useful in optimising productivity, especially with flux bound qualities agreeing with \emph{in vivo} qualities. Validity can be improved if citramalate productivity is used as the objective rather than flux through citramalate synthesis. However, this project has so far not been successful in extending this to study the effect of nutrient medium composition on metabolic models.
 
 % \section{Future direction and suggestions}
 % \label{sec:future}
