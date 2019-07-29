@@ -126,7 +126,7 @@ In this section, I varied the $V_{max}$ of each reaction at a time and simulated
 
 %I varied the $V_{max}$ values of each of the 49 reactions in the kinetic model that includes $V_{max}$ as a parameter (see appendix~\ref{ap:kineticreactionlist}) over the ranges 0.1--1.0 $V_{max}$ and 0.1--10.0 $V_{max}$, where $V_{max}$ is the wild-type $V_{max}$ for that particular reaction as specified in the SBML file. Each plot had 100 data points. Figure~\ref{fig:onereacsample} is an example of such a plot.
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
   \centering
   \includegraphics[scale=0.5]{onereacsample}
   \caption{Example of a one-reaction plot, the reaction PYK}
@@ -140,7 +140,7 @@ The exchange reactions (XCH\_ACE, XCH\_GLC, and XCH\_P) had no bearing on produc
 
 Additionally, some reactions had inflection points (table~\ref{tab:inflection}). These inflection points could complicate finding $V_{max}$ combinations to optimise citramalate productivity.
 
-\begin{table}[h]
+\begin{table}[!htbp]
   \caption{Reactions that exhibited inflection points in citramalate productivity as a function of $V_{max}$. Values listed are the values at inflection points}
   \label{tab:inflection}
   \centering
@@ -167,7 +167,7 @@ Additionally, some reactions had inflection points (table~\ref{tab:inflection}).
 
 Varying $V_{max}$ values of two reactions at a time aimed to identify pairs of reactions that had significant effects on citramalate productivity. This is a stepping stone to identifying the optimal conditions. Ideally, all possible pairs should be investigated. However, I used only the eight reactions at the top of the one-reaction list: CITRA\_SYN, GLT, LPD, ATP\_MAINTENANCE, GDH, ATP\_syn, ACEA, and ZWF. This is to save computation time and to focus on the most useful output. I varied the reactions' $V_{max}$ values within 0.1--10.0 $V_{max}$, and plotted the resulting citramalate productivities on heatmaps (figure~\ref{fig:heatmapsample}). %The $V_{max}$ values took 10 values in their ranges, so each heatmap had 100 data points. Because the wild-type productivity is 0.001122 h\textsuperscript{-1}, I multiplied the citramalate productivity values by 10,000 so that numbers that can be easily conceptualised are displayed on the heatmaps. In figure~\ref{fig:heatmapsample}, when the $V_{max}$ of GLT is 256.76 mM s\textsuperscript{-1} and the $V_{max}$ of ACEA is 1.83 mM s\textsuperscript{-1}, productivity is 0.00848 h\textsuperscript{-1}.
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
   \centering
   \includegraphics[scale=0.5]{heatmapsample}
   \caption{Example of a heatmap: GLT vs ACEA. The horizontal axis indicates the respective $V_{max}$ value of the first reaction (GLT) in mM s\textsuperscript{-1} and the vertical axis represents the second reaction (ACEA). Citramalate productivity ($\times${}10,000 h\textsuperscript{-1}) values are displayed.}
@@ -350,12 +350,12 @@ Specifically, I examined the relationship between glucose feed and the fluxes th
 
 \begin{itemize}
 \item Fluxes through XCH\_GLC and all PTS\_X reactions were always equal to each other.
-\item Flux through XCH\_GLC increased linearly with GLC\_feed until the value of 0.82, after which it plateaued. This can be explained by the fact that XCH\_GLC is modelled with saturation kinetics with $V_{max}$ = 100 and $K_{m}$ = 10.
+\item Flux through XCH\_GLC increased linearly with GLC\_feed until the value of 0.82, after which it plateaued. Possibly this is because XCH\_GLC is modelled with saturation kinetics with $V_{max}$ = 100 and $K_{m}$ = 10.
 \item GLCx and GLCp concentrations remained very low as GLC\_feed flux increased up to 0.82. After that, their concentrations increased linearly as GLC\_feed flux increased
   \item The concentration of G6P increased linearly as GLC\_feed flux increased up to 0.82, at which the concentration immediately plateaued at 3.19 mM.
 \end{itemize}
 
-\begin{figure}[h]
+\begin{figure}[hp]
   \centering
   \includegraphics[scale=0.5]{growthglc_XCHGLCvGLCfeed}
   \caption{Effect of GLC\_feed on XCH\_GLC; XCH\_GLC values are equal to that of PTS\_0 to PTS\_4}
@@ -368,7 +368,7 @@ Specifically, I examined the relationship between glucose feed and the fluxes th
 
 %% [Perhaps put this in discussion???]
 Results suggested that the model did not predict decoupling between glucose exchange and glucose uptake; however, glucose exchange reached saturation.
-Information about decoupling between glucose exchange and glucose uptake relates to the relationship between the intracellular and extracellular concentrations of glucose. This relationship would be useful in determining the effects of a nutrient medium containing glucose on citramalate productivity.
+Information about such decoupling relates to the relationship between the intracellular and extracellular concentrations of glucose. This relationship would be useful in determining the effects of a nutrient medium containing glucose on citramalate productivity.
 
 \chapter{Enriching the stoichiometric model}
 \label{ch:stoich}
@@ -440,25 +440,25 @@ Fifteen reactions are identical between the kinetic and stoichiometric model. Re
 
 I devised rules to map flux values from the kinetic model onto the stoichiometric model. For categories 1--3, stoichiometric model reactions have the same lower and upper flux bounds as their kinetic model counterparts. For category 4, the values were negated -- i.e. $ \mathrm{Kinetic } (lb, ub) \rightarrow \mathrm{Stoichiometric } (-ub, -lb)$. %note: might need overfull hbox fixes/bodges depending on how this looks like in the final version
 
-\begin{figure}[p]
+Reactions in category 5 demanded special treatment. Their architectures in the two models are summarised in figures~\ref{fig:glucoseuptake} and~\ref{fig:ppp}.
+
+\begin{figure}[!p]
   \centering
   \includegraphics[scale=0.4]{glucoseuptake}
   \caption{Sub-network for glucose uptake}
   \label{fig:glucoseuptake}
 \end{figure}
 
-\begin{figure}[p]
+\begin{figure}[!p]
   \centering
   \includegraphics[scale=0.25]{ppp}
   \caption{Sub-network for part of the pentose phosphate pathway; left - kinetic model, right - stoichiometric model}
   \label{fig:ppp}
 \end{figure}
 
-Reactions in category 5 demanded special treatment. Their architectures in the two models are summarised in figures~\ref{fig:glucoseuptake} and~\ref{fig:ppp}.
-
 I mapped glucose uptake reactions according to table~\ref{tab:glucoseuptake}. Mapping GLC\_feed to EX\_glc\_(e) is based on how both correspond to glucose feed into the environment, and mapping XCH\_GLC to GLCtex is based on the species involved on both sides of the reaction. However, mapping PTS\_0 to PTS\_4 to GLCptspp is based on investigating their behaviour in response to varying flux through GLC\_feed.
 
-\begin{table}[hbp]
+\begin{table}[!htbp]
   \caption{Mapping glucose uptake reactions}
   \label{tab:glucoseuptake}
   \centering
@@ -466,9 +466,9 @@ I mapped glucose uptake reactions according to table~\ref{tab:glucoseuptake}. Ma
     \toprule
     Kinetic model & Stoichiometric model & What it is\\
     \midrule
-    GLC\_feed & EX\_glc\_(e) & Glucose feed into the environment, set at 0.23 mM s\textsuperscript{-1} in the kinetic model\\
-    XCH\_GLC & GLCtex & Glucose transport from the environment into the periplasm\\
-    PTS\_0, PTS\_1, PTS\_2, PTS\_3, PTS\_4 & GLCptspp & Glucose uptake from the periplam into the cytoplasm\\
+    GLC\_feed & EX\_glc\_(e) & Glucose feed (chemostat) into the environment\\
+    XCH\_GLC & GLCtex & Glucose transport from environment to periplasm\\
+    PTS\_0, PTS\_1, PTS\_2, PTS\_3, PTS\_4 & GLCptspp & Glucose uptake from periplam to cytoplasm\\
     \bottomrule
   \end{tabularx}
 \end{table}
@@ -489,7 +489,7 @@ As a result, I produced the following rules:
 I performed FBA to test how flux information from the kinetic model can enrich the stoichiometric model in restricting reaction fluxes.
 Using the mapping rules described in section~\ref{sec:mapping}, I prepared bounds for FBA from the kinetic model flux values obtained in section~\ref{sec:bounds}. Setting the objective to maximising to flux through the citramalate flux reaction, I obtained the results in table~\ref{tab:citramalatefluxresults}.
 
-\begin{table}[h]
+\begin{table}[!htbp]
   \caption{FBA results using citramalate flux as the objective function}
   \label{tab:citramalatefluxresults}
   \centering
@@ -662,14 +662,12 @@ Differential evolution was able to optimise parameters for citramalate productio
 Finally, I produced plots for each kinetic model reaction to show the relationship between $V_{max}$ and flux through citramalate synthesis or growth.
 Plots for flux through citramalate synthesis (figure~\ref{fig:issues_citraflux}) had different shapes from plots for citramalate productivity (figure~\ref{fig:issues_igrowth}). Growth seemed to contribute more to the shape of the plots for citramalate productivity (figure~\ref{fig:onereacsample}). These observations call into question the validity of using flux through citramalate synthesis as a proxy for citramalate productivity in FBA.
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
   \centering
   \includegraphics[scale=0.4]{issues_citraflux}
   \caption{Relationship between PYK $V_{max}$ and flux through citramalate synthesis reaction}
   \label{fig:issues_citraflux}
-\end{figure}
 
-\begin{figure}[h]
   \centering
   \includegraphics[scale=0.4]{issues_igrowth}
   \caption{Relationship between PYK $V_{max}$ and $\mathrm{iGROWTH}'$. iGROWTH is a species created to model growth in the kinetic model.}
@@ -690,7 +688,7 @@ With this in mind, citramalate productivity can be used as the objective functio
 The results suggest that differential evolution is a useful genetic evolution algorithm to search for a combination of reaction $V_{max}$ values that maximises citramalate productivity. The maxima found in differential evolution agree with heatmaps, and seem to resolve complications that may be introduced by inflection points in the one-reaction plots. Importantly, using differential evolution predicted higher productivity than using one-reaction plots alone: using seven reactions from the one-reaction list, differential evolution predicted 1.56 times as much productivity compared to using the one-reaction plots.
 Nevertheless, differential evolution has the `curse of dimensionality' as a limitation, and there are difficulties in finding optimal algorithm parameters for differential evolution.
 
-The `curse of dimensionality' refers to the fact that, with an increasing number of dimensions, the difficulty of finding the optimal solution increases exponentially \citep{mier_small_2017}. The `curse' was reflected in the increased computation time and difficulty in reaching convergence when sets with more reactions were used. This was made worse by the memory leak in \texttt{roadrunner.RoadRunner()} and contributions from \texttt{libsbml.write-SBMLToString()}, both of which had a large impact on the project as almost all scripts relied on them. Specifically, with \texttt{roadrunner}, memory could only be released when the Python program ended, and the model object must be passed into the simulation via a string intermediate instead of directly.
+The `curse of dimensionality' refers to the fact that, with an increasing number of dimensions, the difficulty of finding the optimal solution increases exponentially \citep{mier_small_2017}. The `curse' was reflected in the increased computation time and difficulty in reaching convergence when sets with more reactions were used. This was made worse by the memory leak in \texttt{roadrunner.RoadRunner()} and contributions from \texttt{libsbml.write-SBML\-To\-String()}, both of which had a large impact on the project as almost all scripts relied on them. Specifically, with \texttt{roadrunner}, memory could only be released when the Python program ended, and the model object must be passed into the simulation via a string intermediate instead of directly.
 
 However, both optimisation of citramalate production and investigating glycolytic enzymes demonstrated that including few reactions could be sufficient. Specifically, with using glycolytic enzymes, adding reactions lower on the one-reaction list had little effect on citramalate productivity. The observation suggested that not all reactions in a network have to be included in differential evolution to produce valid results. This conclusion is beneficial as it reduces computation time needed to optimise citramalate productivity, and partially circumvents the memory leak described earlier.
 
