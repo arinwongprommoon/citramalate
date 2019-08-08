@@ -537,10 +537,11 @@ Extending on this, two reactions were forced to be active, based on how that the
 Further analysis was carried out with methods related to FBA in order to determine whether they give the same conclusions.
 
 Flux variability analysis, or FVA \citep{orth_what_2010} can be used to address the possibility that more than one solution can lead to the same optimal growth rate, or the same for any other objective function. It does so by maximising and minimising every reaction in a network.
+Multiple flux states in a stoichiometric model can achieve the same optimum (e.g. maximised flux through the citramalate flux reaction), and FVA finds the range of flux states that satisfies this. However, with \texttt{cobra}, FVA can be performed so that it returns flux ranges for reactions that result in, say, 90\% optimality rather than the absolute optimum. Other fractions are possible.
 
-I applied the 41-dimension boundaries on the stoichiometric model in FVA and specified growth as the objective function to be maximised. Initially, I applied the loopless condition, which is more realistic \emph{in vivo}. The solver reported infeasibility or invalid bounds when the desired fraction of optimal growth was set at values between 0.50 and 1. These errors also occurred when citramalate production was set as the objective function.
+I applied the 41-dimension boundaries on the stoichiometric model in FVA and specified growth as the objective function to be maximised. Initially, I applied the loopless condition, which is more realistic \emph{in vivo}. The solver reported infeasibility or invalid bounds when the desired fraction of optimal growth was set at values between 50\% and 100\%. These errors also occurred when citramalate production was set as the objective function.
 
-However, removing the loopless condition produced results for the fraction of 1.
+However, when the loopless condition was not applied and FVA was set to optimse growth, numerical results were returned.
 I then compared these results with FBA. In general, the bounds agree and the ranges from FVA tended to be narrow. Most fluxes from FBA conformed to the minimum or maximum value as found from FVA, with none being out of range. Specifically, 22 reactions had FBA fluxes equal to the minimum predicted by FVA, and 32 reactions had FBA fluxes equal to the maximum predicted by FVA. The remaining six reactions had FBA fluxes at these fractions of the way from the minimum and maximum fluxes predicted by FVA:
 \begin{itemize}
 \item THRD 42.30\%
