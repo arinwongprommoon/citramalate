@@ -175,7 +175,7 @@ Varying $V_{max}$ values of two reactions at a time aimed to identify pairs of r
 \end{figure}
 
 % I also used the reactions with the 10 greatest FCCs to generate heatmaps.
-Most heatmaps suggested simple additive effects. The heatmaps did not have any additional local maxima or minima, suggesting orthogonality. Plots that involved ATP\_MAIN\-TEN\-ANCE exhibited strange behaviour, evident in higher-resolution heatmaps (figure~\ref{fig:atpmaintenanceheatmap}). Possibly, the kinetic model was not configured well for small values of $V_{max}$, (figure~\ref{fig:atpmaintenanceonereac}).
+Most heatmaps suggested simple additive effects. The heatmaps had the same local minima and maxima as with investigating single reactions, thus suggesting orthogonality. Plots that involved ATP\_MAIN\-TEN\-ANCE exhibited strange behaviour, evident in higher-resolution heatmaps (figure~\ref{fig:atpmaintenanceheatmap}). Possibly, the kinetic model was not configured well for small values of $V_{max}$, (figure~\ref{fig:atpmaintenanceonereac}).
 
 \begin{figure}[hp]
   \centering
@@ -191,7 +191,7 @@ Most heatmaps suggested simple additive effects. The heatmaps did not have any a
 \subsection{Steady-state verification}
 \label{ssec:steadystate}
 
-The results are only valid if the system has reached steady state, considering the culture conditions that the model concerns and the project's aim to use the results to enrich the stoichiometric model. Steady state is achieved if at the end of simulation time:
+The results are only valid if the system has reached steady state, as the focus is on continuous cultures and the project aims to enrich a stoichiometric model. Steady state is achieved if at the end of simulation time:
 
 \begin{equation}
   \max_{X_{i}} \left | \frac{\mathrm{d}[X_{i}]}{\mathrm{d}t} \right | < \epsilon
@@ -431,7 +431,7 @@ concerns the 68 reactions present in the wild-type kinetic model, including the 
 % \end{tabularx}
 % \end{table}
 
-Three reactions are absent in the stoichiometric model (GL6P\_HYDROLYSIS, ACEK\_1, and ACEK\_2), and stoichiometric CYTBO3\_4pp has a different stoichiometry from kinetic CYTBO. Furthermore, the growth reactions from the two models use different coefficients.
+Three reactions are absent in the stoichiometric model (GL6P\_HYDROLYSIS, ACEK\_1, and ACEK\_2), so the fluxes of these reactions were ignored in the mapping. Additionally, stoichiometric CYTBO3\_4pp has a different stoichiometry from kinetic CYTBO. Furthermore, the growth reactions from the two models use different coefficients.
 
 Fifteen reactions are identical between the kinetic and stoichiometric model. Reactions that are not identical fall into the following categories:
 
