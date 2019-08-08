@@ -45,7 +45,7 @@ boundsrel = [(0.3, 10.0)] * n
 mut=0.6607 # F
 crossp=0.9426 # CR
 popsize=28 # NP
-its=5 # generations
+its=20 # generations
 
 # SIMULATION PARAMETERS
 timestart = 0
