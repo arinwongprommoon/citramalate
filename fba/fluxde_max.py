@@ -16,36 +16,35 @@ import sys
 
 # REMOVED GLC_FEED 2018-07-25 10:00 BECAUSE IT CAUSES PROBLEMS
 # LIST OF REACTIONS TO FIND FLUX BOUNDARIES FOR
-#allreactions = ['PGI', 'PFK', 'FBA', 'TPI', 'GDH', 'PGK', 'GPM', 'ENO', 'PYK',
-#'ZWF', 'PGL', 'GND', 'RPE', 'RPI', 'X5P_GAP_TKT', 'F6P_E4P_TKT', 'S7P_R5P_TKT',
-#'F6P_GAP_TAL', 'S7P_E4P_TAL', 'FBP', 'PPC', 'PCK', 'PPS', 'MAD', 'PDH', 'GLT',
-# 'ACN_1', 'ACN_2', 'ICD', 'LPD', 'SK', 'SDH', 'FUMA', 'MQO', 'MDH', 'ACEA',
-#  'ACEB', 'ACEK_1', 'ACEK_2', 'EDD', 'EDA', 'NADH_req', 'PNT_req', 'ADK',
-#  'ATP_syn', 'CYA', 'DOS', 'ACK', 'ACS', 'PTA', 'PTS_0', 'PTS_1', 'PTS_2',
-#  'PTS_3', 'PTS_4', 'CYTBO', 'SQR', 'NDHII', 'GROWTH', 'ATP_MAINTENANCE',
-#  'XCH_GLC', 'PIT', 'XCH_P', 'XCH_ACE1', '_ACE_OUT', 'XCH_ACE2', 'GL6P_HYDROLYSIS']
-
-allreactions = ['PTS_3', 'PTS_4', 'CYTBO', 'SQR', 'NDHII', 'GROWTH', 'ATP_MAINTENANCE',
+allreactions = ['PGI', 'PFK', 'FBA', 'TPI', 'GDH', 'PGK', 'GPM', 'ENO', 'PYK',
+'ZWF', 'PGL', 'GND', 'RPE', 'RPI', 'X5P_GAP_TKT', 'F6P_E4P_TKT', 'S7P_R5P_TKT',
+'F6P_GAP_TAL', 'S7P_E4P_TAL', 'FBP', 'PPC', 'PCK', 'PPS', 'MAD', 'PDH', 'GLT',
+ 'ACN_1', 'ACN_2', 'ICD', 'LPD', 'SK', 'SDH', 'FUMA', 'MQO', 'MDH', 'ACEA',
+  'ACEB', 'ACEK_1', 'ACEK_2', 'EDD', 'EDA', 'NADH_req', 'PNT_req', 'ADK',
+  'ATP_syn', 'CYA', 'DOS', 'ACK', 'ACS', 'PTA', 'PTS_0', 'PTS_1', 'PTS_2',
+  'PTS_3', 'PTS_4', 'CYTBO', 'SQR', 'NDHII', 'GROWTH', 'ATP_MAINTENANCE',
   'XCH_GLC', 'PIT', 'XCH_P', 'XCH_ACE1', '_ACE_OUT', 'XCH_ACE2', 'GL6P_HYDROLYSIS']
 
 # REDEFINE LIST OF REACTIONS VARIED IN DE HERE
 #listofreactions = reacVmaxes
-listofreactions = ["ACEA", "ACEB", "ACK", "ACN_1", "ACN_2", "ACS", "ATP_syn",
-"CITRA_SYN", "CYTBO", "EDA", "EDD", "ENO", "FBA", "FBP", "FUMA", "GDH", "GLT",
-"GND", "GPM", "LPD", "MAD", "MDH", "MQO", "PCK", "PDH", "PFK", "PGI", "PGK",
- "PGL", "PIT", "PPC", "PPS", "PTA", "PYK", "RPE", "RPI", "SDH", "SK", "SQR",
-  "TPI", "ZWF"]
+#listofreactions = ["ACEA", "ACEB", "ACK", "ACN_1", "ACN_2", "ACS", "ATP_syn",
+#"CITRA_SYN", "CYTBO", "EDA", "EDD", "ENO", "FBA", "FBP", "FUMA", "GDH", "GLT",
+#"GND", "GPM", "LPD", "MAD", "MDH", "MQO", "PCK", "PDH", "PFK", "PGI", "PGK",
+# "PGL", "PIT", "PPC", "PPS", "PTA", "PYK", "RPE", "RPI", "SDH", "SK", "SQR",
+#  "TPI", "ZWF"]
+
+listofreactions = ["CYTBO", "MQO", "MDH", "ZWF", "GLT", "GDH", "ATP_syn", "ACK"]
 
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
-n = 41
+n = 8
 
 # REDEFINE Vmax RANGE HERE
-boundsrel = [(0.5, 10.0)] * n
+boundsrel = [(0.3, 10.0)] * n
 
 # DIFFERENTIAL EVOLUTION PARAMETERS
-mut=0.6876 # F
-crossp=0.9784 # CR
-popsize=48 # NP
+mut=0.6607 # F
+crossp=0.9426 # CR
+popsize=28 # NP
 its=5 # generations
 
 # SIMULATION PARAMETERS
