@@ -43,7 +43,7 @@
 \\University of Edinburgh (PhD Candidate 2019 --)}
 \title{Optimising production of citramalate based on \emph{E. coli} kinetic and stoichiometric models}
 \subtitle{Extended project report}
-\date{30 July 2019}
+\date{8 August 2019}
 
 \begin{document}
 
@@ -203,14 +203,14 @@ where $X_{i}$ represents a chemical species, and $\epsilon$ is a small threshold
 \begin{figure}[hbp]
   \centering
   \includegraphics[scale=0.5]{steadystate}
-  \caption{Heatmap for GLT vs ZWF, with threshold set to \num{1.0e-6}. Data points are replaced by -1 if the system does not reach steady state.}
+  \caption{Heatmap for GLT vs ZWF, with threshold set to \num{1.0e-6} mM s\textsuperscript{-1}. Data points are replaced by -1 if the system does not reach steady state.}
   \label{fig:steadystate}
 \end{figure}
 
 %In most cases, ATP, ADP, P, or Hout was responsible for breaking the \num{1.0e-8} threshold. However, their rates stayed at around \num{1.0e-7}.
 
-In almost all cases, the model was confirmed to have reached steady state using \num{1.0e-6} as the threshold. However, ATP\_MAIN\-TEN\-ANCE set at 0.1 $V_{max}$ produced maximum concentration change rates at the order of \num{e-1} mM s\textsuperscript{-1}, and ATP\_syn set at 0.1 $V_{max}$ produced rates at the order of \num{e-2}. With these two reactions, the species responsible for breaking the threshold were BPG and OAA.
-Finally, GDH set at 0.1 $V_{max}$ produced rates on the order of \num{e-3}, with GLCx and GLCp responsible for breaking the threshold. This was the only situation where GLCx and GLCp concentrations did not reach steady state.
+In almost all cases, the model was confirmed to have reached steady state using \num{1.0e-6} mM s\textsuperscript{-1} as the threshold. However, ATP\_MAIN\-TEN\-ANCE set at 0.1 $V_{max}$ produced maximum concentration change rates at the order of \num{e-1} mM s\textsuperscript{-1}, and ATP\_syn set at 0.1 $V_{max}$ produced rates at the order of \num{e-2} mM s\textsuperscript{-1}. With these two reactions, the species responsible for breaking the threshold were BPG and OAA.
+Finally, GDH set at 0.1 $V_{max}$ produced rates on the order of \num{e-3} mM s\textsuperscript{-1}, with GLCx and GLCp responsible for breaking the threshold. This was the only situation where GLCx and GLCp concentrations did not reach steady state.
 
 \section{Using differential evolution to vary $V_{max}$ values of multiple reactions}
 \label{sec:de}
@@ -229,7 +229,7 @@ The number of iterations must also be specified.
 In this section, I used citramalate productivity calculated after \texttt{roadrunner} simulations as the objective function to be maximised. $V_{max}$ values of multiple reactions in a specified list were varied simultaneously.
 
 Using parameter values suggested by \citet{storn_differential_1997} ($F$ = 0.8, $CR$ = 0.3, $NP$ = 20, 20 iterations), differential evolution agreed with heatmaps in identifying the $V_{max}$ values that optimised productivity.
-For example, the GLT vs ACEA heatmap (figure \ref{fig:heatmapsample}) estimated that the maximal productivity from varying the $V_{max}$ values of these two in the 0.1 -- 10.0 $V_{max}$ range is \num{162.7e-4} h\textsuperscript{-1} and occurs when the GLT $V_{max}$ is 319.53 and the ACEA $V_{max}$ is 0.15.. Differential evolution indicated that the maximal productivity is \num{162.7e-4} h\textsuperscript{-1} and occurs when the GLT $V_{max}$ is 325.6 and the ACEA $V_{max}$ is 0.1526.
+For example, the GLT vs ACEA heatmap (figure \ref{fig:heatmapsample}) estimated that the maximal productivity from varying the $V_{max}$ values of these two in the 0.1 -- 10.0 $V_{max}$ range is \num{162.7e-4} h\textsuperscript{-1} and occurs when the GLT $V_{max}$ is 319.53 mM s\textsuperscript{-1} and the ACEA $V_{max}$ is 0.15 mM s\textsuperscript{-1}. Differential evolution indicated that the maximal productivity is \num{162.7e-4} h\textsuperscript{-1} and occurs when the GLT $V_{max}$ is 325.6 mM s\textsuperscript{-1} and the ACEA $V_{max}$ is 0.1526 mM s\textsuperscript{-1}.
 % would be better if we had a more thorough investigation of ALL heatmaps, but this should be fine...?
 Occasionally, differential evolution discovered maxima not evident in the heatmaps, but this could be explained by the relatively low resolution of the heatmaps. 
 
@@ -270,7 +270,7 @@ I verified these findings by manually setting the $V_{max}$ values of these seve
   \centering
   \begin{tabular}{lSl}
     \toprule
-    Reaction & \multicolumn{1}{c}{Optimal $V_{max}$} & Remark\\
+    Reaction & \multicolumn{1}{c}{Optimal $V_{max}$ (mM s\textsuperscript{-1})} & Remark\\
     \midrule
     CITRA\_SYN & 0.4382 & \\
     GLT & 5.706 & 0.1 $V_{max}$ \\
@@ -291,7 +291,7 @@ Furthermore, I tried the same differential evolution parameters on 10 enzymes (t
   \centering
   \begin{tabular}{lSl}
     \toprule
-    Reaction & \multicolumn{1}{c}{$V_{max}$ in best solution} & Range\\
+    Reaction & \multicolumn{1}{c}{$V_{max}$ in best solution (mM s\textsuperscript{-1})} & Range\\
     \midrule
     CITRA\_SYN & 1.689 & \\
     GLT & 17.35 & 0.1 $V_{max}$ \\
@@ -315,7 +315,7 @@ I repeated the investigation using the ten enzymes with the greatest flux contro
   \centering
   \begin{tabular}{lSl}
     \toprule
-    Reaction & \multicolumn{1}{c}{Optimal $V_{max}$}\\
+    Reaction & \multicolumn{1}{c}{Optimal $V_{max}$ (mM s\textsuperscript{-1})}\\
     \midrule
     CYTBO & 3.416 \\
     MQO & 1.849 \\
@@ -331,7 +331,7 @@ I repeated the investigation using the ten enzymes with the greatest flux contro
   \end{tabular}
 \end{table}
 
-Using all 41 biologically relevant reactions that had $V_{max}$ as a parameter did not exhibit enough convergence due to the high number of dimensions. However, this produced productivities on the order of \num{200e-4} every time the algorithm was repeated, which was still a significant improvement from wild-type productivity.
+Using all 41 biologically relevant reactions that had $V_{max}$ as a parameter did not exhibit enough convergence due to the high number of dimensions. However, this produced productivities on the order of \num{200e-4} h\textsuperscript{-1} every time the algorithm was repeated, which was still a significant improvement from wild-type productivity.
 \subsection{Glycolytic enzymes}
 \label{ssec:glycolytic}
 
@@ -355,9 +355,9 @@ Specifically, I examined the relationship between glucose feed and the fluxes th
 
 \begin{itemize}
 \item Fluxes through XCH\_GLC and all PTS\_X reactions were always equal to each other.
-\item Flux through XCH\_GLC increased linearly with GLC\_feed until the value of 0.82, after which it plateaued. Possibly this is because XCH\_GLC is modelled with saturation kinetics with $V_{max}$ = 100 and $K_{m}$ = 10.
-\item GLCx and GLCp concentrations remained very low as GLC\_feed flux increased up to 0.82. After that, their concentrations increased linearly as GLC\_feed flux increased
-  \item The concentration of G6P increased linearly as GLC\_feed flux increased up to 0.82, at which the concentration immediately plateaued at 3.19 mM.
+\item Flux through XCH\_GLC increased linearly with GLC\_feed until the value of 0.82 mM s\textsuperscript{-1}, after which it plateaued. Possibly this is because XCH\_GLC is modelled with saturation kinetics with $V_{max}$ = 100 mM s\textsuperscript{-1} and $K_{m}$ = 10 mM.
+\item GLCx and GLCp concentrations remained very low as GLC\_feed flux increased up to 0.82 mM s\textsuperscript{-1}. After that, their concentrations increased linearly as GLC\_feed flux increased
+  \item The concentration of G6P increased linearly as GLC\_feed flux increased up to 0.82 mM s\textsuperscript{-1}, at which the concentration immediately plateaued at 3.19 mM.
 \end{itemize}
 
 \begin{figure}[hp]
@@ -502,7 +502,7 @@ Using the mapping rules described in section~\ref{sec:mapping}, I prepared bound
     \toprule
     Bounds & \multicolumn{1}{c}{Solution (mM s\textsuperscript{-1})}\\
     \midrule
-    Default & 12.4122\\
+    Default & 1.9479\\ % Changed from 12.4122. I believe that number was using standard stoichiometric model units, but numbers below use bounds directly from the kinetic model without considering the 6.372 conversion factor. Just to make the units consistent
     Anargyros's & 0.3067\\
     Varying one reaction at a time & 0.2599\\
     Differential evolution with 8 reactions & 0.1925\\
@@ -519,14 +519,14 @@ Using the 41-dimension bounds, I used FBA to evaluate solutions for each reactio
 \subsection{Analysing flux bounds}
 \label{ssec:objectiveexercise}
 
-The objective-exercise bounds were then analysed. The flux ranges (upper bound minus lower bound) had a mean value of +30.56 and a standard deviation of 175.3. Most of the values were near zero, as evidenced by the median of +0.0715. Using the floating-point tolerance of \num{1e-6}, there were 912 reactions for which the upper bound was equal to the lower bound. All these reactions had both bound values equal to zero, except for EX\_glc(e) that represents glucose uptake, which was -0.23.
+The objective-exercise bounds were then analysed. The flux ranges (upper bound minus lower bound) had a mean value of +30.56 mM s\textsuperscript{-1} and a standard deviation of 175.3 mM s\textsuperscript{-1}. Most of the values were near zero, as evidenced by the median of +0.0715 mM s\textsuperscript{-1}. Using the floating-point tolerance of \num{1e-6} mM s\textsuperscript{-1}, there were 912 reactions for which the upper bound was equal to the lower bound. All these reactions had both bound values equal to zero, except for EX\_glc(e) that represents glucose uptake, which was -0.23 mM s\textsuperscript{-1}.
 
-In the SBML model, 236 reactions were denoted as reversible. Of these, 130 had a lower bound greater than zero or an upper bound less than zero (tolerance of \num{1e-6}), suggesting that they were not truly reversible. These included reactions involved in acetate exchange, glycolysis/gluconeogenesis, the tricarboxylic acid cycle, and the pentose phosphate pathway.
+In the SBML model, 236 reactions were denoted as reversible. Of these, 130 had a lower bound greater than zero or an upper bound less than zero (tolerance of \num{1e-6} mM s\textsuperscript{-1}), suggesting that they were not truly reversible. These included reactions involved in acetate exchange, glycolysis/gluconeogenesis, the tricarboxylic acid cycle, and the pentose phosphate pathway.
 
 Extending on this, two reactions were forced to be active, based on how that their lower bounds were greater than zero:
 \begin{enumerate}
-\item ATPS4rpp (ATP\_SYN in the kinetic model): lower bound \num{5.73e-4}, upper bound \num{2.30e-1}; and
-  \item GLCtex (XCH\_GLC in the kinetic model): lower bound \num{5.73e-4}, upper bound \num{2.30e-1}.
+\item ATPS4rpp (ATP\_SYN in the kinetic model): lower bound \num{5.73e-4}mM s\textsuperscript{-1}, upper bound \num{2.30e-1} mM s\textsuperscript{-1}; and
+  \item GLCtex (XCH\_GLC in the kinetic model): lower bound \num{5.73e-4}mM s\textsuperscript{-1}, upper bound \num{2.30e-1} mM s\textsuperscript{-1}.
   \end{enumerate}
 
   In contrast, 281 reactions had flux bounds forced into negative values. Together with ATPS4rpp and GLCtex, the 283 reactions included 133 transport reactions (transport, outer membrane porin, 77; transport, inner membrane, 52; transport, outer membrane, 4), 35 reactions assigned to membrane lipid metabolism, 19 reactions assigned to the nucleotide salvage pathway, and 13 assigned to alternate carbon metabolism. These categories are the ones used by \citet{orth_comprehensive_2011}.
@@ -629,7 +629,7 @@ However, I was not able to obtain a reliable value for the OD\textsubscript{600}
 
 As a work-around in this project, I set bounds for reactions in the stoichiometric model based on other rationales. I use the one-dimension flux bounds (section ~\ref{sec:bounds}) to constrain the fluxes of most reactions. Additionally, I specified lower bounds for exchange reactions of species present in the Lund medium. Specifically, I set the bound for glucose to a specific number, and set the bounds for other species according to the proportions present in the Lund medium. For example, when I set the lower bound for glucose exchange as -0.23 mM s\textsuperscript{-1}, I set the lower bound for potassium exchange as \( \frac{167.6}{66.05} \times (-0.23) = -0.58  \).
 
-FBA was then performed, using maximisation of citramalate productivity as the objective. Uptake was only observed for glucose and citrate, with all other species returning the flux of zero. This persisted even when the exchange reactions for the species present in the Lund medium were totally unbounded. Specifically, glucose exchange was -11.13 and citrate exchange was -1.20, while flux though the citramalate synthesis reaction was predicted to be 1.1692 mM s\textsuperscript{-1}.
+FBA was then performed, using maximisation of citramalate productivity as the objective. Uptake was only observed for glucose and citrate, with all other species returning the flux of zero. This persisted even when the exchange reactions for the species present in the Lund medium were totally unbounded. Specifically, glucose exchange was -11.13 mM s\textsuperscript{-1} and citrate exchange was -1.20 mM s\textsuperscript{-1}, while flux though the citramalate synthesis reaction was predicted to be 1.1692 mM s\textsuperscript{-1}.
 
 %[Discussion: comment on how only these two]
 
@@ -729,7 +729,7 @@ Additionally, mapping reactions in the kinetic model to the stoichiometric model
 \subsection{Flux balance analysis}
 \label{ssec:discussion-stoichiometric-fba}
 
-FBA using 41-dimension bounds predicted an optimum solution of 0.2922 mM s\textsuperscript{-1} for citramalate production. This corresponds to \num{458.57e-4} h\textsuperscript{-1} using the units of the kinetic model, greater than any productivity found by differential evolution so far. Thus, this demonstrates the utility of the stoichiometric model. However, FBA also suggested a fork between the growth and citramalate synthesis reactions, as evidenced by how optimising one excludes flux through the other. Alternatively, this phenomenon could be explained by how the fluxes of these reactions are not bounded, but this explanation is not realistic \emph{in vivo}. This observation may imply that optimising citramalate productivity in culture must take into account growth in addition to changing enzyme concentrations.
+FBA suggested a fork between the growth and citramalate synthesis reactions, as evidenced by how optimising one excludes flux through the other. Alternatively, this phenomenon could be explained by how the fluxes of these reactions are not bounded, but this explanation is not realistic \emph{in vivo}. This observation may imply that optimising citramalate productivity in culture must take into account growth in addition to changing enzyme concentrations.
 
 Analysis of the objective-exercise bounds covered flux ranges, reaction reversibility, and activity of reactions.
 Having most flux bounds being near zero is expected for a large genome-scale metabolic model, suggesting regulation.
