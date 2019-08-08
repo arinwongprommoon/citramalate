@@ -8,7 +8,7 @@ import cobra.test
 from cobra import Reaction, Metabolite
 
 # DEFINE FILE TO BE LOADED FOR FBA BOUNDS HERE
-loc = 'boundaries_citra/41dBoundaries_20190807.csv'
+loc = 'boundaries_citra/8dBoundaries_20190808.csv'
 
 modelfile = "MODEL1108160000" # DEFINE MODEL FILE HERE
 objective = 'CitraSink' # DEFINE OBJECTIVE REACTION HERE
