@@ -5,12 +5,12 @@ import csv
 import itertools as IT
 import glob, os
 
-filenames = glob.glob("*.csv")
+filenames = glob.glob("1db_*.csv")
 #filenames = ['1.csv', '2.csv']
 handles = [open(filename, 'rb') for filename in filenames]    
 readers = [csv.reader(f, delimiter=',') for f in handles]
 
-with  open('combined.csv', 'wb') as h:
+with  open('1db_ana_combined.csv', 'wb') as h:
     writer = csv.writer(h, delimiter=',', lineterminator='\n', )
     for rows in IT.izip_longest(*readers, fillvalue=['']*2):
         combined_row = []

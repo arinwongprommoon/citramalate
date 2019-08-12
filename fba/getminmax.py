@@ -4,14 +4,14 @@
 
 import csv
 
-with open('minmax.csv', 'wb') as f:
+with open('1db_ana_minmax.csv', 'wb') as f:
     pass
 
-with open('combined.csv', 'rb') as csvfile:
+with open('1db_ana_combined.csv', 'rb') as csvfile:
 
     fluxreader = csv.reader(csvfile, skipinitialspace=True, delimiter=',', quoting=csv.QUOTE_NONE)
     fluxlist = list(fluxreader)
-    print fluxlist
+    #print fluxlist
  
     for row in fluxlist:
         r = []
@@ -22,6 +22,6 @@ with open('combined.csv', 'rb') as csvfile:
                 pass
         print(min(r), max(r))
         
-        with open('minmax.csv', 'ab') as outputfile:
+        with open('1db_ana_minmax.csv', 'ab') as outputfile:
             outputwriter = csv.writer(outputfile, delimiter=',')
             outputwriter.writerow([min(r), max(r)])
