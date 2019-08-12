@@ -17,8 +17,8 @@ document = reader.readSBMLFromFile("../kinetic/E_coli_Millard2016_CITRA.xml")
 model = document.getModel()
 
 # start, end, data points
-start = 0.1 # START VMAX
-end = 10 # END VMAX
+start = 0.10 # START VMAX
+end = 0.20 # END VMAX
 points = 20 # NUMBER OF DATA POINTS TO COMPUTE
 # NUMBER OF REACTIONS IN THE KINETIC MODEL, USUALLY 69
 noofreactions = 5
