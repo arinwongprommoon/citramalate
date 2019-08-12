@@ -21,8 +21,8 @@ start = 0.1 # START VMAX
 end = 10.0 # END VMAX
 points = 20 # NUMBER OF DATA POINTS TO COMPUTE
 # NUMBER OF REACTIONS IN THE KINETIC MODEL, USUALLY 69
-#noofreactions = 69
-noofreactions = len(model.getListOfReactions())
+noofreactions = 5
+#noofreactions = len(model.getListOfReactions())
 
 # SIMULATION PARAMETERS
 timestart = 0
@@ -48,13 +48,24 @@ def getVmax(reacId):
             if el.getId() == 'Vmax':
                 return el.getValue()
 
-# Get Vmax values of all reactions that have Vmaxes and stores them in the
-# dictionary wtVmaxes
+# # Get Vmax values of all reactions that have Vmaxes and stores them in the
+# # dictionary wtVmaxes
+# Vmaxes = {}
+# for reac in model.getListOfReactions():
+#     vm = getVmax(reac.id)
+#     if vm:
+#         Vmaxes[reac.id] = vm
+# reacVmaxes = sorted(Vmaxes) # ids of reactions sorted alphabetically that have Vmax
+# iniVmaxes = [Vmaxes[r] for r in reacVmaxes] # initial values of Vmax (as in the kinetic model)
+# wtVmaxes = dict(zip(reacVmaxes, iniVmaxes))
+
+# Get Vmax values of reactions specified in a specific list and stores them
+# in the dictionary wtVmaxes
+reaclist = ['GLT', 'LPD', 'GDH', 'ACEA', 'PYK']
 Vmaxes = {}
-for reac in model.getListOfReactions():
-    vm = getVmax(reac.id)
-    if vm:
-        Vmaxes[reac.id] = vm
+for reacid in reaclist:
+    vm = getVmax(reacid)
+    Vmaxes[reacid] = vm
 reacVmaxes = sorted(Vmaxes) # ids of reactions sorted alphabetically that have Vmax
 iniVmaxes = [Vmaxes[r] for r in reacVmaxes] # initial values of Vmax (as in the kinetic model)
 wtVmaxes = dict(zip(reacVmaxes, iniVmaxes))
@@ -88,7 +99,7 @@ else:
         result = rr.simulate(timestart, timeend, rrpoints)
 
         # Put reaction rates into array
-        for noreac, reac in enumerate(rr.model.getReactionIds()):
+        for noreac, reac in enumerate(reaclist):
             fluxdata[noreac][i] = rr.model.getReactionRates()[noreac]
 
         i += 1
@@ -107,7 +118,7 @@ else:
     filename = reaction + '.csv'
     with open(filename, 'wb') as csvfile:
         fluxwriter = csv.writer(csvfile)
-        for noreac, reac in enumerate(rr.model.getReactionIds()):
+        for noreac, reac in enumerate(reaclist):
             print(reac, ": min ", min(fluxdata[noreac]), " max ", max(fluxdata[noreac]))
             fluxwriter.writerow([reac, min(fluxdata[noreac]), max(fluxdata[noreac])])
 
