@@ -115,7 +115,7 @@ else:
     # outputs to both stdout and a csv file
     # I did separate csv files for each reaction modified so that I can catch
     # any irregularities
-    filename = reaction + '.csv'
+    filename = '1db_' + reaction + '.csv'
     with open(filename, 'wb') as csvfile:
         fluxwriter = csv.writer(csvfile)
         for noreac, reac in enumerate(reaclist):
