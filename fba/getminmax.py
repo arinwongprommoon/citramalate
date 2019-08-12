@@ -20,7 +20,8 @@ with open('1db_ana_combined.csv', 'rb') as csvfile:
                 r.append(float(el))
             except ValueError:
                 pass
-        print(min(r), max(r))
+        #print(min(r), max(r))
+        print "%.4f, %.4f" % (min(r), max(r))
         
         with open('1db_ana_minmax.csv', 'ab') as outputfile:
             outputwriter = csv.writer(outputfile, delimiter=',')
