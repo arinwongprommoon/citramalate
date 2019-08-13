@@ -19,9 +19,9 @@ model = document.getModel()
 # start, end, data points
 start = 0.1 # START VMAX
 end = 10.0 # END VMAX
-points = 20 # NUMBER OF DATA POINTS TO COMPUTE
+points = 400 # NUMBER OF DATA POINTS TO COMPUTE
 # NUMBER OF REACTIONS IN THE KINETIC MODEL, USUALLY 69
-noofreactions = 5
+noofreactions = 7
 #noofreactions = len(model.getListOfReactions())
 
 # SIMULATION PARAMETERS
@@ -61,7 +61,7 @@ def getVmax(reacId):
 
 # Get Vmax values of reactions specified in a specific list and stores them
 # in the dictionary wtVmaxes
-reaclist = ['GLT', 'LPD', 'GDH', 'ACEA', 'PYK']
+reaclist = ['CYTBO', 'MQO', 'MDH', 'ZWF', 'GLT', 'GDH', 'ACK']
 Vmaxes = {}
 for reacid in reaclist:
     vm = getVmax(reacid)
@@ -115,7 +115,7 @@ else:
     # outputs to both stdout and a csv file
     # I did separate csv files for each reaction modified so that I can catch
     # any irregularities
-    filename = reaction + '.csv'
+    filename = '1db_' + reaction + '.csv'
     with open(filename, 'wb') as csvfile:
         fluxwriter = csv.writer(csvfile)
         for noreac, reac in enumerate(reaclist):

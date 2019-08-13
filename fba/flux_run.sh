@@ -13,3 +13,7 @@ while true; do
       break
     fi
 done
+
+python combine.py
+echo "MINMAX"
+python getminmax.py
