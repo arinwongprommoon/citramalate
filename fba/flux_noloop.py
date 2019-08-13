@@ -18,7 +18,7 @@ model = document.getModel()
 
 # start, end, data points
 start = 0.1 # START VMAX
-end = 10.0 # END VMAX
+end = 1.5 # END VMAX
 points = 200 # NUMBER OF DATA POINTS TO COMPUTE
 # NUMBER OF REACTIONS IN THE KINETIC MODEL, USUALLY 69
 #noofreactions = 69
