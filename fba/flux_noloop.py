@@ -21,7 +21,7 @@ start = 0.10 # START VMAX
 end = 0.20 # END VMAX
 points = 20 # NUMBER OF DATA POINTS TO COMPUTE
 # NUMBER OF REACTIONS IN THE KINETIC MODEL, USUALLY 69
-noofreactions = 5
+noofreactions = 7
 #noofreactions = len(model.getListOfReactions())
 
 # SIMULATION PARAMETERS
@@ -61,7 +61,7 @@ def getVmax(reacId):
 
 # Get Vmax values of reactions specified in a specific list and stores them
 # in the dictionary wtVmaxes
-reaclist = ['GLT', 'LPD', 'GDH', 'ACEA', 'PYK']
+reaclist = ['CYTBO', 'MQO', 'MDH', 'ZWF', 'GLT', 'GDH']
 Vmaxes = {}
 for reacid in reaclist:
     vm = getVmax(reacid)
