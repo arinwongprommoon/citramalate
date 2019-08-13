@@ -17,9 +17,9 @@ document = reader.readSBMLFromFile("../kinetic/E_coli_Millard2016_CITRA.xml")
 model = document.getModel()
 
 # start, end, data points
-start = 0.10 # START VMAX
-end = 0.20 # END VMAX
-points = 20 # NUMBER OF DATA POINTS TO COMPUTE
+start = 0.1 # START VMAX
+end = 10.0 # END VMAX
+points = 400 # NUMBER OF DATA POINTS TO COMPUTE
 # NUMBER OF REACTIONS IN THE KINETIC MODEL, USUALLY 69
 noofreactions = 7
 #noofreactions = len(model.getListOfReactions())
@@ -61,7 +61,7 @@ def getVmax(reacId):
 
 # Get Vmax values of reactions specified in a specific list and stores them
 # in the dictionary wtVmaxes
-reaclist = ['CYTBO', 'MQO', 'MDH', 'ZWF', 'GLT', 'GDH']
+reaclist = ['CYTBO', 'MQO', 'MDH', 'ZWF', 'GLT', 'GDH', 'ACK']
 Vmaxes = {}
 for reacid in reaclist:
     vm = getVmax(reacid)
