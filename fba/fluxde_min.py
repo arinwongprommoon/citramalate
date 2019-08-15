@@ -39,7 +39,7 @@ listofreactions = ["CYTBO", "MQO", "MDH", "ZWF", "GLT", "GDH", "ACK"]
 n = 7
 
 # REDEFINE Vmax RANGE HERE
-boundsrel = [(0.1, 10.0)] * n
+boundsrel = [(0.3, 10.0)] * n
 
 # DIFFERENTIAL EVOLUTION PARAMETERS
 mut=0.6301 # F
