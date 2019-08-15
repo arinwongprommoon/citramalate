@@ -33,18 +33,18 @@ allreactions = ['PGI', 'PFK', 'FBA', 'TPI', 'GDH', 'PGK', 'GPM', 'ENO', 'PYK',
 # "PGL", "PIT", "PPC", "PPS", "PTA", "PYK", "RPE", "RPI", "SDH", "SK", "SQR",
 #  "TPI", "ZWF"]
 
-listofreactions = ["CYTBO", "MQO", "MDH", "ZWF", "GLT", "GDH", "ATP_syn", "ACK"]
+listofreactions = ["CYTBO", "MQO", "MDH", "ZWF", "GLT", "GDH", "ACK"]
 
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
-n = 8
+n = 7
 
 # REDEFINE Vmax RANGE HERE
-boundsrel = [(0.3, 10.0)] * n
+boundsrel = [(0.1, 10.0)] * n
 
 # DIFFERENTIAL EVOLUTION PARAMETERS
-mut=0.6607 # F
-crossp=0.9426 # CR
-popsize=28 # NP
+mut=0.6301 # F
+crossp=0.7122 # CR
+popsize=17 # NP
 its=20 # generations
 
 # SIMULATION PARAMETERS
