@@ -43,7 +43,7 @@
 \\University of Edinburgh (PhD Candidate 2019 --)}
 \title{Optimising production of citramalate based on \emph{E. coli} kinetic and stoichiometric models}
 \subtitle{Extended project report}
-\date{8 August 2019}
+\date{17 August 2019}
 
 \begin{document}
 
@@ -479,14 +479,17 @@ I mapped glucose uptake reactions according to table~\ref{tab:glucoseuptake}. Ma
 \end{table}
 
 For the pentose phosphate pathway reactions, I focussed on each metabolite (X5P, GAP, R5P, S7P, F6P, and E4P) separately to determine the influx reactions (that produce the metabolite) and the outflux reactions (that consume the metabolite). I based the mapping on the principle that the sum of influxes in the kinetic model must be equivalent to the sum of influxes in the stoichiometric model, and that the same holds for outflux. %[Add diagrams in tiks or something]
+
 As a result, I produced the following rules:
 \begin{itemize}
-\item Kinetic X5P\_GAP\_TKT = Stoich.\ TKT1 + Stoich.\ TKT2
-\item Kinetic F6P\_GAP\_TAL = Stoich.\ TALA
-\item Kinetic S7P\_R5P\_TKT = Stoich.\ TKT1
-\item Kinetic S7P\_E4P\_TAL = Stoich.\ TALA
-  \item Kinetic F6P\_E4P\_TKT = Stoich.\ TKT2
-\end{itemize}
+\item Kinetic X5P\_GAP\_TKT = Stoich.\ TKT1 + Stoich.\ TKT2 (from focussing on X5P and on GAP)
+\item Kinetic F6P\_GAP\_TAL = Stoich.\ TALA (from focussing on GAP and on F6P)
+\item Kinetic S7P\_R5P\_TKT = Stoich.\ TKT1 (from focussing on R5P and on S7P)
+\item Kinetic S7P\_E4P\_TAL = Stoich.\ TALA (from focussing on S7P and on E4P)
+  \item Kinetic F6P\_E4P\_TKT = Stoich.\ TKT2 (from focussing on F6P and on E4P)
+  \end{itemize}
+
+Specifically, the lower bound of the sum of the fluxes of stoichiometric model TKT1 and stoichiometric model TKT2 is equal to the lower bound of kinetic model X5P\_GAP\_TKT, and the same applies to the upper bound.
 
 \section{Flux balance analysis}
 \label{sec:fba}
@@ -617,11 +620,13 @@ In order to use the concentrations of the species present in the Lund medium to 
 \item that an OD\textsubscript{600} of 1 corresponds to an \emph{E. coli} concentration of $Z$, expressed in g\textsubscript{DW} L\textsuperscript{-1} (0.36--0.39 g\textsubscript{DW} L\textsuperscript{-1} in the literature)
 \end{itemize}
   
-the exchange rate $R$ for that chemical species can be calculated as follows:
+the maximum exchange rate $R$ for that chemical species can be calculated as follows:
 
 \[
   R = \frac{\mu[X_{i}]}{OD_{600} \cdot Z}
 \]
+
+And thus the corresponding reaction in the stoichiometric model will have the lower flux boundary of $-R$ and the upper flux boundary of 0.
 
 However, I was not able to obtain a reliable value for the OD\textsubscript{600} in the experiments described by \citet{orth_comprehensive_2011}, so I was not able to calculate definitive exchange rates. A potential value for OD\textsubscript{600} is 0.336 (SD = 0.0975), the OD\textsubscript{600} value with the highest frequency in the values from glucose M9 aerobic plate 1 \citep{orth_comprehensive_2011} that fit a normal distribution.
 
