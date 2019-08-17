@@ -1,0 +1,93 @@
+\documentclass{article}
+
+\usepackage[latin1]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\begin{document}
+\pagestyle{empty}
+
+\tikzstyle{met} = [draw, circle]
+\tikzstyle{reac} = [rectangle]
+\tikzstyle{line} = [draw, -latex']
+
+\begin{figure}[h]
+  \begin{tikzpicture}[node distance = 1.5cm]
+    % stoichiometric model metabolites
+    \node [reac] (stolabel) {Stoichiometric model};
+    \node [met, below of=stolabel] (x5psto) {X5P};
+    \node [met, below of=x5psto] (gapsto) {GAP};
+    \node [met, below of=gapsto] (r5psto) {R5P};
+    \node [met, below of=r5psto] (s7psto) {S7P};
+    \node [met, below of=s7psto] (f6psto) {F6P};
+    \node [met, below of=f6psto] (e4psto) {E4P};
+    %stoichiometric model reactions and arrows
+    \node [reac, right of=x5psto, xshift=0.75cm] (x5psto-x5pgaptkt) {X5P\_GAP\_TKT};
+    \path [line] (x5psto) -- (x5psto-x5pgaptkt);
+
+    \node [reac, left of=gapsto, xshift=-0.75cm] (gapsto-x5pgaptkt) {X5P\_GAP\_TKT};
+    \path [line] (gapsto-x5pgaptkt) -- (gapsto);    
+    \node [reac, right of=gapsto, xshift=0.75cm] (gapsto-f6pgaptal) {F6P\_GAP\_TAL};
+    \path [line] (gapsto) -- (gapsto-f6pgaptal);
+
+    \node [reac, right of=r5psto, xshift=0.75cm] (r5psto-s7pr5ptkt) {S7P\_R5P\_TKT};
+    \path [line] (r5psto) -- (r5psto-s7pr5ptkt);
+
+    \node [reac, left of=s7psto, xshift=-0.75cm] (s7psto-s7pr5ptkt) {S7P\_R5P\_TKT};
+    \path [line] (s7psto-s7pr5ptkt) -- (s7psto);    
+    \node [reac, right of=s7psto, xshift=0.75cm] (s7psto-s7pe4ptal) {S7P\_E4P\_TAL};
+    \path [line] (s7psto) -- (s7psto-s7pe4ptal);
+
+    \node [reac, left of=f6psto, xshift=-0.75cm, yshift=0.25cm] (f6psto-f6pgaptal) {F6P\_GAP\_TAL};
+    \node [reac, left of=f6psto, xshift=-0.75cm, yshift=-0.25cm] (f6psto-f6pe4ptkt) {F6P\_E4P\_TKT};
+    \path [line] (f6psto-f6pgaptal) -- (f6psto);
+    \path [line] (f6psto-f6pe4ptkt) -- (f6psto);    
+
+    \node [reac, left of=e4psto, xshift=-0.75cm] (e4psto-s7pe4ptal) {S7P\_E4P\_TAL};
+    \path [line] (e4psto-s7pe4ptal) -- (e4psto);    
+    \node [reac, right of=e4psto, xshift=0.75cm] (e4psto-f6pe4ptkt) {F6P\_E4P\_TKT};
+    \path [line] (e4psto) -- (e4psto-f6pe4ptkt);
+
+    %kinetic model metabolites
+    \node [reac, right of=stolabel, xshift=6cm] (kinlabel) {Kinetic model};
+    \node [met, below of=kinlabel] (x5pkin) {X5P};
+    \node [met, below of=x5pkin] (gapkin) {GAP};
+    \node [met, below of=gapkin] (r5pkin) {R5P};
+    \node [met, below of=r5pkin] (s7pkin) {S7P};
+    \node [met, below of=s7pkin] (f6pkin) {F6P};
+    \node [met, below of=f6pkin] (e4pkin) {E4P};
+    %kinetic model reactions and arrows
+    \node [reac, right of=x5pkin, xshift=0.5cm, yshift=0.25cm] (x5pkin-tkt1) {TKT1};
+    \node [reac, right of=x5pkin, xshift=0.5cm, yshift=-0.25cm] (x5pkin-tkt2) {TKT2};
+    \path [line] (x5pkin) -- (x5pkin-tkt1);
+    \path [line] (x5pkin) -- (x5pkin-tkt2);
+
+    \node [reac, left of=gapkin, xshift=-0.5cm, yshift=0.25cm] (gapkin-tkt1) {TKT1};
+    \node [reac, left of=gapkin, xshift=-0.5cm, yshift=-0.25cm] (gapkin-tkt2) {TKT2};
+    \node [reac, right of=gapkin, xshift=0.5cm] (gapkin-tala) {TALA};
+    \path [line] (gapkin-tkt1) -- (gapkin);
+    \path [line] (gapkin-tkt2) -- (gapkin);
+    \path [line] (gapkin) -- (gapkin-tala);
+
+    \node [reac, right of=r5pkin, xshift=0.5cm] (r5pkin-tkt1) {TKT1};
+    \path [line] (r5pkin) -- (r5pkin-tkt1);
+
+    \node [reac, left of=s7pkin, xshift=-0.5cm] (s7pkin-tkt1) {TKT1};
+    \path [line] (s7pkin-tkt1) -- (s7pkin);    
+    \node [reac, right of=s7pkin, xshift=0.5cm] (s7pkin-tala) {TALA};
+    \path [line] (s7pkin) -- (s7pkin-tala);
+
+    \node [reac, left of=f6pkin, xshift=-0.5cm, yshift=0.25cm] (f6pkin-tala) {TALA};
+    \node [reac, left of=f6pkin, xshift=-0.5cm, yshift=-0.25cm] (f6pkin-tkt2) {TKT2};
+    \path [line] (f6pkin-tala) -- (f6pkin);
+    \path [line] (f6pkin-tkt2) -- (f6pkin);    
+
+    \node [reac, left of=e4pkin, xshift=-0.5cm] (e4pkin-tala) {TALA};
+    \path [line] (e4pkin-tala) -- (e4pkin);    
+    \node [reac, right of=e4pkin, xshift=0.5cm] (e4pkin-tkt2) {TKT2};
+    \path [line] (e4pkin) -- (e4pkin-tkt2);
+
+  \end{tikzpicture}
+\end{figure}
+
+
+\end{document}
