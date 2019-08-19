@@ -30,6 +30,15 @@ timeend = 7200
 rrpoints = 100
 
 # Stealing useful functions from ecolicita
+def setFEED(value):
+        # value: mmol/s of glucose fed into the extracellular compartment.
+        # Notice that the volume of the extracellular compartment is 100l, thus
+        # the increase in concentration of glucose produced by the feed in the
+        # extracellular glucose is value/100 mM/s
+        model.getParameter('FEED').setValue(value)
+
+setFEED(0.002388)
+
 def setVmax(reacId, value):
     # Units: mM/s
     reac = model.getReaction(reacId)
