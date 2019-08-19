@@ -45,7 +45,7 @@
 \\University of Edinburgh (PhD Candidate 2019 --)}
 \title{Optimising production of citramalate based on \emph{E. coli} kinetic and stoichiometric models}
 \subtitle{Extended project report}
-\date{17 August 2019}
+\date{19 August 2019}
 
 \begin{document}
 
@@ -388,10 +388,12 @@ The lowest and highest possible values of fluxes through each reaction in the ki
 To find the lowest and highest possible flux values through the 69 reactions of the kinetic model, I varied the $V_{max}$ values of the 49 reactions with $V_{max}$ as a parameter, CITRA\_SYN included.
 
 Initially, to save computation time, I varied $V_{max}$ values of one reaction at a time over the range of 0.1-10.0 $V_{max}$, and recorded the minimum and maximum flux values achieved for each reaction after simulations. These produced a set of flux bounds I term `one-dimension bounds' (data not shown).
+% This is not supported by `hard' data yet, but it's better than nothing. Will improve this later.
+In subsequent investigations, I found out the that difference between the computed upper and lower bounds is decreased with smaller ranges for $V_{max}$ values. Furthermore, the bounds are most sensitive over the range of 0.1-3.0 $V_{max}$
 
 Then, I used differential evolution to find the lowest and highest possible fluxes through each kinetic model reaction. The simulated flux through each reaction was the objective function. To calculate the lower bound for each reaction, this objective function was minimised, and to calculate the upper bound, it was maximised.
 
-First, I included the eight reactions with the greatest flux control coefficients: CYTBO, MQO, MDH, ZWF, GLT, GDH, ATP\_syn, and ACK, with parameters $F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, and 5 iterations \citep{pedersen_good_2010}. I used the $V_{max}$ range of of 0.3--10.0 $V_{max}$ because $V_{max}$ values less than 0.3 $V_{max}$ tended to produce run time errors in \texttt{roadrunner} in which convergence test failures occurred too many times. Using this restricted range was justified by the aberrant behaviour of ATP\_MAINTENANCE (section~\ref{sec:couples}), which suggested that the model was not reliable with such small $V_{max}$ values. From this work, I produced `eight-dimension bounds' (data not shown).
+First, I included the eight reactions with the greatest flux control coefficients: CYTBO, MQO, MDH, ZWF, GLT, GDH, ATP\_syn, and ACK, with parameters $F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, and 5 iterations \citep{pedersen_good_2010}. I used the $V_{max}$ range of of 0.3--10.0 $V_{max}$ because $V_{max}$ values less than 0.3 $V_{max}$ tended to produce run time errors in \texttt{roadrunner} in which convergence test failures occurred too many times. Using this restricted range was justified by the aberrant behaviour of ATP\_MAINTENANCE (section~\ref{sec:couples}), which suggested that the model was not reliable with such small $V_{max}$ values. From this work, I produced `eight-dimension bounds' (data not shown). Increasing the number of iterations to 20 only marginally broadened the bounds.
 
 Second, I included all 41 enzyme-catalysed reactions in the kinetic model with $V_{max}$ as a parameter. Here, I used the differential evolution parameters of $F$ = 0.6876, $CR$ = 0.9784, $NP$ = 48 \citep{pedersen_good_2010}, and five iterations. To avoid convergence test failures, I set the $V_{max}$ range to 0.5--10.0 $V_{max}$. From this, I produced `41-dimension bounds' (appendix~\ref{ap:41dbounds}).
 
@@ -717,15 +719,11 @@ the maximum exchange rate $R$ for that chemical species can be calculated as fol
 
 And thus the corresponding reaction in the stoichiometric model will have the lower flux boundary of $-R$ and the upper flux boundary of 0.
 
-However, I was not able to obtain a reliable value for the OD\textsubscript{600} in the experiments described by \citet{orth_comprehensive_2011}, so I was not able to calculate definitive exchange rates. A potential value for OD\textsubscript{600} is 0.336 (SD = 0.0975), the OD\textsubscript{600} value with the highest frequency in the values from glucose M9 aerobic plate 1 \citep{orth_comprehensive_2011} that fit a normal distribution.
+\citet{orth_comprehensive_2011} describe experimental phenotypic screens for essentiality of a 1,074-gene subset of iAF1260 genes. The conditions included glucose M9 minimal medium under aerobic conditions in 96-well plates. The OD\textsubscript{600} values of the screens from this conditions roughly conform to a normal distribution, with a mean OD\textsubscript{600} value of 0.335.
 
-%% Note: this is just re-phrasing the paragraphs, but I think I'm going to delete this very, very soon because (1) the units are wrong, and (2) I'm going to use the OD600 value to re-do this part anyway.
+Using $\mu = 0.1$ (as in the kinetic model), an OD\textsubscript{600} value of 0.335, and $Z = 0.36$, maximum exchange rates for species present in the Lund medium were calculated. These rates were used as lower bounds for corresponding exchange reactions in the stoichiometric models.
 
-As a work-around in this project, I set bounds for reactions in the stoichiometric model based on other rationales. I use the one-dimension flux bounds (section ~\ref{sec:bounds}) to constrain the fluxes of most reactions. Additionally, I specified lower bounds for exchange reactions of species present in the Lund medium. Specifically, I set the bound for glucose to a specific number, and set the bounds for other species according to the proportions present in the Lund medium. For example, when I set the lower bound for glucose exchange as -0.23 mM s\textsuperscript{-1}, I set the lower bound for potassium exchange as \( \frac{167.6}{66.05} \times (-0.23) = -0.58  \).
-
-FBA was then performed, using maximisation of citramalate productivity as the objective. Uptake was only observed for glucose and citrate, with all other species returning the flux of zero. This persisted even when the exchange reactions for the species present in the Lund medium were totally unbounded. Specifically, glucose exchange was -11.13 mM s\textsuperscript{-1} and citrate exchange was -1.20 mM s\textsuperscript{-1}, while flux though the citramalate synthesis reaction was predicted to be 1.1692 mM s\textsuperscript{-1}.
-
-%[Discussion: comment on how only these two]
+FBA was then performed. I used the 41-dimension flux bounds (section~\ref{sec:bounds}) to constrain the fluxes of most reactions, and specified lower bounds for exchange reactions of species present in the Lund medium. In FBA, I used maximisation of citramalate productivity as the objective. This resulted in a solution of 0.003150 mM s\textsuperscript{-1}. Furthermore, glucose uptake was 0.002388 mM s\textsuperscript{-1}, while citrate uptake was \num{7.991e-5} mM s\textsuperscript{-1}. Uptake was only observed for glucose and citrate, with all other species returning the flux of zero. This persisted even when the exchange reactions for the species present in the Lund medium were totally unbounded. Specifically, glucose exchange was -11.13 mM s\textsuperscript{-1} and citrate exchange was -1.20 mM s\textsuperscript{-1}, while flux though the citramalate synthesis reaction was predicted to be 1.1692 mM s\textsuperscript{-1}.
 
 \chapter{Discussion}
 \label{ch:discussion}
