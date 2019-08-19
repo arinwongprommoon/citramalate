@@ -10,6 +10,12 @@ for (ii in 1:10){
     allfluxes[[ii]] <- read.csv(path, header=FALSE)
 }
 
+# Calculates sums of flux ranges
+for (ll in 1:10){
+    rr <- sum(allfluxes[[ll]][2] - allfluxes[[ll]][1])
+    print(rr)
+}
+
 # Calculates distance matrix
 distances <- matrix(1:100, nrow=10, ncol=10)
 for (kk in 1:10){
