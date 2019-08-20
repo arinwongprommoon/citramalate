@@ -62,7 +62,7 @@ else:
     P = []
     for i in range(points):
         ecit.setVmax(reaction, X[i])
-        P.append(ecit.comproducti())
+        P.append(ecit.comflux())
     # redefines X so that I can get a plot of productivity against multiples of
     # Vmax because all the methods I used to get rid of floating point
     # representation errors while plotting do not work. X still retained for
