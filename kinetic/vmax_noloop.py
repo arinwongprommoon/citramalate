@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import FormatStrFormatter
 import numpy as np
 import sys
+import csv
 
 # Parameters of kinetic model
 include_CITRA = True
@@ -34,12 +35,6 @@ y = (0.0070, 0.23) # DEFINE Y-AXIS LIMITS HERE
 yl = 'flux' # DEFINE Y-AXIS LABEL HERE
 
 xFormatter = FormatStrFormatter('%.2f')
-
-# writes header
-with open("VMAXDATA.txt", 'a') as fobj:
-    fobj.write('time0 ' + str(ecit.time0) + '\n')
-    fobj.write('timef ' + str(ecit.timef) + '\n')
-    fobj.write('Vmax ' + str(start) + 'to' + str(end) + '\n\n')
 
 # read the index of the reaction from file
 with open('vmaxi.txt', 'r') as fobj:
@@ -63,27 +58,6 @@ else:
     for i in range(points):
         ecit.setVmax(reaction, X[i])
         P.append(ecit.comflux())
-    # redefines X so that I can get a plot of productivity against multiples of
-    # Vmax because all the methods I used to get rid of floating point
-    # representation errors while plotting do not work. X still retained for
-    # writing data into file
-    XX = np.linspace(start, end, points, endpoint=True)
-
-    ax = plt.subplot(111)
-    plt.plot(XX,P)
-    if yaxisfixed:
-        plt.ylim(y)
-    else:
-        pass
-    plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
-    ax.xaxis.set_major_formatter(xFormatter)
-    plt.title(reaction)
-    plt.xlabel('Vmax, in multiples of the wild-type Vmax for this reaction')
-    plt.ylabel(yl)
-
-    filename = 'ONE_' + reaction + '.png'
-    plt.savefig(filename, bbox_inches='tight')
-    plt.gcf().clear()
 
     ecit.setVmax(reaction, initVmax)
 
@@ -94,8 +68,8 @@ else:
 
     # Write data to file
     data = [str(reaction), str(X.tolist()), str(P)]
-    with open("VMAXDATA.txt", 'a') as fobj:
-        fobj.write('\n'.join(data))
-        fobj.write('\n')
+    with open("VMAXDATA.csv", 'a') as csvfile:
+        datawriter = csv.writer(csvfile)
+        fluxwriter.writerow([str(reaction), str(min(P)), str(max(P))])
 
     sys.exit(2)
