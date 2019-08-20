@@ -57,7 +57,7 @@ else:
     P = []
     for i in range(points):
         ecit.setVmax(reaction, X[i])
-        P.append(ecit.comflux())
+        P.append(ecit.comflux(fluxreac="GLT"))
 
     ecit.setVmax(reaction, initVmax)
 
