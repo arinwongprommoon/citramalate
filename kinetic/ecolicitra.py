@@ -176,7 +176,7 @@ class ecolicit:
         else:
             return -1e-4
             
-    def comflux(self, tol=99999, fluxreac="CITRA"):
+    def comflux(self, tol=99999, fluxreac="CITRA_SYN"):
         """
             Computes steady state flux of any reaction (citramalate synthesis
             is default)
