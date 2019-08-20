@@ -28,13 +28,10 @@ listofreactions = ecit.reacVmaxes
 
 start = 0.1 # START VALUE IN MULTIPLES OF WT VMAX
 end = 5.0 # END VALUE IN MULTIPLES OF WT VMAX
-points = 50 # NUMBER OF DATA POINTS
+points = 20 # NUMBER OF DATA POINTS
 
-yaxisfixed = False # IF YOU WANT TO FIX THE Y-AXIS
-y = (0.0070, 0.23) # DEFINE Y-AXIS LIMITS HERE
-yl = 'flux' # DEFINE Y-AXIS LABEL HERE
-
-xFormatter = FormatStrFormatter('%.2f')
+# Reaction concerned
+fluxreac="EDD"
 
 # read the index of the reaction from file
 with open('vmaxi.txt', 'r') as fobj:
@@ -52,12 +49,11 @@ else:
     print(reaction)
     initVmax = ecit.getVmax(reaction)
 
-    # Plot graph and saves image
-    X = np.linspace(start*initVmax, end*initVmax, points, endpoint=True) # sets X values from 0.5*default Vmax to 2.0*default Vmax
+    X = np.linspace(start*initVmax, end*initVmax, points, endpoint=True)
     P = []
     for i in range(points):
         ecit.setVmax(reaction, X[i])
-        P.append(ecit.comflux(fluxreac="EDD"))
+        P.append(ecit.comflux(fluxreac=fluxreac))
 
     ecit.setVmax(reaction, initVmax)
 
@@ -67,9 +63,9 @@ else:
         fobj.write(str(idx))
 
     # Write data to file
-    data = [str(reaction), str(X.tolist()), str(P)]
-    with open("VMAXDATA.csv", 'a') as csvfile:
+    filename = "VMAXDATA-" + fluxreac + ".csv"
+    with open(filename, 'a') as csvfile:
         datawriter = csv.writer(csvfile)
-        datawriter.writerow([str(reaction), str(min(P)), str(max(P))])
+        datawriter.writerow([str(reaction), str(max(P)-min(P))])
 
     sys.exit(2)
