@@ -31,7 +31,7 @@ end = 5.0 # END VALUE IN MULTIPLES OF WT VMAX
 points = 20 # NUMBER OF DATA POINTS
 
 # Reaction concerned
-fluxreac="EDD"
+fluxreac="LPD"
 
 # read the index of the reaction from file
 with open('vmaxi.txt', 'r') as fobj:
