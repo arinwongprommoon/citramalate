@@ -70,6 +70,6 @@ else:
     data = [str(reaction), str(X.tolist()), str(P)]
     with open("VMAXDATA.csv", 'a') as csvfile:
         datawriter = csv.writer(csvfile)
-        fluxwriter.writerow([str(reaction), str(min(P)), str(max(P))])
+        datawriter.writerow([str(reaction), str(min(P)), str(max(P))])
 
     sys.exit(2)
