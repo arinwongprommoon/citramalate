@@ -21,17 +21,17 @@ ecit = ecolicit(include_CITRA = include_CITRA)
 ecit.setVmax('CITRA_SYN', 4.0)
 ecit.time0 = 0
 ecit.timef = 2*3600 # final simulation time in seconds
-ecit.npoints = 1000 # Number of points to be computed in the simulation
+ecit.npoints = 100 # Number of points to be computed in the simulation
 ecit.getVmaxes()
 listofreactions = ecit.reacVmaxes
 
 start = 0.1 # START VALUE IN MULTIPLES OF WT VMAX
-end = 1.0 # END VALUE IN MULTIPLES OF WT VMAX
-points = 100 # NUMBER OF DATA POINTS
+end = 5.0 # END VALUE IN MULTIPLES OF WT VMAX
+points = 50 # NUMBER OF DATA POINTS
 
-yaxisfixed = True # IF YOU WANT TO FIX THE Y-AXIS
+yaxisfixed = False # IF YOU WANT TO FIX THE Y-AXIS
 y = (0.0070, 0.23) # DEFINE Y-AXIS LIMITS HERE
-yl = 'iGROWTH, h-1' # DEFINE Y-AXIS LABEL HERE
+yl = 'flux' # DEFINE Y-AXIS LABEL HERE
 
 xFormatter = FormatStrFormatter('%.2f')
 
