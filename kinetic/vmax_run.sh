@@ -8,7 +8,7 @@
 echo "0" > 'vmaxi.txt'
 
 while true; do
-    python vmax_noloop.py
+    python vmax_noloop.py $1
     a=$?
     if [ $a == 1 ]; then
       break
