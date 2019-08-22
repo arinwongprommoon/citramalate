@@ -45,7 +45,7 @@
 \\University of Edinburgh (PhD Candidate 2019 --)}
 \title{Optimising production of citramalate based on \emph{E. coli} kinetic and stoichiometric models}
 \subtitle{Extended project report}
-\date{19 August 2019}
+\date{22 August 2019}
 
 \begin{document}
 
@@ -723,7 +723,7 @@ And thus the corresponding reaction in the stoichiometric model will have the lo
 
 Using $\mu = 0.1$ (as in the kinetic model), an OD\textsubscript{600} value of 0.335, and $Z = 0.36$, maximum exchange rates for species present in the Lund medium were calculated. These rates were used as lower bounds for corresponding exchange reactions in the stoichiometric models.
 
-FBA was then performed. I used the 41-dimension flux bounds (section~\ref{sec:bounds}) to constrain the fluxes of most reactions, and specified lower bounds for exchange reactions of species present in the Lund medium. In FBA, I used maximisation of citramalate productivity as the objective. This resulted in a solution of 0.003150 mM s\textsuperscript{-1}. Furthermore, glucose uptake was 0.002388 mM s\textsuperscript{-1}, while citrate uptake was \num{7.991e-5} mM s\textsuperscript{-1}. Uptake was only observed for glucose and citrate, with all other species returning the flux of zero. This persisted even when the exchange reactions for the species present in the Lund medium were totally unbounded. Specifically, glucose exchange was -11.13 mM s\textsuperscript{-1} and citrate exchange was -1.20 mM s\textsuperscript{-1}, while flux though the citramalate synthesis reaction was predicted to be 1.1692 mM s\textsuperscript{-1}.
+FBA was then performed. I used the 41-dimension flux bounds (section~\ref{sec:bounds}) to constrain the fluxes of most reactions, and specified lower bounds for exchange reactions of species present in the Lund medium. In FBA, I used maximisation of citramalate flux as the objective. This resulted in a solution of 0.003150 mM s\textsuperscript{-1}. Furthermore, glucose uptake was 0.002388 mM s\textsuperscript{-1}, while citrate uptake was \num{7.991e-5} mM s\textsuperscript{-1}. Uptake was only observed for glucose and citrate, with all other species returning the flux of zero. This persisted even when the exchange reactions for the species present in the Lund medium were totally unbounded. Specifically, glucose exchange was -11.13 mM s\textsuperscript{-1} and citrate exchange was -1.20 mM s\textsuperscript{-1}, while flux though the citramalate synthesis reaction was predicted to be 1.1692 mM s\textsuperscript{-1}.
 
 \chapter{Discussion}
 \label{ch:discussion}
@@ -834,7 +834,11 @@ Finally, FVA and pFBA results are in agreement with that of FBA. Standard FVA ma
 \subsection{Lund medium}
 \label{ssec:discussion-stoichiometric-lund}
 
-There were issues with working out FBA bounds from the composition of the Lund medium. Such work involved translating the concentration of a chemical species into a flux value for the corresponding exchange reaction. This was mainly because I lacked a definitive OD\textsubscript{600} value for \emph{E. coli} in the stoichiometric model. Complicating the issue, a study by \citet{kavvas_updated_2018} includes variations of a stoichiometric model for \emph{Mycobacterium tuberculosis} that had different bounds for exchange reactions according to differing media conditions, but the bounds seem to be arbitrary round numbers and do not reflect the ratios between the concentrations of the chemical species in the media. Even if appropriate bounds could be worked out, the observations resulting from unbounding exchange reactions called into question how useful they would be. Only glucose and citrate uptake were observed in unbounding, and this would be unsurprising given optimisation of citramalate productivity.
+Bounds to use species concentrations in the Lund medium to establish maximum exchange rates for chemical species in the stoichiometric model have been devised. However, the values are small, and thus result in small fluxes through citramalate synthesis as a solution. This calls into question if the model is suited for such small values for exchange.
+
+Furthermore, only glucose and citrate uptake were observed in unbounding. This would be unsurprising given optimisation of citramalate productivity. However, flux through the biomass reaction is predicted to be zero, and this observation can be attributed to the fork between citramalate flux and growth observed earlier.
+
+A study by \citet{kavvas_updated_2018} includes variations of a stoichiometric model for \emph{Mycobacterium tuberculosis} that had different bounds for exchange reactions according to differing media conditions. This study could present an alternative solution in translating chemical concentrations in nutrient media to bounds for exchange reactions. However, the bounds used in the study seem to be arbitrary round numbers and do not reflect the ratios between the concentrations of the chemical species in the media.
 
 \section{Applications}
 \label{sec:discussion-applications}
