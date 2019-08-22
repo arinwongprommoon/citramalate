@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 
-# Runs computations for reactions within a specified list, writes data to TXT
-# file, then plots graphs of productivity against multiple of Vmax and saves
-# them as image files
+# Runs computations for reactions within a specified list, writes data to CSV
+# file. Takes the reaction concerned as an argument.
 
 # This program stops after each reaction and continues on to
-# the next reaction when executed again. To run through all reaction, execute
+# the next reaction when executed again. To run through all reactions, execute
 # ./vmax_run.sh . In a nutshell, this script is not very useful on its own
 
 from __future__ import division, print_function
