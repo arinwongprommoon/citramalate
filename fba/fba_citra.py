@@ -8,7 +8,7 @@ import cobra.test
 from cobra import Reaction, Metabolite
 
 # DEFINE FILE TO BE LOADED FOR FBA BOUNDS HERE
-loc = 'boundaries_citra/1dBoundaries_glcfeed.csv'
+loc = 'boundaries_citra/AnargyrosBoundaries.csv'
 
 modelfile = "MODEL1108160000" # DEFINE MODEL FILE HERE
 objective = 'CitraSink' # DEFINE OBJECTIVE REACTION HERE
@@ -81,7 +81,8 @@ solution = model.optimize(objective_sense='maximize')
 print('Status:', solution.status, '; Solution:', solution.objective_value)
 
 f = solution.fluxes
-output = f[f != 0]
+#output = f[f != 0]
+output = f
 output.to_csv('FluxesAfterBound.csv')
 print('Output to CSV')
 
