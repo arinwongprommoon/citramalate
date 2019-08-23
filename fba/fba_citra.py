@@ -11,8 +11,9 @@ from cobra import Reaction, Metabolite
 loc = 'boundaries_citra/1dBoundaries_glcfeed.csv'
 
 modelfile = "MODEL1108160000" # DEFINE MODEL FILE HERE
-objective = 'CitraSink' # DEFINE OBJECTIVE REACTION HERE
+#objective = 'CitraSink' # DEFINE OBJECTIVE REACTION HERE
 #objective = 'Ec_biomass_iJO1366_core_53p95M'
+objective = 'CYSS'
 
 def addCimA(model):
     """Add CimA reaction and sink for citramalate to cobra model"""
@@ -81,8 +82,7 @@ solution = model.optimize(objective_sense='maximize')
 print('Status:', solution.status, '; Solution:', solution.objective_value)
 
 f = solution.fluxes
-#output = f[f != 0]
-output = f
+output = f[f != 0]
 output.to_csv('FluxesAfterBound.csv')
 print('Output to CSV')
 
