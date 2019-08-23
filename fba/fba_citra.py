@@ -65,14 +65,14 @@ solution = model.optimize(objective_sense='maximize')
 print('Status:', solution.status, '; Solution:', solution.objective_value)
 
 ### Reads CSV file listing reactions and intended lower and upper bounds
-with open(loc, 'rt') as fobj:
-    reader = csv.reader(fobj)
-    boundslist = list(reader)
-    boundslist = boundslist[1:] # removes header
-    for row in boundslist:
-        reac = model.reactions.get_by_id(row[0])
-        reac.lower_bound = float(row[1])
-        reac.upper_bound = float(row[2])
+#with open(loc, 'rt') as fobj:
+#    reader = csv.reader(fobj)
+#    boundslist = list(reader)
+#    boundslist = boundslist[1:] # removes header
+#    for row in boundslist:
+#        reac = model.reactions.get_by_id(row[0])
+#        reac.lower_bound = float(row[1])
+#        reac.upper_bound = float(row[2])
 
 print('Bounds changed')
 
@@ -81,7 +81,8 @@ solution = model.optimize(objective_sense='maximize')
 print('Status:', solution.status, '; Solution:', solution.objective_value)
 
 f = solution.fluxes
-output = f[f != 0]
+#output = f[f != 0]
+output = f
 output.to_csv('FluxesAfterBound.csv')
 print('Output to CSV')
 
