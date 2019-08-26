@@ -39,13 +39,14 @@
 \usepackage{pgfplotstable}
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows}
+\usepackage{physics}
 
 \author{Arin Wongprommoon\thanks{\texttt{arin.wongprommoon@ed.ac.uk, arin.wongprommoon@gmail.com}}
   \\University of Cambridge (Natural Sciences Tripos 2016-2019)
 \\University of Edinburgh (PhD Candidate 2019 --)}
 \title{Optimising production of citramalate based on \emph{E. coli} kinetic and stoichiometric models}
 \subtitle{Extended project report}
-\date{22 August 2019}
+\date{26 August 2019}
 
 \begin{document}
 
@@ -356,10 +357,11 @@ I investigated the kinetic model to determine whether there was decoupling betwe
 Specifically, I examined the relationship between glucose feed and the fluxes through the other reactions in the kinetic model. I varied the flux through GLC\_feed and observed the following (figures~\ref{fig:growthglc_XCHGLCvGLCfeed} and \ref{fig:growthglc_species}):
 
 \begin{itemize}
-\item Fluxes through XCH\_GLC and all PTS\_X reactions were always equal to each other.
-\item Flux through XCH\_GLC increased linearly with GLC\_feed until the value of 0.82 mM s\textsuperscript{-1}, after which it plateaued. Possibly this is because XCH\_GLC is modelled with saturation kinetics with $V_{max}$ = 100 mM s\textsuperscript{-1} and $K_{m}$ = 10 mM.
+\item Fluxes through XCH\_GLC and all PTS\_X reactions were equal to each other, until GLC\_feed exceeded 0.82 mM s\textsuperscript{-1}, at which the flux through XCH\_GLC slightly exceeded that of the PTS\_X reactions.
+\item Flux through XCH\_GLC increased linearly with GLC\_feed until the value of 0.82 mM s\textsuperscript{-1}, after which it plateaued.
 \item GLCx and GLCp concentrations remained very low as GLC\_feed flux increased up to 0.82 mM s\textsuperscript{-1}. After that, their concentrations increased linearly as GLC\_feed flux increased
-  \item The concentration of G6P increased linearly as GLC\_feed flux increased up to 0.82 mM s\textsuperscript{-1}, at which the concentration immediately plateaued at 3.19 mM.
+\item The concentration of G6P increased linearly as GLC\_feed flux increased up to 0.82 mM s\textsuperscript{-1}, at which the concentration immediately plateaued at 3.19 mM.
+  \item Concentrations of all metabolites except for CITRA were at steady-state when GLC\_feed was below 0.82 mM s\textsuperscript{-1}. At any GLC\_feed value over 0.82 mM s\textsuperscript{-1}, GLCx and GLCp concentrations were increasing with respect to time (i.e. \( \dv{GLCp}{t} > 0, \dv{GLCx}{t} > 0\)).
 \end{itemize}
 
 \begin{figure}[hp]
