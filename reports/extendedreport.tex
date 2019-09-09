@@ -50,7 +50,7 @@
 \\University of Edinburgh (PhD Candidate 2019 --)}
 \title{Optimising production of citramalate based on \emph{E. coli} kinetic and stoichiometric models}
 \subtitle{Extended project report}
-\date{26 August 2019}
+\date{9 September 2019}
 
 \begin{document}
 
@@ -867,11 +867,18 @@ Finally, FVA and pFBA results are in agreement with that of FBA. Standard FVA ma
 \subsection{Lund medium}
 \label{ssec:discussion-stoichiometric-lund}
 
-Bounds to use species concentrations in the Lund medium to establish maximum exchange rates for chemical species in the stoichiometric model have been devised. However, the values are small, and thus result in small fluxes through citramalate synthesis as a solution. This calls into question if the model is suited for such small values for exchange.
+There are challenges to the validity of using a Monod model to relate $C_{glc}^{feed}$ to $C_{x}$ as in equation~\ref{eqn:taymaznikerel10_lreg}.  \citet{taymaz-nikerel_genome-derived_2010} suggest that there is a linear correlation betwen $D$ and $C_{x}$, with $r$ = 0.868, but for simplicity this factor was excluded as we only concern $D$ = 0.1.  With construction of the linear model, only three data points were used, but the lack of precision can be justified by our aim of finding a flux boundary rather than model the relations directly.  Additionally, \citet{kovarova-kovar_growth_1998} challenge Monod's model, but confirm that Monod's proposal and its slight modifications are sufficient to describe the growth of pure cultures with single growth-controlling sustrates under ideal conditions, supported by data for growth of \emph{E. coli} with glucose.
 
-Furthermore, only glucose and citrate uptake were observed in unbounding. This would be unsurprising given optimisation of citramalate productivity. However, flux through the biomass reaction is predicted to be zero, and this observation can be attributed to the fork between citramalate flux and growth observed earlier.
+Through
 
-A study by \citet{kavvas_updated_2018} includes variations of a stoichiometric model for \emph{Mycobacterium tuberculosis} that had different bounds for exchange reactions according to differing media conditions. This study could present an alternative solution in translating chemical concentrations in nutrient media to bounds for exchange reactions. However, the bounds used in the study seem to be arbitrary round numbers and do not reflect the ratios between the concentrations of the chemical species in the media.
+\begin{equation}
+  C_{x} = Y(C_{substrate}^{feed}  - C_{substrate}^{ext}),
+\end{equation}
+\label{eqn:monodmodel}
+
+where $Y$ is the yield factor, the unit weight of cells formed per unit weight of substrate used \citep{schulze_relationship_1964}, it is implied that a linear regression model for $C_{x}$ with respect to $C_{glucose}^{feed}$ must have a negative vertical intercept, contrary to equation~\ref{eqn:taymaznikerel10_lreg}.  However, cell lysis may add a constant biomass concentration to the right-hand-side of~\vref{eqn:monodmodel} so that the intercept becomes positive.  \citet{taymaz-nikerel_genome-derived_2010} suggest that such cell lysis is significant.
+
+Thus, I believe the methods were sufficient to determine an adequate lower limit for the rate of uptake of specific metabolites by the cell.
 
 \section{Applications}
 \label{sec:discussion-applications}
