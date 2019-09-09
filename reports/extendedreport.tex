@@ -396,7 +396,14 @@ To find the lowest and highest possible flux values through the 69 reactions of 
 
 Initially, to save computation time, I varied $V_{max}$ values of one reaction at a time over the range of 0.1-10.0 $V_{max}$, and recorded the minimum and maximum flux values achieved for each reaction after simulations. These produced a set of flux bounds I term `one-dimension bounds' (data not shown).
 % This is not supported by `hard' data yet, but it's better than nothing. Will improve this later.
-In subsequent investigations, I found out the that difference between the computed upper and lower bounds is decreased with smaller ranges for $V_{max}$ values. Furthermore, the bounds are most sensitive over the range of 0.1-3.0 $V_{max}$
+In investigating the sensitivity of the flux bounds in response to changing the $V_{max}$ range, I found out the smaller the $V_{max}$ range over which the one-dimension flux bounds were generated, the lower the difference between the computed upper and lower bounds.  Additionally, the sum of differences among all reactions seemed to plateau beyond 5.0 $V_{max}$ (figure~\ref{fig:vmaxplateau})
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.3]{vmaxplateau}
+  \caption{Relationship between $V_{max}$ ranges used for generating one-dimension flux bounds and the sum of differences between upper and lower bounds for each reaction}
+  \label{fig:vmaxplateau}
+\end{figure}
 
 Then, I used differential evolution to find the lowest and highest possible fluxes through each kinetic model reaction. The simulated flux through each reaction was the objective function. To calculate the lower bound for each reaction, this objective function was minimised, and to calculate the upper bound, it was maximised.
 
@@ -847,14 +854,16 @@ Additionally, there is the issue with translating optimal $V_{max}$ values to en
 % Unit conversion (Jorge proposed a different number apart from 6.372)
 
 % Boundaries for FBA:
-The results suggest that kinetic model simulations are useful in informing the flux bounds for FBA on the stoichiometric model, and differential evolution is a useful strategy to establish such flux bounds. Specifically, the 41-dimension bounds found by differential evolution were mostly wider and bounds found by individually varying $V_{max}$ values in the kinetic model. However, it remains to be seen how realistic \emph{in vivo} are the highest and lowest possible flux values are.
+The results suggest that kinetic model simulations are useful in informing the flux bounds for FBA on the stoichiometric model, and differential evolution is a useful strategy to establish such flux bounds. Specifically, the 41-dimension bounds found by differential evolution were mostly wider and bounds found by individually varying $V_{max}$ values in the kinetic model. An alternative of using sets of six reactions that have the greatest bearing on each reaction in the kinetic model was investigaed; it turned out that these six-reaction sets for each reaction in the kinetic model are similar sets of reaction that have high flux control coefficients and that the resulting flux boundaries were no better than previously found.
 
-Additionally, mapping reactions in the kinetic model to the stoichiometric model suggested a general strategy for mapping reactions that have one-to-one correspondence, and reconciling different sub-network structures for reactions that do not. Such a strategy may be applied to models of other metabolic networks.
+However, it remains to be seen how realistic \emph{in vivo} are the highest and lowest possible flux values are.
+
+Additionally, mapping reactions in the kinetic model to the stoichiometric model suggested a general strategy for mapping reactions that have one-to-one correspondence, and reconciling different sub-network structures for reactions that do not. Such a strategy may be applied to models of other metabolic networks. However, so far the mapping does not include a strategy to map the biomass production reaction of the two models. Devising such a strategy can lead to determining a strictly positive flux bound for the biomass reaction of the stoichiometric model and aid in optimising growth and citramalate production simultaneously.
 
 \subsection{Flux balance analysis}
 \label{ssec:discussion-stoichiometric-fba}
 
-FBA suggested a fork between the growth and citramalate synthesis reactions, as evidenced by how optimising one excludes flux through the other. Alternatively, this phenomenon could be explained by how the fluxes of these reactions are not bounded, but this explanation is not realistic \emph{in vivo}. This observation may imply that optimising citramalate productivity in culture must take into account growth in addition to changing enzyme concentrations.
+FBA suggested a fork between the growth and citramalate synthesis reactions, as evidenced by how optimising one excludes flux through the other. Alternatively, this phenomenon could be explained by how the fluxes of these reactions are not bounded, but this explanation is not realistic \emph{in vivo}. This observation may imply that optimising citramalate productivity in culture must take into account growth in addition to changing enzyme concentrations. Therefore, any FBA does not optimise for growth and citramalate synthesis simultaneously, and this issue may be addressed using guarded flexible nets \citep{julvez_handling_2018}.
 
 Analysis of the objective-exercise bounds covered flux ranges, reaction reversibility, and activity of reactions.
 Having most flux bounds being near zero is expected for a large genome-scale metabolic model, suggesting regulation.
