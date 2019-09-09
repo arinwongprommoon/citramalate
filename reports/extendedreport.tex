@@ -32,7 +32,11 @@
 \usepackage{tabularx}
   \newcolumntype{L}{>{\raggedright\arraybackslash}X}
   \usepackage[version=4]{mhchem}
-\usepackage{siunitx}
+  \usepackage{siunitx}
+  \usepackage{siunitx}
+\DeclareSIUnit\molar{\mole\per\cubic\deci\metre}
+\DeclareSIUnit\Molar{\textsc{m}}
+\DeclareSIUnit\calorie{cal}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{ltablex}
@@ -92,10 +96,11 @@ This project had the following aims:
 The kinetic model contains 68 reactions, 49 of which include $V_{max}$ as a parameter (see appendix~\ref{ap:kineticreactionlist}). Of these, 41 correspond to real enzyme-catalysed reactions.
 To investigate citramalate production, a 69th reaction called CITRA\_SYN was added to the kinetic model to model citramalate synthesis.  In the model, this reaction has the Michaelis-Menten kinetic law:
 
-\[
+\begin{equation}
   \frac{\mathrm{d}[citramalate]}{\mathrm{d}t} = 
   \frac{V_{max} \cdot [acetyl-CoA]}{[acetyl-CoA] + K_{m}}
-\]
+\end{equation}
+\label{eq:michaelismenten}
 
 This kinetic law assumes that pyruvate is saturating. $V_{max}$ is set to 4 mM s\textsuperscript{-1} and $K_{m}$ to 0.495 mM in the modified model. These values are based on experimental values obtained in the ConBioChem project.
 
@@ -705,45 +710,14 @@ This medium is referred to as the `Lund medium' in this project and is also inve
 To conform to the exchange reactions defined in the stoichiometric model, \ce{HPO4^{2-}} and \ce{H2PO4^-} were merged into one entry representing inorganic phosphates. The stoichiometric model lacks an exchange reaction for EDTA, so this species was ignored in subsequent investigations.
 
 In order to use the concentrations of the species present in the Lund medium to set the bounds of exchange reactions, additional information is needed.
-% This can be killed -- describes a previous method that did not work
-Previously I devised a method to
-use the concentrations of the species present in the Lund medium to set the bounds of exchange reactions.
-This method is not derived from any existing methodology in the literature; I just did what made sense to me and resulted in consistent units.
-This method uses the following information:
-
-\begin{itemize}
-\item a concentration of a chemical species $[X_{i}]$
-\item the growth rate or dilution rate $\mu$
-\item a measured OD\textsubscript{600}, and
-\item that an OD\textsubscript{600} of 1 corresponds to an \emph{E. coli} concentration of $Z$, expressed in g\textsubscript{DW} L\textsuperscript{-1} (0.36--0.39 g\textsubscript{DW} L\textsuperscript{-1} in the literature)
-\end{itemize}
-  
-the maximum exchange rate $R$ for that chemical species can be calculated as follows:
-
-\[
-  R = \frac{\mu[X_{i}]}{OD_{600} \cdot Z}
-\]
-
-And thus the corresponding reaction in the stoichiometric model will have the lower flux boundary of $-R$ and the upper flux boundary of 0.
-
-\citet{orth_comprehensive_2011} describe experimental phenotypic screens for essentiality of a 1,074-gene subset of iAF1260 genes. The conditions included glucose M9 minimal medium under aerobic conditions in 96-well plates. The OD\textsubscript{600} values of the screens from this conditions roughly conform to a normal distribution, with a mean OD\textsubscript{600} value of 0.335.
-
-Using $\mu = 0.1$ (as in the kinetic model), an OD\textsubscript{600} value of 0.335, and $Z = 0.36$, maximum exchange rates for species present in the Lund medium were calculated. These rates were used as lower bounds for corresponding exchange reactions in the stoichiometric models.
-
-FBA was then performed. I used the 41-dimension flux bounds (section~\ref{sec:bounds}) to constrain the fluxes of most reactions, and specified lower bounds for exchange reactions of species present in the Lund medium. In FBA, I used maximisation of citramalate flux as the objective. This resulted in a solution of 0.003150 mM s\textsuperscript{-1}. Furthermore, glucose uptake was 0.002388 mM s\textsuperscript{-1}, while citrate uptake was \num{7.991e-5} mM s\textsuperscript{-1}. Uptake was only observed for glucose and citrate, with all other species returning the flux of zero. This persisted even when the exchange reactions for the species present in the Lund medium were totally unbounded. Specifically, glucose exchange was -11.13 mM s\textsuperscript{-1} and citrate exchange was -1.20 mM s\textsuperscript{-1}, while flux though the citramalate synthesis reaction was predicted to be 1.1692 mM s\textsuperscript{-1}.
-
-However, the calculated maximum glucose uptake rate was very low, and the rates for for other chemicals present in the Lund medium were even lower.
-The Lund medium has glucose at a concentration of \SI{11.9}{\gram\per\litre}, and using the values stated gives a maximum uptake rate $R$ of \SI{0.00238}{\milli\Molar\per\second}. The models may not be tuned for such a low value.
-
-It is possible that such a low value may be because I used an $OD_{600}$ value derived from phenotype screening experiments by \citet{orth_comprehensive_2011}, which use very different conditions compared to the continuous culture the kinetic model by \citet{millard_metabolic_2017} assumes.
-
 \citet{chassagnole_dynamic_2002} concern the development of a dynamics model that links the sugar transport system of \emph{E. coli} with glycolysis and the pentose phosphate pathway.  Their study utilises growth conditions consistent with the model by \citet{millard_metabolic_2017}: \SI{37}{\celsius}, pH 7.0, steady-state conditions, and a dilution rate ($D$) of \SI{0.1}{\per\hour}.  The medium used includes \SI{20.0}{\gram\per\litre} glucose.
 
 The study presents a model concerning glucose uptake:
 
-\[
+\begin{equation}
   \dv{C_{glc}^{ext}}{t} = D(C_{glc}^{feed} - C_{glc}^{ext}) + f_{pulse} - \frac{C_{x}r_{PTS}}{\rho_{x}}
-\]
+\end{equation}
+\label{eqn:chassagnole_orig}
 
 Where:
 
@@ -759,21 +733,30 @@ Where:
 
   Substituting $\dv{C_{glc}^{ext}}{t} = 0$ for steady-state conditions, setting $f_{pulse}$ to be zero (assuming no glucose pulse experiments are undertaken; these experiments are not relevant to our kinetic model), and setting other variables as above gives:
 
-  \[
+\begin{equation}
     r_{PTS} = \frac{\rho_{x}D}{C_{x}}(C_{glc}^{feed} - C_{glc}^{ext}) = \SI{0.200}{\milli\Molar\per\second}
-  \]
+  \end{equation}
+  \label{eqn:chassagnole_rearranged}
 
   This is on the same order as the \SI{0.23}{\milli\Molar\per\second} default glucose feed rate for the kinetic model.  \citet{nanchen_nonlinear_2006} reports that the total cellular carbon influx varies linearly with dilution rate, thus validating how $r_{PTS} \propto D$ in this equation.
 
-  To obtain the maximum uptake rate for glucose, I think it is reasonable to set $C_{glc}^{ext}$ to zero in the above expression to represent a situation in which the glucose uptake is increased by so much that it eliminates all the extracellular glucose -- glucose uptake cannot possibly be greater than this.  Thus this gives:
+  To obtain the maximum uptake rate for glucose, it is reasonable to set $C_{glc}^{ext}$ to zero in the above expression to represent a situation in which the glucose uptake is increased by so much that it eliminates all the extracellular glucose -- glucose uptake cannot possibly be greater than this.  Thus this gives:
 
-  \[
+\begin{equation}
     r_{PTS}^{max} = \frac{\rho_{x}D}{C_{x}}C_{glc}^{feed}
-  \]
+  \end{equation}
+  \label{eqn:lundmediumequation}
 
-  If the concentration of glucose in the Lund medium is used in this expression, with all other variables remaining the same, the expression will give a maximum uptake rate of about \SI{0.12}{\milli\Molar\per\second}.  \ce{Zn^2+} has the lowest molarity in the Lund medium; the maximum \ce{Zn^2+} uptake rate would thus be about \SI{3.6e-6}{\milli\Molar\per\second}.
+  The value of $\rho_{x}$ should be near-constant among different chemostat cultures with the same dilution rate as it looks like an physical property of bacteria.
+  % Need to elaborate negative-y-intercept annd challenges to Monod's model in discussion.  Need to elaborate the D/Cx relationship and why I decide to ignore it for now.
+  Additionally, there is a linear relationship between $C_{glc}^{feed}$ and $C_{x}$ \citep{schulze_relationship_1964}.  Linear regression based on data in \citet{taymaz-nikerel_genome-derived_2010} gives:
 
-  However, I think method may have some caveats.  I can imagine $\rho_{x}$ being near-constant among different chemostat cultures with the same dilution rate as it looks like an physical property of bacteria (i.e. density).  But, $C_{x}$ seems like a value specific to a certain growth condition used in a chemostat, and may depend on the glucose concentration used.  \citet{chassagnole_dynamic_2002} use a medium with \SI{20.0}{\gram\per\litre} and report a $C_{x}$ of 8.7 g\textsubscript{DW} L\textsuperscript{-1}, while \citet{taymaz-nikerel_development_2009} and \cite{taymaz-nikerel_escherichia_2011} use a medium with \SI{30.0}{\gram\per\litre} and report $C_{x}$ values within 10 $\sim$ 11 g\textsubscript{DW} L\textsuperscript{-1}.  This calls into question how applicable these equations apply to using information from the Lund medium to enrich the stoichiometric model.
+\begin{equation}
+    \hat{C_{x}} = 0.1766 \textrm{ g\textsubscript{DW} l\textsuperscript{-1}} + (0.06667 \textrm{ g\textsubscript{DW} mmol\textsuperscript{-1}})C_{glc}^{feed}; r = 0.9997
+  \end{equation}
+  \label{eqn:taymaznikerel10_lreg}
+
+This expression can replace $C_{x}$ in equation~\vref{eqn:taymaznikerel10_lreg}, thus eliminating one parameter.
 
 \chapter{Discussion}
 \label{ch:discussion}
