@@ -26,7 +26,9 @@
 \usepackage{varioref}
 
 \usepackage{graphicx}
-  \graphicspath{ {./graphics/} }
+\graphicspath{ {./graphics/} }
+\usepackage[font=small]{caption}
+\usepackage[font=small]{subcaption}
 \usepackage{url}
 %\usepackage{varioref}
 \usepackage{tabularx}
@@ -50,7 +52,7 @@
 \\University of Edinburgh (PhD Candidate 2019 --)}
 \title{Optimising production of citramalate based on \emph{E. coli} kinetic and stoichiometric models}
 \subtitle{Extended project report}
-\date{9 September 2019}
+\date{10 September 2019}
 
 \begin{document}
 
@@ -65,7 +67,7 @@
   
   First, the effect of $V_{max}$ values of reactions in the kinetic model on productivity of citramalate was investigated. The differential evolution genetic algorithm was employed to compute the set of $V_{max}$ values of reactions that optimises the production of citramalate, assuming Michaelis-Menten kinetics. Differential evolution optimised $V_{max}$ combinations for ten reactions determined to have the greatest effects on citramalate productivity (CITRA\_SYN, GLT, LPD, GDH, ATP\_syn, ACEA, PYK, ZWF, NDHII, and MQO), and predicted the productivity of \num{405.5e-4} h\textsuperscript{-1}.
 
-  In the second part of the project, information from the kinetic model was used in the kinetic model to enrich the stoichiometric model. The possible values of fluxes through each reaction were used to set the bounds for each reaction in the stoichiometric model. A strategy of mapping reactions between the kinetic model and the stoichiometric model was devised. Flux balance analysis (FBA) was then performed to evaluate the highest possible flux through the citramalate synthesis reaction as a proxy for citramalate productivity. This achieved an optimum solution of 0.2922 mM s\textsuperscript{-1}, and subsequent analysis of flux bounds saw concordance with what is expected \emph{in vivo}. Finally, composition of the Lund medium \citep{eastham_process_2015} was studied in an attempt to create bounds for relevant uptake reactions.
+  In the second part of the project, information from the kinetic model was used to enrich the stoichiometric model. The possible values of fluxes through each reaction were used to set the bounds for each reaction in the stoichiometric model. A strategy of mapping reactions between the kinetic model and the stoichiometric model was devised. Flux balance analysis (FBA) was then performed to evaluate the highest possible flux through the citramalate synthesis reaction as a proxy for citramalate productivity. This achieved an optimum solution of 0.2922 mM s\textsuperscript{-1}; however, a fork between citramalate production and growth was observed, which means that optimising both citramalate production and growth cannot be done using FBA alone. Analysis of flux bounds saw concordance with what is expected \emph{in vivo}. Finally, composition of the Lund medium \citep{eastham_process_2015} was studied in an attempt to create bounds for relevant uptake reactions.
   
 \end{abstract}
 
@@ -83,15 +85,17 @@ Citramalate synthesis is mediated by citramalate synthase (EC 2.3.1.182) in \emp
 This enzyme is not present in wild-type \emph{E. coli} strains, so in experiments \emph{E. coli} is engineered to express the \emph{cimA} gene that encodes citramalate synthase \citep{wu_production_2016}.
 
 This project concerns two models of \emph{E. coli} metabolism: a kinetic model described by \citet{millard_metabolic_2017} and a stoichiometric model described by \citet{orth_comprehensive_2011}.
-The stoichiometric model is a genome-scale reconstruction of the \emph{E. coli} metabolic network. In contrast, the kinetic model only concerns central carbon metabolism, but contains initial conditions and substrate concentrations, which the stoichiometric model lacks.
+The stoichiometric model is a genome-scale reconstruction of the \emph{E. coli} metabolic network.  In contrast, the kinetic model only concerns central carbon metabolism, but contains initial conditions and substrate concentrations, which the stoichiometric model lacks.
 
 This project had the following aims:
 
 \begin{enumerate}
 \item Investigating how $V_{max}$ values of reactions in the kinetic model affect citramalate productivity, and finding a method to find such values that would optimise citramalate productivity;
-\item Enriching the stoichiometric model with information from the kinetic model regarding fluxes through reactions, along with reconciling differences between the models in mapping reactions; and
+\item Bridging the gap between the kinetic and stoichiometric models, by using simulations in the kinetic model to set fluxes in the stoichiometric model, and by devising a method of map reactions between the two models; and
   \item Using information from the Lund medium \citep{eastham_process_2015} on the models to determine how nutrient medium composition affects citramalate productivity, and investigating how this information can be used to improve the Lund medium.
-\end{enumerate}
+  \end{enumerate}
+
+Findings may then be generalised to cases not specific to \emph{E. coli} or citramalate production
 
 The kinetic model contains 68 reactions, 49 of which include $V_{max}$ as a parameter (see appendix~\ref{ap:kineticreactionlist}). Of these, 41 correspond to real enzyme-catalysed reactions.
 To investigate citramalate production, a 69th reaction called CITRA\_SYN was added to the kinetic model to model citramalate synthesis.  In the model, this reaction has the Michaelis-Menten kinetic law:
@@ -116,12 +120,13 @@ Fluxes through reactions in the stoichiometric model were investigated using flu
 The kinetic and stoichiometric models use different units. Fluxes are in mM s\textsuperscript{-1} in the kinetic model, but are mmol g\textsubscript{DW}\textsuperscript{-1} h\textsuperscript{-1} in the stoichiometric model. Using the cell volume of \num{1.77e-3} L g\textsubscript{DW}\textsuperscript{-1} as specified in the kinetic model, I worked out that converting values from the kinetic model to the stoichiometric model involves multiplying by 6.372\footnote{
 ($R$ mM s\textsuperscript{-1})(\num{1.77e-3} L g\textsubscript{DW}\textsuperscript{-1})(3600 s h\textsuperscript{-1}) = 6.372 $R$ mmol g\textsubscript{DW}\textsuperscript{-1} h\textsuperscript{-1}
 }.
-Because the stoichiometric model does not have information about enzyme kinetics, the values associated with the kinetic model (with kinetic model units) can be used with the structure of the stoichiometric model without any adjustments.
+% [I am not sure about this -- there may be the issue that the stoichiometric model is not tuned for small flux values]
+%Because the stoichiometric model does not have information about enzyme kinetics, the values associated with the kinetic model (with kinetic model units) can be used with the structure of the stoichiometric model without any adjustments.
 
 \chapter{Investigating the kinetic model}
 \label{ch:kinetic}
 
-I investigated the kinetic model to determine the combination of $V_{max}$ values that would optimise citramalate productivity. This parameter was chosen as it can be easily tested \emph{in vivo} by relying on the principle that $V_{max}$ is proportional to enzyme concentration. I started from varying $V_{max}$ values one and two reactions at a time to establish patterns. Then, I used differential evolution to vary multiple $V_{max}$ values simultaneously, employing the genetic algorithm to narrow down the solution space.
+I investigated the kinetic model to determine the combination of $V_{max}$ values that would optimise citramalate productivity. This parameter was chosen as it can be easily tested \emph{in vivo} based on how $V_{max}$ is proportional to enzyme concentration. I started from varying $V_{max}$ values one and two reactions at a time to establish patterns. Then, I used differential evolution to vary multiple $V_{max}$ values simultaneously, employing the genetic algorithm to narrow down the solution space.
 
 \section{Varying $V_{max}$ values one reaction at a time}
 \label{sec:onereac}
@@ -134,7 +139,7 @@ In this section, I varied the $V_{max}$ of each reaction at a time and simulated
 
 %I varied the $V_{max}$ values of each of the 49 reactions in the kinetic model that includes $V_{max}$ as a parameter (see appendix~\ref{ap:kineticreactionlist}) over the ranges 0.1--1.0 $V_{max}$ and 0.1--10.0 $V_{max}$, where $V_{max}$ is the wild-type $V_{max}$ for that particular reaction as specified in the SBML file. Each plot had 100 data points. Figure~\ref{fig:onereacsample} is an example of such a plot.
 
-\begin{figure}[!htbp]
+\begin{figure}[h]
   \centering
   \includegraphics[scale=0.5]{onereacsample}
   \caption{Example of a one-reaction plot, the reaction PYK}
@@ -146,36 +151,36 @@ Some reactions showed greater changes in citramalate productivity as $V_{max}$ c
 The one-reaction list identified CITRA\_SYN, GLT, LPD, GROWTH, ATP\_MAIN\-TEN\-ANCE, GDH, ATP\_SYN, ACEA, PYK, and ZWF as reactions that had the greatest effects on citramalate productivity.
 The exchange reactions (XCH\_ACE, XCH\_GLC, and XCH\_P) had no bearing on productivity; all the data points in their plots could be attributed to noise. Surprisingly, the reactions that directly concern acetyl CoA -- ACS, ACK, and PTA -- did not seem to have conspicuous bearings on productivity.
 
-Additionally, some reactions had inflection points (table~\ref{tab:inflection}). These inflection points could complicate finding $V_{max}$ combinations to optimise citramalate productivity.
+% [I really don't think the inflection points are important -- it only seemed to affect the heatmaps, and even then I ditched the heatmaps in favour of DE later.]
 
-\begin{table}[!htbp]
-  \caption{Reactions that exhibited inflection points in citramalate productivity as a function of $V_{max}$. Values listed are the values at inflection points}
-  \label{tab:inflection}
-  \centering
-  \begin{tabular}{lrrl}
-    \toprule
-    Reaction & $V_{max}$ (mM s\textsuperscript{-1}) & Productivity (h\textsuperscript{-1}) & Type\\
-    \midrule
-    ATP\_syn & 16.804 & 0.00216 & local minimum\\
-    & 23.724 & 0.00231 & local maximum\\
-    CITRA\_SYN & 0.545 & 0.01660 & local maximum\\
-    CYTBO & 5.124 & 0.00113 & local maximum\\
-    EDA & 0.014 & 0.00112 & local maximum\\
-    GDH & 4.569 & 0.00149 & local maximum\\
-    MQO & 1.597 & 0.00098 & local minimum\\
-    PFK & 0.145 & 0.00113 & local maximum\\
-    \bottomrule
-  \end{tabular}
-\end{table}
+% Additionally, some reactions had inflection points (table~\ref{tab:inflection}). These inflection points could complicate finding $V_{max}$ combinations to optimise citramalate productivity.
 
-%In addition, I also extracted a list of reactions arranged by descending order of flux control coefficient (FCC) from the Millard \emph{et al.} paper, and used it alongside the one-reaction list in later parts of the project.
+% \begin{table}[!htbp]
+%   \caption{Reactions that exhibited inflection points in citramalate productivity as a function of $V_{max}$. Values listed are the values at inflection points}
+%   \label{tab:inflection}
+%   \centering
+%   \begin{tabular}{lrrl}
+%     \toprule
+%     Reaction & $V_{max}$ (mM s\textsuperscript{-1}) & Productivity (h\textsuperscript{-1}) & Type\\
+%     \midrule
+%     ATP\_syn & 16.804 & 0.00216 & local minimum\\
+%     & 23.724 & 0.00231 & local maximum\\
+%     CITRA\_SYN & 0.545 & 0.01660 & local maximum\\
+%     CYTBO & 5.124 & 0.00113 & local maximum\\
+%     EDA & 0.014 & 0.00112 & local maximum\\
+%     GDH & 4.569 & 0.00149 & local maximum\\
+%     MQO & 1.597 & 0.00098 & local minimum\\
+%     PFK & 0.145 & 0.00113 & local maximum\\
+%     \bottomrule
+%   \end{tabular}
+% \end{table}
 
 \section{Varying $V_{max}$ values two reactions at a time}
 \label{sec:couples}
 
 Varying $V_{max}$ values of two reactions at a time aimed to identify pairs of reactions that had significant effects on citramalate productivity. This is a stepping stone to identifying the optimal conditions. Ideally, all possible pairs should be investigated. However, I used only the eight reactions at the top of the one-reaction list: CITRA\_SYN, GLT, LPD, ATP\_MAINTENANCE, GDH, ATP\_syn, ACEA, and ZWF. This is to save computation time and to focus on the most useful output. I varied the reactions' $V_{max}$ values within 0.1--10.0 $V_{max}$, and plotted the resulting citramalate productivities on heatmaps (figure~\ref{fig:heatmapsample}). %The $V_{max}$ values took 10 values in their ranges, so each heatmap had 100 data points. Because the wild-type productivity is 0.001122 h\textsuperscript{-1}, I multiplied the citramalate productivity values by 10,000 so that numbers that can be easily conceptualised are displayed on the heatmaps. In figure~\ref{fig:heatmapsample}, when the $V_{max}$ of GLT is 256.76 mM s\textsuperscript{-1} and the $V_{max}$ of ACEA is 1.83 mM s\textsuperscript{-1}, productivity is 0.00848 h\textsuperscript{-1}.
 
-\begin{figure}[!htbp]
+\begin{figure}[h]
   \centering
   \includegraphics[scale=0.5]{heatmapsample}
   \caption{Example of a heatmap: GLT vs ACEA. The horizontal axis indicates the respective $V_{max}$ value of the first reaction (GLT) in mM s\textsuperscript{-1} and the vertical axis represents the second reaction (ACEA). Citramalate productivity ($\times${}10,000 h\textsuperscript{-1}) values are displayed.}
@@ -199,7 +204,7 @@ Most heatmaps suggested simple additive effects. The heatmaps had the same local
 \subsection{Steady-state verification}
 \label{ssec:steadystate}
 
-The results are only valid if the system has reached steady state, as the focus is on continuous cultures and the project aims to enrich a stoichiometric model. Steady state is achieved if at the end of simulation time:
+The results are only valid if the system has reached steady state, because the focus is on continuous cultures and because the project aims to enrich a stoichiometric model. Steady state is achieved if at the end of simulation time:
 
 \begin{equation}
   \max_{X_{i}} \left | \frac{\mathrm{d}[X_{i}]}{\mathrm{d}t} \right | < \epsilon
@@ -208,7 +213,7 @@ The results are only valid if the system has reached steady state, as the focus 
 
 where $X_{i}$ represents a chemical species, and $\epsilon$ is a small threshold value. Heatmaps aided this validation (figure~\ref{fig:steadystate}).
 
-\begin{figure}[hbp]
+\begin{figure}[h]
   \centering
   \includegraphics[scale=0.5]{steadystate}
   \caption{Heatmap for GLT vs ZWF, with threshold set to \num{1.0e-6} mM s\textsuperscript{-1}. Data points are replaced by -1 if the system does not reach steady state.}
@@ -317,7 +322,7 @@ Furthermore, I tried the same differential evolution parameters on 10 enzymes (t
 
 I repeated the investigation using the ten enzymes with the greatest flux control coefficients (table~\ref{tab:optfcc10}). In this case, the productivity was \num{224.2e-4} h\textsuperscript{-1}. I excluded ATP\_MAINTENANCE because it does not correspond to an enzyme that exists in \emph{E. coli} and because it was not reliable with small values of $V_{max}$, as discussed in section~\ref{sec:onereac}.
 
-\begin{table}[hp]
+\begin{table}[h]
   \caption{Optimal $V_{max}$ values, using ten reactions with the greatest FCCs}
   \label{tab:optfcc10}
   \centering
@@ -340,23 +345,25 @@ I repeated the investigation using the ten enzymes with the greatest flux contro
 \end{table}
 
 Using all 41 biologically relevant reactions that had $V_{max}$ as a parameter did not exhibit enough convergence due to the high number of dimensions. However, this produced productivities on the order of \num{200e-4} h\textsuperscript{-1} every time the algorithm was repeated, which was still a significant improvement from wild-type productivity.
-\subsection{Glycolytic enzymes}
-\label{ssec:glycolytic}
+% \subsection{Glycolytic enzymes}
+% \label{ssec:glycolytic}
 
-%Originally I used differential evolution with the glycolytic enzymes PGI, PFK, FBA, GDH, PGK, GPM, ENO, PYK, and PDH to investigate whether the $V_{max}$ values of all enzymes in a pathway must be increased for an appreciable increase in the overall flux through the pathway, leading to higher productivity. From their experiments on the tryptophan synthesis pathway in yeast, \citet{niederberger_strategy_1992} concludes that the fluxes through each enzyme in a linear pathway must all be increased to increase the flux through the pathway. However, \cite{yamamoto_overexpression_2012} show that appreciable increases result after increasing the flux through only one or two enzymes. My results, included in \texttt{kinetic/result/de/gly.txt} support the latter.
+% %% [This section can easily be killed -- the only thing I took from it is that addding enzymes lower on the one-reaction list doesn't change much. It doesn't relate to anywhere else in the report, and frankly, it's kind of obvious.]
 
-I investigated how much adding reactions as additional dimensions in differential evolution affected the use of the algorithm to optimise citramalate productivity. I used differential evolution in a similar fashion as earlier, but on the glycolytic enzymes that are arranged in a linear fashion --  PGI, PFK, FBA, GDH, PGK, GPM, ENO, PYK, and PDH.
+% %Originally I used differential evolution with the glycolytic enzymes PGI, PFK, FBA, GDH, PGK, GPM, ENO, PYK, and PDH to investigate whether the $V_{max}$ values of all enzymes in a pathway must be increased for an appreciable increase in the overall flux through the pathway, leading to higher productivity. From their experiments on the tryptophan synthesis pathway in yeast, \citet{niederberger_strategy_1992} concludes that the fluxes through each enzyme in a linear pathway must all be increased to increase the flux through the pathway. However, \cite{yamamoto_overexpression_2012} show that appreciable increases result after increasing the flux through only one or two enzymes. My results, included in \texttt{kinetic/result/de/gly.txt} support the latter.
 
-Initially, I varied the $V_{max}$ values of a smaller set of reactions in the process of differential evolution. Then, I varied the $V_{max}$ values of a larger set of reactions, which included enzymes that I have identified as having less of an effect on citramalate productivity (i.e. lower on the one-reaction list, appendix~\ref{ap:onereactionlist}).
+% I investigated how much adding reactions as additional dimensions in differential evolution affected the use of the algorithm to optimise citramalate productivity. I used differential evolution in a similar fashion as earlier, but on the glycolytic enzymes that are arranged in a linear fashion --  PGI, PFK, FBA, GDH, PGK, GPM, ENO, PYK, and PDH.
 
-Specfically, at first I ran differential evolution using the five enzymes PGI, GDH, ENO, PYK, and PDH. This resulted in the citramalate productivity of \num{269.72e-4} h\textsuperscript{-1} (20 iterations). Then, I added PFK to create the set of six enzymes PGI, GDH, ENO, PYK, and PDH, and optimised citramalate productivity in the same way, and so on. Adding PFK (23rd on the one-reaction list), FBA (29th), and GPM (25th) returned \num{290.04e-4} h\textsuperscript{-1} ($D$ = 8, $F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, 50 iterations). Finally, when PGK (44th) was added, the simulations never managed to achieve a productivity that exceeded the previous.
+% Initially, I varied the $V_{max}$ values of a smaller set of reactions in the process of differential evolution. Then, I varied the $V_{max}$ values of a larger set of reactions, which included enzymes that I have identified as having less of an effect on citramalate productivity (i.e. lower on the one-reaction list, appendix~\ref{ap:onereactionlist}).
 
-Thus, adding enzymes deemed to have less of an effect on citramalate producitivty had little effect on the optimum $V_{max}$ values found earlier, and did not cause large improvements in productivity.
+% Specifically, at first I ran differential evolution using the five enzymes PGI, GDH, ENO, PYK, and PDH. This resulted in the citramalate productivity of \num{269.72e-4} h\textsuperscript{-1} (20 iterations). Then, I added PFK to create the set of six enzymes PGI, GDH, ENO, PYK, and PDH, and optimised citramalate productivity in the same way, and so on. Adding PFK (23rd on the one-reaction list), FBA (29th), and GPM (25th) returned \num{290.04e-4} h\textsuperscript{-1} ($D$ = 8, $F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, 50 iterations). Finally, when PGK (44th) was added, the simulations never managed to achieve a productivity that exceeded the previous.
+
+% Thus, adding enzymes deemed to have less of an effect on citramalate producitivty had little effect on the optimum $V_{max}$ values found earlier, and did not cause large improvements in productivity.
 
 \section{Glucose uptake}
 \label{sec:glucoseuptake}
 
-%% [Just revised this section, but it's still pretty shit. This section can just go if it isn't really used with the Lund medium later. Or figure out a way to link this with the Lund medium thing]
+%% [This section can be killed. The aim is a bit misguided; of course there is decoupling between glucose exchange and glucose uptake at some point (i.e. saturation or something) -- it makes biological sense. Additionally, this section can be siphoned off to another paper. It's a bit out of place, and results from this aren't used anywhere else.]
 
 I investigated the kinetic model to determine whether there was decoupling between the glucose exchange and glucose uptake reactions.
 Specifically, I examined the relationship between glucose feed and the fluxes through the other reactions in the kinetic model. I varied the flux through GLC\_feed and observed the following (figures~\ref{fig:growthglc_XCHGLCvGLCfeed} and \ref{fig:growthglc_species}):
@@ -380,9 +387,7 @@ Specifically, I examined the relationship between glucose feed and the fluxes th
   \label{fig:growthglc_species}
 \end{figure}
 
-%% [Perhaps put this in discussion???]
-Results suggested that the model did not predict decoupling between glucose exchange and glucose uptake; however, glucose exchange reached saturation.
-Information about such decoupling relates to the relationship between the intracellular and extracellular concentrations of glucose. This relationship would be useful in determining the effects of a nutrient medium containing glucose on citramalate productivity.
+Results suggested that the model predicted decoupling between glucose exchange and glucose uptake only after a certain saturation point.
 
 \chapter{Enriching the stoichiometric model}
 \label{ch:stoich}
@@ -395,8 +400,7 @@ The lowest and highest possible values of fluxes through each reaction in the ki
 To find the lowest and highest possible flux values through the 69 reactions of the kinetic model, I varied the $V_{max}$ values of the 49 reactions with $V_{max}$ as a parameter, CITRA\_SYN included.
 
 Initially, to save computation time, I varied $V_{max}$ values of one reaction at a time over the range of 0.1-10.0 $V_{max}$, and recorded the minimum and maximum flux values achieved for each reaction after simulations. These produced a set of flux bounds I term `one-dimension bounds' (data not shown).
-% This is not supported by `hard' data yet, but it's better than nothing. Will improve this later.
-In investigating the sensitivity of the flux bounds in response to changing the $V_{max}$ range, I found out the smaller the $V_{max}$ range over which the one-dimension flux bounds were generated, the lower the difference between the computed upper and lower bounds.  Additionally, the sum of differences among all reactions seemed to plateau beyond 5.0 $V_{max}$ (figure~\ref{fig:vmaxplateau})
+I then investigated the sensitivity of such bounds when the $V_{max}$ range was changed. The smaller the $V_{max}$ range over which the one-dimension flux bounds were generated, the lower the difference between the computed upper and lower bounds.  Additionally, the sum of differences among all reactions seemed to plateau beyond 5.0 $V_{max}$ (figure~\ref{fig:vmaxplateau})
 
 \begin{figure}[h]
   \centering
@@ -407,7 +411,7 @@ In investigating the sensitivity of the flux bounds in response to changing the 
 
 Then, I used differential evolution to find the lowest and highest possible fluxes through each kinetic model reaction. The simulated flux through each reaction was the objective function. To calculate the lower bound for each reaction, this objective function was minimised, and to calculate the upper bound, it was maximised.
 
-First, I included the eight reactions with the greatest flux control coefficients: CYTBO, MQO, MDH, ZWF, GLT, GDH, ATP\_syn, and ACK, with parameters $F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, and 5 iterations \citep{pedersen_good_2010}. I used the $V_{max}$ range of of 0.3--10.0 $V_{max}$ because $V_{max}$ values less than 0.3 $V_{max}$ tended to produce run time errors in \texttt{roadrunner} in which convergence test failures occurred too many times. Using this restricted range was justified by the aberrant behaviour of ATP\_MAINTENANCE (section~\ref{sec:couples}), which suggested that the model was not reliable with such small $V_{max}$ values. From this work, I produced `eight-dimension bounds' (data not shown). Increasing the number of iterations to 20 only marginally broadened the bounds.
+First, I included the eight reactions with the greatest flux control coefficients: CYTBO, MQO, MDH, ZWF, GLT, GDH, ATP\_syn, and ACK, with parameters $F$ = 0.6607, $CR$ = 0.9426, $NP$ = 28, and 5 iterations \citep{pedersen_good_2010}. I used the $V_{max}$ range of of 0.3--10.0 $V_{max}$ because $V_{max}$ values less than 0.3 $V_{max}$ tended to produce run time errors in \texttt{roadrunner}, in which convergence test failures occurred too many times. Using this restricted range was justified by the aberrant behaviour of ATP\_MAINTENANCE (section~\ref{sec:couples}), which suggested that the model was not reliable with such small $V_{max}$ values. From this work, I produced `eight-dimension bounds' (data not shown). Increasing the number of iterations to 20 only marginally broadened the bounds.
 
 Second, I included all 41 enzyme-catalysed reactions in the kinetic model with $V_{max}$ as a parameter. Here, I used the differential evolution parameters of $F$ = 0.6876, $CR$ = 0.9784, $NP$ = 48 \citep{pedersen_good_2010}, and five iterations. To avoid convergence test failures, I set the $V_{max}$ range to 0.5--10.0 $V_{max}$. From this, I produced `41-dimension bounds' (appendix~\ref{ap:41dbounds}).
 
@@ -416,7 +420,7 @@ The 41-dimension bounds were mostly wider than both one- and eight-dimension bou
 \section{Mapping reactions in the kinetic model to the stoichiometric model}
 \label{sec:mapping}
 
-Previously (before June 2018), an Anargyros who worked in this group produced a mapping table which mapped reactions in the kinetic model to reactions in the stoichiometric model. %Flux bounds were also included, but the method by which the bounds were generated had not been documented and no specific constraints had been used.
+Before June 2018, Anargyros Chaliotis produced a mapping table which mapped reactions in the kinetic model to reactions in the stoichiometric model. %Flux bounds were also included, but the method by which the bounds were generated had not been documented and no specific constraints had been used.
 I improved on this mapping table by correcting errors, re-defining relationships between kinetic and stoichiometric model reactions, re-calculating flux bounds, and reconciling differing sub-network structures between the two models.
 
 The current (20 September 2018) mapping table (appendix \ref{ap:mapping})
@@ -461,7 +465,7 @@ Fifteen reactions are identical between the kinetic and stoichiometric model. Re
   \item \emph{Sub-network different structure:} reactions that belong to sub-networks that are structured differently and therefore do not allow one-to-one mapping; these include the glucose uptake and the pentose phosphate pathway sub-systems
   \end{enumerate}
 
-I devised rules to map flux values from the kinetic model onto the stoichiometric model. For categories 1--3, stoichiometric model reactions have the same lower and upper flux bounds as their kinetic model counterparts. For category 4, the values were negated -- i.e. $ \mathrm{Kinetic } (lb, ub) \rightarrow \mathrm{Stoichiometric } (-ub, -lb)$. %note: might need overfull hbox fixes/bodges depending on how this looks like in the final version
+I devised rules to map flux values from the kinetic model onto the stoichiometric model. For categories 1--3, stoichiometric model reactions have the same lower and upper flux bounds as their kinetic model counterparts. For category 4, the values were negated: i.e. $ \mathrm{Kinetic } (LB, UB) \rightarrow \mathrm{Stoichiometric } (-UB, -LB)$. %note: might need overfull hbox fixes/bodges depending on how this looks like in the final version
 
 Reactions in category 5 demanded special treatment. Their architectures in the two models are summarised in figures~\ref{fig:glucoseuptake} and~\ref{fig:ppp}.
 
@@ -496,7 +500,7 @@ I mapped glucose uptake reactions according to table~\ref{tab:glucoseuptake}. Ma
   \end{tabularx}
 \end{table}
 
-For the pentose phosphate pathway reactions, I focussed on each metabolite (X5P, GAP, R5P, S7P, F6P, and E4P) separately to determine the influx reactions (that produce the metabolite) and the outflux reactions (that consume the metabolite). I based the mapping on the principle that the sum of influxes in the kinetic model must be equivalent to the sum of influxes in the stoichiometric model, and that the same holds for outflux (figure~\ref{fig:pppmapping}).
+For the pentose phosphate pathway reactions, I focussed on each metabolite (X5P, GAP, R5P, S7P, F6P, and E4P) separately to determine the influx reactions (that produce the metabolite) and the efflux reactions (that consume the metabolite). I based the mapping on the principle that the sum of influxes in the kinetic model must be equivalent to the sum of influxes in the stoichiometric model, and that the same holds for effluxes (figure~\ref{fig:pppmapping}).
 
 \tikzstyle{met} = [draw, circle]
 \tikzstyle{reac} = [rectangle]
@@ -627,7 +631,7 @@ Using the 41-dimension bounds, I used FBA to evaluate solutions for each reactio
 \subsection{Analysing flux bounds}
 \label{ssec:objectiveexercise}
 
-The objective-exercise bounds were then analysed. The flux ranges (upper bound minus lower bound) had a mean value of +30.56 mM s\textsuperscript{-1} and a standard deviation of 175.3 mM s\textsuperscript{-1}. Most of the values were near zero, as evidenced by the median of +0.0715 mM s\textsuperscript{-1}. Using the floating-point tolerance of \num{1e-6} mM s\textsuperscript{-1}, there were 912 reactions for which the upper bound was equal to the lower bound. All these reactions had both bound values equal to zero, except for EX\_glc(e) that represents glucose uptake, which was -0.23 mM s\textsuperscript{-1}.
+The objective-exercise bounds were then analysed. The flux ranges (upper bound minus lower bound) had a mean value of +30.56 mM s\textsuperscript{-1} and a standard deviation of 175.3 mM s\textsuperscript{-1}. Most of the values were near zero, as evidenced by the median of +0.0715 mM s\textsuperscript{-1}. Using the floating-point tolerance of \num{1e-6} mM s\textsuperscript{-1}, there were 912 reactions whose upper bound was equal to the lower bound. All these reactions had both bound values equal to zero, except for EX\_glc(e) that represents glucose uptake, which was -0.23 mM s\textsuperscript{-1}.
 
 In the SBML model, 236 reactions were denoted as reversible. Of these, 130 had a lower bound greater than zero or an upper bound less than zero (tolerance of \num{1e-6} mM s\textsuperscript{-1}), suggesting that they were not truly reversible. These included reactions involved in acetate exchange, glycolysis/gluconeogenesis, the tricarboxylic acid cycle, and the pentose phosphate pathway.
 
@@ -649,7 +653,7 @@ Multiple flux states in a stoichiometric model can achieve the same optimum (e.g
 
 I applied the 41-dimension boundaries on the stoichiometric model in FVA and specified growth as the objective function to be maximised. Initially, I applied the loopless condition, which is more realistic \emph{in vivo}. The solver reported infeasibility or invalid bounds when the desired fraction of optimal growth was set at values between 50\% and 100\%. These errors also occurred when citramalate production was set as the objective function.
 
-However, when the loopless condition was not applied and FVA was set to optimse growth, numerical results were returned.
+However, when the loopless condition was not applied and FVA was set to optimise growth, numerical results were returned.
 I then compared these results with FBA. In general, the bounds agree and the ranges from FVA tended to be narrow. Most fluxes from FBA conformed to the minimum or maximum value as found from FVA, with none being out of range. Specifically, 22 reactions had FBA fluxes equal to the minimum predicted by FVA, and 32 reactions had FBA fluxes equal to the maximum predicted by FVA. The remaining six reactions had FBA fluxes at these fractions of the way from the minimum and maximum fluxes predicted by FVA:
 \begin{itemize}
 \item THRD 42.30\%
@@ -669,7 +673,7 @@ I then compared these results with FBA. In general, the bounds agree and the ran
 
 In this section, I investigated how to use the composition of a fermentation medium to inform the choice of flux bounds for the stoichiometric model. The aim was to improve the recipe of the medium to optimise citramalate production, based on how the model predicted fluxes for exchange reactions involving specific chemical species.
 
-The patent WO 2015/022496 \citep{eastham_process_2015} describes a fermentation medium on p.79, for \emph{E. coli} BW25113 $\Delta$\emph{pflB}$\Delta$\emph{ldhA} transformed with pBAD24-\emph{cimA} to optimise production of (\emph{R})-citramalic acid:
+The patent WO 2015/022496 \citep{eastham_process_2015} describes a fermentation medium on p.79, for \emph{E. coli} BW25113 $\Delta$\emph{pflB} $\Delta$\emph{ldhA} transformed with pBAD24-\emph{cimA} to optimise production of (\emph{R})-citramalic acid:
 
 \begin{center}
 \begin{tabular}{lSr}
@@ -689,7 +693,7 @@ The patent WO 2015/022496 \citep{eastham_process_2015} describes a fermentation 
 \end{tabular}
 \end{center}
 
-This medium is referred to as the `Lund medium' in this project and is also investigated in the ConBioChem project. Each chemical species is present in the following amounts:
+This is the `Lund medium' in this project.  Each chemical species is present in the following amounts:
 
 \begin{center}
 \begin{tabular}{lS}
@@ -717,7 +721,7 @@ This medium is referred to as the `Lund medium' in this project and is also inve
 To conform to the exchange reactions defined in the stoichiometric model, \ce{HPO4^{2-}} and \ce{H2PO4^-} were merged into one entry representing inorganic phosphates. The stoichiometric model lacks an exchange reaction for EDTA, so this species was ignored in subsequent investigations.
 
 In order to use the concentrations of the species present in the Lund medium to set the bounds of exchange reactions, additional information is needed.
-\citet{chassagnole_dynamic_2002} concern the development of a dynamics model that links the sugar transport system of \emph{E. coli} with glycolysis and the pentose phosphate pathway.  Their study utilises growth conditions consistent with the model by \citet{millard_metabolic_2017}: \SI{37}{\celsius}, pH 7.0, steady-state conditions, and a dilution rate ($D$) of \SI{0.1}{\per\hour}.  The medium used includes \SI{20.0}{\gram\per\litre} glucose.
+\citet{chassagnole_dynamic_2002} concern the development of a dynamic model that links the sugar transport system of \emph{E. coli} with glycolysis and the pentose phosphate pathway.  Their study utilises growth conditions consistent with the model by \citet{millard_metabolic_2017}: \SI{37}{\celsius}, pH 7.0, steady-state conditions, and a dilution rate ($D$) of \SI{0.1}{\per\hour}.  The medium used includes \SI{20.0}{\gram\per\litre} glucose.
 
 The study presents a model concerning glucose uptake:
 
@@ -745,25 +749,27 @@ Where:
   \end{equation}
   \label{eqn:chassagnole_rearranged}
 
-  This is on the same order as the \SI{0.23}{\milli\Molar\per\second} default glucose feed rate for the kinetic model.  \citet{nanchen_nonlinear_2006} reports that the total cellular carbon influx varies linearly with dilution rate, thus validating how $r_{PTS} \propto D$ in this equation.
+  This is on the same order as the \SI{0.23}{\milli\Molar\per\second} default glucose feed rate for the kinetic model.  \citet{nanchen_nonlinear_2006} report that the total cellular carbon influx varies linearly with dilution rate, thus validating how $r_{PTS} \propto D$ in this equation.
 
   To obtain the maximum uptake rate for glucose, it is reasonable to set $C_{glc}^{ext}$ to zero in the above expression to represent a situation in which the glucose uptake is increased by so much that it eliminates all the extracellular glucose -- glucose uptake cannot possibly be greater than this.  Thus this gives:
 
-\begin{equation}
+  \begin{equation}
+      \label{eqn:lundmediumequation}
     r_{PTS}^{max} = \frac{\rho_{x}D}{C_{x}}C_{glc}^{feed}
   \end{equation}
-  \label{eqn:lundmediumequation}
+
 
   The value of $\rho_{x}$ should be near-constant among different chemostat cultures with the same dilution rate as it looks like an physical property of bacteria.
   % Need to elaborate negative-y-intercept annd challenges to Monod's model in discussion.  Need to elaborate the D/Cx relationship and why I decide to ignore it for now.
   Additionally, there is a linear relationship between $C_{glc}^{feed}$ and $C_{x}$ \citep{schulze_relationship_1964}.  Linear regression based on data in \citet{taymaz-nikerel_genome-derived_2010} gives:
 
 \begin{equation}
-    \hat{C_{x}} = 0.1766 \textrm{ g\textsubscript{DW} l\textsuperscript{-1}} + (0.06667 \textrm{ g\textsubscript{DW} mmol\textsuperscript{-1}})C_{glc}^{feed}; r = 0.9997
-  \end{equation}
   \label{eqn:taymaznikerel10_lreg}
+  \hat{C_{x}} = 0.1766 \textrm{ g\textsubscript{DW} l\textsuperscript{-1}} + (0.06667 \textrm{ g\textsubscript{DW} mmol\textsuperscript{-1}})C_{glc}^{feed}; r = 0.9997
+  \end{equation}
 
-This expression can replace $C_{x}$ in equation~\vref{eqn:taymaznikerel10_lreg}, thus eliminating one parameter.
+
+This expression can replace $C_{x}$ in equation~\ref{eqn:taymaznikerel10_lreg}, thus eliminating one parameter.
 
 \chapter{Discussion}
 \label{ch:discussion}
@@ -854,16 +860,16 @@ Additionally, there is the issue with translating optimal $V_{max}$ values to en
 % Unit conversion (Jorge proposed a different number apart from 6.372)
 
 % Boundaries for FBA:
-The results suggest that kinetic model simulations are useful in informing the flux bounds for FBA on the stoichiometric model, and differential evolution is a useful strategy to establish such flux bounds. Specifically, the 41-dimension bounds found by differential evolution were mostly wider and bounds found by individually varying $V_{max}$ values in the kinetic model. An alternative of using sets of six reactions that have the greatest bearing on each reaction in the kinetic model was investigaed; it turned out that these six-reaction sets for each reaction in the kinetic model are similar sets of reaction that have high flux control coefficients and that the resulting flux boundaries were no better than previously found.
-
-However, it remains to be seen how realistic \emph{in vivo} are the highest and lowest possible flux values are.
+The results suggest that kinetic model simulations are useful in informing the flux bounds for FBA on the stoichiometric model, and differential evolution is a useful strategy to establish such flux bounds. Specifically, the 41-dimension bounds found by differential evolution were mostly wider and bounds found by individually varying $V_{max}$ values in the kinetic model.
+I also investigated using sets of six reactions that have the greatest bearing on each kinetic model reaction in differential evolution.  It turned out that these six-reaction sets consist of similar reaction with high flux control coefficients, and the resulting flux boundaries were no better than previously found.
+In any case, it remains to be seen how realistic \emph{in vivo} are the highest and lowest possible flux values are.
 
 Additionally, mapping reactions in the kinetic model to the stoichiometric model suggested a general strategy for mapping reactions that have one-to-one correspondence, and reconciling different sub-network structures for reactions that do not. Such a strategy may be applied to models of other metabolic networks. However, so far the mapping does not include a strategy to map the biomass production reaction of the two models. Devising such a strategy can lead to determining a strictly positive flux bound for the biomass reaction of the stoichiometric model and aid in optimising growth and citramalate production simultaneously.
 
 \subsection{Flux balance analysis}
 \label{ssec:discussion-stoichiometric-fba}
 
-FBA suggested a fork between the growth and citramalate synthesis reactions, as evidenced by how optimising one excludes flux through the other. Alternatively, this phenomenon could be explained by how the fluxes of these reactions are not bounded, but this explanation is not realistic \emph{in vivo}. This observation may imply that optimising citramalate productivity in culture must take into account growth in addition to changing enzyme concentrations. Therefore, any FBA does not optimise for growth and citramalate synthesis simultaneously, and this issue may be addressed using guarded flexible nets \citep{julvez_handling_2018}.
+FBA suggested a fork between the growth and citramalate synthesis reactions, as evidenced by how optimising one excludes flux through the other. Alternatively, this phenomenon could be explained by how the fluxes of these reactions are not bounded, but this explanation is not realistic \emph{in vivo}. Therefore, FBA does not optimise for growth and citramalate synthesis simultaneously, and this issue may be addressed using guarded flexible nets \citep{julvez_handling_2018}.
 
 Analysis of the objective-exercise bounds covered flux ranges, reaction reversibility, and activity of reactions.
 Having most flux bounds being near zero is expected for a large genome-scale metabolic model, suggesting regulation.
@@ -876,16 +882,16 @@ Finally, FVA and pFBA results are in agreement with that of FBA. Standard FVA ma
 \subsection{Lund medium}
 \label{ssec:discussion-stoichiometric-lund}
 
-There are challenges to the validity of using a Monod model to relate $C_{glc}^{feed}$ to $C_{x}$ as in equation~\ref{eqn:taymaznikerel10_lreg}.  \citet{taymaz-nikerel_genome-derived_2010} suggest that there is a linear correlation betwen $D$ and $C_{x}$, with $r$ = 0.868, but for simplicity this factor was excluded as we only concern $D$ = 0.1.  With construction of the linear model, only three data points were used, but the lack of precision can be justified by our aim of finding a flux boundary rather than model the relations directly.  Additionally, \citet{kovarova-kovar_growth_1998} challenge Monod's model, but confirm that Monod's proposal and its slight modifications are sufficient to describe the growth of pure cultures with single growth-controlling sustrates under ideal conditions, supported by data for growth of \emph{E. coli} with glucose.
+There are challenges to the validity of using a Monod model to relate $C_{glc}^{feed}$ to $C_{x}$ as in equation~\ref{eqn:taymaznikerel10_lreg}.  \citet{taymaz-nikerel_genome-derived_2010} suggest that there is a linear correlation between $D$ and $C_{x}$, with $r$ = 0.868, but for simplicity this factor was excluded as we only concern $D$ = 0.1.  Only three data points were used to construct equation~\ref{eqn:taymaznikerel10_lreg}, but the lack of precision can be justified by our aim of finding a flux boundary rather than modelling the relations.  Additionally, \citet{kovarova-kovar_growth_1998} challenge Monod's model, but confirm that Monod's proposal and its slight modifications are sufficient to describe the growth of pure cultures with single growth-controlling substrates under ideal conditions. This assertion was supported by data for growth of \emph{E. coli} with glucose.
 
-Through
+\citet{schulze_relationship_1964} present:
 
 \begin{equation}
+  \label{eqn:monodmodel}
   C_{x} = Y(C_{substrate}^{feed}  - C_{substrate}^{ext}),
 \end{equation}
-\label{eqn:monodmodel}
 
-where $Y$ is the yield factor, the unit weight of cells formed per unit weight of substrate used \citep{schulze_relationship_1964}, it is implied that a linear regression model for $C_{x}$ with respect to $C_{glucose}^{feed}$ must have a negative vertical intercept, contrary to equation~\ref{eqn:taymaznikerel10_lreg}.  However, cell lysis may add a constant biomass concentration to the right-hand-side of~\vref{eqn:monodmodel} so that the intercept becomes positive.  \citet{taymaz-nikerel_genome-derived_2010} suggest that such cell lysis is significant.
+where $Y$ is the yield factor, the unit weight of cells formed per unit weight of substrate. This equation implies that a linear regression model for $C_{x}$ with respect to $C_{glucose}^{feed}$ must have a negative vertical intercept, contrary to equation~\ref{eqn:taymaznikerel10_lreg}.  However, cell lysis may add a constant biomass concentration to the right-hand-side of equation~\ref{eqn:monodmodel} so that the intercept becomes positive.  \citet{taymaz-nikerel_genome-derived_2010} suggest that such cell lysis is significant.
 
 Thus, I believe the methods were sufficient to determine an adequate lower limit for the rate of uptake of specific metabolites by the cell.
 
@@ -896,22 +902,16 @@ Translating findings from this project to \emph{in vivo} applications faces some
 
 Additionally, this project demonstrated a strategy to use flux limits from the kinetic model and reaction mapping to enrich the stoichiometric model, improving on using FBA alone. Subsequently, FBA seemed useful in optimising productivity, especially with flux bound qualities agreeing with \emph{in vivo} qualities. Validity can be improved if citramalate productivity is used as the objective rather than flux through citramalate synthesis. However, this project has so far not been successful in extending this to study the effect of nutrient medium composition on metabolic models.
 
-% \section{Future direction and suggestions}
-% \label{sec:future}
+\section{Future direction}
+\label{sec:future}
 
-% Improving or building up on this project may include some of the following:
+This is the future direction of the project (as of 10 September 2019):
 
-% \begin{itemize}
-% \item Use a simulator apart from \texttt{roadrunner} that does not have a memory leak
-% \item Use standard deviations to quantify the effect varying $V_{max}$ values of each reaction in the kinetic model has on citramalate productivity
-% \item Develop a method to investigate whether there are synergistic effects between reactions
-% \item Investigate alternatives to \texttt{scipy} and \texttt{pygmo} for the implementation of a differential evolution algorithm, and investigating optimal parameter searches -- the fuzzy algorithm described by \citet{liu_fuzzy_2005} may be an option
-% \item Use other genetic algorithms apart from differential evolution
-% \item Use more than five iterations in differential evolution to generate bounds for FBA
-% \item Investigate the theoretical basis behind mapping between the kinetic and stoichiometric models
-%   \item Use CPLEX, Gurobi, or other packages to perform FBA using citramalate productivity as the objective function in place of flux through the citramalate synthesis reaction.
-% \end{itemize}
-  
+\begin{enumerate}
+  \item Devise a strategy to map the biomass growth reactions of the kinetic and stoichiometric models. This is so that a way to force positive biomass growth can be developed. Compute flux bounds accordingly.
+\item Use guarded flexible nets \citep{julvez_handling_2018} to optimise citramalate production and biomass growth simultaneously in the stoichiometric model. Account for uncertainties. Take into account Lund medium accordingly.
+\end{enumerate}
+
 % \section{Notes about files}
 % \label{sec:files}
 
@@ -924,7 +924,7 @@ Additionally, this project demonstrated a strategy to use flux limits from the k
 
 The project took place at the Cambridge Systems Biology Centre, Department of Biochemistry, in Prof Steve Oliver's group. Research associate Dr Jorge J\'ulvez supervised me throughout the project. The project was entirely computational, and ran for eight weeks from 25 June 2018 to 17 August 2018.
 
-Further work was done from 27 August 2018 to 3 October 2018, and resumed from 12 July 2019.
+Further work was done 27 August 2018 -- 3 October 2018 and 12 July 2019 -- 10 September 2019.
 
 \section{Reactions in the kinetic model}
 \label{ap:kineticreactionlist}
