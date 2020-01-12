@@ -1,0 +1,140 @@
+\documentclass[a4paper, 12pt]{scrartcl}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
+
+% citations
+\usepackage[
+  natbib=true,
+  backend=biber,
+  doi=true,
+  isbn=false,
+  url=false,
+  date=year,
+  style=authoryear,
+  citestyle=authoryear,
+  minnames=1,
+  maxnames=2,
+  minbibnames=1,
+  maxbibnames=99,
+  uniquename=false,
+  uniquelist=false]{biblatex}
+\addbibresource{extendedreport.bib}
+\usepackage{varioref}
+
+\usepackage{graphicx}
+\graphicspath{ {./graphics/} }
+\usepackage[font=small]{caption}
+\usepackage[font=small]{subcaption}
+\usepackage{url}
+%\usepackage{varioref}
+\usepackage{tabularx}
+  \newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\usepackage[version=4]{mhchem}
+\usepackage{siunitx}
+\DeclareSIUnit\molar{\mole\per\cubic\deci\metre}
+\DeclareSIUnit\Molar{\textsc{m}}
+\DeclareSIUnit\calorie{cal}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{ltablex}
+\usepackage{pgfplotstable}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usepackage{physics}
+
+\usepackage{setspace}
+
+
+\begin{document}
+
+  \title{Bridging the gap between stoichiometric and kinetic models to optimize the design of strains: the case study of citramalate production in \emph{E. coli}}
+
+  \author{
+    Arin Wongprommoon\\
+    {\small Cambridge Systems Biology Centre, University of Cambridge, Cambridge, UK \thanks{
+      Present address: Centre for Synthetic and Systems Biology, School of Biological Sciences, University of Edinburgh, Edinburgh, UK} } \and
+    Jorge J\'ulvez \\
+    {\small Cambridge Systems Biology Centre, University of Cambridge, Cambridge, UK \thanks{
+      Present address: Department of Computer Science and Systems Engineering, University of Zaragoza, Zaragoza, Spain} } \and
+    Stephen G Oliver\\
+    {\small Cambridge Systems Biology Centre, University of Cambridge, Cambridge, UK }}
+
+  \maketitle
+
+  Running title: Insert one up to 45 characters here.
+
+  \pagebreak
+
+  \doublespacing
+  
+  \begin{abstract}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur libero tellus, mattis ut vulputate ut, efficitur dapibus ex. Ut maximus ante eget pellentesque pellentesque. Curabitur mattis sapien lorem, in venenatis sapien blandit quis. Phasellus vitae mi dolor. Maecenas ac lacus risus. Nulla finibus elit sapien, quis rhoncus neque dignissim facilisis. Sed quis ipsum tempus, faucibus neque eget, ornare dui. Nullam laoreet gravida nulla in sagittis. Sed eget lectus molestie leo dignissim lobortis. Phasellus vitae aliquet lorem. Pellentesque bibendum aliquet placerat. Sed vitae turpis sit amet neque elementum dignissim.
+
+Suspendisse pulvinar eleifend dui, in imperdiet tortor tristique nec. Nunc tempor nisi purus, faucibus euismod libero vulputate vel. Aenean gravida et turpis tincidunt lobortis. Proin rutrum sapien felis, ac consectetur est sollicitudin non. In felis nulla, finibus sollicitudin imperdiet sed, sodales a sem. Aliquam at justo a neque ullamcorper lobortis. Praesent quis sapien nulla. Nunc faucibus nisl a lacinia venenatis. Etiam a metus non mauris auctor accumsan. Maecenas ultrices luctus mi, non fermentum est pretium eget. Sed et purus quis turpis venenatis ultrices dapibus sit amet justo. Aenean venenatis erat non magna semper, porttitor pretium nibh maximus. Vivamus pellentesque dolor neque, vitae consequat lacus tristique eget. Cras tempor at mauris nec molestie. 
+
+  \end{abstract}
+
+  Keywords: insert, three, to, five, keywords, here
+
+  \pagebreak
+    
+\section*{Introduction}
+\label{sec:intro}
+
+Insert text here.
+
+\section*{Materials and Methods}
+\label{sec:methods}
+
+Insert text here.
+
+\section*{Modeling or Theoretical Aspects}
+\label{sec:theory}
+
+Insert text here.  This is an optional section.  Note US spelling of heading.
+
+\section*{Results}
+\label{sec:results}
+
+Insert text here.
+
+\subsection*{Enhancing a genome-scale stoichiometric model with information from a kinetic model}
+\label{ssec:results-enhance}
+
+  Novel methodology to enhance genome-scale stoichiometric model with kinetic model data, may be applied to systems apart from \emph{E. coli}.
+
+\subsection*{Kinetic model simulations can be used to define flux bounds for the stoichiometric model}
+\label{ssec:results-bounds}
+
+Exploit kinetic model to compute flux bounds.  Flux bounds then constrain stoichiometric model.
+
+\subsection*{Flexible nets can be used to optimise growth and productivity}
+\label{ssec:results-fn}
+
+Transfer SBML model to flexible nets to optimise non-linear function i.e. optimising growth \emph{and} prouctivity.
+  
+\section*{Discussion}
+\label{sec:discussion}
+
+Insert text here.  This section can be combined with Results.
+
+\section*{Conclusions}
+\label{sec:conclusions}
+
+Insert text here.  This is an optional section.
+
+\section*{Acknowledgments}
+\label{sec:ack}
+
+Insert text here.  This is an optional section.
+
+\printbibliography
+
+\section*{Tables and figures}
+
+Insert tables and figures here.
+
+\end{document}
