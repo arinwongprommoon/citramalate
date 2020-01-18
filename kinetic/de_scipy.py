@@ -27,7 +27,7 @@ popsize = 28 # POPULATION SIZE
 its = 10 # MAX NUMBER OF GENERATIONS
 strategy='best1bin' # DIFFERENTIAL EVOULTION STRATEGY
 # REDEFINE NUMBER OF TUPLES (couples, triples...) HERE
-n = 41
+n = 2
 
 # REDEFINE Vmax RANGE HERE
 boundsrel = [(0.5, 10.0)] * n
