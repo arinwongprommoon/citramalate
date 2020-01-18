@@ -93,43 +93,42 @@ Genetically modified \emph{E. coli} can be used to synthesise chemicals of indus
 
 % Issue: using living organisms to synthesis chemicals is an alternative to fossil fuels; however, traditional wet-lab based methods to optimise such production is labourious.  Computational models can accelerate development, but currently two prevailing model types lack an interface that would make it much easier to optimise productivity.
 
-Using living organisms to synthesise chemicals is an alternative to synthesising chemicals from fossil fuels, as it serves as a renewable resource with potentially high efficiency and low costs.
-
-Citramalate ((2\emph{S})-2-hydroxy-2-methylbutanedioate) is a chemical of industrial interest as it can be a precursor for methacrylic acid, a monomer for the production of plastics. \emph{E. coli} was chosen as the model organism because its metabolism is well-characterised in mathematical models, because predictions from models can be verified in cultures that are easy to maintain, and because there are \emph{E. coli} strains that have been genetically engineered to produce citramalate.
-
-Citramalate synthesis is mediated by citramalate synthase (EC 2.3.1.182) in \emph{Methanococcus janaschii} \citep{wu_production_2016}, which catalyses the reaction:
+Using living organisms to synthesise chemicals is an alternative to synthesising chemicals from fossil fuels, as it serves as a renewable resource with potentially high efficiency and low costs.  One such chemical is citramalate ((2\emph{S})-2-hydroxy-2-methylbutanedioate).  Citramalate is a chemical of industrial interest as it can be a precursor for methacrylic acid, a monomer for the production of plastics.  Citramalate synthesis is mediated by citramalate synthase (EC 2.3.1.182) in \emph{Methanococcus janaschii} \citep{wu_production_2016}, which catalyses the reaction:
 
 \begin{center}
   acetyl-CoA + pyruvate + \ce{H2O} $\rightarrow$ CoA-SH + \ce{H^+} + citramalate
 \end{center}
 
-This enzyme is not present in wild-type \emph{E. coli} strains, so in experiments \emph{E. coli} is engineered to express the \emph{cimA} gene that encodes citramalate synthase \citep{wu_production_2016}.
-
-Optimising culture conditions for production of chemicals such as citramalate can be accelerated by using mathematical models to optimise conditions.  Currently, two prevailing model types are kinetic and stoichiometric models, which aim to describe cellular metabolism from different points of view.  However, neither model type alone is suited for the task of optimising productivity, and currently an interface between the two types of models is lacking.
+Traditional wet lab-based methods to optimise chemostat culture conditions for synthetic chemical production by microorganisms can be labourious.  Optimising culture conditions for production of chemicals such as citramalate can be accelerated by using mathematical models.  Currently, two prevailing mathematical model types that concern cellular metabolism are kinetic and stoichiometric models, which describe cellular metabolism from different points of view.
 
 % Development of genome-scale models, kinetic, and stoichiometric models (cite key papers; they should also be cited by Millard et al., 2017 and Orth et al., 2011)
 
 % Stoichiometric models contain more reactions but no information about reaction dynamics, and they can be enriched with information from kinetic models.  This is the novelty of the paper.
 
 A stoichiometric model is a genome-scale reconstruction of the metabolic network of a model organism.  In contrast, a kinetic model only concerns central carbon metabolism, but contains initial conditions and substrate concentrations, which the stoichiometric model lacks. % This will obviously be longer and should cite key papers/reviews that define these two types of models
+Neither model type alone is suited for the task of optimising productivity, and currently an interface between the two types of models is lacking.
 
 % Case study is the Millard et al. (2017) kinetic model of central carbon metabolism in E. coli and the Orth et al. (2011) genome-scale stoichiometric model.  This is a description of the two models
 
-This study concerns two models of \emph{E. coli} metabolism: a kinetic model described by \citet{millard_metabolic_2017} and a stoichiometric model described by \citet{orth_comprehensive_2011}.  The kinetic model contains 68 reactions, 49 of which include $V_{max}$ as a parameter. Of these, 41 correspond to real enzyme-catalysed reactions.  The stoichiometric model contains 2,584 reactions, most of which are unbounded by default.
+This study concerns two models of \emph{E. coli} metabolism: a kinetic model described by \citet{millard_metabolic_2017} and a stoichiometric model described by \citet{orth_comprehensive_2011}.
+  \emph{E. coli} was chosen as the model organism because its metabolism is well-characterised in mathematical models, because predictions from models can be verified in cultures that are easy to maintain, and because there are \emph{E. coli} strains that have been genetically engineered to produce citramalate.
+  This enzyme is not present in wild-type \emph{E. coli} strains, so in experiments \emph{E. coli} is engineered to express the \emph{cimA} gene that encodes citramalate synthase \citep{wu_production_2016}.
+The kinetic model contains 68 reactions, 49 of which include $V_{max}$ as a parameter.  The $V_{max]$ value is relevant because according to Michaelis-Menten kinetics, enzyme activity is proportional to $V_{max}$ and this relation can be easily exploited in engineering \emph{E. coli} to optimise citramalate production.  Of these reactions, 41 correspond to real enzyme-catalysed reactions.  The stoichiometric model contains 2,584 reactions, most of which do not have flux boundaries by default.
 
 % Aims: Here I'm developing a method to map reactions between the two models, and then using simulations in the kinetic model to accordingly set fluxes in the stoichiometric model.  Ultimately this leads to non-linear optimisation of the production of citramalate.
 
-This study had the following aims:
+This study aims to bridge the gap between the kinetic and stoichiometric models by devising a method of map reactions between the two models, and by using simulations in the kinetic model to set fluxes in the stoichiometric model.  This study also shows that the flexible nets formalism can be used to solve a non-linear optimisation problem that aims to optimise both growth and citramalate productivity based on the enriched stoichiometric model, supplanting the use of flux balance analysis.
 
-\begin{enumerate}
-\item Investigating how $V_{max}$ values of reactions in the kinetic model affect citramalate productivity, and finding a method to find such values that would optimise citramalate productivity;
-\item Bridging the gap between the kinetic and stoichiometric models, by using simulations in the kinetic model to set fluxes in the stoichiometric model, and by devising a method of map reactions between the two models; and
-  \item Using information from the Lund medium \citep{eastham_process_2015} on the models to determine how nutrient medium composition affects citramalate productivity, and investigating how this information can be used to improve the Lund medium.
-  \end{enumerate}
+% \begin{enumerate}
+% \item Investigating how $V_{max}$ values of reactions in the kinetic model affect citramalate productivity, and finding a method to find such values that would optimise citramalate productivity;
+% \item Bridging the gap between the kinetic and stoichiometric models, by using simulations in the kinetic model to set fluxes in the stoichiometric model, and by devising a method of map reactions between the two models; and
+%   \item Using information from the Lund medium \citep{eastham_process_2015} on the models to determine how nutrient medium composition affects citramalate productivity, and investigating how this information can be used to improve the Lund medium.
+%   \end{enumerate}
+
 
 % This strategy can be generalised and applied to other models.
+The strategies used in this study may be applied to other pairs of kinetic and stoichiomentric models that are related to each other, and may be expanded to solve other optimisation problems.
 
-  Findings may then be generalised to cases not specific to \emph{E. coli} or citramalate production.
   
 \section*{Materials and Methods}
 \label{sec:methods}
@@ -172,7 +171,7 @@ Insert text here.
 \subsection*{Enhancing a genome-scale stoichiometric model with information from a kinetic model}
 \label{ssec:results-enhance}
 
-Novel methodology to enhance genome-scale stoichiometric model with kinetic model data, may be applied to systems apart from \emph{E. coli}.
+The stoichiometric model can be enhanced by applying flux boundaries that are derived from reaction fluxes attained in kinetic model simulations.  In order to do that, an adequate strategy to map reactions between a kinetic model and a stoichiometric model developed by different authors must be developed.
 
 We developed a mapping table between the stoichiometric model and the kinetic model that
 concerns the 68 reactions present in the wild-type kinetic model, including the growth reaction. The full mapping table included:
@@ -335,10 +334,7 @@ As a result, I produced the following rules:
 \subsection*{Kinetic model simulations can be used to define flux bounds for the stoichiometric model}
 \label{ssec:results-bounds}
 
-Exploit kinetic model to compute flux bounds.  Flux bounds then constrain stoichiometric model.
-
 The stoichiometric model consists of reaction stoichiometries along with lower and upper bounds for flux for each reaction. These bounds can be specified to provide constraints for FBA.
-
 The lowest and highest possible values of fluxes through each reaction in the kinetic model provides reasonable bounds for the stoichiometric model.
 To find the lowest and highest possible flux values through the 69 reactions of the kinetic model, I varied the $V_{max}$ values of the 49 reactions with $V_{max}$ as a parameter, CITRA\_SYN included.
 
@@ -386,11 +382,13 @@ However, FBA applied on the stoichiometric model using default bounds predicted 
 \subsection*{Flexible nets can be used to optimise growth and productivity}
 \label{ssec:results-fn}
 
-Transfer SBML model to flexible nets to optimise non-linear function i.e. optimising growth \emph{and} prouctivity.
+Here, we converted the SBML model that encodes the enriched stoichiometric model to the flexible net formalism so that a nonlinear function can be optimised, namely optimising growth \emph{and} productivity.
 
 % The Lund medium bit can be MUCH shorter and potentially come AFTER the part where I (hopefully) demonstrate that flexible nets work.  It will demonstrate that citramalate production can be optimised for media composition, thus completing the narrative.
 
-In this section, I investigated how to use the composition of a fermentation medium to inform the choice of flux bounds for the stoichiometric model. The aim was to improve the recipe of the medium to optimise citramalate production, based on how the model predicted fluxes for exchange reactions involving specific chemical species.
+(The flexible nets content should be here)
+
+To test the optimisation, I investigated how to use the composition of a fermentation medium to inform the choice of flux bounds for the stoichiometric model. The aim was to improve the recipe of the medium to optimise citramalate production, based on how the model predicted fluxes for exchange reactions involving specific chemical species.
 
 The patent WO 2015/022496 \citep{eastham_process_2015} describes a fermentation medium on p.79, for \emph{E. coli} BW25113 $\Delta$\emph{pflB} $\Delta$\emph{ldhA} transformed with pBAD24-\emph{cimA} to optimise production of (\emph{R})-citramalic acid:
 
@@ -489,8 +487,6 @@ Where:
 
 
 This expression can replace $C_{x}$ in equation~\ref{eqn:taymaznikerel10_lreg}, thus eliminating one parameter.
-
-(The flexible nets content should be here)
   
 \section*{Discussion}
 \label{sec:discussion}
